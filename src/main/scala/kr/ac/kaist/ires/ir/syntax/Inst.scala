@@ -1,20 +1,11 @@
 package kr.ac.kaist.ires.ir
 
-import kr.ac.kaist.ires.COVERAGE_MODE
 import kr.ac.kaist.ires.model.Algorithm
 import scala.collection.mutable.{ Map => MMap }
 
 // IR Instructions
 sealed trait Inst extends IRNode {
   private var algo: Option[Algorithm] = None
-  lazy val uid: Int = algo match {
-    case Some(algo) if COVERAGE_MODE && algo.lang =>
-      val uid = Inst.insts.size
-      Inst._insts :+= this
-      Inst._instToAlgo :+= algo
-      uid
-    case _ => -1
-  }
 
   def setAlgo(algo: Algorithm): Unit = this.algo = Some(algo)
 }

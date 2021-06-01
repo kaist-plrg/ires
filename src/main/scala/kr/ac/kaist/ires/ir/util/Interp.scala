@@ -5,8 +5,7 @@ import scala.concurrent._
 import scala.concurrent.duration._
 import scala.concurrent.ExecutionContext.Implicits.global
 
-import kr.ac.kaist.ires.{ DEBUG_INTERP, IRES, COVERAGE_MODE, Lexical }
-import kr.ac.kaist.ires.coverage.Coverage
+import kr.ac.kaist.ires.{ DEBUG_INTERP, IRES, Lexical }
 import kr.ac.kaist.ires.error.NotSupported
 import kr.ac.kaist.ires.model.{ Parser => ESParser, ESValueParser, ModelHelper }
 
@@ -32,7 +31,6 @@ class Interp(isDebug: Boolean, timeLimit: Option[Long]) {
   // instructions
   def interp(inst: Inst): State => State = st => {
     instCount = instCount + 1
-    if (COVERAGE_MODE) Coverage.add(inst.uid)
     if (instCount % 10000 == 0) timeLimit match {
       case Some(timeout) => if ((System.currentTimeMillis - startTime) > timeout * 1000) error("timeoutInst")
       case _ => ()
@@ -77,7 +75,6 @@ class Interp(isDebug: Boolean, timeLimit: Option[Long]) {
         }
       case IIf(cond, thenInst, elseInst) =>
         val (v, s0) = escapeCompletion(interp(cond)(st))
-        if (COVERAGE_MODE) Coverage.add(inst.uid, v)
         v match {
           case Bool(true) => s0.copy(context = s0.context.copy(insts = thenInst :: s0.context.insts))
           case Bool(false) => s0.copy(context = s0.context.copy(insts = elseInst :: s0.context.insts))
@@ -85,7 +82,6 @@ class Interp(isDebug: Boolean, timeLimit: Option[Long]) {
         }
       case IWhile(cond, body) =>
         val (v, s0) = escapeCompletion(interp(cond)(st))
-        if (COVERAGE_MODE) Coverage.add(inst.uid, v)
         v match {
           case Bool(true) => s0.copy(context = s0.context.copy(insts = body :: inst :: s0.context.insts))
           case Bool(false) => s0

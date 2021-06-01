@@ -3,7 +3,6 @@ package kr.ac.kaist.ires
 import java.io._
 import scala.io.Source
 import kr.ac.kaist.ires.ir._
-import kr.ac.kaist.ires.coverage.Coverage
 import kr.ac.kaist.ires.error.NotSupported
 import kr.ac.kaist.ires.model.{ Parser => JSParser, StatementListItem, ModelHelper }
 import kr.ac.kaist.ires.util.Useful._
@@ -48,8 +47,6 @@ class Test262Test extends IRESTest with EvalTest {
       case (k, v) => jpw.println(s"$k: $v")
     }
     jpw.close()
-
-    if (COVERAGE_MODE) Coverage.dumpStat
   }
 
   // tests for js-interpreter
