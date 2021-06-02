@@ -1,0 +1,46 @@
+{
+  "type": "Script",
+  "index": 0,
+  "start": 0,
+  "end": 2,
+  "children": [
+    {
+      "type": "ScriptBody",
+      "index": 0,
+      "start": 0,
+      "end": 2,
+      "children": [
+        {
+          "type": "StatementList",
+          "index": 0,
+          "start": 0,
+          "end": 1,
+          "children": [
+            {
+              "type": "StatementListItem",
+              "index": 0,
+              "start": 0,
+              "end": 1,
+              "children": [
+                {
+                  "type": "Statement",
+                  "index": 2,
+                  "start": 0,
+                  "end": 1,
+                  "children": [
+                    {
+                      "type": "EmptyStatement",
+                      "index": 0,
+                      "start": 0,
+                      "end": 1
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

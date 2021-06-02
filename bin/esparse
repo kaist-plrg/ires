@@ -1,0 +1,2 @@
+#!/bin/sh
+node $IRES_HOME/lib/esparse/dist/index.js $@
