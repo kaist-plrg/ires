@@ -1,6 +1,6 @@
 package kr.ac.kaist.ires.phase
 
-import kr.ac.kaist.ires.IRESConfig
+import kr.ac.kaist.ires._
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.util._
 
@@ -24,5 +24,5 @@ case object IREval extends PhaseObj[State, IREvalConfig, State] {
 
 // IREval phase config
 case class IREvalConfig(
-  var timeout: Option[Long] = Some(10)
+  var timeout: Option[Long] = Some(TIMEOUT)
 ) extends Config

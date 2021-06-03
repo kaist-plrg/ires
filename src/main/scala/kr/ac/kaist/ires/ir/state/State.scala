@@ -84,3 +84,8 @@ case class State(
     (newAddr, copy(heap = newHeap))
   }
 }
+object State {
+  def apply(program: Program): State = State(
+    context = Context(insts = program.insts)
+  )
+}

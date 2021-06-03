@@ -11,15 +11,12 @@ import scala.util.{ Try, Success, Failure }
 import spray.json._
 
 abstract class IRESTest extends FunSuite with BeforeAndAfterAll {
-  // IRES configuration
-  lazy val aseConfig: IRESConfig = IRESConfig(CmdBase, Nil, true)
-
   // results
   trait Result
   case object Pass extends Result
   case class Yet(msg: String) extends Result
   case object Fail extends Result
-  protected var resMap: Map[String, Map[String, Result]] = Map()
+  protected var resMap: Map[String, Result] = Map()
   implicit object ResultFormat extends RootJsonFormat[Result] {
     override def read(json: JsValue): Result = json match {
       case JsString(text) => Yet(text)
@@ -38,49 +35,35 @@ abstract class IRESTest extends FunSuite with BeforeAndAfterAll {
   protected var count: Int = 0
 
   // check result
-  def check[T](tag: String, name: String, t: => T): Unit = {
+  def check[T](name: String, tester: => T): Unit = {
     count += 1
     test(s"[$tag] $name") {
-      val res = resMap.getOrElse(tag, Map())
-      (Try(t) match {
-        case Success(_) =>
-          resMap += tag -> (res + (name -> Pass))
-        case Failure(e) => (e match {
-          case NotSupported(msg) => Some(msg)
-          case ModelNotYetGenerated => Some("Incomplete Modeling")
-          case _ => None
-        }) match {
-          case Some(msg) =>
-            resMap += tag -> (res + (name -> Yet(msg)))
-          case None =>
-            resMap += tag -> (res + (name -> Fail))
-            fail(e.toString)
-        }
-      })
+      try {
+        tester
+        resMap += name -> Pass
+      } catch {
+        case e @ NotSupported(msg) =>
+          resMap += name -> Yet(msg)
+        case e: Throwable =>
+          resMap += name -> Fail
+          throw e
+      }
     }
   }
 
   // get score
-  def getScore(res: Map[String, Result]): (Int, Int, Int) = (
+  def getScore(res: Map[String, Result]): (Int, Int) = (
     res.count { case (k, r) => r == Pass },
-    res.count { case (k, r) => r != Pass && r != Fail },
-    res.count { case (k, r) => r == Fail }
+    res.size
   )
 
   // tag name
-  val tag: String
-
-  // sort by keys
-  def sortByKey[U, V](map: Map[U, V])(implicit ord: scala.math.Ordering[U]): List[(U, V)] = map.toList.sortBy { case (k, v) => k }
+  val category: String
+  lazy val tag: String = s"$category.$this"
 
   // check backward-compatibility after all tests
   override def afterAll(): Unit = {
     import DefaultJsonProtocol._
-    val sorted =
-      resMap
-        .toList
-        .sortBy { case (k, v) => k }
-        .map { case (t, r) => (t, getScore(r)) }
 
     // check backward-compatibility
     var breakCount = 0
@@ -90,37 +73,25 @@ abstract class IRESTest extends FunSuite with BeforeAndAfterAll {
     }
 
     // show abstract result
-    val filename = s"$TEST_DIR/result/$tag.json"
-    val orig =
-      Try(readFile(filename))
-        .getOrElse("{}")
-        .parseJson
-        .convertTo[Map[String, Map[String, Result]]]
-        .toSeq.sortBy(_._1)
-    orig.foreach {
-      case (name, origM) => resMap.get(name) match {
-        case Some(curM) => origM.toSeq.sortBy(_._1) foreach {
-          case (k, r) => (curM.get(k), r) match {
-            case (None, _) => error(s"'[$name] $k' test is removed")
-            case (Some(Fail), Yet(_) | Pass) => error(s"'[$name] $k' test becomes failed")
-            case _ =>
-          }
-        }
-        case None => error(s"'$name' tests are removed")
-      }
+    val filename = s"$TEST_DIR/result/$category/$this.json"
+    for {
+      str <- optional(readFile(filename))
+      json = str.parseJson
+      map = json.convertTo[Map[String, Result]]
+      (name, result) <- map.toSeq.sortBy(_._1)
+    } (resMap.get(name), result) match {
+      case (None, _) => error(s"'[$tag] $name' test is removed")
+      case (Some(Fail), Yet(_) | Pass) => error(s"'[$tag] $name' test becomes failed")
+      case _ =>
     }
 
     // save abstract result if backward-compatible
     if (breakCount == 0) {
-      val pw = getPrintWriter(s"$TEST_DIR/result/$tag")
-      sorted.foreach {
-        case (name, (p, y, f)) =>
-          pw.println(s"  $name:")
-          pw.println(s"    PASS : $p")
-          pw.println(s"    Yet  : $y")
-          pw.println(s"    FAIL : $f")
-          pw.println(s"    TOTAL: ${p + y + f}")
-      }
+      val dirname = s"$TEST_DIR/result/$category"
+      mkdir(dirname)
+      val pw = getPrintWriter(s"$dirname/$this")
+      val (x, y) = getScore(resMap)
+      pw.println(s"$tag: $x / $y")
       pw.close()
 
       val jpw = getPrintWriter(filename)
@@ -128,4 +99,10 @@ abstract class IRESTest extends FunSuite with BeforeAndAfterAll {
       jpw.close()
     }
   }
+
+  // test name
+  val name: String
+
+  // registration
+  def init: Unit
 }

@@ -14,6 +14,7 @@ class Beautifier(
 ) {
   // IR nodes
   implicit lazy val IRNodeApp: App[IRNode] = (app, node) => node match {
+    case node: Program => ProgramApp(app, node)
     case node: Inst => InstApp(app, node)
     case node: Expr => ExprApp(app, node)
     case node: Ref => RefApp(app, node)
@@ -27,6 +28,11 @@ class Beautifier(
   // instrctions without detail information
   lazy val DetailInstApp: App[Inst] = (app, inst) => {
     if (detail) app >> inst else app >> "..."
+  }
+
+  // programs
+  implicit lazy val ProgramApp: App[Program] = (app, program) => {
+    program.insts.foldLeft(app)(_ :> _ >> LINE_SEP)
   }
 
   // instructions

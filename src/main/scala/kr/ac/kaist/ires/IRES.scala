@@ -25,6 +25,8 @@ object IRES {
       Console.err.println(ex.getStackTrace.mkString(LINE_SEP))
   }
 
+  def apply(input: String): Unit = main(input.split("\\s+"))
+
   def apply[Result](
     command: CommandObj[Result],
     runner: IRESConfig => Result,

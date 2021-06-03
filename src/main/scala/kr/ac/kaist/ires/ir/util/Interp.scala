@@ -5,14 +5,14 @@ import scala.concurrent._
 import scala.concurrent.duration._
 import scala.concurrent.ExecutionContext.Implicits.global
 
-import kr.ac.kaist.ires.{ DEBUG, IRES }
+import kr.ac.kaist.ires._
 import kr.ac.kaist.ires.error.NotSupported
 import kr.ac.kaist.ires.util.Useful._
 import kr.ac.kaist.ires.model.{ Parser => ESParser, Model, Lexical }
 import kr.ac.kaist.ires.parser.ESValueParser
 
 // IR Interpreter
-class Interp(timeLimit: Option[Long]) {
+case class Interp(timeLimit: Option[Long] = Some(TIMEOUT)) {
   val startTime: Long = System.currentTimeMillis
   var instCount = 0
 

@@ -6,7 +6,15 @@ import kr.ac.kaist.ires.util.Useful._
 import kr.ac.kaist.ires.parser.UnicodeRegex
 
 trait ModelHelper {
-  lazy val initState: State = ???
+  def getInitState(
+    program: Program,
+    globals: Map[Id, Value] = Map()
+  ): State = initState.copy(
+    context = initState.context.copy(insts = program.insts),
+    globals = initState.globals ++ globals
+  )
+
+  private val initState: State = ???
   // State(
   //   context = Context(),
   //   globals = initGlobal,

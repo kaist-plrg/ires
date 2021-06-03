@@ -3,7 +3,6 @@ package kr.ac.kaist.ires.phase
 import scala.util.{ Try, Success }
 import kr.ac.kaist.ires.IRESConfig
 import kr.ac.kaist.ires.ir._
-import kr.ac.kaist.ires.model.Model
 import kr.ac.kaist.ires.util._
 
 // IRLoad phase
@@ -12,10 +11,10 @@ case object IRLoad extends PhaseObj[Program, IRLoadConfig, State] {
   val help: String = "Load IR program into IR State"
 
   def apply(
-    pgm: Program,
+    program: Program,
     iresConfig: IRESConfig,
     config: IRLoadConfig
-  ): State = Model.initState.copy(context = Model.initState.context.copy(insts = pgm.insts))
+  ): State = State(program)
 
   def defaultConfig: IRLoadConfig = IRLoadConfig()
   val options: List[PhaseOption[IRLoadConfig]] = List()
