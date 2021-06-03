@@ -1,6 +1,6 @@
 package kr.ac.kaist.ires.ir
 
-import kr.ac.kaist.ires.AST
+import kr.ac.kaist.ires.model.AST
 
 // IR Values
 sealed trait Value extends IRNode
@@ -11,9 +11,7 @@ case class NamedAddr(name: String) extends Addr
 case class DynamicAddr(long: Long) extends Addr
 
 // IR Functions
-case class Func(name: String, params: List[Id], varparam: Option[Id], body: Inst) extends Value {
-  override def toString: String = s"Func($TRIPLE$name$TRIPLE, $params, $varparam, $body)"
-}
+case class Func(name: String, params: List[Id], varparam: Option[Id], body: Inst) extends Value
 
 case class Cont(params: List[Id], body: Inst, context: Context, ctxStack: List[Context]) extends Value
 // IR Constants

@@ -2,23 +2,26 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.ir.Parser._
+import Param.Kind._
 
-object ToPropertyKey extends Algorithm {
-  val name: String = "ToPropertyKey"
-  val length: Int = 1
-  val lang: Boolean = true
-  val func: Func = FixUIdWalker(parseFunc(""""ToPropertyKey" (argument) => {
-    app __x0__ = (ToPrimitive argument String)
-    if (is-completion __x0__) if (= __x0__["Type"] CONST_normal) __x0__ = __x0__["Value"] else return __x0__ else {}
-    let key = __x0__
-    app __x1__ = (Type key)
-    if (= __x1__ Symbol) {
-      app __x2__ = (WrapCompletion key)
-      return __x2__
-    } else {}
-    app __x3__ = (ToString key)
-    if (is-completion __x3__) if (= __x3__["Type"] CONST_normal) __x3__ = __x3__["Value"] else return __x3__ else {}
-    app __x4__ = (WrapCompletion __x3__)
-    return __x4__
-  }"""), this)
+object `AL::ToPropertyKey` extends Algo {
+  val head = NormalHead("ToPropertyKey", List(Param("argument", Normal)))
+  val ids = List(
+    "sec-topropertykey",
+    "sec-type-conversion",
+    "sec-abstract-operations",
+  )
+  val rawBody = parseInst("""{
+  |  0:app __x0__ = (ToPrimitive argument CONST_string)
+  |  0:let key = [? __x0__]
+  |  1:if (= (typeof key) Symbol) return key else 0:{}
+  |  3:app __x1__ = (ToString key)
+  |  3:return [! __x1__]
+  |}""".stripMargin)
+  val code = scala.Array[String](
+    """        1. Let _key_ be ? ToPrimitive(_argument_, ~string~).""",
+    """        1. If Type(_key_) is Symbol, then""",
+    """          1. Return _key_.""",
+    """        1. Return ! ToString(_key_).""",
+  )
 }

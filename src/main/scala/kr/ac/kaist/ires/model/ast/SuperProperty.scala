@@ -1,6 +1,5 @@
 package kr.ac.kaist.ires.model
 
-import kr.ac.kaist.ires.{ AST, ASTInfo, Lexical }
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.UnexpectedSemantics
 import scala.collection.immutable.{ Set => SSet }
@@ -8,6 +7,7 @@ import scala.collection.immutable.{ Set => SSet }
 trait SuperProperty extends AST {
   val kind: String = "SuperProperty"
 }
+
 case class SuperProperty0(x2: Expression, parserParams: List[Boolean]) extends SuperProperty {
   x2.parent = Some(this)
   val name: String = "SuperProperty0"
@@ -20,10 +20,11 @@ case class SuperProperty0(x2: Expression, parserParams: List[Boolean]) extends S
 }
 object SuperProperty0 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "Evaluation0" -> SuperProperty0Evaluation0.func
+  val semMap: Map[String, Algo] = Map(
+    "Evaluation0" -> `AL::SuperProperty[0,0].Evaluation`,
   )
 }
+
 case class SuperProperty1(x2: Lexical, parserParams: List[Boolean]) extends SuperProperty {
   x2.parent = Some(this)
   val name: String = "SuperProperty1"
@@ -36,8 +37,8 @@ case class SuperProperty1(x2: Lexical, parserParams: List[Boolean]) extends Supe
 }
 object SuperProperty1 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "Contains0" -> SuperProperty1Contains0.func,
-    "Evaluation0" -> SuperProperty1Evaluation0.func
+  val semMap: Map[String, Algo] = Map(
+    "Contains0" -> `AL::SuperProperty[1,0].Contains`,
+    "Evaluation0" -> `AL::SuperProperty[1,0].Evaluation`,
   )
 }

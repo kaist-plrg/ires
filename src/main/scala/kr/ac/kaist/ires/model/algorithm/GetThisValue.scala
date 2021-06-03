@@ -2,21 +2,24 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.ir.Parser._
+import Param.Kind._
 
-object GetThisValue extends Algorithm {
-  val name: String = "GetThisValue"
-  val length: Int = 1
-  val lang: Boolean = true
-  val func: Func = FixUIdWalker(parseFunc(""""GetThisValue" (V) => {
-    app __x0__ = (IsPropertyReference V)
-    assert (= __x0__ true)
-    app __x1__ = (IsSuperReference V)
-    if (= __x1__ true) {
-      app __x2__ = (WrapCompletion V["thisValue"])
-      return __x2__
-    } else {}
-    app __x3__ = (GetBase V)
-    app __x4__ = (WrapCompletion __x3__)
-    return __x4__
-  }"""), this)
+object `AL::GetThisValue` extends Algo {
+  val head = NormalHead("GetThisValue", List(Param("V", Normal)))
+  val ids = List(
+    "sec-getthisvalue",
+    "sec-reference-record-specification-type",
+    "sec-ecmascript-specification-types",
+    "sec-ecmascript-data-types-and-values",
+  )
+  val rawBody = parseInst("""{
+  |  0:app __x0__ = (IsPropertyReference V)
+  |  0:assert (= __x0__ true)
+  |  1:app __x1__ = (IsSuperReference V)
+  |  1:if (= __x1__ true) return V.ThisValue else return V.Base
+  |}""".stripMargin)
+  val code = scala.Array[String](
+    """          1. Assert: IsPropertyReference(_V_) is *true*.""",
+    """          1. If IsSuperReference(_V_) is *true*, return _V_.[[ThisValue]]; otherwise return _V_.[[Base]].""",
+  )
 }

@@ -1,6 +1,5 @@
 package kr.ac.kaist.ires.model
 
-import kr.ac.kaist.ires.{ AST, ASTInfo, Lexical }
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.UnexpectedSemantics
 import scala.collection.immutable.{ Set => SSet }
@@ -8,6 +7,7 @@ import scala.collection.immutable.{ Set => SSet }
 trait AsyncGeneratorBody extends AST {
   val kind: String = "AsyncGeneratorBody"
 }
+
 case class AsyncGeneratorBody0(x0: FunctionBody, parserParams: List[Boolean]) extends AsyncGeneratorBody {
   x0.parent = Some(this)
   val name: String = "AsyncGeneratorBody0"
@@ -20,7 +20,8 @@ case class AsyncGeneratorBody0(x0: FunctionBody, parserParams: List[Boolean]) ex
 }
 object AsyncGeneratorBody0 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "EvaluateBody0" -> AsyncGeneratorBody0EvaluateBody0.func
+  val semMap: Map[String, Algo] = Map(
+    "EvaluateBody0" -> `AL::AsyncGeneratorBody[0,0].EvaluateBody`,
+    "EvaluateAsyncGeneratorBody0" -> `AL::AsyncGeneratorBody[0,0].EvaluateAsyncGeneratorBody`,
   )
 }

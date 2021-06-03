@@ -1,6 +1,5 @@
 package kr.ac.kaist.ires.model
 
-import kr.ac.kaist.ires.{ AST, ASTInfo, Lexical }
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.UnexpectedSemantics
 import scala.collection.immutable.{ Set => SSet }
@@ -8,6 +7,7 @@ import scala.collection.immutable.{ Set => SSet }
 trait ImportSpecifier extends AST {
   val kind: String = "ImportSpecifier"
 }
+
 case class ImportSpecifier0(x0: ImportedBinding, parserParams: List[Boolean]) extends ImportSpecifier {
   x0.parent = Some(this)
   val name: String = "ImportSpecifier0"
@@ -20,8 +20,11 @@ case class ImportSpecifier0(x0: ImportedBinding, parserParams: List[Boolean]) ex
 }
 object ImportSpecifier0 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map()
+  val semMap: Map[String, Algo] = Map(
+    "ImportEntriesForModule0" -> `AL::ImportSpecifier[0,0].ImportEntriesForModule`,
+  )
 }
+
 case class ImportSpecifier1(x0: Lexical, x2: ImportedBinding, parserParams: List[Boolean]) extends ImportSpecifier {
   x0.parent = Some(this)
   x2.parent = Some(this)
@@ -35,5 +38,8 @@ case class ImportSpecifier1(x0: Lexical, x2: ImportedBinding, parserParams: List
 }
 object ImportSpecifier1 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map()
+  val semMap: Map[String, Algo] = Map(
+    "BoundNames0" -> `AL::ImportSpecifier[1,0].BoundNames`,
+    "ImportEntriesForModule0" -> `AL::ImportSpecifier[1,0].ImportEntriesForModule`,
+  )
 }

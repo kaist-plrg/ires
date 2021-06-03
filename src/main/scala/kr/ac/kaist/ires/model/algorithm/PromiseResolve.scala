@@ -2,32 +2,39 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.ir.Parser._
+import Param.Kind._
 
-object PromiseResolve extends Algorithm {
-  val name: String = "PromiseResolve"
-  val length: Int = 2
-  val lang: Boolean = true
-  val func: Func = FixUIdWalker(parseFunc(""""PromiseResolve" (C, x) => {
-    app __x0__ = (Type C)
-    assert (= __x0__ Object)
-    app __x1__ = (IsPromise x)
-    if (= __x1__ true) {
-      app __x2__ = (Get x "constructor")
-      if (is-completion __x2__) if (= __x2__["Type"] CONST_normal) __x2__ = __x2__["Value"] else return __x2__ else {}
-      let xConstructor = __x2__
-      app __x3__ = (SameValue xConstructor C)
-      if (= __x3__ true) {
-        app __x4__ = (WrapCompletion x)
-        return __x4__
-      } else {}
-    } else {}
-    app __x5__ = (NewPromiseCapability C)
-    if (is-completion __x5__) if (= __x5__["Type"] CONST_normal) __x5__ = __x5__["Value"] else return __x5__ else {}
-    let promiseCapability = __x5__
-    app __x6__ = (Call promiseCapability["Resolve"] undefined (new [x]))
-    if (is-completion __x6__) if (= __x6__["Type"] CONST_normal) __x6__ = __x6__["Value"] else return __x6__ else {}
-    __x6__
-    app __x7__ = (WrapCompletion promiseCapability["Promise"])
-    return __x7__
-  }"""), this)
+object `AL::PromiseResolve` extends Algo {
+  val head = NormalHead("PromiseResolve", List(Param("C", Normal), Param("x", Normal)))
+  val ids = List(
+    "sec-promise-resolve",
+    "sec-promise.resolve",
+    "sec-properties-of-the-promise-constructor",
+    "sec-promise-objects",
+    "sec-control-abstraction-objects",
+  )
+  val rawBody = parseInst("""{
+  |  0:assert (= (typeof C) Object)
+  |  1:app __x0__ = (IsPromise x)
+  |  1:if (= __x0__ true) {
+  |    2:app __x1__ = (Get x "constructor")
+  |    2:let xConstructor = [? __x1__]
+  |    3:app __x2__ = (SameValue xConstructor C)
+  |    3:if (= __x2__ true) return x else 10:{}
+  |  } else 10:{}
+  |  4:app __x3__ = (NewPromiseCapability C)
+  |  4:let promiseCapability = [? __x3__]
+  |  5:app __x4__ = (Call promiseCapability.Resolve undefined (new [x]))
+  |  5:[? __x4__]
+  |  6:return promiseCapability.Promise
+  |}""".stripMargin)
+  val code = scala.Array[String](
+    """            1. Assert: Type(_C_) is Object.""",
+    """            1. If IsPromise(_x_) is *true*, then""",
+    """              1. Let _xConstructor_ be ? Get(_x_, *"constructor"*).""",
+    """              1. If SameValue(_xConstructor_, _C_) is *true*, return _x_.""",
+    """            1. Let _promiseCapability_ be ? NewPromiseCapability(_C_).""",
+    """            1. Perform ? Call(_promiseCapability_.[[Resolve]], *undefined*, « _x_ »).""",
+    """            1. Return _promiseCapability_.[[Promise]].""",
+  )
 }

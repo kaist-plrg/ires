@@ -2,54 +2,31 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.ir.Parser._
+import Param.Kind._
 
-object OrdinaryOwnPropertyKeys extends Algorithm {
-  val name: String = "OrdinaryOwnPropertyKeys"
-  val length: Int = 1
-  val lang: Boolean = true
-  val func: Func = FixUIdWalker(parseFunc(""""OrdinaryOwnPropertyKeys" (O) => {
-    let keys = (new [])
-    let __x0__ = (new [])
-    let __x1__ = (new [])
-    let __x2__ = (new [])
-    let __x3__ = (map-keys O["SubMap"])
-    let __x4__ = __x3__
-    let __x5__ = 0i
-    while (< __x5__ __x4__["length"]) {
-      let __x6__ = __x4__[__x5__]
-      if (= (typeof __x6__) "Symbol") append __x6__ -> __x0__ else {
-        app __x7__ = (CanonicalNumericIndexString __x6__)
-        if (|| (= __x7__ undefined) (|| (< __x7__ 0.0) (< 4.294967295E9 __x7__))) append __x6__ -> __x1__ else append __x7__ -> __x2__
-      }
-      __x5__ = (+ __x5__ 1i)
-    }
-    while (< 0i __x2__["length"]) {
-      let __x8__ = 0i
-      let __x9__ = 0i
-      while (< __x9__ __x2__["length"]) {
-        if (< __x2__[__x9__] __x2__[__x8__]) __x8__ = __x9__ else {}
-        __x9__ = (+ __x9__ 1i)
-      }
-      let __x10__ = (pop __x2__ __x8__)
-      app __x11__ = (ToString __x10__)
-      append __x11__ -> keys
-    }
-    let __x12__ = __x1__
-    let __x13__ = 0i
-    while (< __x13__ __x12__["length"]) {
-      let __x6__ = __x12__[__x13__]
-      append __x6__ -> keys
-      __x13__ = (+ __x13__ 1i)
-    }
-    let __x14__ = __x0__
-    let __x15__ = 0i
-    while (< __x15__ __x14__["length"]) {
-      let __x6__ = __x14__[__x15__]
-      append __x6__ -> keys
-      __x15__ = (+ __x15__ 1i)
-    }
-    return keys
-    app __x16__ = (WrapCompletion keys)
-    return __x16__
-  }"""), this)
+object `AL::OrdinaryOwnPropertyKeys` extends Algo {
+  val head = NormalHead("OrdinaryOwnPropertyKeys", List(Param("O", Normal)))
+  val ids = List(
+    "sec-ordinaryownpropertykeys",
+    "sec-ordinary-object-internal-methods-and-internal-slots-ownpropertykeys",
+    "sec-ordinary-object-internal-methods-and-internal-slots",
+    "sec-ordinary-and-exotic-objects-behaviours",
+  )
+  val rawBody = parseInst("""{
+  |  0:let keys = (new [])
+  |  1:??? "For each own property key id:{P} of id:{O} such that id:{P} is an array index , in ascending numeric index order , do in:{} out:{}"
+  |  3:??? "For each own property key id:{P} of id:{O} such that Type ( id:{P} ) is String and id:{P} is not an array index , in ascending chronological order of property creation , do in:{} out:{}"
+  |  5:??? "For each own property key id:{P} of id:{O} such that Type ( id:{P} ) is Symbol , in ascending chronological order of property creation , do in:{} out:{}"
+  |  7:return keys
+  |}""".stripMargin)
+  val code = scala.Array[String](
+    """          1. Let _keys_ be a new empty List.""",
+    """          1. For each own property key _P_ of _O_ such that _P_ is an array index, in ascending numeric index order, do""",
+    """            1. Add _P_ as the last element of _keys_.""",
+    """          1. For each own property key _P_ of _O_ such that Type(_P_) is String and _P_ is not an array index, in ascending chronological order of property creation, do""",
+    """            1. Add _P_ as the last element of _keys_.""",
+    """          1. For each own property key _P_ of _O_ such that Type(_P_) is Symbol, in ascending chronological order of property creation, do""",
+    """            1. Add _P_ as the last element of _keys_.""",
+    """          1. Return _keys_.""",
+  )
 }

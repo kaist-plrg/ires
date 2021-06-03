@@ -2,23 +2,23 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.ir.Parser._
+import Param.Kind._
 
-object IsPropertyKey extends Algorithm {
-  val name: String = "IsPropertyKey"
-  val length: Int = 1
-  val lang: Boolean = true
-  val func: Func = FixUIdWalker(parseFunc(""""IsPropertyKey" (argument) => {
-    app __x0__ = (Type argument)
-    if (= __x0__ String) {
-      app __x1__ = (WrapCompletion true)
-      return __x1__
-    } else {}
-    app __x2__ = (Type argument)
-    if (= __x2__ Symbol) {
-      app __x3__ = (WrapCompletion true)
-      return __x3__
-    } else {}
-    app __x4__ = (WrapCompletion false)
-    return __x4__
-  }"""), this)
+object `AL::IsPropertyKey` extends Algo {
+  val head = NormalHead("IsPropertyKey", List(Param("argument", Normal)))
+  val ids = List(
+    "sec-ispropertykey",
+    "sec-testing-and-comparison-operations",
+    "sec-abstract-operations",
+  )
+  val rawBody = parseInst("""{
+  |  0:if (= (typeof argument) String) return true else 0:{}
+  |  1:if (= (typeof argument) Symbol) return true else 0:{}
+  |  2:return false
+  |}""".stripMargin)
+  val code = scala.Array[String](
+    """        1. If Type(_argument_) is String, return *true*.""",
+    """        1. If Type(_argument_) is Symbol, return *true*.""",
+    """        1. Return *false*.""",
+  )
 }

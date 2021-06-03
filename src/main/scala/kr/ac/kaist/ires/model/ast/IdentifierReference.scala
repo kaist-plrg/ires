@@ -1,6 +1,5 @@
 package kr.ac.kaist.ires.model
 
-import kr.ac.kaist.ires.{ AST, ASTInfo, Lexical }
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.UnexpectedSemantics
 import scala.collection.immutable.{ Set => SSet }
@@ -8,6 +7,7 @@ import scala.collection.immutable.{ Set => SSet }
 trait IdentifierReference extends AST {
   val kind: String = "IdentifierReference"
 }
+
 case class IdentifierReference0(x0: Identifier, parserParams: List[Boolean]) extends IdentifierReference {
   x0.parent = Some(this)
   val name: String = "IdentifierReference0"
@@ -20,11 +20,13 @@ case class IdentifierReference0(x0: Identifier, parserParams: List[Boolean]) ext
 }
 object IdentifierReference0 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "AssignmentTargetType0" -> IdentifierReference0AssignmentTargetType0.func,
-    "Evaluation0" -> IdentifierReference0Evaluation0.func
+  val semMap: Map[String, Algo] = Map(
+    "AssignmentTargetType0" -> `AL::IdentifierReference[0,0].AssignmentTargetType`,
+    "Evaluation0" -> `AL::IdentifierReference[0,0].Evaluation`,
+    "EarlyErrors0" -> `AL::IdentifierReference[0,0].EarlyErrors`,
   )
 }
+
 case class IdentifierReference1(parserParams: List[Boolean]) extends IdentifierReference {
   val name: String = "IdentifierReference1"
   override def toString: String = {
@@ -36,12 +38,14 @@ case class IdentifierReference1(parserParams: List[Boolean]) extends IdentifierR
 }
 object IdentifierReference1 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "AssignmentTargetType0" -> IdentifierReference1AssignmentTargetType0.func,
-    "Evaluation0" -> IdentifierReference1Evaluation0.func,
-    "StringValue0" -> IdentifierReference1StringValue0.func
+  val semMap: Map[String, Algo] = Map(
+    "AssignmentTargetType0" -> `AL::IdentifierReference[1,0].AssignmentTargetType`,
+    "StringValue0" -> `AL::IdentifierReference[1,0].StringValue`,
+    "Evaluation0" -> `AL::IdentifierReference[1,0].Evaluation`,
+    "EarlyErrors0" -> `AL::IdentifierReference[1,0].EarlyErrors`,
   )
 }
+
 case class IdentifierReference2(parserParams: List[Boolean]) extends IdentifierReference {
   val name: String = "IdentifierReference2"
   override def toString: String = {
@@ -53,9 +57,10 @@ case class IdentifierReference2(parserParams: List[Boolean]) extends IdentifierR
 }
 object IdentifierReference2 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "AssignmentTargetType0" -> IdentifierReference2AssignmentTargetType0.func,
-    "Evaluation0" -> IdentifierReference2Evaluation0.func,
-    "StringValue0" -> IdentifierReference2StringValue0.func
+  val semMap: Map[String, Algo] = Map(
+    "AssignmentTargetType0" -> `AL::IdentifierReference[2,0].AssignmentTargetType`,
+    "StringValue0" -> `AL::IdentifierReference[2,0].StringValue`,
+    "Evaluation0" -> `AL::IdentifierReference[2,0].Evaluation`,
+    "EarlyErrors0" -> `AL::IdentifierReference[2,0].EarlyErrors`,
   )
 }

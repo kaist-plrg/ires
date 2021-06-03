@@ -1,6 +1,5 @@
 package kr.ac.kaist.ires.model
 
-import kr.ac.kaist.ires.{ AST, ASTInfo, Lexical }
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.UnexpectedSemantics
 import scala.collection.immutable.{ Set => SSet }
@@ -8,6 +7,7 @@ import scala.collection.immutable.{ Set => SSet }
 trait ObjectAssignmentPattern extends AST {
   val kind: String = "ObjectAssignmentPattern"
 }
+
 case class ObjectAssignmentPattern0(parserParams: List[Boolean]) extends ObjectAssignmentPattern {
   val name: String = "ObjectAssignmentPattern0"
   override def toString: String = {
@@ -19,10 +19,11 @@ case class ObjectAssignmentPattern0(parserParams: List[Boolean]) extends ObjectA
 }
 object ObjectAssignmentPattern0 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "DestructuringAssignmentEvaluation0" -> ObjectAssignmentPattern0DestructuringAssignmentEvaluation0.func
+  val semMap: Map[String, Algo] = Map(
+    "DestructuringAssignmentEvaluation0" -> `AL::ObjectAssignmentPattern[0,0].DestructuringAssignmentEvaluation`,
   )
 }
+
 case class ObjectAssignmentPattern1(x1: AssignmentRestProperty, parserParams: List[Boolean]) extends ObjectAssignmentPattern {
   x1.parent = Some(this)
   val name: String = "ObjectAssignmentPattern1"
@@ -35,10 +36,11 @@ case class ObjectAssignmentPattern1(x1: AssignmentRestProperty, parserParams: Li
 }
 object ObjectAssignmentPattern1 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "DestructuringAssignmentEvaluation0" -> ObjectAssignmentPattern1DestructuringAssignmentEvaluation0.func
+  val semMap: Map[String, Algo] = Map(
+    "DestructuringAssignmentEvaluation0" -> `AL::ObjectAssignmentPattern[1,0].DestructuringAssignmentEvaluation`,
   )
 }
+
 case class ObjectAssignmentPattern2(x1: AssignmentPropertyList, parserParams: List[Boolean]) extends ObjectAssignmentPattern {
   x1.parent = Some(this)
   val name: String = "ObjectAssignmentPattern2"
@@ -51,10 +53,11 @@ case class ObjectAssignmentPattern2(x1: AssignmentPropertyList, parserParams: Li
 }
 object ObjectAssignmentPattern2 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "DestructuringAssignmentEvaluation0" -> ObjectAssignmentPattern2DestructuringAssignmentEvaluation0.func
+  val semMap: Map[String, Algo] = Map(
+    "DestructuringAssignmentEvaluation0" -> `AL::ObjectAssignmentPattern[2,0].DestructuringAssignmentEvaluation`,
   )
 }
+
 case class ObjectAssignmentPattern3(x1: AssignmentPropertyList, x3: Option[AssignmentRestProperty], parserParams: List[Boolean]) extends ObjectAssignmentPattern {
   x1.parent = Some(this)
   x3.foreach((m) => m.parent = Some(this))
@@ -68,8 +71,8 @@ case class ObjectAssignmentPattern3(x1: AssignmentPropertyList, x3: Option[Assig
 }
 object ObjectAssignmentPattern3 extends ASTInfo {
   val maxK: Int = 1
-  val semMap: Map[String, Func] = Map(
-    "DestructuringAssignmentEvaluation0" -> ObjectAssignmentPattern3DestructuringAssignmentEvaluation0.func,
-    "DestructuringAssignmentEvaluation1" -> ObjectAssignmentPattern3DestructuringAssignmentEvaluation1.func
+  val semMap: Map[String, Algo] = Map(
+    "DestructuringAssignmentEvaluation0" -> `AL::ObjectAssignmentPattern[3,0].DestructuringAssignmentEvaluation`,
+    "DestructuringAssignmentEvaluation1" -> `AL::ObjectAssignmentPattern[3,1].DestructuringAssignmentEvaluation`,
   )
 }

@@ -1,6 +1,5 @@
 package kr.ac.kaist.ires.model
 
-import kr.ac.kaist.ires.{ AST, ASTInfo, Lexical }
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.UnexpectedSemantics
 import scala.collection.immutable.{ Set => SSet }
@@ -8,6 +7,7 @@ import scala.collection.immutable.{ Set => SSet }
 trait ArrayAssignmentPattern extends AST {
   val kind: String = "ArrayAssignmentPattern"
 }
+
 case class ArrayAssignmentPattern0(x1: Option[Elision], x2: Option[AssignmentRestElement], parserParams: List[Boolean]) extends ArrayAssignmentPattern {
   x1.foreach((m) => m.parent = Some(this))
   x2.foreach((m) => m.parent = Some(this))
@@ -21,12 +21,13 @@ case class ArrayAssignmentPattern0(x1: Option[Elision], x2: Option[AssignmentRes
 }
 object ArrayAssignmentPattern0 extends ASTInfo {
   val maxK: Int = 3
-  val semMap: Map[String, Func] = Map(
-    "DestructuringAssignmentEvaluation0" -> ArrayAssignmentPattern0DestructuringAssignmentEvaluation0.func,
-    "DestructuringAssignmentEvaluation2" -> ArrayAssignmentPattern0DestructuringAssignmentEvaluation2.func,
-    "DestructuringAssignmentEvaluation3" -> ArrayAssignmentPattern0DestructuringAssignmentEvaluation3.func
+  val semMap: Map[String, Algo] = Map(
+    "DestructuringAssignmentEvaluation0" -> `AL::ArrayAssignmentPattern[0,0].DestructuringAssignmentEvaluation`,
+    "DestructuringAssignmentEvaluation2" -> `AL::ArrayAssignmentPattern[0,2].DestructuringAssignmentEvaluation`,
+    "DestructuringAssignmentEvaluation3" -> `AL::ArrayAssignmentPattern[0,3].DestructuringAssignmentEvaluation`,
   )
 }
+
 case class ArrayAssignmentPattern1(x1: AssignmentElementList, parserParams: List[Boolean]) extends ArrayAssignmentPattern {
   x1.parent = Some(this)
   val name: String = "ArrayAssignmentPattern1"
@@ -39,10 +40,11 @@ case class ArrayAssignmentPattern1(x1: AssignmentElementList, parserParams: List
 }
 object ArrayAssignmentPattern1 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "DestructuringAssignmentEvaluation0" -> ArrayAssignmentPattern1DestructuringAssignmentEvaluation0.func
+  val semMap: Map[String, Algo] = Map(
+    "DestructuringAssignmentEvaluation0" -> `AL::ArrayAssignmentPattern[1,0].DestructuringAssignmentEvaluation`,
   )
 }
+
 case class ArrayAssignmentPattern2(x1: AssignmentElementList, x3: Option[Elision], x4: Option[AssignmentRestElement], parserParams: List[Boolean]) extends ArrayAssignmentPattern {
   x1.parent = Some(this)
   x3.foreach((m) => m.parent = Some(this))
@@ -57,7 +59,7 @@ case class ArrayAssignmentPattern2(x1: AssignmentElementList, x3: Option[Elision
 }
 object ArrayAssignmentPattern2 extends ASTInfo {
   val maxK: Int = 3
-  val semMap: Map[String, Func] = Map(
-    "DestructuringAssignmentEvaluation3" -> ArrayAssignmentPattern2DestructuringAssignmentEvaluation3.func
+  val semMap: Map[String, Algo] = Map(
+    "DestructuringAssignmentEvaluation3" -> `AL::ArrayAssignmentPattern[2,3].DestructuringAssignmentEvaluation`,
   )
 }

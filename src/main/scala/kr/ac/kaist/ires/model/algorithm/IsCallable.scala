@@ -2,22 +2,23 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.ir.Parser._
+import Param.Kind._
 
-object IsCallable extends Algorithm {
-  val name: String = "IsCallable"
-  val length: Int = 1
-  val lang: Boolean = true
-  val func: Func = FixUIdWalker(parseFunc(""""IsCallable" (argument) => {
-    app __x0__ = (Type argument)
-    if (! (= __x0__ Object)) {
-      app __x1__ = (WrapCompletion false)
-      return __x1__
-    } else {}
-    if (! (= argument["Call"] absent)) {
-      app __x2__ = (WrapCompletion true)
-      return __x2__
-    } else {}
-    app __x3__ = (WrapCompletion false)
-    return __x3__
-  }"""), this)
+object `AL::IsCallable` extends Algo {
+  val head = NormalHead("IsCallable", List(Param("argument", Normal)))
+  val ids = List(
+    "sec-iscallable",
+    "sec-testing-and-comparison-operations",
+    "sec-abstract-operations",
+  )
+  val rawBody = parseInst("""{
+  |  0:if (! (= (typeof argument) Object)) return false else 0:{}
+  |  1:if (! (= argument.Call absent)) return true else 0:{}
+  |  2:return false
+  |}""".stripMargin)
+  val code = scala.Array[String](
+    """        1. If Type(_argument_) is not Object, return *false*.""",
+    """        1. If _argument_ has a [[Call]] internal method, return *true*.""",
+    """        1. Return *false*.""",
+  )
 }

@@ -2,36 +2,55 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.ir.Parser._
+import Param.Kind._
 
-object Await extends Algorithm {
-  val name: String = "Await"
-  val length: Int = 0
-  val lang: Boolean = true
-  val func: Func = FixUIdWalker(parseFunc(""""Await" (value) => {
-    let asyncContext = GLOBAL_context
-    app __x0__ = (PromiseResolve INTRINSIC_Promise value)
-    if (is-completion __x0__) if (= __x0__["Type"] CONST_normal) __x0__ = __x0__["Value"] else return __x0__ else {}
-    let promise = __x0__
-    let stepsFulfilled = (new algorithm("name" -> "", "length" -> 1i, "step" -> GLOBALDOTAwaitFulfilledFunctions))
-    app __x1__ = (CreateBuiltinFunction stepsFulfilled (new ["AsyncContext"]))
-    let onFulfilled = __x1__
-    onFulfilled["AsyncContext"] = asyncContext
-    let stepsRejected = (new algorithm("name" -> "", "length" -> 1i, "step" -> GLOBALDOTAwaitRejectedFunctions))
-    app __x2__ = (CreateBuiltinFunction stepsRejected (new ["AsyncContext"]))
-    let onRejected = __x2__
-    onRejected["AsyncContext"] = asyncContext
-    app __x3__ = (PerformPromiseThen promise onFulfilled onRejected)
-    if (is-completion __x3__) if (= __x3__["Type"] CONST_normal) __x3__ = __x3__["Value"] else return __x3__ else {}
-    __x3__
-    if (= GLOBAL_executionStack[(- GLOBAL_executionStack["length"] 1i)] asyncContext) {
-      __x4__ = (- GLOBAL_executionStack["length"] 1i)
-      (pop GLOBAL_executionStack __x4__)
-    } else {}
-    GLOBAL_context = GLOBAL_executionStack[(- GLOBAL_executionStack["length"] 1i)]
-    access __ret__ = (asyncContext "ReturnCont")
-    __ret__ = (pop __ret__ 0i)
-    asyncContext["ResumeCont"] = (completion) [=>] return completion
-    app __x5__ = (NormalCompletion undefined)
-    app __x6__ = (__ret__ __x5__)
-  }"""), this)
+object `AL::Await` extends Algo {
+  val head = NormalHead("Await", List(Param("value", Normal)))
+  val ids = List(
+    "await",
+    "sec-completion-record-specification-type",
+    "sec-ecmascript-specification-types",
+    "sec-ecmascript-data-types-and-values",
+  )
+  val rawBody = parseInst("""{
+  |  0:let asyncContext = CONTEXT
+  |  1:app __x0__ = (PromiseResolve INTRINSIC_Promise value)
+  |  1:let promise = [? __x0__]
+  |  2:let stepsFulfilled = AwaitFulfilledFunctions
+  |  3:??? "Let id:{lengthFulfilled} be the number of non - optional parameters of the function definition in AwaitFulfilledFunctions ."
+  |  4:app __x1__ = (CreateBuiltinFunction stepsFulfilled lengthFulfilled "" (new ["AsyncContext"]))
+  |  4:let onFulfilled = [! __x1__]
+  |  5:onFulfilled.AsyncContext = asyncContext
+  |  6:let stepsRejected = AwaitRejectedFunctions
+  |  7:??? "Let id:{lengthRejected} be the number of non - optional parameters of the function definition in AwaitRejectedFunctions ."
+  |  8:app __x2__ = (CreateBuiltinFunction stepsRejected lengthRejected "" (new ["AsyncContext"]))
+  |  8:let onRejected = [! __x2__]
+  |  9:onRejected.AsyncContext = asyncContext
+  |  10:app __x3__ = (PerformPromiseThen promise onFulfilled onRejected)
+  |  10:[! __x3__]
+  |  11:if (= EXECUTION_STACK[(- EXECUTION_STACK.length 1i)] asyncContext) {
+  |    let __x4__ = (- EXECUTION_STACK.length 1i)
+  |    (pop EXECUTION_STACK __x4__)
+  |  } else {}
+  |  11:CONTEXT = EXECUTION_STACK[(- EXECUTION_STACK.length 1i)]
+  |  12:??? "Set the code evaluation state of id:{asyncContext} such that when evaluation is resumed with a Completion id:{completion} , the following steps of the algorithm that invoked Await will be performed , with id:{completion} available ."
+  |  13:return undefined
+  |}""".stripMargin)
+  val code = scala.Array[String](
+    """          1. Let _asyncContext_ be the running execution context.""",
+    """          1. Let _promise_ be ? PromiseResolve(%Promise%, _value_).""",
+    """          1. Let _stepsFulfilled_ be the algorithm steps defined in <emu-xref href="#await-fulfilled" title></emu-xref>.""",
+    """          1. Let _lengthFulfilled_ be the number of non-optional parameters of the function definition in <emu-xref href="#await-fulfilled" title></emu-xref>.""",
+    """          1. Let _onFulfilled_ be ! CreateBuiltinFunction(_stepsFulfilled_, _lengthFulfilled_, *""*, « [[AsyncContext]] »).""",
+    """          1. Set _onFulfilled_.[[AsyncContext]] to _asyncContext_.""",
+    """          1. Let _stepsRejected_ be the algorithm steps defined in <emu-xref href="#await-rejected" title></emu-xref>.""",
+    """          1. Let _lengthRejected_ be the number of non-optional parameters of the function definition in <emu-xref href="#await-rejected" title></emu-xref>.""",
+    """          1. Let _onRejected_ be ! CreateBuiltinFunction(_stepsRejected_, _lengthRejected_, *""*, « [[AsyncContext]] »).""",
+    """          1. Set _onRejected_.[[AsyncContext]] to _asyncContext_.""",
+    """          1. Perform ! PerformPromiseThen(_promise_, _onFulfilled_, _onRejected_).""",
+    """          1. Remove _asyncContext_ from the execution context stack and restore the execution context that is at the top of the execution context stack as the running execution context.""",
+    """          1. Set the code evaluation state of _asyncContext_ such that when evaluation is resumed with a Completion _completion_, the following steps of the algorithm that invoked Await will be performed, with _completion_ available.""",
+    """          1. Return.""",
+    """          1. NOTE: This returns to the evaluation of the operation that had most previously resumed evaluation of _asyncContext_.""",
+  )
 }

@@ -2,28 +2,36 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.ir.Parser._
+import Param.Kind._
 
-object InitializeBoundName extends Algorithm {
-  val name: String = "InitializeBoundName"
-  val length: Int = 3
-  val lang: Boolean = true
-  val func: Func = FixUIdWalker(parseFunc(""""InitializeBoundName" (name, value, environment) => {
-    app __x0__ = (Type name)
-    assert (= __x0__ String)
-    if (! (= environment undefined)) {
-      let env = environment["EnvironmentRecord"]
-      app __x1__ = (env["InitializeBinding"] env name value)
-      __x1__
-      app __x2__ = (NormalCompletion undefined)
-      app __x3__ = (WrapCompletion __x2__)
-      return __x3__
-    } else {
-      app __x4__ = (ResolveBinding name)
-      let lhs = __x4__
-      app __x5__ = (PutValue lhs value)
-      if (is-completion __x5__) if (= __x5__["Type"] CONST_normal) __x5__ = __x5__["Value"] else return __x5__ else {}
-      app __x6__ = (WrapCompletion __x5__)
-      return __x6__
-    }
-  }"""), this)
+object `AL::InitializeBoundName` extends Algo {
+  val head = NormalHead("InitializeBoundName", List(Param("name", Normal), Param("value", Normal), Param("environment", Normal)))
+  val ids = List(
+    "sec-initializeboundname",
+    "sec-runtime-semantics-bindinginitialization",
+    "sec-syntax-directed-operations-miscellaneous",
+    "sec-syntax-directed-operations",
+  )
+  val rawBody = parseInst("""{
+  |  0:assert (= (typeof name) String)
+  |  4:if (! (= environment undefined)) {
+  |    2:app __x0__ = (environment.InitializeBinding environment name value)
+  |    2:__x0__
+  |    3:return undefined
+  |  } else {
+  |    5:app __x1__ = (ResolveBinding name)
+  |    5:let lhs = __x1__
+  |    6:app __x2__ = (PutValue lhs value)
+  |    6:return [? __x2__]
+  |  }
+  |}""".stripMargin)
+  val code = scala.Array[String](
+    """          1. Assert: Type(_name_) is String.""",
+    """          1. If _environment_ is not *undefined*, then""",
+    """            1. Perform _environment_.InitializeBinding(_name_, _value_).""",
+    """            1. Return NormalCompletion(*undefined*).""",
+    """          1. Else,""",
+    """            1. Let _lhs_ be ResolveBinding(_name_).""",
+    """            1. Return ? PutValue(_lhs_, _value_).""",
+  )
 }

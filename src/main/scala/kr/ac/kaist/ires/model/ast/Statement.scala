@@ -1,6 +1,5 @@
 package kr.ac.kaist.ires.model
 
-import kr.ac.kaist.ires.{ AST, ASTInfo, Lexical }
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.UnexpectedSemantics
 import scala.collection.immutable.{ Set => SSet }
@@ -8,6 +7,7 @@ import scala.collection.immutable.{ Set => SSet }
 trait Statement extends AST {
   val kind: String = "Statement"
 }
+
 case class Statement0(x0: BlockStatement, parserParams: List[Boolean]) extends Statement {
   x0.parent = Some(this)
   val name: String = "Statement0"
@@ -20,8 +20,11 @@ case class Statement0(x0: BlockStatement, parserParams: List[Boolean]) extends S
 }
 object Statement0 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map()
+  val semMap: Map[String, Algo] = Map(
+    "LabelledEvaluation0" -> `AL::Statement[0,0].LabelledEvaluation`,
+  )
 }
+
 case class Statement1(x0: VariableStatement, parserParams: List[Boolean]) extends Statement {
   x0.parent = Some(this)
   val name: String = "Statement1"
@@ -34,13 +37,15 @@ case class Statement1(x0: VariableStatement, parserParams: List[Boolean]) extend
 }
 object Statement1 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "ContainsDuplicateLabels0" -> Statement1ContainsDuplicateLabels0.func,
-    "ContainsUndefinedBreakTarget0" -> Statement1ContainsUndefinedBreakTarget0.func,
-    "ContainsUndefinedContinueTarget0" -> Statement1ContainsUndefinedContinueTarget0.func,
-    "HasCallInTailPosition0" -> Statement1HasCallInTailPosition0.func
+  val semMap: Map[String, Algo] = Map(
+    "ContainsDuplicateLabels0" -> `AL::Statement[1,0].ContainsDuplicateLabels`,
+    "ContainsUndefinedBreakTarget0" -> `AL::Statement[1,0].ContainsUndefinedBreakTarget`,
+    "ContainsUndefinedContinueTarget0" -> `AL::Statement[1,0].ContainsUndefinedContinueTarget`,
+    "LabelledEvaluation0" -> `AL::Statement[1,0].LabelledEvaluation`,
+    "HasCallInTailPosition0" -> `AL::Statement[1,0].HasCallInTailPosition`,
   )
 }
+
 case class Statement2(x0: EmptyStatement, parserParams: List[Boolean]) extends Statement {
   x0.parent = Some(this)
   val name: String = "Statement2"
@@ -53,15 +58,17 @@ case class Statement2(x0: EmptyStatement, parserParams: List[Boolean]) extends S
 }
 object Statement2 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "ContainsDuplicateLabels0" -> Statement2ContainsDuplicateLabels0.func,
-    "ContainsUndefinedBreakTarget0" -> Statement2ContainsUndefinedBreakTarget0.func,
-    "ContainsUndefinedContinueTarget0" -> Statement2ContainsUndefinedContinueTarget0.func,
-    "HasCallInTailPosition0" -> Statement2HasCallInTailPosition0.func,
-    "VarDeclaredNames0" -> Statement2VarDeclaredNames0.func,
-    "VarScopedDeclarations0" -> Statement2VarScopedDeclarations0.func
+  val semMap: Map[String, Algo] = Map(
+    "VarDeclaredNames0" -> `AL::Statement[2,0].VarDeclaredNames`,
+    "VarScopedDeclarations0" -> `AL::Statement[2,0].VarScopedDeclarations`,
+    "ContainsDuplicateLabels0" -> `AL::Statement[2,0].ContainsDuplicateLabels`,
+    "ContainsUndefinedBreakTarget0" -> `AL::Statement[2,0].ContainsUndefinedBreakTarget`,
+    "ContainsUndefinedContinueTarget0" -> `AL::Statement[2,0].ContainsUndefinedContinueTarget`,
+    "LabelledEvaluation0" -> `AL::Statement[2,0].LabelledEvaluation`,
+    "HasCallInTailPosition0" -> `AL::Statement[2,0].HasCallInTailPosition`,
   )
 }
+
 case class Statement3(x0: ExpressionStatement, parserParams: List[Boolean]) extends Statement {
   x0.parent = Some(this)
   val name: String = "Statement3"
@@ -74,15 +81,17 @@ case class Statement3(x0: ExpressionStatement, parserParams: List[Boolean]) exte
 }
 object Statement3 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "ContainsDuplicateLabels0" -> Statement3ContainsDuplicateLabels0.func,
-    "ContainsUndefinedBreakTarget0" -> Statement3ContainsUndefinedBreakTarget0.func,
-    "ContainsUndefinedContinueTarget0" -> Statement3ContainsUndefinedContinueTarget0.func,
-    "HasCallInTailPosition0" -> Statement3HasCallInTailPosition0.func,
-    "VarDeclaredNames0" -> Statement3VarDeclaredNames0.func,
-    "VarScopedDeclarations0" -> Statement3VarScopedDeclarations0.func
+  val semMap: Map[String, Algo] = Map(
+    "VarDeclaredNames0" -> `AL::Statement[3,0].VarDeclaredNames`,
+    "VarScopedDeclarations0" -> `AL::Statement[3,0].VarScopedDeclarations`,
+    "ContainsDuplicateLabels0" -> `AL::Statement[3,0].ContainsDuplicateLabels`,
+    "ContainsUndefinedBreakTarget0" -> `AL::Statement[3,0].ContainsUndefinedBreakTarget`,
+    "ContainsUndefinedContinueTarget0" -> `AL::Statement[3,0].ContainsUndefinedContinueTarget`,
+    "LabelledEvaluation0" -> `AL::Statement[3,0].LabelledEvaluation`,
+    "HasCallInTailPosition0" -> `AL::Statement[3,0].HasCallInTailPosition`,
   )
 }
+
 case class Statement4(x0: IfStatement, parserParams: List[Boolean]) extends Statement {
   x0.parent = Some(this)
   val name: String = "Statement4"
@@ -95,8 +104,11 @@ case class Statement4(x0: IfStatement, parserParams: List[Boolean]) extends Stat
 }
 object Statement4 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map()
+  val semMap: Map[String, Algo] = Map(
+    "LabelledEvaluation0" -> `AL::Statement[4,0].LabelledEvaluation`,
+  )
 }
+
 case class Statement5(x0: BreakableStatement, parserParams: List[Boolean]) extends Statement {
   x0.parent = Some(this)
   val name: String = "Statement5"
@@ -109,8 +121,9 @@ case class Statement5(x0: BreakableStatement, parserParams: List[Boolean]) exten
 }
 object Statement5 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map()
+  val semMap: Map[String, Algo] = Map()
 }
+
 case class Statement6(x0: ContinueStatement, parserParams: List[Boolean]) extends Statement {
   x0.parent = Some(this)
   val name: String = "Statement6"
@@ -123,14 +136,16 @@ case class Statement6(x0: ContinueStatement, parserParams: List[Boolean]) extend
 }
 object Statement6 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "ContainsDuplicateLabels0" -> Statement6ContainsDuplicateLabels0.func,
-    "ContainsUndefinedBreakTarget0" -> Statement6ContainsUndefinedBreakTarget0.func,
-    "HasCallInTailPosition0" -> Statement6HasCallInTailPosition0.func,
-    "VarDeclaredNames0" -> Statement6VarDeclaredNames0.func,
-    "VarScopedDeclarations0" -> Statement6VarScopedDeclarations0.func
+  val semMap: Map[String, Algo] = Map(
+    "VarDeclaredNames0" -> `AL::Statement[6,0].VarDeclaredNames`,
+    "VarScopedDeclarations0" -> `AL::Statement[6,0].VarScopedDeclarations`,
+    "ContainsDuplicateLabels0" -> `AL::Statement[6,0].ContainsDuplicateLabels`,
+    "ContainsUndefinedBreakTarget0" -> `AL::Statement[6,0].ContainsUndefinedBreakTarget`,
+    "LabelledEvaluation0" -> `AL::Statement[6,0].LabelledEvaluation`,
+    "HasCallInTailPosition0" -> `AL::Statement[6,0].HasCallInTailPosition`,
   )
 }
+
 case class Statement7(x0: BreakStatement, parserParams: List[Boolean]) extends Statement {
   x0.parent = Some(this)
   val name: String = "Statement7"
@@ -143,14 +158,16 @@ case class Statement7(x0: BreakStatement, parserParams: List[Boolean]) extends S
 }
 object Statement7 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "ContainsDuplicateLabels0" -> Statement7ContainsDuplicateLabels0.func,
-    "ContainsUndefinedContinueTarget0" -> Statement7ContainsUndefinedContinueTarget0.func,
-    "HasCallInTailPosition0" -> Statement7HasCallInTailPosition0.func,
-    "VarDeclaredNames0" -> Statement7VarDeclaredNames0.func,
-    "VarScopedDeclarations0" -> Statement7VarScopedDeclarations0.func
+  val semMap: Map[String, Algo] = Map(
+    "VarDeclaredNames0" -> `AL::Statement[7,0].VarDeclaredNames`,
+    "VarScopedDeclarations0" -> `AL::Statement[7,0].VarScopedDeclarations`,
+    "ContainsDuplicateLabels0" -> `AL::Statement[7,0].ContainsDuplicateLabels`,
+    "ContainsUndefinedContinueTarget0" -> `AL::Statement[7,0].ContainsUndefinedContinueTarget`,
+    "LabelledEvaluation0" -> `AL::Statement[7,0].LabelledEvaluation`,
+    "HasCallInTailPosition0" -> `AL::Statement[7,0].HasCallInTailPosition`,
   )
 }
+
 case class Statement8(x0: ReturnStatement, parserParams: List[Boolean]) extends Statement {
   x0.parent = Some(this)
   val name: String = "Statement8"
@@ -163,14 +180,16 @@ case class Statement8(x0: ReturnStatement, parserParams: List[Boolean]) extends 
 }
 object Statement8 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "ContainsDuplicateLabels0" -> Statement8ContainsDuplicateLabels0.func,
-    "ContainsUndefinedBreakTarget0" -> Statement8ContainsUndefinedBreakTarget0.func,
-    "ContainsUndefinedContinueTarget0" -> Statement8ContainsUndefinedContinueTarget0.func,
-    "VarDeclaredNames0" -> Statement8VarDeclaredNames0.func,
-    "VarScopedDeclarations0" -> Statement8VarScopedDeclarations0.func
+  val semMap: Map[String, Algo] = Map(
+    "VarDeclaredNames0" -> `AL::Statement[8,0].VarDeclaredNames`,
+    "VarScopedDeclarations0" -> `AL::Statement[8,0].VarScopedDeclarations`,
+    "ContainsDuplicateLabels0" -> `AL::Statement[8,0].ContainsDuplicateLabels`,
+    "ContainsUndefinedBreakTarget0" -> `AL::Statement[8,0].ContainsUndefinedBreakTarget`,
+    "ContainsUndefinedContinueTarget0" -> `AL::Statement[8,0].ContainsUndefinedContinueTarget`,
+    "LabelledEvaluation0" -> `AL::Statement[8,0].LabelledEvaluation`,
   )
 }
+
 case class Statement9(x0: WithStatement, parserParams: List[Boolean]) extends Statement {
   x0.parent = Some(this)
   val name: String = "Statement9"
@@ -183,8 +202,11 @@ case class Statement9(x0: WithStatement, parserParams: List[Boolean]) extends St
 }
 object Statement9 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map()
+  val semMap: Map[String, Algo] = Map(
+    "LabelledEvaluation0" -> `AL::Statement[9,0].LabelledEvaluation`,
+  )
 }
+
 case class Statement10(x0: LabelledStatement, parserParams: List[Boolean]) extends Statement {
   x0.parent = Some(this)
   val name: String = "Statement10"
@@ -197,8 +219,9 @@ case class Statement10(x0: LabelledStatement, parserParams: List[Boolean]) exten
 }
 object Statement10 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map()
+  val semMap: Map[String, Algo] = Map()
 }
+
 case class Statement11(x0: ThrowStatement, parserParams: List[Boolean]) extends Statement {
   x0.parent = Some(this)
   val name: String = "Statement11"
@@ -211,15 +234,17 @@ case class Statement11(x0: ThrowStatement, parserParams: List[Boolean]) extends 
 }
 object Statement11 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "ContainsDuplicateLabels0" -> Statement11ContainsDuplicateLabels0.func,
-    "ContainsUndefinedBreakTarget0" -> Statement11ContainsUndefinedBreakTarget0.func,
-    "ContainsUndefinedContinueTarget0" -> Statement11ContainsUndefinedContinueTarget0.func,
-    "HasCallInTailPosition0" -> Statement11HasCallInTailPosition0.func,
-    "VarDeclaredNames0" -> Statement11VarDeclaredNames0.func,
-    "VarScopedDeclarations0" -> Statement11VarScopedDeclarations0.func
+  val semMap: Map[String, Algo] = Map(
+    "VarDeclaredNames0" -> `AL::Statement[11,0].VarDeclaredNames`,
+    "VarScopedDeclarations0" -> `AL::Statement[11,0].VarScopedDeclarations`,
+    "ContainsDuplicateLabels0" -> `AL::Statement[11,0].ContainsDuplicateLabels`,
+    "ContainsUndefinedBreakTarget0" -> `AL::Statement[11,0].ContainsUndefinedBreakTarget`,
+    "ContainsUndefinedContinueTarget0" -> `AL::Statement[11,0].ContainsUndefinedContinueTarget`,
+    "LabelledEvaluation0" -> `AL::Statement[11,0].LabelledEvaluation`,
+    "HasCallInTailPosition0" -> `AL::Statement[11,0].HasCallInTailPosition`,
   )
 }
+
 case class Statement12(x0: TryStatement, parserParams: List[Boolean]) extends Statement {
   x0.parent = Some(this)
   val name: String = "Statement12"
@@ -232,8 +257,11 @@ case class Statement12(x0: TryStatement, parserParams: List[Boolean]) extends St
 }
 object Statement12 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map()
+  val semMap: Map[String, Algo] = Map(
+    "LabelledEvaluation0" -> `AL::Statement[12,0].LabelledEvaluation`,
+  )
 }
+
 case class Statement13(x0: DebuggerStatement, parserParams: List[Boolean]) extends Statement {
   x0.parent = Some(this)
   val name: String = "Statement13"
@@ -246,12 +274,13 @@ case class Statement13(x0: DebuggerStatement, parserParams: List[Boolean]) exten
 }
 object Statement13 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "ContainsDuplicateLabels0" -> Statement13ContainsDuplicateLabels0.func,
-    "ContainsUndefinedBreakTarget0" -> Statement13ContainsUndefinedBreakTarget0.func,
-    "ContainsUndefinedContinueTarget0" -> Statement13ContainsUndefinedContinueTarget0.func,
-    "HasCallInTailPosition0" -> Statement13HasCallInTailPosition0.func,
-    "VarDeclaredNames0" -> Statement13VarDeclaredNames0.func,
-    "VarScopedDeclarations0" -> Statement13VarScopedDeclarations0.func
+  val semMap: Map[String, Algo] = Map(
+    "VarDeclaredNames0" -> `AL::Statement[13,0].VarDeclaredNames`,
+    "VarScopedDeclarations0" -> `AL::Statement[13,0].VarScopedDeclarations`,
+    "ContainsDuplicateLabels0" -> `AL::Statement[13,0].ContainsDuplicateLabels`,
+    "ContainsUndefinedBreakTarget0" -> `AL::Statement[13,0].ContainsUndefinedBreakTarget`,
+    "ContainsUndefinedContinueTarget0" -> `AL::Statement[13,0].ContainsUndefinedContinueTarget`,
+    "LabelledEvaluation0" -> `AL::Statement[13,0].LabelledEvaluation`,
+    "HasCallInTailPosition0" -> `AL::Statement[13,0].HasCallInTailPosition`,
   )
 }

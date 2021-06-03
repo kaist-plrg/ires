@@ -2,38 +2,44 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.ir.Parser._
+import Param.Kind._
 
-object BoundFunctionCreate extends Algorithm {
-  val name: String = "BoundFunctionCreate"
-  val length: Int = 3
-  val lang: Boolean = true
-  val func: Func = FixUIdWalker(parseFunc(""""BoundFunctionCreate" (targetFunction, boundThis, boundArgs) => {
-    app __x0__ = (Type targetFunction)
-    assert (= __x0__ Object)
-    app __x1__ = (targetFunction["GetPrototypeOf"] targetFunction)
-    if (is-completion __x1__) if (= __x1__["Type"] CONST_normal) __x1__ = __x1__["Value"] else return __x1__ else {}
-    let proto = __x1__
-    let obj = (new OrdinaryObject("SubMap" -> (new SubMap())))
-    if (= obj["HasProperty"] absent) obj["HasProperty"] = OrdinaryObjectDOTHasProperty else {}
-    if (= obj["DefineOwnProperty"] absent) obj["DefineOwnProperty"] = OrdinaryObjectDOTDefineOwnProperty else {}
-    if (= obj["Set"] absent) obj["Set"] = OrdinaryObjectDOTSet else {}
-    if (= obj["SetPrototypeOf"] absent) obj["SetPrototypeOf"] = OrdinaryObjectDOTSetPrototypeOf else {}
-    if (= obj["Get"] absent) obj["Get"] = OrdinaryObjectDOTGet else {}
-    if (= obj["PreventExtensions"] absent) obj["PreventExtensions"] = OrdinaryObjectDOTPreventExtensions else {}
-    if (= obj["Delete"] absent) obj["Delete"] = OrdinaryObjectDOTDelete else {}
-    if (= obj["GetOwnProperty"] absent) obj["GetOwnProperty"] = OrdinaryObjectDOTGetOwnProperty else {}
-    if (= obj["OwnPropertyKeys"] absent) obj["OwnPropertyKeys"] = OrdinaryObjectDOTOwnPropertyKeys else {}
-    if (= obj["GetPrototypeOf"] absent) obj["GetPrototypeOf"] = OrdinaryObjectDOTGetPrototypeOf else {}
-    if (= obj["IsExtensible"] absent) obj["IsExtensible"] = OrdinaryObjectDOTIsExtensible else {}
-    obj["Call"] = BoundFunctionExoticObjectDOTCall
-    app __x2__ = (IsConstructor targetFunction)
-    if (= __x2__ true) obj["Construct"] = BoundFunctionExoticObjectDOTConstruct else {}
-    obj["Prototype"] = proto
-    obj["Extensible"] = true
-    obj["BoundTargetFunction"] = targetFunction
-    obj["BoundThis"] = boundThis
-    obj["BoundArguments"] = boundArgs
-    app __x3__ = (WrapCompletion obj)
-    return __x3__
-  }"""), this)
+object `AL::BoundFunctionCreate` extends Algo {
+  val head = NormalHead("BoundFunctionCreate", List(Param("targetFunction", Normal), Param("boundThis", Normal), Param("boundArgs", Normal)))
+  val ids = List(
+    "sec-boundfunctioncreate",
+    "sec-bound-function-exotic-objects",
+    "sec-built-in-exotic-object-internal-methods-and-slots",
+    "sec-ordinary-and-exotic-objects-behaviours",
+  )
+  val rawBody = parseInst("""{
+  |  0:assert (= (typeof targetFunction) Object)
+  |  1:app __x0__ = (targetFunction.GetPrototypeOf targetFunction)
+  |  1:let proto = [? __x0__]
+  |  2:let internalSlotsList = StrList
+  |  3:app __x1__ = (MakeBasicObject internalSlotsList)
+  |  3:let obj = [! __x1__]
+  |  4:obj.Prototype = proto
+  |  5:obj.Call = BoundFunctionExoticObjectDOTCall
+  |  6:app __x2__ = (IsConstructor targetFunction)
+  |  6:if (= __x2__ true) obj.Construct = BoundFunctionExoticObjectDOTConstruct else 0:{}
+  |  8:obj.BoundTargetFunction = targetFunction
+  |  9:obj.BoundThis = boundThis
+  |  10:obj.BoundArguments = boundArgs
+  |  11:return obj
+  |}""".stripMargin)
+  val code = scala.Array[String](
+    """          1. Assert: Type(_targetFunction_) is Object.""",
+    """          1. Let _proto_ be ? _targetFunction_.[[GetPrototypeOf]]().""",
+    """          1. Let _internalSlotsList_ be the internal slots listed in <emu-xref href="#table-internal-slots-of-bound-function-exotic-objects"></emu-xref>, plus [[Prototype]] and [[Extensible]].""",
+    """          1. Let _obj_ be ! MakeBasicObject(_internalSlotsList_).""",
+    """          1. Set _obj_.[[Prototype]] to _proto_.""",
+    """          1. Set _obj_.[[Call]] as described in <emu-xref href="#sec-bound-function-exotic-objects-call-thisargument-argumentslist"></emu-xref>.""",
+    """          1. If IsConstructor(_targetFunction_) is *true*, then""",
+    """            1. Set _obj_.[[Construct]] as described in <emu-xref href="#sec-bound-function-exotic-objects-construct-argumentslist-newtarget"></emu-xref>.""",
+    """          1. Set _obj_.[[BoundTargetFunction]] to _targetFunction_.""",
+    """          1. Set _obj_.[[BoundThis]] to _boundThis_.""",
+    """          1. Set _obj_.[[BoundArguments]] to _boundArgs_.""",
+    """          1. Return _obj_.""",
+  )
 }

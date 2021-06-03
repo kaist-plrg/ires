@@ -1,6 +1,5 @@
 package kr.ac.kaist.ires.model
 
-import kr.ac.kaist.ires.{ AST, ASTInfo, Lexical }
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.UnexpectedSemantics
 import scala.collection.immutable.{ Set => SSet }
@@ -8,6 +7,7 @@ import scala.collection.immutable.{ Set => SSet }
 trait GeneratorExpression extends AST {
   val kind: String = "GeneratorExpression"
 }
+
 case class GeneratorExpression0(x2: Option[BindingIdentifier], x4: FormalParameters, x7: GeneratorBody, parserParams: List[Boolean]) extends GeneratorExpression {
   x2.foreach((m) => m.parent = Some(this))
   x4.parent = Some(this)
@@ -22,13 +22,15 @@ case class GeneratorExpression0(x2: Option[BindingIdentifier], x4: FormalParamet
 }
 object GeneratorExpression0 extends ASTInfo {
   val maxK: Int = 1
-  val semMap: Map[String, Func] = Map(
-    "Contains1" -> GeneratorExpression0Contains1.func,
-    "Evaluation0" -> GeneratorExpression0Evaluation0.func,
-    "Evaluation1" -> GeneratorExpression0Evaluation1.func,
-    "HasName0" -> GeneratorExpression0HasName0.func,
-    "HasName1" -> GeneratorExpression0HasName1.func,
-    "IsFunctionDefinition1" -> GeneratorExpression0IsFunctionDefinition1.func,
-    "NamedEvaluation0" -> GeneratorExpression0NamedEvaluation0.func
+  val semMap: Map[String, Algo] = Map(
+    "HasName0" -> `AL::GeneratorExpression[0,0].HasName`,
+    "HasName1" -> `AL::GeneratorExpression[0,1].HasName`,
+    "IsFunctionDefinition1" -> `AL::GeneratorExpression[0,1].IsFunctionDefinition`,
+    "NamedEvaluation0" -> `AL::GeneratorExpression[0,0].NamedEvaluation`,
+    "Contains1" -> `AL::GeneratorExpression[0,1].Contains`,
+    "InstantiateGeneratorFunctionExpression0" -> `AL::GeneratorExpression[0,0].InstantiateGeneratorFunctionExpression`,
+    "InstantiateGeneratorFunctionExpression1" -> `AL::GeneratorExpression[0,1].InstantiateGeneratorFunctionExpression`,
+    "Evaluation1" -> `AL::GeneratorExpression[0,1].Evaluation`,
+    "EarlyErrors1" -> `AL::GeneratorExpression[0,1].EarlyErrors`,
   )
 }

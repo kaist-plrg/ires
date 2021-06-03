@@ -1,6 +1,5 @@
 package kr.ac.kaist.ires.model
 
-import kr.ac.kaist.ires.{ AST, ASTInfo, Lexical }
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.UnexpectedSemantics
 import scala.collection.immutable.{ Set => SSet }
@@ -8,6 +7,7 @@ import scala.collection.immutable.{ Set => SSet }
 trait LetOrConst extends AST {
   val kind: String = "LetOrConst"
 }
+
 case class LetOrConst0(parserParams: List[Boolean]) extends LetOrConst {
   val name: String = "LetOrConst0"
   override def toString: String = {
@@ -19,10 +19,11 @@ case class LetOrConst0(parserParams: List[Boolean]) extends LetOrConst {
 }
 object LetOrConst0 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "IsConstantDeclaration0" -> LetOrConst0IsConstantDeclaration0.func
+  val semMap: Map[String, Algo] = Map(
+    "IsConstantDeclaration0" -> `AL::LetOrConst[0,0].IsConstantDeclaration`,
   )
 }
+
 case class LetOrConst1(parserParams: List[Boolean]) extends LetOrConst {
   val name: String = "LetOrConst1"
   override def toString: String = {
@@ -34,7 +35,7 @@ case class LetOrConst1(parserParams: List[Boolean]) extends LetOrConst {
 }
 object LetOrConst1 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "IsConstantDeclaration0" -> LetOrConst1IsConstantDeclaration0.func
+  val semMap: Map[String, Algo] = Map(
+    "IsConstantDeclaration0" -> `AL::LetOrConst[1,0].IsConstantDeclaration`,
   )
 }

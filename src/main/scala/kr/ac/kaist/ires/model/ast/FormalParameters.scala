@@ -1,6 +1,5 @@
 package kr.ac.kaist.ires.model
 
-import kr.ac.kaist.ires.{ AST, ASTInfo, Lexical }
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.UnexpectedSemantics
 import scala.collection.immutable.{ Set => SSet }
@@ -8,6 +7,7 @@ import scala.collection.immutable.{ Set => SSet }
 trait FormalParameters extends AST {
   val kind: String = "FormalParameters"
 }
+
 case class FormalParameters0(parserParams: List[Boolean]) extends FormalParameters {
   val name: String = "FormalParameters0"
   override def toString: String = {
@@ -19,14 +19,15 @@ case class FormalParameters0(parserParams: List[Boolean]) extends FormalParamete
 }
 object FormalParameters0 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "BoundNames0" -> FormalParameters0BoundNames0.func,
-    "ContainsExpression0" -> FormalParameters0ContainsExpression0.func,
-    "ExpectedArgumentCount0" -> FormalParameters0ExpectedArgumentCount0.func,
-    "IsSimpleParameterList0" -> FormalParameters0IsSimpleParameterList0.func,
-    "IteratorBindingInitialization0" -> FormalParameters0IteratorBindingInitialization0.func
+  val semMap: Map[String, Algo] = Map(
+    "BoundNames0" -> `AL::FormalParameters[0,0].BoundNames`,
+    "IteratorBindingInitialization0" -> `AL::FormalParameters[0,0].IteratorBindingInitialization`,
+    "ContainsExpression0" -> `AL::FormalParameters[0,0].ContainsExpression`,
+    "IsSimpleParameterList0" -> `AL::FormalParameters[0,0].IsSimpleParameterList`,
+    "ExpectedArgumentCount0" -> `AL::FormalParameters[0,0].ExpectedArgumentCount`,
   )
 }
+
 case class FormalParameters1(x0: FunctionRestParameter, parserParams: List[Boolean]) extends FormalParameters {
   x0.parent = Some(this)
   val name: String = "FormalParameters1"
@@ -39,11 +40,12 @@ case class FormalParameters1(x0: FunctionRestParameter, parserParams: List[Boole
 }
 object FormalParameters1 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "ExpectedArgumentCount0" -> FormalParameters1ExpectedArgumentCount0.func,
-    "IsSimpleParameterList0" -> FormalParameters1IsSimpleParameterList0.func
+  val semMap: Map[String, Algo] = Map(
+    "IsSimpleParameterList0" -> `AL::FormalParameters[1,0].IsSimpleParameterList`,
+    "ExpectedArgumentCount0" -> `AL::FormalParameters[1,0].ExpectedArgumentCount`,
   )
 }
+
 case class FormalParameters2(x0: FormalParameterList, parserParams: List[Boolean]) extends FormalParameters {
   x0.parent = Some(this)
   val name: String = "FormalParameters2"
@@ -56,8 +58,11 @@ case class FormalParameters2(x0: FormalParameterList, parserParams: List[Boolean
 }
 object FormalParameters2 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map()
+  val semMap: Map[String, Algo] = Map(
+    "EarlyErrors0" -> `AL::FormalParameters[2,0].EarlyErrors`,
+  )
 }
+
 case class FormalParameters3(x0: FormalParameterList, parserParams: List[Boolean]) extends FormalParameters {
   x0.parent = Some(this)
   val name: String = "FormalParameters3"
@@ -70,8 +75,9 @@ case class FormalParameters3(x0: FormalParameterList, parserParams: List[Boolean
 }
 object FormalParameters3 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map()
+  val semMap: Map[String, Algo] = Map()
 }
+
 case class FormalParameters4(x0: FormalParameterList, x2: FunctionRestParameter, parserParams: List[Boolean]) extends FormalParameters {
   x0.parent = Some(this)
   x2.parent = Some(this)
@@ -85,11 +91,11 @@ case class FormalParameters4(x0: FormalParameterList, x2: FunctionRestParameter,
 }
 object FormalParameters4 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "BoundNames0" -> FormalParameters4BoundNames0.func,
-    "ContainsExpression0" -> FormalParameters4ContainsExpression0.func,
-    "ExpectedArgumentCount0" -> FormalParameters4ExpectedArgumentCount0.func,
-    "IsSimpleParameterList0" -> FormalParameters4IsSimpleParameterList0.func,
-    "IteratorBindingInitialization0" -> FormalParameters4IteratorBindingInitialization0.func
+  val semMap: Map[String, Algo] = Map(
+    "BoundNames0" -> `AL::FormalParameters[4,0].BoundNames`,
+    "IteratorBindingInitialization0" -> `AL::FormalParameters[4,0].IteratorBindingInitialization`,
+    "ContainsExpression0" -> `AL::FormalParameters[4,0].ContainsExpression`,
+    "IsSimpleParameterList0" -> `AL::FormalParameters[4,0].IsSimpleParameterList`,
+    "ExpectedArgumentCount0" -> `AL::FormalParameters[4,0].ExpectedArgumentCount`,
   )
 }

@@ -1,6 +1,5 @@
 package kr.ac.kaist.ires.model
 
-import kr.ac.kaist.ires.{ AST, ASTInfo, Lexical }
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.UnexpectedSemantics
 import scala.collection.immutable.{ Set => SSet }
@@ -8,6 +7,7 @@ import scala.collection.immutable.{ Set => SSet }
 trait AssignmentElementList extends AST {
   val kind: String = "AssignmentElementList"
 }
+
 case class AssignmentElementList0(x0: AssignmentElisionElement, parserParams: List[Boolean]) extends AssignmentElementList {
   x0.parent = Some(this)
   val name: String = "AssignmentElementList0"
@@ -20,10 +20,11 @@ case class AssignmentElementList0(x0: AssignmentElisionElement, parserParams: Li
 }
 object AssignmentElementList0 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "IteratorDestructuringAssignmentEvaluation0" -> AssignmentElementList0IteratorDestructuringAssignmentEvaluation0.func
+  val semMap: Map[String, Algo] = Map(
+    "IteratorDestructuringAssignmentEvaluation0" -> `AL::AssignmentElementList[0,0].IteratorDestructuringAssignmentEvaluation`,
   )
 }
+
 case class AssignmentElementList1(x0: AssignmentElementList, x2: AssignmentElisionElement, parserParams: List[Boolean]) extends AssignmentElementList {
   x0.parent = Some(this)
   x2.parent = Some(this)
@@ -37,7 +38,7 @@ case class AssignmentElementList1(x0: AssignmentElementList, x2: AssignmentElisi
 }
 object AssignmentElementList1 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "IteratorDestructuringAssignmentEvaluation0" -> AssignmentElementList1IteratorDestructuringAssignmentEvaluation0.func
+  val semMap: Map[String, Algo] = Map(
+    "IteratorDestructuringAssignmentEvaluation0" -> `AL::AssignmentElementList[1,0].IteratorDestructuringAssignmentEvaluation`,
   )
 }

@@ -2,13 +2,18 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.ir.Parser._
+import Param.Kind._
 
-object OrdinaryGetPrototypeOf extends Algorithm {
-  val name: String = "OrdinaryGetPrototypeOf"
-  val length: Int = 1
-  val lang: Boolean = true
-  val func: Func = FixUIdWalker(parseFunc(""""OrdinaryGetPrototypeOf" (O) => {
-    app __x0__ = (WrapCompletion O["Prototype"])
-    return __x0__
-  }"""), this)
+object `AL::OrdinaryGetPrototypeOf` extends Algo {
+  val head = NormalHead("OrdinaryGetPrototypeOf", List(Param("O", Normal)))
+  val ids = List(
+    "sec-ordinarygetprototypeof",
+    "sec-ordinary-object-internal-methods-and-internal-slots-getprototypeof",
+    "sec-ordinary-object-internal-methods-and-internal-slots",
+    "sec-ordinary-and-exotic-objects-behaviours",
+  )
+  val rawBody = parseInst("""return O.Prototype""".stripMargin)
+  val code = scala.Array[String](
+    """          1. Return _O_.[[Prototype]].""",
+  )
 }

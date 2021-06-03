@@ -1,6 +1,5 @@
 package kr.ac.kaist.ires.model
 
-import kr.ac.kaist.ires.{ AST, ASTInfo, Lexical }
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.UnexpectedSemantics
 import scala.collection.immutable.{ Set => SSet }
@@ -8,6 +7,7 @@ import scala.collection.immutable.{ Set => SSet }
 trait AsyncArrowFunction extends AST {
   val kind: String = "AsyncArrowFunction"
 }
+
 case class AsyncArrowFunction0(x2: AsyncArrowBindingIdentifier, x5: AsyncConciseBody, parserParams: List[Boolean]) extends AsyncArrowFunction {
   x2.parent = Some(this)
   x5.parent = Some(this)
@@ -21,13 +21,16 @@ case class AsyncArrowFunction0(x2: AsyncArrowBindingIdentifier, x5: AsyncConcise
 }
 object AsyncArrowFunction0 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "Contains0" -> AsyncArrowFunction0Contains0.func,
-    "Evaluation0" -> AsyncArrowFunction0Evaluation0.func,
-    "HasName0" -> AsyncArrowFunction0HasName0.func,
-    "NamedEvaluation0" -> AsyncArrowFunction0NamedEvaluation0.func
+  val semMap: Map[String, Algo] = Map(
+    "HasName0" -> `AL::AsyncArrowFunction[0,0].HasName`,
+    "NamedEvaluation0" -> `AL::AsyncArrowFunction[0,0].NamedEvaluation`,
+    "Contains0" -> `AL::AsyncArrowFunction[0,0].Contains`,
+    "InstantiateAsyncArrowFunctionExpression0" -> `AL::AsyncArrowFunction[0,0].InstantiateAsyncArrowFunctionExpression`,
+    "Evaluation0" -> `AL::AsyncArrowFunction[0,0].Evaluation`,
+    "EarlyErrors0" -> `AL::AsyncArrowFunction[0,0].EarlyErrors`,
   )
 }
+
 case class AsyncArrowFunction1(x0: CoverCallExpressionAndAsyncArrowHead, x3: AsyncConciseBody, parserParams: List[Boolean]) extends AsyncArrowFunction {
   x0.parent = Some(this)
   x3.parent = Some(this)
@@ -41,10 +44,12 @@ case class AsyncArrowFunction1(x0: CoverCallExpressionAndAsyncArrowHead, x3: Asy
 }
 object AsyncArrowFunction1 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "Contains0" -> AsyncArrowFunction1Contains0.func,
-    "Evaluation0" -> AsyncArrowFunction1Evaluation0.func,
-    "HasName0" -> AsyncArrowFunction1HasName0.func,
-    "NamedEvaluation0" -> AsyncArrowFunction1NamedEvaluation0.func
+  val semMap: Map[String, Algo] = Map(
+    "HasName0" -> `AL::AsyncArrowFunction[1,0].HasName`,
+    "NamedEvaluation0" -> `AL::AsyncArrowFunction[1,0].NamedEvaluation`,
+    "Contains0" -> `AL::AsyncArrowFunction[1,0].Contains`,
+    "InstantiateAsyncArrowFunctionExpression0" -> `AL::AsyncArrowFunction[1,0].InstantiateAsyncArrowFunctionExpression`,
+    "Evaluation0" -> `AL::AsyncArrowFunction[1,0].Evaluation`,
+    "EarlyErrors0" -> `AL::AsyncArrowFunction[1,0].EarlyErrors`,
   )
 }

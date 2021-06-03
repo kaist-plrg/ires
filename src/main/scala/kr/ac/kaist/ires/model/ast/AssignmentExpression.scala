@@ -1,6 +1,5 @@
 package kr.ac.kaist.ires.model
 
-import kr.ac.kaist.ires.{ AST, ASTInfo, Lexical }
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.UnexpectedSemantics
 import scala.collection.immutable.{ Set => SSet }
@@ -8,6 +7,7 @@ import scala.collection.immutable.{ Set => SSet }
 trait AssignmentExpression extends AST {
   val kind: String = "AssignmentExpression"
 }
+
 case class AssignmentExpression0(x0: ConditionalExpression, parserParams: List[Boolean]) extends AssignmentExpression {
   x0.parent = Some(this)
   val name: String = "AssignmentExpression0"
@@ -20,8 +20,9 @@ case class AssignmentExpression0(x0: ConditionalExpression, parserParams: List[B
 }
 object AssignmentExpression0 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map()
+  val semMap: Map[String, Algo] = Map()
 }
+
 case class AssignmentExpression1(x0: YieldExpression, parserParams: List[Boolean]) extends AssignmentExpression {
   x0.parent = Some(this)
   val name: String = "AssignmentExpression1"
@@ -34,12 +35,13 @@ case class AssignmentExpression1(x0: YieldExpression, parserParams: List[Boolean
 }
 object AssignmentExpression1 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "AssignmentTargetType0" -> AssignmentExpression1AssignmentTargetType0.func,
-    "HasCallInTailPosition0" -> AssignmentExpression1HasCallInTailPosition0.func,
-    "IsFunctionDefinition0" -> AssignmentExpression1IsFunctionDefinition0.func
+  val semMap: Map[String, Algo] = Map(
+    "IsFunctionDefinition0" -> `AL::AssignmentExpression[1,0].IsFunctionDefinition`,
+    "AssignmentTargetType0" -> `AL::AssignmentExpression[1,0].AssignmentTargetType`,
+    "HasCallInTailPosition0" -> `AL::AssignmentExpression[1,0].HasCallInTailPosition`,
   )
 }
+
 case class AssignmentExpression2(x0: ArrowFunction, parserParams: List[Boolean]) extends AssignmentExpression {
   x0.parent = Some(this)
   val name: String = "AssignmentExpression2"
@@ -52,12 +54,13 @@ case class AssignmentExpression2(x0: ArrowFunction, parserParams: List[Boolean])
 }
 object AssignmentExpression2 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "AssignmentTargetType0" -> AssignmentExpression2AssignmentTargetType0.func,
-    "HasCallInTailPosition0" -> AssignmentExpression2HasCallInTailPosition0.func,
-    "IsFunctionDefinition0" -> AssignmentExpression2IsFunctionDefinition0.func
+  val semMap: Map[String, Algo] = Map(
+    "IsFunctionDefinition0" -> `AL::AssignmentExpression[2,0].IsFunctionDefinition`,
+    "AssignmentTargetType0" -> `AL::AssignmentExpression[2,0].AssignmentTargetType`,
+    "HasCallInTailPosition0" -> `AL::AssignmentExpression[2,0].HasCallInTailPosition`,
   )
 }
+
 case class AssignmentExpression3(x0: AsyncArrowFunction, parserParams: List[Boolean]) extends AssignmentExpression {
   x0.parent = Some(this)
   val name: String = "AssignmentExpression3"
@@ -70,12 +73,13 @@ case class AssignmentExpression3(x0: AsyncArrowFunction, parserParams: List[Bool
 }
 object AssignmentExpression3 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "AssignmentTargetType0" -> AssignmentExpression3AssignmentTargetType0.func,
-    "HasCallInTailPosition0" -> AssignmentExpression3HasCallInTailPosition0.func,
-    "IsFunctionDefinition0" -> AssignmentExpression3IsFunctionDefinition0.func
+  val semMap: Map[String, Algo] = Map(
+    "IsFunctionDefinition0" -> `AL::AssignmentExpression[3,0].IsFunctionDefinition`,
+    "AssignmentTargetType0" -> `AL::AssignmentExpression[3,0].AssignmentTargetType`,
+    "HasCallInTailPosition0" -> `AL::AssignmentExpression[3,0].HasCallInTailPosition`,
   )
 }
+
 case class AssignmentExpression4(x0: LeftHandSideExpression, x2: AssignmentExpression, parserParams: List[Boolean]) extends AssignmentExpression {
   x0.parent = Some(this)
   x2.parent = Some(this)
@@ -89,13 +93,14 @@ case class AssignmentExpression4(x0: LeftHandSideExpression, x2: AssignmentExpre
 }
 object AssignmentExpression4 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "AssignmentTargetType0" -> AssignmentExpression4AssignmentTargetType0.func,
-    "Evaluation0" -> AssignmentExpression4Evaluation0.func,
-    "HasCallInTailPosition0" -> AssignmentExpression4HasCallInTailPosition0.func,
-    "IsFunctionDefinition0" -> AssignmentExpression4IsFunctionDefinition0.func
+  val semMap: Map[String, Algo] = Map(
+    "IsFunctionDefinition0" -> `AL::AssignmentExpression[4,0].IsFunctionDefinition`,
+    "AssignmentTargetType0" -> `AL::AssignmentExpression[4,0].AssignmentTargetType`,
+    "Evaluation0" -> `AL::AssignmentExpression[4,0].Evaluation`,
+    "HasCallInTailPosition0" -> `AL::AssignmentExpression[4,0].HasCallInTailPosition`,
   )
 }
+
 case class AssignmentExpression5(x0: LeftHandSideExpression, x1: AssignmentOperator, x2: AssignmentExpression, parserParams: List[Boolean]) extends AssignmentExpression {
   x0.parent = Some(this)
   x1.parent = Some(this)
@@ -110,10 +115,77 @@ case class AssignmentExpression5(x0: LeftHandSideExpression, x1: AssignmentOpera
 }
 object AssignmentExpression5 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "AssignmentTargetType0" -> AssignmentExpression5AssignmentTargetType0.func,
-    "Evaluation0" -> AssignmentExpression5Evaluation0.func,
-    "HasCallInTailPosition0" -> AssignmentExpression5HasCallInTailPosition0.func,
-    "IsFunctionDefinition0" -> AssignmentExpression5IsFunctionDefinition0.func
+  val semMap: Map[String, Algo] = Map(
+    "IsFunctionDefinition0" -> `AL::AssignmentExpression[5,0].IsFunctionDefinition`,
+    "AssignmentTargetType0" -> `AL::AssignmentExpression[5,0].AssignmentTargetType`,
+    "Evaluation0" -> `AL::AssignmentExpression[5,0].Evaluation`,
+    "HasCallInTailPosition0" -> `AL::AssignmentExpression[5,0].HasCallInTailPosition`,
+    "EarlyErrors0" -> `AL::AssignmentExpression[5,0].EarlyErrors`,
+  )
+}
+
+case class AssignmentExpression6(x0: LeftHandSideExpression, x2: AssignmentExpression, parserParams: List[Boolean]) extends AssignmentExpression {
+  x0.parent = Some(this)
+  x2.parent = Some(this)
+  val name: String = "AssignmentExpression6"
+  override def toString: String = {
+    s"$x0 &&= $x2"
+  }
+  val k: Int = d(x2, d(x0, 0))
+  val fullList: List[(String, Value)] = l("AssignmentExpression", x2, l("LeftHandSideExpression", x0, Nil)).reverse
+  val info: ASTInfo = AssignmentExpression6
+}
+object AssignmentExpression6 extends ASTInfo {
+  val maxK: Int = 0
+  val semMap: Map[String, Algo] = Map(
+    "IsFunctionDefinition0" -> `AL::AssignmentExpression[6,0].IsFunctionDefinition`,
+    "AssignmentTargetType0" -> `AL::AssignmentExpression[6,0].AssignmentTargetType`,
+    "Evaluation0" -> `AL::AssignmentExpression[6,0].Evaluation`,
+    "HasCallInTailPosition0" -> `AL::AssignmentExpression[6,0].HasCallInTailPosition`,
+    "EarlyErrors0" -> `AL::AssignmentExpression[6,0].EarlyErrors`,
+  )
+}
+
+case class AssignmentExpression7(x0: LeftHandSideExpression, x2: AssignmentExpression, parserParams: List[Boolean]) extends AssignmentExpression {
+  x0.parent = Some(this)
+  x2.parent = Some(this)
+  val name: String = "AssignmentExpression7"
+  override def toString: String = {
+    s"$x0 ||= $x2"
+  }
+  val k: Int = d(x2, d(x0, 0))
+  val fullList: List[(String, Value)] = l("AssignmentExpression", x2, l("LeftHandSideExpression", x0, Nil)).reverse
+  val info: ASTInfo = AssignmentExpression7
+}
+object AssignmentExpression7 extends ASTInfo {
+  val maxK: Int = 0
+  val semMap: Map[String, Algo] = Map(
+    "IsFunctionDefinition0" -> `AL::AssignmentExpression[7,0].IsFunctionDefinition`,
+    "AssignmentTargetType0" -> `AL::AssignmentExpression[7,0].AssignmentTargetType`,
+    "Evaluation0" -> `AL::AssignmentExpression[7,0].Evaluation`,
+    "HasCallInTailPosition0" -> `AL::AssignmentExpression[7,0].HasCallInTailPosition`,
+    "EarlyErrors0" -> `AL::AssignmentExpression[7,0].EarlyErrors`,
+  )
+}
+
+case class AssignmentExpression8(x0: LeftHandSideExpression, x2: AssignmentExpression, parserParams: List[Boolean]) extends AssignmentExpression {
+  x0.parent = Some(this)
+  x2.parent = Some(this)
+  val name: String = "AssignmentExpression8"
+  override def toString: String = {
+    s"$x0 ??= $x2"
+  }
+  val k: Int = d(x2, d(x0, 0))
+  val fullList: List[(String, Value)] = l("AssignmentExpression", x2, l("LeftHandSideExpression", x0, Nil)).reverse
+  val info: ASTInfo = AssignmentExpression8
+}
+object AssignmentExpression8 extends ASTInfo {
+  val maxK: Int = 0
+  val semMap: Map[String, Algo] = Map(
+    "IsFunctionDefinition0" -> `AL::AssignmentExpression[8,0].IsFunctionDefinition`,
+    "AssignmentTargetType0" -> `AL::AssignmentExpression[8,0].AssignmentTargetType`,
+    "Evaluation0" -> `AL::AssignmentExpression[8,0].Evaluation`,
+    "HasCallInTailPosition0" -> `AL::AssignmentExpression[8,0].HasCallInTailPosition`,
+    "EarlyErrors0" -> `AL::AssignmentExpression[8,0].EarlyErrors`,
   )
 }

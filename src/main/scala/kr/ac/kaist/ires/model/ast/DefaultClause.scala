@@ -1,6 +1,5 @@
 package kr.ac.kaist.ires.model
 
-import kr.ac.kaist.ires.{ AST, ASTInfo, Lexical }
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.UnexpectedSemantics
 import scala.collection.immutable.{ Set => SSet }
@@ -8,6 +7,7 @@ import scala.collection.immutable.{ Set => SSet }
 trait DefaultClause extends AST {
   val kind: String = "DefaultClause"
 }
+
 case class DefaultClause0(x2: Option[StatementList], parserParams: List[Boolean]) extends DefaultClause {
   x2.foreach((m) => m.parent = Some(this))
   val name: String = "DefaultClause0"
@@ -20,16 +20,16 @@ case class DefaultClause0(x2: Option[StatementList], parserParams: List[Boolean]
 }
 object DefaultClause0 extends ASTInfo {
   val maxK: Int = 1
-  val semMap: Map[String, Func] = Map(
-    "ContainsDuplicateLabels1" -> DefaultClause0ContainsDuplicateLabels1.func,
-    "ContainsUndefinedBreakTarget1" -> DefaultClause0ContainsUndefinedBreakTarget1.func,
-    "ContainsUndefinedContinueTarget1" -> DefaultClause0ContainsUndefinedContinueTarget1.func,
-    "Evaluation0" -> DefaultClause0Evaluation0.func,
-    "Evaluation1" -> DefaultClause0Evaluation1.func,
-    "HasCallInTailPosition1" -> DefaultClause0HasCallInTailPosition1.func,
-    "LexicallyDeclaredNames1" -> DefaultClause0LexicallyDeclaredNames1.func,
-    "LexicallyScopedDeclarations1" -> DefaultClause0LexicallyScopedDeclarations1.func,
-    "VarDeclaredNames1" -> DefaultClause0VarDeclaredNames1.func,
-    "VarScopedDeclarations1" -> DefaultClause0VarScopedDeclarations1.func
+  val semMap: Map[String, Algo] = Map(
+    "LexicallyDeclaredNames1" -> `AL::DefaultClause[0,1].LexicallyDeclaredNames`,
+    "LexicallyScopedDeclarations1" -> `AL::DefaultClause[0,1].LexicallyScopedDeclarations`,
+    "VarDeclaredNames1" -> `AL::DefaultClause[0,1].VarDeclaredNames`,
+    "VarScopedDeclarations1" -> `AL::DefaultClause[0,1].VarScopedDeclarations`,
+    "ContainsDuplicateLabels1" -> `AL::DefaultClause[0,1].ContainsDuplicateLabels`,
+    "ContainsUndefinedBreakTarget1" -> `AL::DefaultClause[0,1].ContainsUndefinedBreakTarget`,
+    "ContainsUndefinedContinueTarget1" -> `AL::DefaultClause[0,1].ContainsUndefinedContinueTarget`,
+    "Evaluation0" -> `AL::DefaultClause[0,0].Evaluation`,
+    "Evaluation1" -> `AL::DefaultClause[0,1].Evaluation`,
+    "HasCallInTailPosition1" -> `AL::DefaultClause[0,1].HasCallInTailPosition`,
   )
 }

@@ -1,6 +1,5 @@
 package kr.ac.kaist.ires.model
 
-import kr.ac.kaist.ires.{ AST, ASTInfo, Lexical }
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.UnexpectedSemantics
 import scala.collection.immutable.{ Set => SSet }
@@ -8,6 +7,7 @@ import scala.collection.immutable.{ Set => SSet }
 trait ScriptBody extends AST {
   val kind: String = "ScriptBody"
 }
+
 case class ScriptBody0(x0: StatementList, parserParams: List[Boolean]) extends ScriptBody {
   x0.parent = Some(this)
   val name: String = "ScriptBody0"
@@ -20,11 +20,11 @@ case class ScriptBody0(x0: StatementList, parserParams: List[Boolean]) extends S
 }
 object ScriptBody0 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "IsStrict0" -> ScriptBody0IsStrict0.func,
-    "LexicallyDeclaredNames0" -> ScriptBody0LexicallyDeclaredNames0.func,
-    "LexicallyScopedDeclarations0" -> ScriptBody0LexicallyScopedDeclarations0.func,
-    "VarDeclaredNames0" -> ScriptBody0VarDeclaredNames0.func,
-    "VarScopedDeclarations0" -> ScriptBody0VarScopedDeclarations0.func
+  val semMap: Map[String, Algo] = Map(
+    "LexicallyDeclaredNames0" -> `AL::ScriptBody[0,0].LexicallyDeclaredNames`,
+    "LexicallyScopedDeclarations0" -> `AL::ScriptBody[0,0].LexicallyScopedDeclarations`,
+    "VarDeclaredNames0" -> `AL::ScriptBody[0,0].VarDeclaredNames`,
+    "VarScopedDeclarations0" -> `AL::ScriptBody[0,0].VarScopedDeclarations`,
+    "EarlyErrors0" -> `AL::ScriptBody[0,0].EarlyErrors`,
   )
 }

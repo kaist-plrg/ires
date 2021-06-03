@@ -2,48 +2,56 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.ir.Parser._
+import Param.Kind._
 
-object GetIterator extends Algorithm {
-  val name: String = "GetIterator"
-  val length: Int = 1
-  val lang: Boolean = true
-  val func: Func = FixUIdWalker(parseFunc(""""GetIterator" (obj, hint, method) => {
-    if (= hint absent) hint = CONST_sync else {}
-    assert (|| (= hint CONST_sync) (= hint CONST_async))
-    if (= method absent) if (= hint CONST_async) {
-      app __x0__ = (GetMethod obj SYMBOL_asyncIterator)
-      if (is-completion __x0__) if (= __x0__["Type"] CONST_normal) __x0__ = __x0__["Value"] else return __x0__ else {}
-      method = __x0__
-      if (= method undefined) {
-        app __x1__ = (GetMethod obj SYMBOL_iterator)
-        if (is-completion __x1__) if (= __x1__["Type"] CONST_normal) __x1__ = __x1__["Value"] else return __x1__ else {}
-        let syncMethod = __x1__
-        app __x2__ = (GetIterator obj CONST_sync syncMethod)
-        if (is-completion __x2__) if (= __x2__["Type"] CONST_normal) __x2__ = __x2__["Value"] else return __x2__ else {}
-        let syncIteratorRecord = __x2__
-        app __x3__ = (CreateAsyncFromSyncIterator syncIteratorRecord)
-        if (is-completion __x3__) if (= __x3__["Type"] CONST_normal) __x3__ = __x3__["Value"] else return __x3__ else {}
-        app __x4__ = (WrapCompletion __x3__)
-        return __x4__
-      } else {}
-    } else {
-      app __x5__ = (GetMethod obj SYMBOL_iterator)
-      if (is-completion __x5__) if (= __x5__["Type"] CONST_normal) __x5__ = __x5__["Value"] else return __x5__ else {}
-      method = __x5__
-    } else {}
-    app __x6__ = (Call method obj)
-    if (is-completion __x6__) if (= __x6__["Type"] CONST_normal) __x6__ = __x6__["Value"] else return __x6__ else {}
-    let iterator = __x6__
-    app __x7__ = (Type iterator)
-    if (! (= __x7__ Object)) {
-      app __x8__ = (ThrowCompletion (new OrdinaryObject("Prototype" -> INTRINSIC_TypeErrorPrototype, "ErrorData" -> undefined, "SubMap" -> (new SubMap()))))
-      return __x8__
-    } else {}
-    app __x9__ = (GetV iterator "next")
-    if (is-completion __x9__) if (= __x9__["Type"] CONST_normal) __x9__ = __x9__["Value"] else return __x9__ else {}
-    let nextMethod = __x9__
-    let iteratorRecord = (new Record("Iterator" -> iterator, "NextMethod" -> nextMethod, "Done" -> false))
-    app __x10__ = (WrapCompletion iteratorRecord)
-    return __x10__
-  }"""), this)
+object `AL::GetIterator` extends Algo {
+  val head = NormalHead("GetIterator", List(Param("obj", Normal), Param("hint", Optional), Param("method", Optional)))
+  val ids = List(
+    "sec-getiterator",
+    "sec-operations-on-iterator-objects",
+    "sec-abstract-operations",
+  )
+  val rawBody = parseInst("""{
+  |  0:if (= hint absent) hint = CONST_sync else 1:{}
+  |  1:assert (|| (= hint CONST_sync) (= hint CONST_async))
+  |  2:if (= method absent) if (= hint CONST_async) {
+  |    4:app __x0__ = (GetMethod obj SYMBOL_asyncIterator)
+  |    4:method = [? __x0__]
+  |    5:if (= method undefined) {
+  |      6:app __x1__ = (GetMethod obj SYMBOL_iterator)
+  |      6:let syncMethod = [? __x1__]
+  |      7:app __x2__ = (GetIterator obj CONST_sync syncMethod)
+  |      7:let syncIteratorRecord = [? __x2__]
+  |      8:app __x3__ = (CreateAsyncFromSyncIterator syncIteratorRecord)
+  |      8:return [! __x3__]
+  |    } else 1:{}
+  |  } else {
+  |    app __x4__ = (GetMethod obj SYMBOL_iterator)
+  |    method = [? __x4__]
+  |  } else 1:{}
+  |  10:app __x5__ = (Call method obj)
+  |  10:let iterator = [? __x5__]
+  |  11:if (! (= (typeof iterator) Object)) throw TypeError else 1:{}
+  |  12:app __x6__ = (GetV iterator "next")
+  |  12:let nextMethod = [? __x6__]
+  |  13:let iteratorRecord = (new Record("Iterator" -> iterator, "NextMethod" -> nextMethod, "Done" -> false))
+  |  14:return iteratorRecord
+  |}""".stripMargin)
+  val code = scala.Array[String](
+    """        1. If _hint_ is not present, set _hint_ to ~sync~.""",
+    """        1. Assert: _hint_ is either ~sync~ or ~async~.""",
+    """        1. If _method_ is not present, then""",
+    """          1. If _hint_ is ~async~, then""",
+    """            1. Set _method_ to ? GetMethod(_obj_, @@asyncIterator).""",
+    """            1. If _method_ is *undefined*, then""",
+    """              1. Let _syncMethod_ be ? GetMethod(_obj_, @@iterator).""",
+    """              1. Let _syncIteratorRecord_ be ? GetIterator(_obj_, ~sync~, _syncMethod_).""",
+    """              1. Return ! CreateAsyncFromSyncIterator(_syncIteratorRecord_).""",
+    """          1. Otherwise, set _method_ to ? GetMethod(_obj_, @@iterator).""",
+    """        1. Let _iterator_ be ? Call(_method_, _obj_).""",
+    """        1. If Type(_iterator_) is not Object, throw a *TypeError* exception.""",
+    """        1. Let _nextMethod_ be ? GetV(_iterator_, *"next"*).""",
+    """        1. Let _iteratorRecord_ be the Record { [[Iterator]]: _iterator_, [[NextMethod]]: _nextMethod_, [[Done]]: *false* }.""",
+    """        1. Return _iteratorRecord_.""",
+  )
 }

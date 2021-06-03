@@ -1,6 +1,5 @@
 package kr.ac.kaist.ires.model
 
-import kr.ac.kaist.ires.{ AST, ASTInfo, Lexical }
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.UnexpectedSemantics
 import scala.collection.immutable.{ Set => SSet }
@@ -8,6 +7,7 @@ import scala.collection.immutable.{ Set => SSet }
 trait MultiplicativeExpression extends AST {
   val kind: String = "MultiplicativeExpression"
 }
+
 case class MultiplicativeExpression0(x0: ExponentiationExpression, parserParams: List[Boolean]) extends MultiplicativeExpression {
   x0.parent = Some(this)
   val name: String = "MultiplicativeExpression0"
@@ -20,8 +20,9 @@ case class MultiplicativeExpression0(x0: ExponentiationExpression, parserParams:
 }
 object MultiplicativeExpression0 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map()
+  val semMap: Map[String, Algo] = Map()
 }
+
 case class MultiplicativeExpression1(x0: MultiplicativeExpression, x1: MultiplicativeOperator, x2: ExponentiationExpression, parserParams: List[Boolean]) extends MultiplicativeExpression {
   x0.parent = Some(this)
   x1.parent = Some(this)
@@ -36,10 +37,10 @@ case class MultiplicativeExpression1(x0: MultiplicativeExpression, x1: Multiplic
 }
 object MultiplicativeExpression1 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "AssignmentTargetType0" -> MultiplicativeExpression1AssignmentTargetType0.func,
-    "Evaluation0" -> MultiplicativeExpression1Evaluation0.func,
-    "HasCallInTailPosition0" -> MultiplicativeExpression1HasCallInTailPosition0.func,
-    "IsFunctionDefinition0" -> MultiplicativeExpression1IsFunctionDefinition0.func
+  val semMap: Map[String, Algo] = Map(
+    "IsFunctionDefinition0" -> `AL::MultiplicativeExpression[1,0].IsFunctionDefinition`,
+    "AssignmentTargetType0" -> `AL::MultiplicativeExpression[1,0].AssignmentTargetType`,
+    "Evaluation0" -> `AL::MultiplicativeExpression[1,0].Evaluation`,
+    "HasCallInTailPosition0" -> `AL::MultiplicativeExpression[1,0].HasCallInTailPosition`,
   )
 }

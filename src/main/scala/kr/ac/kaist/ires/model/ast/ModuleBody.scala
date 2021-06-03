@@ -1,6 +1,5 @@
 package kr.ac.kaist.ires.model
 
-import kr.ac.kaist.ires.{ AST, ASTInfo, Lexical }
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.UnexpectedSemantics
 import scala.collection.immutable.{ Set => SSet }
@@ -8,6 +7,7 @@ import scala.collection.immutable.{ Set => SSet }
 trait ModuleBody extends AST {
   val kind: String = "ModuleBody"
 }
+
 case class ModuleBody0(x0: ModuleItemList, parserParams: List[Boolean]) extends ModuleBody {
   x0.parent = Some(this)
   val name: String = "ModuleBody0"
@@ -20,5 +20,8 @@ case class ModuleBody0(x0: ModuleItemList, parserParams: List[Boolean]) extends 
 }
 object ModuleBody0 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map()
+  val semMap: Map[String, Algo] = Map(
+    "Evaluation0" -> `AL::ModuleBody[0,0].Evaluation`,
+    "EarlyErrors0" -> `AL::ModuleBody[0,0].EarlyErrors`,
+  )
 }

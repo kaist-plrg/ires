@@ -1,6 +1,5 @@
 package kr.ac.kaist.ires.model
 
-import kr.ac.kaist.ires.{ AST, ASTInfo, Lexical }
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.UnexpectedSemantics
 import scala.collection.immutable.{ Set => SSet }
@@ -8,6 +7,7 @@ import scala.collection.immutable.{ Set => SSet }
 trait MethodDefinition extends AST {
   val kind: String = "MethodDefinition"
 }
+
 case class MethodDefinition0(x0: PropertyName, x2: UniqueFormalParameters, x5: FunctionBody, parserParams: List[Boolean]) extends MethodDefinition {
   x0.parent = Some(this)
   x2.parent = Some(this)
@@ -22,15 +22,18 @@ case class MethodDefinition0(x0: PropertyName, x2: UniqueFormalParameters, x5: F
 }
 object MethodDefinition0 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "ComputedPropertyContains0" -> MethodDefinition0ComputedPropertyContains0.func,
-    "DefineMethod0" -> MethodDefinition0DefineMethod0.func,
-    "HasDirectSuper0" -> MethodDefinition0HasDirectSuper0.func,
-    "PropName0" -> MethodDefinition0PropName0.func,
-    "PropertyDefinitionEvaluation0" -> MethodDefinition0PropertyDefinitionEvaluation0.func,
-    "SpecialMethod0" -> MethodDefinition0SpecialMethod0.func
+  val semMap: Map[String, Algo] = Map(
+    "ComputedPropertyContains0" -> `AL::MethodDefinition[0,0].ComputedPropertyContains`,
+    "PropName0" -> `AL::MethodDefinition[0,0].PropName`,
+    "PropertyDefinitionEvaluation0" -> `AL::MethodDefinition[0,0].PropertyDefinitionEvaluation`,
+    "HasDirectSuper0" -> `AL::MethodDefinition[0,0].HasDirectSuper`,
+    "SpecialMethod0" -> `AL::MethodDefinition[0,0].SpecialMethod`,
+    "DefineMethod0" -> `AL::MethodDefinition[0,0].DefineMethod`,
+    "MethodDefinitionEvaluation0" -> `AL::MethodDefinition[0,0].MethodDefinitionEvaluation`,
+    "EarlyErrors0" -> `AL::MethodDefinition[0,0].EarlyErrors`,
   )
 }
+
 case class MethodDefinition1(x0: GeneratorMethod, parserParams: List[Boolean]) extends MethodDefinition {
   x0.parent = Some(this)
   val name: String = "MethodDefinition1"
@@ -43,10 +46,11 @@ case class MethodDefinition1(x0: GeneratorMethod, parserParams: List[Boolean]) e
 }
 object MethodDefinition1 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "SpecialMethod0" -> MethodDefinition1SpecialMethod0.func
+  val semMap: Map[String, Algo] = Map(
+    "SpecialMethod0" -> `AL::MethodDefinition[1,0].SpecialMethod`,
   )
 }
+
 case class MethodDefinition2(x0: AsyncMethod, parserParams: List[Boolean]) extends MethodDefinition {
   x0.parent = Some(this)
   val name: String = "MethodDefinition2"
@@ -59,10 +63,11 @@ case class MethodDefinition2(x0: AsyncMethod, parserParams: List[Boolean]) exten
 }
 object MethodDefinition2 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "SpecialMethod0" -> MethodDefinition2SpecialMethod0.func
+  val semMap: Map[String, Algo] = Map(
+    "SpecialMethod0" -> `AL::MethodDefinition[2,0].SpecialMethod`,
   )
 }
+
 case class MethodDefinition3(x0: AsyncGeneratorMethod, parserParams: List[Boolean]) extends MethodDefinition {
   x0.parent = Some(this)
   val name: String = "MethodDefinition3"
@@ -75,10 +80,11 @@ case class MethodDefinition3(x0: AsyncGeneratorMethod, parserParams: List[Boolea
 }
 object MethodDefinition3 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "SpecialMethod0" -> MethodDefinition3SpecialMethod0.func
+  val semMap: Map[String, Algo] = Map(
+    "SpecialMethod0" -> `AL::MethodDefinition[3,0].SpecialMethod`,
   )
 }
+
 case class MethodDefinition4(x1: PropertyName, x5: FunctionBody, parserParams: List[Boolean]) extends MethodDefinition {
   x1.parent = Some(this)
   x5.parent = Some(this)
@@ -92,14 +98,16 @@ case class MethodDefinition4(x1: PropertyName, x5: FunctionBody, parserParams: L
 }
 object MethodDefinition4 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "ComputedPropertyContains0" -> MethodDefinition4ComputedPropertyContains0.func,
-    "HasDirectSuper0" -> MethodDefinition4HasDirectSuper0.func,
-    "PropName0" -> MethodDefinition4PropName0.func,
-    "PropertyDefinitionEvaluation0" -> MethodDefinition4PropertyDefinitionEvaluation0.func,
-    "SpecialMethod0" -> MethodDefinition4SpecialMethod0.func
+  val semMap: Map[String, Algo] = Map(
+    "ComputedPropertyContains0" -> `AL::MethodDefinition[4,0].ComputedPropertyContains`,
+    "PropName0" -> `AL::MethodDefinition[4,0].PropName`,
+    "PropertyDefinitionEvaluation0" -> `AL::MethodDefinition[4,0].PropertyDefinitionEvaluation`,
+    "HasDirectSuper0" -> `AL::MethodDefinition[4,0].HasDirectSuper`,
+    "SpecialMethod0" -> `AL::MethodDefinition[4,0].SpecialMethod`,
+    "MethodDefinitionEvaluation0" -> `AL::MethodDefinition[4,0].MethodDefinitionEvaluation`,
   )
 }
+
 case class MethodDefinition5(x1: PropertyName, x3: PropertySetParameterList, x6: FunctionBody, parserParams: List[Boolean]) extends MethodDefinition {
   x1.parent = Some(this)
   x3.parent = Some(this)
@@ -114,11 +122,13 @@ case class MethodDefinition5(x1: PropertyName, x3: PropertySetParameterList, x6:
 }
 object MethodDefinition5 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "ComputedPropertyContains0" -> MethodDefinition5ComputedPropertyContains0.func,
-    "HasDirectSuper0" -> MethodDefinition5HasDirectSuper0.func,
-    "PropName0" -> MethodDefinition5PropName0.func,
-    "PropertyDefinitionEvaluation0" -> MethodDefinition5PropertyDefinitionEvaluation0.func,
-    "SpecialMethod0" -> MethodDefinition5SpecialMethod0.func
+  val semMap: Map[String, Algo] = Map(
+    "ComputedPropertyContains0" -> `AL::MethodDefinition[5,0].ComputedPropertyContains`,
+    "PropName0" -> `AL::MethodDefinition[5,0].PropName`,
+    "PropertyDefinitionEvaluation0" -> `AL::MethodDefinition[5,0].PropertyDefinitionEvaluation`,
+    "HasDirectSuper0" -> `AL::MethodDefinition[5,0].HasDirectSuper`,
+    "SpecialMethod0" -> `AL::MethodDefinition[5,0].SpecialMethod`,
+    "MethodDefinitionEvaluation0" -> `AL::MethodDefinition[5,0].MethodDefinitionEvaluation`,
+    "EarlyErrors0" -> `AL::MethodDefinition[5,0].EarlyErrors`,
   )
 }

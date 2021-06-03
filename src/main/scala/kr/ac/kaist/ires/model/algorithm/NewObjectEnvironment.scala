@@ -2,17 +2,24 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.ir.Parser._
+import Param.Kind._
 
-object NewObjectEnvironment extends Algorithm {
-  val name: String = "NewObjectEnvironment"
-  val length: Int = 2
-  val lang: Boolean = true
-  val func: Func = FixUIdWalker(parseFunc(""""NewObjectEnvironment" (O, E) => {
-    let env = (new LexicalEnvironment("SubMap" -> (new SubMap())))
-    let envRec = (new ObjectEnvironmentRecord("SubMap" -> (new SubMap()), "BindingObject" -> O))
-    env["EnvironmentRecord"] = envRec
-    env["Outer"] = E
-    app __x0__ = (WrapCompletion env)
-    return __x0__
-  }"""), this)
+object `AL::NewObjectEnvironment` extends Algo {
+  val head = NormalHead("NewObjectEnvironment", List(Param("O", Normal), Param("E", Normal)))
+  val ids = List(
+    "sec-newobjectenvironment",
+    "sec-environment-record-operations",
+    "sec-environment-records",
+    "sec-executable-code-and-execution-contexts",
+  )
+  val rawBody = parseInst("""{
+  |  0:let env = (new ObjectEnvironmentRecord("SubMap" -> (new SubMap()), "BindingObject" -> O))
+  |  1:env.OuterEnv = E
+  |  2:return env
+  |}""".stripMargin)
+  val code = scala.Array[String](
+    """          1. Let _env_ be a new object Environment Record containing _O_ as the binding object.""",
+    """          1. Set _env_.[[OuterEnv]] to _E_.""",
+    """          1. Return _env_.""",
+  )
 }

@@ -1,7 +1,7 @@
 package kr.ac.kaist.ires.parser
 
 import kr.ac.kaist.ires.util.Useful._
-import kr.ac.kaist.ires.{ DEBUG_PARSER, DEBUG_SEMI_INSERT, LINE_SEP }
+import kr.ac.kaist.ires.{ DEBUG, LINE_SEP }
 import scala.collection.mutable
 import scala.language.reflectiveCalls
 import scala.util.parsing.input._
@@ -12,9 +12,9 @@ trait LAParsers extends Lexer {
 
   // first terms
   case class FirstTerms(
-      possibleEmpty: Boolean = false,
-      ts: Set[String] = Set(),
-      nts: Map[String, Lexer] = Map()
+    possibleEmpty: Boolean = false,
+    ts: Set[String] = Set(),
+    nts: Map[String, Lexer] = Map()
   ) {
     def makeEmptyPossible: FirstTerms = copy(possibleEmpty = true)
     def +(that: FirstTerms): FirstTerms = FirstTerms(
@@ -50,8 +50,8 @@ trait LAParsers extends Lexer {
 
   // lookahead parsers
   class LAParser[+T](
-      val parser: FirstTerms => Parser[T],
-      val first: FirstTerms
+    val parser: FirstTerms => Parser[T],
+    val first: FirstTerms
   ) {
     def ~[U](that: => LAParser[U]): LAParser[~[T, U]] = new LAParser(
       follow => this.parser(that.first ~ follow) ~ that.parser(follow),
@@ -125,7 +125,7 @@ trait LAParsers extends Lexer {
 
   // logging
   var keepLog: Boolean = true
-  def log[T](p: LAParser[T])(name: String): LAParser[T] = if (!DEBUG_PARSER) p else new LAParser(follow => Parser { rawIn =>
+  def log[T](p: LAParser[T])(name: String): LAParser[T] = if (!DEBUG) p else new LAParser(follow => Parser { rawIn =>
     val in = rawIn.asInstanceOf[EPackratReader[Char]]
     val stopMsg = s"trying $name with $follow at [${in.pos}] \n\n${in.pos.longString}\n"
     if (keepLog) stop(stopMsg) match {

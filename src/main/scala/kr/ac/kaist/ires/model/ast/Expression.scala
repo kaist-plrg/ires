@@ -1,6 +1,5 @@
 package kr.ac.kaist.ires.model
 
-import kr.ac.kaist.ires.{ AST, ASTInfo, Lexical }
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.UnexpectedSemantics
 import scala.collection.immutable.{ Set => SSet }
@@ -8,6 +7,7 @@ import scala.collection.immutable.{ Set => SSet }
 trait Expression extends AST {
   val kind: String = "Expression"
 }
+
 case class Expression0(x0: AssignmentExpression, parserParams: List[Boolean]) extends Expression {
   x0.parent = Some(this)
   val name: String = "Expression0"
@@ -20,10 +20,11 @@ case class Expression0(x0: AssignmentExpression, parserParams: List[Boolean]) ex
 }
 object Expression0 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "HasCallInTailPosition0" -> Expression0HasCallInTailPosition0.func
+  val semMap: Map[String, Algo] = Map(
+    "HasCallInTailPosition0" -> `AL::Expression[0,0].HasCallInTailPosition`,
   )
 }
+
 case class Expression1(x0: Expression, x2: AssignmentExpression, parserParams: List[Boolean]) extends Expression {
   x0.parent = Some(this)
   x2.parent = Some(this)
@@ -37,10 +38,10 @@ case class Expression1(x0: Expression, x2: AssignmentExpression, parserParams: L
 }
 object Expression1 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "AssignmentTargetType0" -> Expression1AssignmentTargetType0.func,
-    "Evaluation0" -> Expression1Evaluation0.func,
-    "HasCallInTailPosition0" -> Expression1HasCallInTailPosition0.func,
-    "IsFunctionDefinition0" -> Expression1IsFunctionDefinition0.func
+  val semMap: Map[String, Algo] = Map(
+    "IsFunctionDefinition0" -> `AL::Expression[1,0].IsFunctionDefinition`,
+    "AssignmentTargetType0" -> `AL::Expression[1,0].AssignmentTargetType`,
+    "Evaluation0" -> `AL::Expression[1,0].Evaluation`,
+    "HasCallInTailPosition0" -> `AL::Expression[1,0].HasCallInTailPosition`,
   )
 }

@@ -1,6 +1,5 @@
 package kr.ac.kaist.ires.model
 
-import kr.ac.kaist.ires.{ AST, ASTInfo, Lexical }
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.UnexpectedSemantics
 import scala.collection.immutable.{ Set => SSet }
@@ -8,6 +7,7 @@ import scala.collection.immutable.{ Set => SSet }
 trait BindingPattern extends AST {
   val kind: String = "BindingPattern"
 }
+
 case class BindingPattern0(x0: ObjectBindingPattern, parserParams: List[Boolean]) extends BindingPattern {
   x0.parent = Some(this)
   val name: String = "BindingPattern0"
@@ -20,10 +20,11 @@ case class BindingPattern0(x0: ObjectBindingPattern, parserParams: List[Boolean]
 }
 object BindingPattern0 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "BindingInitialization0" -> BindingPattern0BindingInitialization0.func
+  val semMap: Map[String, Algo] = Map(
+    "BindingInitialization0" -> `AL::BindingPattern[0,0].BindingInitialization`,
   )
 }
+
 case class BindingPattern1(x0: ArrayBindingPattern, parserParams: List[Boolean]) extends BindingPattern {
   x0.parent = Some(this)
   val name: String = "BindingPattern1"
@@ -36,7 +37,7 @@ case class BindingPattern1(x0: ArrayBindingPattern, parserParams: List[Boolean])
 }
 object BindingPattern1 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "BindingInitialization0" -> BindingPattern1BindingInitialization0.func
+  val semMap: Map[String, Algo] = Map(
+    "BindingInitialization0" -> `AL::BindingPattern[1,0].BindingInitialization`,
   )
 }

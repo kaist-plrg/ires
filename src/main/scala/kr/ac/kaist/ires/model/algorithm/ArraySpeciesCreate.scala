@@ -2,57 +2,63 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.ir.Parser._
+import Param.Kind._
 
-object ArraySpeciesCreate extends Algorithm {
-  val name: String = "ArraySpeciesCreate"
-  val length: Int = 2
-  val lang: Boolean = true
-  val func: Func = FixUIdWalker(parseFunc(""""ArraySpeciesCreate" (originalArray, length) => {
-    if (= length -0.0) length = 0i else {}
-    app __x0__ = (IsArray originalArray)
-    if (is-completion __x0__) if (= __x0__["Type"] CONST_normal) __x0__ = __x0__["Value"] else return __x0__ else {}
-    let isArray = __x0__
-    if (= isArray false) {
-      app __x1__ = (ArrayCreate length)
-      if (is-completion __x1__) if (= __x1__["Type"] CONST_normal) __x1__ = __x1__["Value"] else return __x1__ else {}
-      app __x2__ = (WrapCompletion __x1__)
-      return __x2__
-    } else {}
-    app __x3__ = (Get originalArray "constructor")
-    if (is-completion __x3__) if (= __x3__["Type"] CONST_normal) __x3__ = __x3__["Value"] else return __x3__ else {}
-    let C = __x3__
-    app __x4__ = (IsConstructor C)
-    if (= __x4__ true) {
-      let thisRealm = REALM
-      app __x5__ = (GetFunctionRealm C)
-      if (is-completion __x5__) if (= __x5__["Type"] CONST_normal) __x5__ = __x5__["Value"] else return __x5__ else {}
-      let realmC = __x5__
-      if (! (= thisRealm realmC)) {
-        app __x6__ = (SameValue C realmC["Intrinsics"]["INTRINSIC_Array"])
-        if (= __x6__ true) C = undefined else {}
-      } else {}
-    } else {}
-    app __x7__ = (Type C)
-    if (= __x7__ Object) {
-      app __x8__ = (Get C SYMBOL_species)
-      if (is-completion __x8__) if (= __x8__["Type"] CONST_normal) __x8__ = __x8__["Value"] else return __x8__ else {}
-      C = __x8__
-      if (= C null) C = undefined else {}
-    } else {}
-    if (= C undefined) {
-      app __x9__ = (ArrayCreate length)
-      if (is-completion __x9__) if (= __x9__["Type"] CONST_normal) __x9__ = __x9__["Value"] else return __x9__ else {}
-      app __x10__ = (WrapCompletion __x9__)
-      return __x10__
-    } else {}
-    app __x11__ = (IsConstructor C)
-    if (= __x11__ false) {
-      app __x12__ = (ThrowCompletion (new OrdinaryObject("Prototype" -> INTRINSIC_TypeErrorPrototype, "ErrorData" -> undefined, "SubMap" -> (new SubMap()))))
-      return __x12__
-    } else {}
-    app __x13__ = (Construct C (new [length]))
-    if (is-completion __x13__) if (= __x13__["Type"] CONST_normal) __x13__ = __x13__["Value"] else return __x13__ else {}
-    app __x14__ = (WrapCompletion __x13__)
-    return __x14__
-  }"""), this)
+object `AL::ArraySpeciesCreate` extends Algo {
+  val head = NormalHead("ArraySpeciesCreate", List(Param("originalArray", Normal), Param("length", Normal)))
+  val ids = List(
+    "sec-arrayspeciescreate",
+    "sec-array-exotic-objects",
+    "sec-built-in-exotic-object-internal-methods-and-slots",
+    "sec-ordinary-and-exotic-objects-behaviours",
+  )
+  val rawBody = parseInst("""{
+  |  0:app __x0__ = (IsArray originalArray)
+  |  0:let isArray = [? __x0__]
+  |  1:if (= isArray false) {
+  |    app __x1__ = (ArrayCreate length)
+  |    return [? __x1__]
+  |  } else 8:{}
+  |  2:app __x2__ = (Get originalArray "constructor")
+  |  2:let C = [? __x2__]
+  |  3:app __x3__ = (IsConstructor C)
+  |  3:if (= __x3__ true) {
+  |    4:let thisRealm = REALM
+  |    5:app __x4__ = (GetFunctionRealm C)
+  |    5:let realmC = [? __x4__]
+  |    6:if (! (= thisRealm realmC)) {
+  |      7:app __x5__ = (SameValue C realmC.Intrinsics.INTRINSIC_Array)
+  |      7:if (= __x5__ true) C = undefined else 8:{}
+  |    } else 8:{}
+  |  } else 8:{}
+  |  8:if (= (typeof C) Object) {
+  |    9:app __x6__ = (Get C SYMBOL_species)
+  |    9:C = [? __x6__]
+  |    10:if (= C null) C = undefined else 8:{}
+  |  } else 8:{}
+  |  11:if (= C undefined) {
+  |    app __x7__ = (ArrayCreate length)
+  |    return [? __x7__]
+  |  } else 8:{}
+  |  12:app __x8__ = (IsConstructor C)
+  |  12:if (= __x8__ false) throw TypeError else 8:{}
+  |  13:app __x9__ = (Construct C (new [length]))
+  |  13:return [? __x9__]
+  |}""".stripMargin)
+  val code = scala.Array[String](
+    """          1. Let _isArray_ be ? IsArray(_originalArray_).""",
+    """          1. If _isArray_ is *false*, return ? ArrayCreate(_length_).""",
+    """          1. Let _C_ be ? Get(_originalArray_, *"constructor"*).""",
+    """          1. If IsConstructor(_C_) is *true*, then""",
+    """            1. Let _thisRealm_ be the current Realm Record.""",
+    """            1. Let _realmC_ be ? GetFunctionRealm(_C_).""",
+    """            1. If _thisRealm_ and _realmC_ are not the same Realm Record, then""",
+    """              1. If SameValue(_C_, _realmC_.[[Intrinsics]].[[%Array%]]) is *true*, set _C_ to *undefined*.""",
+    """          1. If Type(_C_) is Object, then""",
+    """            1. Set _C_ to ? Get(_C_, @@species).""",
+    """            1. If _C_ is *null*, set _C_ to *undefined*.""",
+    """          1. If _C_ is *undefined*, return ? ArrayCreate(_length_).""",
+    """          1. If IsConstructor(_C_) is *false*, throw a *TypeError* exception.""",
+    """          1. Return ? Construct(_C_, « 𝔽(_length_) »).""",
+  )
 }

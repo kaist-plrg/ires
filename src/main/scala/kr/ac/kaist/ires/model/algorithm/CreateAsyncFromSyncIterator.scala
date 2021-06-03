@@ -2,19 +2,30 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.ir.Parser._
+import Param.Kind._
 
-object CreateAsyncFromSyncIterator extends Algorithm {
-  val name: String = "CreateAsyncFromSyncIterator"
-  val length: Int = 1
-  val lang: Boolean = true
-  val func: Func = FixUIdWalker(parseFunc(""""CreateAsyncFromSyncIterator" (syncIteratorRecord) => {
-    app __x0__ = (ObjectCreate INTRINSIC_AsyncFromSyncIteratorPrototype (new ["SyncIteratorRecord"]))
-    if (is-completion __x0__) if (= __x0__["Type"] CONST_normal) __x0__ = __x0__["Value"] else return __x0__ else {}
-    let asyncIterator = __x0__
-    asyncIterator["SyncIteratorRecord"] = syncIteratorRecord
-    app __x1__ = (GetIterator asyncIterator CONST_async)
-    if (is-completion __x1__) if (= __x1__["Type"] CONST_normal) __x1__ = __x1__["Value"] else return __x1__ else {}
-    app __x2__ = (WrapCompletion __x1__)
-    return __x2__
-  }"""), this)
+object `AL::CreateAsyncFromSyncIterator` extends Algo {
+  val head = NormalHead("CreateAsyncFromSyncIterator", List(Param("syncIteratorRecord", Normal)))
+  val ids = List(
+    "sec-createasyncfromsynciterator",
+    "sec-async-from-sync-iterator-objects",
+    "sec-iteration",
+    "sec-control-abstraction-objects",
+  )
+  val rawBody = parseInst("""{
+  |  0:app __x0__ = (OrdinaryObjectCreate INTRINSIC_AsyncFromSyncIteratorPrototype (new ["SyncIteratorRecord"]))
+  |  0:let asyncIterator = [! __x0__]
+  |  1:asyncIterator.SyncIteratorRecord = syncIteratorRecord
+  |  2:app __x1__ = (Get asyncIterator "next")
+  |  2:let nextMethod = [! __x1__]
+  |  3:let iteratorRecord = (new Record("Iterator" -> asyncIterator, "NextMethod" -> nextMethod, "Done" -> false))
+  |  4:return iteratorRecord
+  |}""".stripMargin)
+  val code = scala.Array[String](
+    """          1. Let _asyncIterator_ be ! OrdinaryObjectCreate(%AsyncFromSyncIteratorPrototype%, « [[SyncIteratorRecord]] »).""",
+    """          1. Set _asyncIterator_.[[SyncIteratorRecord]] to _syncIteratorRecord_.""",
+    """          1. Let _nextMethod_ be ! Get(_asyncIterator_, *"next"*).""",
+    """          1. Let _iteratorRecord_ be the Record { [[Iterator]]: _asyncIterator_, [[NextMethod]]: _nextMethod_, [[Done]]: *false* }.""",
+    """          1. Return _iteratorRecord_.""",
+  )
 }

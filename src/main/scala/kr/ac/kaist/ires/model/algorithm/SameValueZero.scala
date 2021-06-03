@@ -2,41 +2,28 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.ir.Parser._
+import Param.Kind._
 
-object SameValueZero extends Algorithm {
-  val name: String = "SameValueZero"
-  val length: Int = 2
-  val lang: Boolean = true
-  val func: Func = FixUIdWalker(parseFunc(""""SameValueZero" (x, y) => {
-    app __x0__ = (Type x)
-    app __x1__ = (Type y)
-    if (! (= __x0__ __x1__)) {
-      app __x2__ = (WrapCompletion false)
-      return __x2__
-    } else {}
-    app __x3__ = (Type x)
-    if (= __x3__ Number) {
-      if (&& (= x NaN) (= y NaN)) {
-        app __x4__ = (WrapCompletion true)
-        return __x4__
-      } else {}
-      if (&& (= x 0i) (= y -0.0)) {
-        app __x5__ = (WrapCompletion true)
-        return __x5__
-      } else {}
-      if (&& (= x -0.0) (= y 0i)) {
-        app __x6__ = (WrapCompletion true)
-        return __x6__
-      } else {}
-      if (= x y) {
-        app __x7__ = (WrapCompletion true)
-        return __x7__
-      } else {}
-      app __x8__ = (WrapCompletion false)
-      return __x8__
-    } else {}
-    app __x9__ = (SameValueNonNumber x y)
-    app __x10__ = (WrapCompletion __x9__)
-    return __x10__
-  }"""), this)
+object `AL::SameValueZero` extends Algo {
+  val head = NormalHead("SameValueZero", List(Param("x", Normal), Param("y", Normal)))
+  val ids = List(
+    "sec-samevaluezero",
+    "sec-testing-and-comparison-operations",
+    "sec-abstract-operations",
+  )
+  val rawBody = parseInst("""{
+  |  0:if (! (= (typeof x) (typeof y))) return false else 0:{}
+  |  1:if (|| (= (typeof x) Number) (= (typeof x) BigInt)) {
+  |    2:app __x0__ = (PRIMITIVE[(typeof x)].sameValueZero x y)
+  |    2:return [! __x0__]
+  |  } else 0:{}
+  |  3:app __x1__ = (SameValueNonNumeric x y)
+  |  3:return [! __x1__]
+  |}""".stripMargin)
+  val code = scala.Array[String](
+    """        1. If Type(_x_) is different from Type(_y_), return *false*.""",
+    """        1. If Type(_x_) is Number or BigInt, then""",
+    """          1. Return ! Type(_x_)::sameValueZero(_x_, _y_).""",
+    """        1. Return ! SameValueNonNumeric(_x_, _y_).""",
+  )
 }

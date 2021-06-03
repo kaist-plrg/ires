@@ -1,6 +1,5 @@
 package kr.ac.kaist.ires.model
 
-import kr.ac.kaist.ires.{ AST, ASTInfo, Lexical }
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.UnexpectedSemantics
 import scala.collection.immutable.{ Set => SSet }
@@ -8,6 +7,7 @@ import scala.collection.immutable.{ Set => SSet }
 trait TryStatement extends AST {
   val kind: String = "TryStatement"
 }
+
 case class TryStatement0(x1: Block, x2: Catch, parserParams: List[Boolean]) extends TryStatement {
   x1.parent = Some(this)
   x2.parent = Some(this)
@@ -21,16 +21,17 @@ case class TryStatement0(x1: Block, x2: Catch, parserParams: List[Boolean]) exte
 }
 object TryStatement0 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "ContainsDuplicateLabels0" -> TryStatement0ContainsDuplicateLabels0.func,
-    "ContainsUndefinedBreakTarget0" -> TryStatement0ContainsUndefinedBreakTarget0.func,
-    "ContainsUndefinedContinueTarget0" -> TryStatement0ContainsUndefinedContinueTarget0.func,
-    "Evaluation0" -> TryStatement0Evaluation0.func,
-    "HasCallInTailPosition0" -> TryStatement0HasCallInTailPosition0.func,
-    "VarDeclaredNames0" -> TryStatement0VarDeclaredNames0.func,
-    "VarScopedDeclarations0" -> TryStatement0VarScopedDeclarations0.func
+  val semMap: Map[String, Algo] = Map(
+    "VarDeclaredNames0" -> `AL::TryStatement[0,0].VarDeclaredNames`,
+    "VarScopedDeclarations0" -> `AL::TryStatement[0,0].VarScopedDeclarations`,
+    "ContainsDuplicateLabels0" -> `AL::TryStatement[0,0].ContainsDuplicateLabels`,
+    "ContainsUndefinedBreakTarget0" -> `AL::TryStatement[0,0].ContainsUndefinedBreakTarget`,
+    "ContainsUndefinedContinueTarget0" -> `AL::TryStatement[0,0].ContainsUndefinedContinueTarget`,
+    "Evaluation0" -> `AL::TryStatement[0,0].Evaluation`,
+    "HasCallInTailPosition0" -> `AL::TryStatement[0,0].HasCallInTailPosition`,
   )
 }
+
 case class TryStatement1(x1: Block, x2: Finally, parserParams: List[Boolean]) extends TryStatement {
   x1.parent = Some(this)
   x2.parent = Some(this)
@@ -44,16 +45,17 @@ case class TryStatement1(x1: Block, x2: Finally, parserParams: List[Boolean]) ex
 }
 object TryStatement1 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "ContainsDuplicateLabels0" -> TryStatement1ContainsDuplicateLabels0.func,
-    "ContainsUndefinedBreakTarget0" -> TryStatement1ContainsUndefinedBreakTarget0.func,
-    "ContainsUndefinedContinueTarget0" -> TryStatement1ContainsUndefinedContinueTarget0.func,
-    "Evaluation0" -> TryStatement1Evaluation0.func,
-    "HasCallInTailPosition0" -> TryStatement1HasCallInTailPosition0.func,
-    "VarDeclaredNames0" -> TryStatement1VarDeclaredNames0.func,
-    "VarScopedDeclarations0" -> TryStatement1VarScopedDeclarations0.func
+  val semMap: Map[String, Algo] = Map(
+    "VarDeclaredNames0" -> `AL::TryStatement[1,0].VarDeclaredNames`,
+    "VarScopedDeclarations0" -> `AL::TryStatement[1,0].VarScopedDeclarations`,
+    "ContainsDuplicateLabels0" -> `AL::TryStatement[1,0].ContainsDuplicateLabels`,
+    "ContainsUndefinedBreakTarget0" -> `AL::TryStatement[1,0].ContainsUndefinedBreakTarget`,
+    "ContainsUndefinedContinueTarget0" -> `AL::TryStatement[1,0].ContainsUndefinedContinueTarget`,
+    "Evaluation0" -> `AL::TryStatement[1,0].Evaluation`,
+    "HasCallInTailPosition0" -> `AL::TryStatement[1,0].HasCallInTailPosition`,
   )
 }
+
 case class TryStatement2(x1: Block, x2: Catch, x3: Finally, parserParams: List[Boolean]) extends TryStatement {
   x1.parent = Some(this)
   x2.parent = Some(this)
@@ -68,13 +70,13 @@ case class TryStatement2(x1: Block, x2: Catch, x3: Finally, parserParams: List[B
 }
 object TryStatement2 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "ContainsDuplicateLabels0" -> TryStatement2ContainsDuplicateLabels0.func,
-    "ContainsUndefinedBreakTarget0" -> TryStatement2ContainsUndefinedBreakTarget0.func,
-    "ContainsUndefinedContinueTarget0" -> TryStatement2ContainsUndefinedContinueTarget0.func,
-    "Evaluation0" -> TryStatement2Evaluation0.func,
-    "HasCallInTailPosition0" -> TryStatement2HasCallInTailPosition0.func,
-    "VarDeclaredNames0" -> TryStatement2VarDeclaredNames0.func,
-    "VarScopedDeclarations0" -> TryStatement2VarScopedDeclarations0.func
+  val semMap: Map[String, Algo] = Map(
+    "VarDeclaredNames0" -> `AL::TryStatement[2,0].VarDeclaredNames`,
+    "VarScopedDeclarations0" -> `AL::TryStatement[2,0].VarScopedDeclarations`,
+    "ContainsDuplicateLabels0" -> `AL::TryStatement[2,0].ContainsDuplicateLabels`,
+    "ContainsUndefinedBreakTarget0" -> `AL::TryStatement[2,0].ContainsUndefinedBreakTarget`,
+    "ContainsUndefinedContinueTarget0" -> `AL::TryStatement[2,0].ContainsUndefinedContinueTarget`,
+    "Evaluation0" -> `AL::TryStatement[2,0].Evaluation`,
+    "HasCallInTailPosition0" -> `AL::TryStatement[2,0].HasCallInTailPosition`,
   )
 }

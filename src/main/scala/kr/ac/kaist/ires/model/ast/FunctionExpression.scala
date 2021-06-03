@@ -1,6 +1,5 @@
 package kr.ac.kaist.ires.model
 
-import kr.ac.kaist.ires.{ AST, ASTInfo, Lexical }
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.UnexpectedSemantics
 import scala.collection.immutable.{ Set => SSet }
@@ -8,6 +7,7 @@ import scala.collection.immutable.{ Set => SSet }
 trait FunctionExpression extends AST {
   val kind: String = "FunctionExpression"
 }
+
 case class FunctionExpression0(x1: Option[BindingIdentifier], x3: FormalParameters, x6: FunctionBody, parserParams: List[Boolean]) extends FunctionExpression {
   x1.foreach((m) => m.parent = Some(this))
   x3.parent = Some(this)
@@ -22,14 +22,15 @@ case class FunctionExpression0(x1: Option[BindingIdentifier], x3: FormalParamete
 }
 object FunctionExpression0 extends ASTInfo {
   val maxK: Int = 1
-  val semMap: Map[String, Func] = Map(
-    "Contains1" -> FunctionExpression0Contains1.func,
-    "Evaluation0" -> FunctionExpression0Evaluation0.func,
-    "Evaluation1" -> FunctionExpression0Evaluation1.func,
-    "HasName0" -> FunctionExpression0HasName0.func,
-    "HasName1" -> FunctionExpression0HasName1.func,
-    "IsFunctionDefinition0" -> FunctionExpression0IsFunctionDefinition0.func,
-    "IsFunctionDefinition1" -> FunctionExpression0IsFunctionDefinition1.func,
-    "NamedEvaluation0" -> FunctionExpression0NamedEvaluation0.func
+  val semMap: Map[String, Algo] = Map(
+    "HasName0" -> `AL::FunctionExpression[0,0].HasName`,
+    "HasName1" -> `AL::FunctionExpression[0,1].HasName`,
+    "IsFunctionDefinition1" -> `AL::FunctionExpression[0,1].IsFunctionDefinition`,
+    "NamedEvaluation0" -> `AL::FunctionExpression[0,0].NamedEvaluation`,
+    "Contains1" -> `AL::FunctionExpression[0,1].Contains`,
+    "InstantiateOrdinaryFunctionExpression0" -> `AL::FunctionExpression[0,0].InstantiateOrdinaryFunctionExpression`,
+    "InstantiateOrdinaryFunctionExpression1" -> `AL::FunctionExpression[0,1].InstantiateOrdinaryFunctionExpression`,
+    "Evaluation1" -> `AL::FunctionExpression[0,1].Evaluation`,
+    "EarlyErrors1" -> `AL::FunctionExpression[0,1].EarlyErrors`,
   )
 }

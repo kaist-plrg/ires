@@ -2,45 +2,48 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.ir.Parser._
+import Param.Kind._
 
-object OrdinaryGet extends Algorithm {
-  val name: String = "OrdinaryGet"
-  val length: Int = 3
-  val lang: Boolean = true
-  val func: Func = FixUIdWalker(parseFunc(""""OrdinaryGet" (O, P, Receiver) => {
-    app __x0__ = (IsPropertyKey P)
-    assert (= __x0__ true)
-    app __x1__ = (O["GetOwnProperty"] O P)
-    if (is-completion __x1__) if (= __x1__["Type"] CONST_normal) __x1__ = __x1__["Value"] else return __x1__ else {}
-    let desc = __x1__
-    if (= desc undefined) {
-      app __x2__ = (O["GetPrototypeOf"] O)
-      if (is-completion __x2__) if (= __x2__["Type"] CONST_normal) __x2__ = __x2__["Value"] else return __x2__ else {}
-      let parent = __x2__
-      if (= parent null) {
-        app __x3__ = (WrapCompletion undefined)
-        return __x3__
-      } else {}
-      app __x4__ = (parent["Get"] parent P Receiver)
-      if (is-completion __x4__) if (= __x4__["Type"] CONST_normal) __x4__ = __x4__["Value"] else return __x4__ else {}
-      app __x5__ = (WrapCompletion __x4__)
-      return __x5__
-    } else {}
-    app __x6__ = (IsDataDescriptor desc)
-    if (= __x6__ true) {
-      app __x7__ = (WrapCompletion desc["Value"])
-      return __x7__
-    } else {}
-    app __x8__ = (IsAccessorDescriptor desc)
-    assert (= __x8__ true)
-    let getter = desc["Get"]
-    if (= getter undefined) {
-      app __x9__ = (WrapCompletion undefined)
-      return __x9__
-    } else {}
-    app __x10__ = (Call getter Receiver)
-    if (is-completion __x10__) if (= __x10__["Type"] CONST_normal) __x10__ = __x10__["Value"] else return __x10__ else {}
-    app __x11__ = (WrapCompletion __x10__)
-    return __x11__
-  }"""), this)
+object `AL::OrdinaryGet` extends Algo {
+  val head = NormalHead("OrdinaryGet", List(Param("O", Normal), Param("P", Normal), Param("Receiver", Normal)))
+  val ids = List(
+    "sec-ordinaryget",
+    "sec-ordinary-object-internal-methods-and-internal-slots-get-p-receiver",
+    "sec-ordinary-object-internal-methods-and-internal-slots",
+    "sec-ordinary-and-exotic-objects-behaviours",
+  )
+  val rawBody = parseInst("""{
+  |  0:app __x0__ = (IsPropertyKey P)
+  |  0:assert (= __x0__ true)
+  |  1:app __x1__ = (O.GetOwnProperty O P)
+  |  1:let desc = [? __x1__]
+  |  2:if (= desc undefined) {
+  |    3:app __x2__ = (O.GetPrototypeOf O)
+  |    3:let parent = [? __x2__]
+  |    4:if (= parent null) return undefined else 15:{}
+  |    5:app __x3__ = (parent.Get parent P Receiver)
+  |    5:return [? __x3__]
+  |  } else 15:{}
+  |  6:app __x4__ = (IsDataDescriptor desc)
+  |  6:if (= __x4__ true) return desc.Value else 15:{}
+  |  7:app __x5__ = (IsAccessorDescriptor desc)
+  |  7:assert (= __x5__ true)
+  |  8:let getter = desc.Get
+  |  9:if (= getter undefined) return undefined else 15:{}
+  |  10:app __x6__ = (Call getter Receiver)
+  |  10:return [? __x6__]
+  |}""".stripMargin)
+  val code = scala.Array[String](
+    """          1. Assert: IsPropertyKey(_P_) is *true*.""",
+    """          1. Let _desc_ be ? _O_.[[GetOwnProperty]](_P_).""",
+    """          1. If _desc_ is *undefined*, then""",
+    """            1. Let _parent_ be ? _O_.[[GetPrototypeOf]]().""",
+    """            1. If _parent_ is *null*, return *undefined*.""",
+    """            1. Return ? _parent_.[[Get]](_P_, _Receiver_).""",
+    """          1. If IsDataDescriptor(_desc_) is *true*, return _desc_.[[Value]].""",
+    """          1. Assert: IsAccessorDescriptor(_desc_) is *true*.""",
+    """          1. Let _getter_ be _desc_.[[Get]].""",
+    """          1. If _getter_ is *undefined*, return *undefined*.""",
+    """          1. Return ? Call(_getter_, _Receiver_).""",
+  )
 }

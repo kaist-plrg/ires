@@ -1,6 +1,5 @@
 package kr.ac.kaist.ires.model
 
-import kr.ac.kaist.ires.{ AST, ASTInfo, Lexical }
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.UnexpectedSemantics
 import scala.collection.immutable.{ Set => SSet }
@@ -8,6 +7,7 @@ import scala.collection.immutable.{ Set => SSet }
 trait PropertySetParameterList extends AST {
   val kind: String = "PropertySetParameterList"
 }
+
 case class PropertySetParameterList0(x0: FormalParameter, parserParams: List[Boolean]) extends PropertySetParameterList {
   x0.parent = Some(this)
   val name: String = "PropertySetParameterList0"
@@ -20,7 +20,7 @@ case class PropertySetParameterList0(x0: FormalParameter, parserParams: List[Boo
 }
 object PropertySetParameterList0 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "ExpectedArgumentCount0" -> PropertySetParameterList0ExpectedArgumentCount0.func
+  val semMap: Map[String, Algo] = Map(
+    "ExpectedArgumentCount0" -> `AL::PropertySetParameterList[0,0].ExpectedArgumentCount`,
   )
 }

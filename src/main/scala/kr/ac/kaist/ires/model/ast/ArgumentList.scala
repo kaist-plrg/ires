@@ -1,6 +1,5 @@
 package kr.ac.kaist.ires.model
 
-import kr.ac.kaist.ires.{ AST, ASTInfo, Lexical }
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.UnexpectedSemantics
 import scala.collection.immutable.{ Set => SSet }
@@ -8,6 +7,7 @@ import scala.collection.immutable.{ Set => SSet }
 trait ArgumentList extends AST {
   val kind: String = "ArgumentList"
 }
+
 case class ArgumentList0(x0: AssignmentExpression, parserParams: List[Boolean]) extends ArgumentList {
   x0.parent = Some(this)
   val name: String = "ArgumentList0"
@@ -20,10 +20,11 @@ case class ArgumentList0(x0: AssignmentExpression, parserParams: List[Boolean]) 
 }
 object ArgumentList0 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "ArgumentListEvaluation0" -> ArgumentList0ArgumentListEvaluation0.func
+  val semMap: Map[String, Algo] = Map(
+    "ArgumentListEvaluation0" -> `AL::ArgumentList[0,0].ArgumentListEvaluation`,
   )
 }
+
 case class ArgumentList1(x1: AssignmentExpression, parserParams: List[Boolean]) extends ArgumentList {
   x1.parent = Some(this)
   val name: String = "ArgumentList1"
@@ -36,10 +37,11 @@ case class ArgumentList1(x1: AssignmentExpression, parserParams: List[Boolean]) 
 }
 object ArgumentList1 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "ArgumentListEvaluation0" -> ArgumentList1ArgumentListEvaluation0.func
+  val semMap: Map[String, Algo] = Map(
+    "ArgumentListEvaluation0" -> `AL::ArgumentList[1,0].ArgumentListEvaluation`,
   )
 }
+
 case class ArgumentList2(x0: ArgumentList, x2: AssignmentExpression, parserParams: List[Boolean]) extends ArgumentList {
   x0.parent = Some(this)
   x2.parent = Some(this)
@@ -53,10 +55,11 @@ case class ArgumentList2(x0: ArgumentList, x2: AssignmentExpression, parserParam
 }
 object ArgumentList2 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "ArgumentListEvaluation0" -> ArgumentList2ArgumentListEvaluation0.func
+  val semMap: Map[String, Algo] = Map(
+    "ArgumentListEvaluation0" -> `AL::ArgumentList[2,0].ArgumentListEvaluation`,
   )
 }
+
 case class ArgumentList3(x0: ArgumentList, x3: AssignmentExpression, parserParams: List[Boolean]) extends ArgumentList {
   x0.parent = Some(this)
   x3.parent = Some(this)
@@ -70,7 +73,7 @@ case class ArgumentList3(x0: ArgumentList, x3: AssignmentExpression, parserParam
 }
 object ArgumentList3 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "ArgumentListEvaluation0" -> ArgumentList3ArgumentListEvaluation0.func
+  val semMap: Map[String, Algo] = Map(
+    "ArgumentListEvaluation0" -> `AL::ArgumentList[3,0].ArgumentListEvaluation`,
   )
 }

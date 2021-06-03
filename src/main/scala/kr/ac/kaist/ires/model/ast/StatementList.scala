@@ -1,6 +1,5 @@
 package kr.ac.kaist.ires.model
 
-import kr.ac.kaist.ires.{ AST, ASTInfo, Lexical }
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.UnexpectedSemantics
 import scala.collection.immutable.{ Set => SSet }
@@ -8,6 +7,7 @@ import scala.collection.immutable.{ Set => SSet }
 trait StatementList extends AST {
   val kind: String = "StatementList"
 }
+
 case class StatementList0(x0: StatementListItem, parserParams: List[Boolean]) extends StatementList {
   x0.parent = Some(this)
   val name: String = "StatementList0"
@@ -20,8 +20,9 @@ case class StatementList0(x0: StatementListItem, parserParams: List[Boolean]) ex
 }
 object StatementList0 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map()
+  val semMap: Map[String, Algo] = Map()
 }
+
 case class StatementList1(x0: StatementList, x1: StatementListItem, parserParams: List[Boolean]) extends StatementList {
   x0.parent = Some(this)
   x1.parent = Some(this)
@@ -35,19 +36,19 @@ case class StatementList1(x0: StatementList, x1: StatementListItem, parserParams
 }
 object StatementList1 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "ContainsDuplicateLabels0" -> StatementList1ContainsDuplicateLabels0.func,
-    "ContainsUndefinedBreakTarget0" -> StatementList1ContainsUndefinedBreakTarget0.func,
-    "ContainsUndefinedContinueTarget0" -> StatementList1ContainsUndefinedContinueTarget0.func,
-    "Evaluation0" -> StatementList1Evaluation0.func,
-    "HasCallInTailPosition0" -> StatementList1HasCallInTailPosition0.func,
-    "LexicallyDeclaredNames0" -> StatementList1LexicallyDeclaredNames0.func,
-    "LexicallyScopedDeclarations0" -> StatementList1LexicallyScopedDeclarations0.func,
-    "TopLevelLexicallyDeclaredNames0" -> StatementList1TopLevelLexicallyDeclaredNames0.func,
-    "TopLevelLexicallyScopedDeclarations0" -> StatementList1TopLevelLexicallyScopedDeclarations0.func,
-    "TopLevelVarDeclaredNames0" -> StatementList1TopLevelVarDeclaredNames0.func,
-    "TopLevelVarScopedDeclarations0" -> StatementList1TopLevelVarScopedDeclarations0.func,
-    "VarDeclaredNames0" -> StatementList1VarDeclaredNames0.func,
-    "VarScopedDeclarations0" -> StatementList1VarScopedDeclarations0.func
+  val semMap: Map[String, Algo] = Map(
+    "LexicallyDeclaredNames0" -> `AL::StatementList[1,0].LexicallyDeclaredNames`,
+    "LexicallyScopedDeclarations0" -> `AL::StatementList[1,0].LexicallyScopedDeclarations`,
+    "VarDeclaredNames0" -> `AL::StatementList[1,0].VarDeclaredNames`,
+    "VarScopedDeclarations0" -> `AL::StatementList[1,0].VarScopedDeclarations`,
+    "TopLevelLexicallyDeclaredNames0" -> `AL::StatementList[1,0].TopLevelLexicallyDeclaredNames`,
+    "TopLevelLexicallyScopedDeclarations0" -> `AL::StatementList[1,0].TopLevelLexicallyScopedDeclarations`,
+    "TopLevelVarDeclaredNames0" -> `AL::StatementList[1,0].TopLevelVarDeclaredNames`,
+    "TopLevelVarScopedDeclarations0" -> `AL::StatementList[1,0].TopLevelVarScopedDeclarations`,
+    "ContainsDuplicateLabels0" -> `AL::StatementList[1,0].ContainsDuplicateLabels`,
+    "ContainsUndefinedBreakTarget0" -> `AL::StatementList[1,0].ContainsUndefinedBreakTarget`,
+    "ContainsUndefinedContinueTarget0" -> `AL::StatementList[1,0].ContainsUndefinedContinueTarget`,
+    "Evaluation0" -> `AL::StatementList[1,0].Evaluation`,
+    "HasCallInTailPosition0" -> `AL::StatementList[1,0].HasCallInTailPosition`,
   )
 }

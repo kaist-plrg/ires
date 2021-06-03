@@ -2,25 +2,31 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.ir.Parser._
+import Param.Kind._
 
-object GetSuperConstructor extends Algorithm {
-  val name: String = "GetSuperConstructor"
-  val length: Int = 0
-  val lang: Boolean = true
-  val func: Func = FixUIdWalker(parseFunc(""""GetSuperConstructor" () => {
-    app __x0__ = (GetThisEnvironment )
-    let envRec = __x0__
-    assert (= (typeof envRec) "FunctionEnvironmentRecord")
-    let activeFunction = envRec["FunctionObject"]
-    app __x1__ = (activeFunction["GetPrototypeOf"] activeFunction)
-    if (is-completion __x1__) if (= __x1__["Type"] CONST_normal) __x1__ = __x1__["Value"] else return __x1__ else {}
-    let superConstructor = __x1__
-    app __x2__ = (IsConstructor superConstructor)
-    if (= __x2__ false) {
-      app __x3__ = (ThrowCompletion (new OrdinaryObject("Prototype" -> INTRINSIC_TypeErrorPrototype, "ErrorData" -> undefined, "SubMap" -> (new SubMap()))))
-      return __x3__
-    } else {}
-    app __x4__ = (WrapCompletion superConstructor)
-    return __x4__
-  }"""), this)
+object `AL::GetSuperConstructor` extends Algo {
+  val head = NormalHead("GetSuperConstructor", List())
+  val ids = List(
+    "sec-getsuperconstructor",
+    "sec-super-keyword",
+    "sec-left-hand-side-expressions",
+    "sec-ecmascript-language-expressions",
+  )
+  val rawBody = parseInst("""{
+  |  0:app __x0__ = (GetThisEnvironment)
+  |  0:let envRec = __x0__
+  |  1:assert (is-instance-of envRec FunctionEnvironmentRecord)
+  |  2:let activeFunction = envRec.FunctionObject
+  |  4:app __x1__ = (activeFunction.GetPrototypeOf activeFunction)
+  |  4:let superConstructor = [! __x1__]
+  |  5:return superConstructor
+  |}""".stripMargin)
+  val code = scala.Array[String](
+    """          1. Let _envRec_ be GetThisEnvironment().""",
+    """          1. Assert: _envRec_ is a function Environment Record.""",
+    """          1. Let _activeFunction_ be _envRec_.[[FunctionObject]].""",
+    """          1. Assert: _activeFunction_ is an ECMAScript function object.""",
+    """          1. Let _superConstructor_ be ! _activeFunction_.[[GetPrototypeOf]]().""",
+    """          1. Return _superConstructor_.""",
+  )
 }

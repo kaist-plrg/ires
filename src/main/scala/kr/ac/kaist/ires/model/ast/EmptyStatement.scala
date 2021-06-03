@@ -1,6 +1,5 @@
 package kr.ac.kaist.ires.model
 
-import kr.ac.kaist.ires.{ AST, ASTInfo, Lexical }
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.UnexpectedSemantics
 import scala.collection.immutable.{ Set => SSet }
@@ -8,6 +7,7 @@ import scala.collection.immutable.{ Set => SSet }
 trait EmptyStatement extends AST {
   val kind: String = "EmptyStatement"
 }
+
 case class EmptyStatement0(parserParams: List[Boolean]) extends EmptyStatement {
   val name: String = "EmptyStatement0"
   override def toString: String = {
@@ -19,7 +19,7 @@ case class EmptyStatement0(parserParams: List[Boolean]) extends EmptyStatement {
 }
 object EmptyStatement0 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "Evaluation0" -> EmptyStatement0Evaluation0.func
+  val semMap: Map[String, Algo] = Map(
+    "Evaluation0" -> `AL::EmptyStatement[0,0].Evaluation`,
   )
 }

@@ -2,23 +2,27 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.ir.Parser._
+import Param.Kind._
 
-object IteratorStep extends Algorithm {
-  val name: String = "IteratorStep"
-  val length: Int = 1
-  val lang: Boolean = true
-  val func: Func = FixUIdWalker(parseFunc(""""IteratorStep" (iteratorRecord) => {
-    app __x0__ = (IteratorNext iteratorRecord)
-    if (is-completion __x0__) if (= __x0__["Type"] CONST_normal) __x0__ = __x0__["Value"] else return __x0__ else {}
-    let result = __x0__
-    app __x1__ = (IteratorComplete result)
-    if (is-completion __x1__) if (= __x1__["Type"] CONST_normal) __x1__ = __x1__["Value"] else return __x1__ else {}
-    let done = __x1__
-    if (= done true) {
-      app __x2__ = (WrapCompletion false)
-      return __x2__
-    } else {}
-    app __x3__ = (WrapCompletion result)
-    return __x3__
-  }"""), this)
+object `AL::IteratorStep` extends Algo {
+  val head = NormalHead("IteratorStep", List(Param("iteratorRecord", Normal)))
+  val ids = List(
+    "sec-iteratorstep",
+    "sec-operations-on-iterator-objects",
+    "sec-abstract-operations",
+  )
+  val rawBody = parseInst("""{
+  |  0:app __x0__ = (IteratorNext iteratorRecord)
+  |  0:let result = [? __x0__]
+  |  1:app __x1__ = (IteratorComplete result)
+  |  1:let done = [? __x1__]
+  |  2:if (= done true) return false else 1:{}
+  |  3:return result
+  |}""".stripMargin)
+  val code = scala.Array[String](
+    """        1. Let _result_ be ? IteratorNext(_iteratorRecord_).""",
+    """        1. Let _done_ be ? IteratorComplete(_result_).""",
+    """        1. If _done_ is *true*, return *false*.""",
+    """        1. Return _result_.""",
+  )
 }

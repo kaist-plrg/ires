@@ -2,21 +2,25 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.ir.Parser._
+import Param.Kind._
 
-object ToLength extends Algorithm {
-  val name: String = "ToLength"
-  val length: Int = 1
-  val lang: Boolean = true
-  val func: Func = FixUIdWalker(parseFunc(""""ToLength" (argument) => {
-    app __x0__ = (ToInteger argument)
-    if (is-completion __x0__) if (= __x0__["Type"] CONST_normal) __x0__ = __x0__["Value"] else return __x0__ else {}
-    let len = __x0__
-    if (! (< 0i len)) {
-      app __x1__ = (WrapCompletion 0i)
-      return __x1__
-    } else {}
-    app __x2__ = (min len (- 9007199254740992i 1i))
-    app __x3__ = (WrapCompletion __x2__)
-    return __x3__
-  }"""), this)
+object `AL::ToLength` extends Algo {
+  val head = NormalHead("ToLength", List(Param("argument", Normal)))
+  val ids = List(
+    "sec-tolength",
+    "sec-type-conversion",
+    "sec-abstract-operations",
+  )
+  val rawBody = parseInst("""{
+  |  0:app __x0__ = (ToIntegerOrInfinity argument)
+  |  0:let len = [? __x0__]
+  |  1:if (! (< 0i len)) return 0i else 0:{}
+  |  2:app __x1__ = (min len (- (** 2.0 53i) 1i))
+  |  2:return __x1__
+  |}""".stripMargin)
+  val code = scala.Array[String](
+    """        1. Let _len_ be ? ToIntegerOrInfinity(_argument_).""",
+    """        1. If _len_ ≤ 0, return *+0*<sub>𝔽</sub>.""",
+    """        1. Return 𝔽(min(_len_, 2<sup>53</sup> - 1)).""",
+  )
 }

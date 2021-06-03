@@ -1,6 +1,5 @@
 package kr.ac.kaist.ires.model
 
-import kr.ac.kaist.ires.{ AST, ASTInfo, Lexical }
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.UnexpectedSemantics
 import scala.collection.immutable.{ Set => SSet }
@@ -8,28 +7,30 @@ import scala.collection.immutable.{ Set => SSet }
 trait ConciseBody extends AST {
   val kind: String = "ConciseBody"
 }
-case class ConciseBody0(x1: AssignmentExpression, parserParams: List[Boolean]) extends ConciseBody {
+
+case class ConciseBody0(x1: ExpressionBody, parserParams: List[Boolean]) extends ConciseBody {
   x1.parent = Some(this)
   val name: String = "ConciseBody0"
   override def toString: String = {
     s"$x1"
   }
   val k: Int = d(x1, 0)
-  val fullList: List[(String, Value)] = l("AssignmentExpression", x1, Nil).reverse
+  val fullList: List[(String, Value)] = l("ExpressionBody", x1, Nil).reverse
   val info: ASTInfo = ConciseBody0
 }
 object ConciseBody0 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "ContainsUseStrict0" -> ConciseBody0ContainsUseStrict0.func,
-    "EvaluateBody0" -> ConciseBody0EvaluateBody0.func,
-    "HasCallInTailPosition0" -> ConciseBody0HasCallInTailPosition0.func,
-    "LexicallyDeclaredNames0" -> ConciseBody0LexicallyDeclaredNames0.func,
-    "LexicallyScopedDeclarations0" -> ConciseBody0LexicallyScopedDeclarations0.func,
-    "VarDeclaredNames0" -> ConciseBody0VarDeclaredNames0.func,
-    "VarScopedDeclarations0" -> ConciseBody0VarScopedDeclarations0.func
+  val semMap: Map[String, Algo] = Map(
+    "LexicallyDeclaredNames0" -> `AL::ConciseBody[0,0].LexicallyDeclaredNames`,
+    "LexicallyScopedDeclarations0" -> `AL::ConciseBody[0,0].LexicallyScopedDeclarations`,
+    "VarDeclaredNames0" -> `AL::ConciseBody[0,0].VarDeclaredNames`,
+    "VarScopedDeclarations0" -> `AL::ConciseBody[0,0].VarScopedDeclarations`,
+    "EvaluateBody0" -> `AL::ConciseBody[0,0].EvaluateBody`,
+    "ConciseBodyContainsUseStrict0" -> `AL::ConciseBody[0,0].ConciseBodyContainsUseStrict`,
+    "EvaluateConciseBody0" -> `AL::ConciseBody[0,0].EvaluateConciseBody`,
   )
 }
+
 case class ConciseBody1(x1: FunctionBody, parserParams: List[Boolean]) extends ConciseBody {
   x1.parent = Some(this)
   val name: String = "ConciseBody1"
@@ -42,5 +43,7 @@ case class ConciseBody1(x1: FunctionBody, parserParams: List[Boolean]) extends C
 }
 object ConciseBody1 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map()
+  val semMap: Map[String, Algo] = Map(
+    "ConciseBodyContainsUseStrict0" -> `AL::ConciseBody[1,0].ConciseBodyContainsUseStrict`,
+  )
 }

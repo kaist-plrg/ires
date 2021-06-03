@@ -87,6 +87,10 @@ object IRES {
   val options: List[PhaseOption[IRESConfig]] = List(
     ("silent", BoolOption(c => c.silent = true),
       "final results are not displayed."),
+    ("debug", BoolOption(c => DEBUG = true),
+      "turn on the debub option."),
+    ("log", BoolOption(c => LOG = true),
+      "turn on the log option."),
     ("time", BoolOption(c => c.time = true),
       "display duration time.")
   )
@@ -97,21 +101,18 @@ object IRES {
   // print help message.
   val help: String = {
     val s: StringBuilder = new StringBuilder
-    s.append("Invoked as script: ires args").append(LINE_SEP)
-      .append("Invoked by java: java ... kr.ac.kaist.ires.IRES args").append(LINE_SEP)
-      .append(LINE_SEP)
-      .append("* command list:").append(LINE_SEP)
-      .append("    Each command consists of following phases.").append(LINE_SEP)
-      .append("    format: {command} {phase} [>> {phase}]*").append(LINE_SEP).append(LINE_SEP)
+    s.append("* command list:").append(LINE_SEP)
+    s.append("    Each command consists of following phases.").append(LINE_SEP)
+    s.append("    format: {command} {phase} [>> {phase}]*").append(LINE_SEP).append(LINE_SEP)
     commands foreach (cmd => {
       s.append(s"    %-${INDENT}s".format(cmd.name))
         .append(cmd.toString.replace(LINE_SEP, LINE_SEP + "    " + " " * INDENT))
         .append(LINE_SEP)
     })
     s.append(LINE_SEP)
-      .append("* phase list:").append(LINE_SEP)
-      .append("    Each phase has following options.").append(LINE_SEP)
-      .append("    format: {phase} [-{phase}:{option}[={input}]]*").append(LINE_SEP).append(LINE_SEP)
+    s.append("* phase list:").append(LINE_SEP)
+    s.append("    Each phase has following options.").append(LINE_SEP)
+    s.append("    format: {phase} [-{phase}:{option}[={input}]]*").append(LINE_SEP).append(LINE_SEP)
     phases foreach (phase => {
       s.append(s"    %-${INDENT}s".format(phase.name))
       Useful.indentation(s, phase.help, INDENT + 4)
@@ -134,8 +135,9 @@ object IRES {
 }
 
 case class IRESConfig(
-    var command: Command,
-    var fileNames: List[String] = Nil,
-    var silent: Boolean = false,
-    var time: Boolean = false
+  var command: Command,
+  var args: List[String] = Nil,
+  var silent: Boolean = false,
+  var debug: Boolean = false,
+  var time: Boolean = false
 ) extends Config

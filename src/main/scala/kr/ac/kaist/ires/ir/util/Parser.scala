@@ -4,6 +4,7 @@ import java.io._
 import java.nio.charset.Charset
 import scala.util.Either
 import scala.util.parsing.combinator.{ JavaTokenParsers, RegexParsers }
+import kr.ac.kaist.ires.util.Useful._
 
 // parsers
 object Parser extends JavaTokenParsers with RegexParsers {
@@ -57,65 +58,67 @@ object Parser extends JavaTokenParsers with RegexParsers {
   lazy private val program: Parser[Program] = rep(inst) ^^ { Program(_) }
 
   // instructions
-  lazy private val inst: Parser[Inst] = {
-    "delete " ~> ref ^^ { IDelete(_) } |
-      ("append " ~> expr <~ "->") ~ expr ^^ { case e ~ l => IAppend(e, l) } |
-      ("prepend " ~> expr <~ "->") ~ expr ^^ { case e ~ l => IPrepend(e, l) } |
-      "return " ~> expr ^^ { case e => IReturn(e) } |
-      ("if " ~> expr) ~ inst ~ ("else" ~> inst) ^^ { case c ~ t ~ e => IIf(c, t, e) } |
-      ("while " ~> expr) ~ inst ^^ { case c ~ b => IWhile(c, b) } |
-      "{" ~> rep(inst) <~ "}" ^^ { case seq => ISeq(seq) } |
-      "assert " ~> expr ^^ { case e => IAssert(e) } |
-      "print " ~> expr ^^ { case e => IPrint(e) } |
-      ("let " ~> id <~ "=") ~ expr ^^ { case x ~ e => ILet(x, e) } |
-      ("app " ~> id <~ "=") ~ ("(" ~> expr) ~ (rep(expr) <~ ")") ^^ { case x ~ f ~ as => IApp(x, f, as) } |
-      ("access " ~> id <~ "=") ~ ("(" ~> expr) ~ (expr <~ ")") ^^ { case x ~ e1 ~ e2 => IAccess(x, e1, e2) } |
-      ("withcont " ~> id) ~ ("(" ~> repsep(id, ",") <~ ")" <~ "=") ~ inst ^^ { case x ~ ps ~ b => IWithCont(x, ps, b) } |
-      (ref <~ "=") ~ expr ^^ { case r ~ e => IAssign(r, e) } |
-      expr ^^ { case e => IExpr(e) }
-  }
+  lazy private val inst: Parser[Inst] = ???
+  // {
+  //   "delete " ~> ref ^^ { IDelete(_) } |
+  //     ("append " ~> expr <~ "->") ~ expr ^^ { case e ~ l => IAppend(e, l) } |
+  //     ("prepend " ~> expr <~ "->") ~ expr ^^ { case e ~ l => IPrepend(e, l) } |
+  //     "return " ~> expr ^^ { case e => IReturn(e) } |
+  //     ("if " ~> expr) ~ inst ~ ("else" ~> inst) ^^ { case c ~ t ~ e => IIf(c, t, e) } |
+  //     ("while " ~> expr) ~ inst ^^ { case c ~ b => IWhile(c, b) } |
+  //     "{" ~> rep(inst) <~ "}" ^^ { case seq => ISeq(seq) } |
+  //     "assert " ~> expr ^^ { case e => IAssert(e) } |
+  //     "print " ~> expr ^^ { case e => IPrint(e) } |
+  //     ("let " ~> id <~ "=") ~ expr ^^ { case x ~ e => ILet(x, e) } |
+  //     ("app " ~> id <~ "=") ~ ("(" ~> expr) ~ (rep(expr) <~ ")") ^^ { case x ~ f ~ as => IApp(x, f, as) } |
+  //     ("access " ~> id <~ "=") ~ ("(" ~> expr) ~ (expr <~ ")") ^^ { case x ~ e1 ~ e2 => IAccess(x, e1, e2) } |
+  //     ("withcont " ~> id) ~ ("(" ~> repsep(id, ",") <~ ")" <~ "=") ~ inst ^^ { case x ~ ps ~ b => IWithCont(x, ps, b) } |
+  //     (ref <~ "=") ~ expr ^^ { case r ~ e => IAssign(r, e) } |
+  //     expr ^^ { case e => IExpr(e) }
+  // }
 
   // expressions
-  lazy private val expr: Parser[Expr] = {
-    ref ^^ { ERef(_) } |
-      "(0|-?[1-9]\\d*)i".r ^^ { case s => EINum(s.dropRight(1).toLong) } |
-      floatingPointNumber ^^ { case s => ENum(s.toDouble) } |
-      "Infinity" ^^ { case s => ENum(Double.PositiveInfinity) } |
-      "+Infinity" ^^ { case s => ENum(Double.PositiveInfinity) } |
-      "-Infinity" ^^ { case s => ENum(Double.NegativeInfinity) } |
-      "NaN" ^^ { case s => ENum(Double.NaN) } |
-      string ^^ { EStr(_) } |
-      "true" ^^^ EBool(true) |
-      "false" ^^^ EBool(false) |
-      "undefined" ^^^ EUndef |
-      "null" ^^^ ENull |
-      "absent" ^^^ EAbsent |
-      "!!!" ~> string ^^ { ENotSupported(_) } |
-      "(" ~> (uop ~ expr) <~ ")" ^^ { case u ~ e => EUOp(u, e) } |
-      "(" ~> (bop ~ expr ~ expr) <~ ")" ^^ { case b ~ l ~ r => EBOp(b, l, r) } |
-      "(" ~> ("typeof" ~> expr) <~ ")" ^^ { case e => ETypeOf(e) } |
-      "(" ~> ("is-completion" ~> expr) <~ ")" ^^ { case e => EIsCompletion(e) } |
-      ("(" ~> repsep(id, ",") <~ ")") ~ ("[=>]" ~> inst) ^^ { case ps ~ b => ECont(ps, b) } |
-      ("(" ~> "new" ~> ty) ~ ("(" ~> repsep(prop, ",") <~ ")" <~ ")") ^^ {
-        case t ~ props => EMap(t, props)
-      } |
-      ("(" ~> "new" ~> ty <~ ")") ^^ { case t => EMap(t, Nil) } |
-      ("(" ~> "new" ~> "[" ~> repsep(expr, ",") <~ "]" <~ ")") ^^ { EList(_) } |
-      ("(" ~> "new" ~> "'" ~> expr <~ ")") ^^ { ESymbol(_) } |
-      ("(" ~> "pop" ~> expr ~ expr <~ ")") ^^ { case l ~ x => EPop(l, x) } |
-      ("(" ~> "is-instance-of" ~> expr) ~ (ident <~ ")") ^^ {
-        case e ~ x => EIsInstanceOf(e, x)
-      } |
-      ("(" ~> "get-elems" ~> expr) ~ (ident <~ ")") ^^ {
-        case e ~ x => EGetElems(e, x)
-      } |
-      "(" ~> "get-syntax" ~> expr <~ ")" ^^ { case e => EGetSyntax(e) } |
-      "(" ~> "parse-syntax" ~> expr ~ expr ~ rep(expr) <~ ")" ^^ { case e ~ r ~ le => EParseSyntax(e, r, le) } |
-      "(" ~> "convert" ~> expr ~ cop ~ rep(expr) <~ ")" ^^ { case e ~ r ~ l => EConvert(e, r, l) } |
-      "(" ~> "contains" ~> expr ~ expr <~ ")" ^^ { case l ~ e => EContains(l, e) } |
-      "(" ~> "copy-obj" ~> expr <~ ")" ^^ { case e => ECopy(e) } |
-      "(" ~> "map-keys" ~> expr <~ ")" ^^ { case e => EKeys(e) }
-  }
+  lazy private val expr: Parser[Expr] = ???
+  // {
+  //   ref ^^ { ERef(_) } |
+  //     "(0|-?[1-9]\\d*)i".r ^^ { case s => EINum(s.dropRight(1).toLong) } |
+  //     floatingPointNumber ^^ { case s => ENum(s.toDouble) } |
+  //     "Infinity" ^^ { case s => ENum(Double.PositiveInfinity) } |
+  //     "+Infinity" ^^ { case s => ENum(Double.PositiveInfinity) } |
+  //     "-Infinity" ^^ { case s => ENum(Double.NegativeInfinity) } |
+  //     "NaN" ^^ { case s => ENum(Double.NaN) } |
+  //     string ^^ { EStr(_) } |
+  //     "true" ^^^ EBool(true) |
+  //     "false" ^^^ EBool(false) |
+  //     "undefined" ^^^ EUndef |
+  //     "null" ^^^ ENull |
+  //     "absent" ^^^ EAbsent |
+  //     "!!!" ~> string ^^ { ENotSupported(_) } |
+  //     "(" ~> (uop ~ expr) <~ ")" ^^ { case u ~ e => EUOp(u, e) } |
+  //     "(" ~> (bop ~ expr ~ expr) <~ ")" ^^ { case b ~ l ~ r => EBOp(b, l, r) } |
+  //     "(" ~> ("typeof" ~> expr) <~ ")" ^^ { case e => ETypeOf(e) } |
+  //     "(" ~> ("is-completion" ~> expr) <~ ")" ^^ { case e => EIsCompletion(e) } |
+  //     ("(" ~> repsep(id, ",") <~ ")") ~ ("[=>]" ~> inst) ^^ { case ps ~ b => ECont(ps, b) } |
+  //     ("(" ~> "new" ~> ty) ~ ("(" ~> repsep(prop, ",") <~ ")" <~ ")") ^^ {
+  //       case t ~ props => EMap(t, props)
+  //     } |
+  //     ("(" ~> "new" ~> ty <~ ")") ^^ { case t => EMap(t, Nil) } |
+  //     ("(" ~> "new" ~> "[" ~> repsep(expr, ",") <~ "]" <~ ")") ^^ { EList(_) } |
+  //     ("(" ~> "new" ~> "'" ~> expr <~ ")") ^^ { ESymbol(_) } |
+  //     ("(" ~> "pop" ~> expr ~ expr <~ ")") ^^ { case l ~ x => EPop(l, x) } |
+  //     ("(" ~> "is-instance-of" ~> expr) ~ (ident <~ ")") ^^ {
+  //       case e ~ x => EIsInstanceOf(e, x)
+  //     } |
+  //     ("(" ~> "get-elems" ~> expr) ~ (ident <~ ")") ^^ {
+  //       case e ~ x => EGetElems(e, x)
+  //     } |
+  //     "(" ~> "get-syntax" ~> expr <~ ")" ^^ { case e => EGetSyntax(e) } |
+  //     "(" ~> "parse-syntax" ~> expr ~ expr ~ rep(expr) <~ ")" ^^ { case e ~ r ~ le => EParseSyntax(e, r, le) } |
+  //     "(" ~> "convert" ~> expr ~ cop ~ rep(expr) <~ ")" ^^ { case e ~ r ~ l => EConvert(e, r, l) } |
+  //     "(" ~> "contains" ~> expr ~ expr <~ ")" ^^ { case l ~ e => EContains(l, e) } |
+  //     "(" ~> "copy-obj" ~> expr <~ ")" ^^ { case e => ECopy(e) } |
+  //     "(" ~> "map-keys" ~> expr <~ ")" ^^ { case e => EKeys(e) }
+  // }
 
   // properties
   lazy private val prop: Parser[(Expr, Expr)] =

@@ -1,6 +1,5 @@
 package kr.ac.kaist.ires.model
 
-import kr.ac.kaist.ires.{ AST, ASTInfo, Lexical }
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.UnexpectedSemantics
 import scala.collection.immutable.{ Set => SSet }
@@ -8,6 +7,7 @@ import scala.collection.immutable.{ Set => SSet }
 trait ClassDeclaration extends AST {
   val kind: String = "ClassDeclaration"
 }
+
 case class ClassDeclaration0(x1: BindingIdentifier, x2: ClassTail, parserParams: List[Boolean]) extends ClassDeclaration {
   x1.parent = Some(this)
   x2.parent = Some(this)
@@ -21,13 +21,14 @@ case class ClassDeclaration0(x1: BindingIdentifier, x2: ClassTail, parserParams:
 }
 object ClassDeclaration0 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "BindingClassDeclarationEvaluation0" -> ClassDeclaration0BindingClassDeclarationEvaluation0.func,
-    "BoundNames0" -> ClassDeclaration0BoundNames0.func,
-    "Evaluation0" -> ClassDeclaration0Evaluation0.func,
-    "IsConstantDeclaration0" -> ClassDeclaration0IsConstantDeclaration0.func
+  val semMap: Map[String, Algo] = Map(
+    "BoundNames0" -> `AL::ClassDeclaration[0,0].BoundNames`,
+    "IsConstantDeclaration0" -> `AL::ClassDeclaration[0,0].IsConstantDeclaration`,
+    "BindingClassDeclarationEvaluation0" -> `AL::ClassDeclaration[0,0].BindingClassDeclarationEvaluation`,
+    "Evaluation0" -> `AL::ClassDeclaration[0,0].Evaluation`,
   )
 }
+
 case class ClassDeclaration1(x1: ClassTail, parserParams: List[Boolean]) extends ClassDeclaration {
   x1.parent = Some(this)
   val name: String = "ClassDeclaration1"
@@ -40,9 +41,9 @@ case class ClassDeclaration1(x1: ClassTail, parserParams: List[Boolean]) extends
 }
 object ClassDeclaration1 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "BindingClassDeclarationEvaluation0" -> ClassDeclaration1BindingClassDeclarationEvaluation0.func,
-    "BoundNames0" -> ClassDeclaration1BoundNames0.func,
-    "IsConstantDeclaration0" -> ClassDeclaration1IsConstantDeclaration0.func
+  val semMap: Map[String, Algo] = Map(
+    "BoundNames0" -> `AL::ClassDeclaration[1,0].BoundNames`,
+    "IsConstantDeclaration0" -> `AL::ClassDeclaration[1,0].IsConstantDeclaration`,
+    "BindingClassDeclarationEvaluation0" -> `AL::ClassDeclaration[1,0].BindingClassDeclarationEvaluation`,
   )
 }

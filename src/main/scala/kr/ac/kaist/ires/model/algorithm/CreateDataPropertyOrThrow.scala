@@ -2,24 +2,29 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.ir.Parser._
+import Param.Kind._
 
-object CreateDataPropertyOrThrow extends Algorithm {
-  val name: String = "CreateDataPropertyOrThrow"
-  val length: Int = 3
-  val lang: Boolean = true
-  val func: Func = FixUIdWalker(parseFunc(""""CreateDataPropertyOrThrow" (O, P, V) => {
-    app __x0__ = (Type O)
-    assert (= __x0__ Object)
-    app __x1__ = (IsPropertyKey P)
-    assert (= __x1__ true)
-    app __x2__ = (CreateDataProperty O P V)
-    if (is-completion __x2__) if (= __x2__["Type"] CONST_normal) __x2__ = __x2__["Value"] else return __x2__ else {}
-    let success = __x2__
-    if (= success false) {
-      app __x3__ = (ThrowCompletion (new OrdinaryObject("Prototype" -> INTRINSIC_TypeErrorPrototype, "ErrorData" -> undefined, "SubMap" -> (new SubMap()))))
-      return __x3__
-    } else {}
-    app __x4__ = (WrapCompletion success)
-    return __x4__
-  }"""), this)
+object `AL::CreateDataPropertyOrThrow` extends Algo {
+  val head = NormalHead("CreateDataPropertyOrThrow", List(Param("O", Normal), Param("P", Normal), Param("V", Normal)))
+  val ids = List(
+    "sec-createdatapropertyorthrow",
+    "sec-operations-on-objects",
+    "sec-abstract-operations",
+  )
+  val rawBody = parseInst("""{
+  |  0:assert (= (typeof O) Object)
+  |  1:app __x0__ = (IsPropertyKey P)
+  |  1:assert (= __x0__ true)
+  |  2:app __x1__ = (CreateDataProperty O P V)
+  |  2:let success = [? __x1__]
+  |  3:if (= success false) throw TypeError else 4:{}
+  |  4:return success
+  |}""".stripMargin)
+  val code = scala.Array[String](
+    """        1. Assert: Type(_O_) is Object.""",
+    """        1. Assert: IsPropertyKey(_P_) is *true*.""",
+    """        1. Let _success_ be ? CreateDataProperty(_O_, _P_, _V_).""",
+    """        1. If _success_ is *false*, throw a *TypeError* exception.""",
+    """        1. Return _success_.""",
+  )
 }

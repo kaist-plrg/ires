@@ -1,6 +1,5 @@
 package kr.ac.kaist.ires.model
 
-import kr.ac.kaist.ires.{ AST, ASTInfo, Lexical }
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.UnexpectedSemantics
 import scala.collection.immutable.{ Set => SSet }
@@ -8,6 +7,7 @@ import scala.collection.immutable.{ Set => SSet }
 trait ForDeclaration extends AST {
   val kind: String = "ForDeclaration"
 }
+
 case class ForDeclaration0(x0: LetOrConst, x1: ForBinding, parserParams: List[Boolean]) extends ForDeclaration {
   x0.parent = Some(this)
   x1.parent = Some(this)
@@ -21,10 +21,10 @@ case class ForDeclaration0(x0: LetOrConst, x1: ForBinding, parserParams: List[Bo
 }
 object ForDeclaration0 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "BindingInitialization0" -> ForDeclaration0BindingInitialization0.func,
-    "BindingInstantiation0" -> ForDeclaration0BindingInstantiation0.func,
-    "BoundNames0" -> ForDeclaration0BoundNames0.func,
-    "IsDestructuring0" -> ForDeclaration0IsDestructuring0.func
+  val semMap: Map[String, Algo] = Map(
+    "BoundNames0" -> `AL::ForDeclaration[0,0].BoundNames`,
+    "IsDestructuring0" -> `AL::ForDeclaration[0,0].IsDestructuring`,
+    "ForDeclarationBindingInitialization0" -> `AL::ForDeclaration[0,0].ForDeclarationBindingInitialization`,
+    "ForDeclarationBindingInstantiation0" -> `AL::ForDeclaration[0,0].ForDeclarationBindingInstantiation`,
   )
 }

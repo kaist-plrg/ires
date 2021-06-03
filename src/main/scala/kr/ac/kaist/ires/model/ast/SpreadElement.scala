@@ -1,6 +1,5 @@
 package kr.ac.kaist.ires.model
 
-import kr.ac.kaist.ires.{ AST, ASTInfo, Lexical }
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.UnexpectedSemantics
 import scala.collection.immutable.{ Set => SSet }
@@ -8,6 +7,7 @@ import scala.collection.immutable.{ Set => SSet }
 trait SpreadElement extends AST {
   val kind: String = "SpreadElement"
 }
+
 case class SpreadElement0(x1: AssignmentExpression, parserParams: List[Boolean]) extends SpreadElement {
   x1.parent = Some(this)
   val name: String = "SpreadElement0"
@@ -20,7 +20,7 @@ case class SpreadElement0(x1: AssignmentExpression, parserParams: List[Boolean])
 }
 object SpreadElement0 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "ArrayAccumulation0" -> SpreadElement0ArrayAccumulation0.func
+  val semMap: Map[String, Algo] = Map(
+    "ArrayAccumulation0" -> `AL::SpreadElement[0,0].ArrayAccumulation`,
   )
 }

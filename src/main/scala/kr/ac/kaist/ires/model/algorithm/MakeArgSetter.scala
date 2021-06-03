@@ -2,18 +2,11 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.ir.Parser._
+import Param.Kind._
 
-object MakeArgSetter extends Algorithm {
-  val name: String = "MakeArgSetter"
-  val length: Int = 2
-  val lang: Boolean = true
-  val func: Func = FixUIdWalker(parseFunc(""""MakeArgSetter" (name, env) => {
-    let steps = ArgSetter
-    app __x0__ = (CreateBuiltinFunction steps (new ["Name", "Env"]))
-    let setter = __x0__
-    setter["Name"] = name
-    setter["Env"] = env
-    app __x1__ = (WrapCompletion setter)
-    return __x1__
-  }"""), this)
+object `AL::MakeArgSetter` extends Algo {
+  val head = NormalHead("MakeArgSetter", List(Param("name", Normal), Param("env", Normal)))
+  val ids = List()
+  val rawBody = parseInst("""return (new BuiltinFunctionObject())""".stripMargin)
+  val code = scala.Array[String]()
 }

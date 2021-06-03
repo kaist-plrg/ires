@@ -2,24 +2,21 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.ir.Parser._
+import Param.Kind._
 
-object SetFunctionLength extends Algorithm {
-  val name: String = "SetFunctionLength"
-  val length: Int = 2
-  val lang: Boolean = true
-  val func: Func = FixUIdWalker(parseFunc(""""SetFunctionLength" (F, length) => {
-    app __x0__ = (Type length)
-    assert (= __x0__ Number)
-    let __x1__ = (! (< length 0i))
-    if __x1__ {
-      app __x2__ = (ToInteger length)
-      if (is-completion __x2__) if (= __x2__["Type"] CONST_normal) __x2__ = __x2__["Value"] else return __x2__ else {}
-      __x1__ = (= __x2__ length)
-    } else {}
-    assert __x1__
-    app __x3__ = (DefinePropertyOrThrow F "length" (new PropertyDescriptor("Value" -> length, "Writable" -> false, "Enumerable" -> false, "Configurable" -> true)))
-    if (is-completion __x3__) if (= __x3__["Type"] CONST_normal) __x3__ = __x3__["Value"] else return __x3__ else {}
-    app __x4__ = (WrapCompletion __x3__)
-    return __x4__
-  }"""), this)
+object `AL::SetFunctionLength` extends Algo {
+  val head = NormalHead("SetFunctionLength", List(Param("F", Normal), Param("length", Normal)))
+  val ids = List(
+    "sec-setfunctionlength",
+    "sec-ecmascript-function-objects",
+    "sec-ordinary-and-exotic-objects-behaviours",
+  )
+  val rawBody = parseInst("""{
+  |  1:app __x0__ = (DefinePropertyOrThrow F "length" (new PropertyDescriptor("Value" -> length, "Writable" -> false, "Enumerable" -> false, "Configurable" -> true)))
+  |  1:return [! __x0__]
+  |}""".stripMargin)
+  val code = scala.Array[String](
+    """        1. Assert: _F_ is an extensible object that does not have a *"length"* own property.""",
+    """        1. Return ! DefinePropertyOrThrow(_F_, *"length"*, PropertyDescriptor { [[Value]]: 𝔽(_length_), [[Writable]]: *false*, [[Enumerable]]: *false*, [[Configurable]]: *true* }).""",
+  )
 }

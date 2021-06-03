@@ -1,6 +1,5 @@
 package kr.ac.kaist.ires.model
 
-import kr.ac.kaist.ires.{ AST, ASTInfo, Lexical }
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.UnexpectedSemantics
 import scala.collection.immutable.{ Set => SSet }
@@ -8,6 +7,7 @@ import scala.collection.immutable.{ Set => SSet }
 trait CoverInitializedName extends AST {
   val kind: String = "CoverInitializedName"
 }
+
 case class CoverInitializedName0(x0: IdentifierReference, x1: Initializer, parserParams: List[Boolean]) extends CoverInitializedName {
   x0.parent = Some(this)
   x1.parent = Some(this)
@@ -21,5 +21,5 @@ case class CoverInitializedName0(x0: IdentifierReference, x1: Initializer, parse
 }
 object CoverInitializedName0 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map()
+  val semMap: Map[String, Algo] = Map()
 }

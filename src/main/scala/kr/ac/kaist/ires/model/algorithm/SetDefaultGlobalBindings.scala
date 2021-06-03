@@ -2,23 +2,26 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.ir.Parser._
+import Param.Kind._
 
-object SetDefaultGlobalBindings extends Algorithm {
-  val name: String = "SetDefaultGlobalBindings"
-  val length: Int = 1
-  val lang: Boolean = true
-  val func: Func = FixUIdWalker(parseFunc(""""SetDefaultGlobalBindings" (realmRec) => {
-    let global = realmRec["GlobalObject"]
-    let __x0__ = (map-keys GLOBAL)
-    let __x1__ = 0i
-    while (< __x1__ __x0__["length"]) {
-      let name = __x0__[__x1__]
-      let desc = GLOBAL[name]
-      app __x2__ = (DefinePropertyOrThrow global name desc)
-      if (is-completion __x2__) if (= __x2__["Type"] CONST_normal) __x2__ = __x2__["Value"] else return __x2__ else {}
-      __x1__ = (+ __x1__ 1i)
-    }
-    app __x3__ = (WrapCompletion global)
-    return __x3__
-  }"""), this)
+object `AL::SetDefaultGlobalBindings` extends Algo {
+  val head = NormalHead("SetDefaultGlobalBindings", List(Param("realmRec", Normal)))
+  val ids = List(
+    "sec-setdefaultglobalbindings",
+    "sec-code-realms",
+    "sec-executable-code-and-execution-contexts",
+  )
+  val rawBody = parseInst("""{
+  |  0:let global = realmRec.GlobalObject
+  |  1:??? "For each property of the Global Object specified in clause link:{unhandled: sec-global-object} , do in:{} out:{}"
+  |  5:return global
+  |}""".stripMargin)
+  val code = scala.Array[String](
+    """        1. Let _global_ be _realmRec_.[[GlobalObject]].""",
+    """        1. For each property of the Global Object specified in clause <emu-xref href="#sec-global-object"></emu-xref>, do""",
+    """          1. Let _name_ be the String value of the property name.""",
+    """          1. Let _desc_ be the fully populated data Property Descriptor for the property, containing the specified attributes for the property. For properties listed in <emu-xref href="#sec-function-properties-of-the-global-object"></emu-xref>, <emu-xref href="#sec-constructor-properties-of-the-global-object"></emu-xref>, or <emu-xref href="#sec-other-properties-of-the-global-object"></emu-xref> the value of the [[Value]] attribute is the corresponding intrinsic object from _realmRec_.""",
+    """          1. Perform ? DefinePropertyOrThrow(_global_, _name_, _desc_).""",
+    """        1. Return _global_.""",
+  )
 }

@@ -1,6 +1,5 @@
 package kr.ac.kaist.ires.model
 
-import kr.ac.kaist.ires.{ AST, ASTInfo, Lexical }
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.UnexpectedSemantics
 import scala.collection.immutable.{ Set => SSet }
@@ -8,6 +7,7 @@ import scala.collection.immutable.{ Set => SSet }
 trait Arguments extends AST {
   val kind: String = "Arguments"
 }
+
 case class Arguments0(parserParams: List[Boolean]) extends Arguments {
   val name: String = "Arguments0"
   override def toString: String = {
@@ -19,10 +19,11 @@ case class Arguments0(parserParams: List[Boolean]) extends Arguments {
 }
 object Arguments0 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "ArgumentListEvaluation0" -> Arguments0ArgumentListEvaluation0.func
+  val semMap: Map[String, Algo] = Map(
+    "ArgumentListEvaluation0" -> `AL::Arguments[0,0].ArgumentListEvaluation`,
   )
 }
+
 case class Arguments1(x1: ArgumentList, parserParams: List[Boolean]) extends Arguments {
   x1.parent = Some(this)
   val name: String = "Arguments1"
@@ -35,8 +36,9 @@ case class Arguments1(x1: ArgumentList, parserParams: List[Boolean]) extends Arg
 }
 object Arguments1 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map()
+  val semMap: Map[String, Algo] = Map()
 }
+
 case class Arguments2(x1: ArgumentList, parserParams: List[Boolean]) extends Arguments {
   x1.parent = Some(this)
   val name: String = "Arguments2"
@@ -49,5 +51,5 @@ case class Arguments2(x1: ArgumentList, parserParams: List[Boolean]) extends Arg
 }
 object Arguments2 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map()
+  val semMap: Map[String, Algo] = Map()
 }

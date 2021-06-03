@@ -2,21 +2,27 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.ir.Parser._
+import Param.Kind._
 
-object SetImmutablePrototype extends Algorithm {
-  val name: String = "SetImmutablePrototype"
-  val length: Int = 2
-  val lang: Boolean = true
-  val func: Func = FixUIdWalker(parseFunc(""""SetImmutablePrototype" (O, V) => {
-    app __x0__ = (O["GetPrototypeOf"] O)
-    if (is-completion __x0__) if (= __x0__["Type"] CONST_normal) __x0__ = __x0__["Value"] else return __x0__ else {}
-    let current = __x0__
-    app __x1__ = (SameValue V current)
-    if (= __x1__ true) {
-      app __x2__ = (WrapCompletion true)
-      return __x2__
-    } else {}
-    app __x3__ = (WrapCompletion false)
-    return __x3__
-  }"""), this)
+object `AL::SetImmutablePrototype` extends Algo {
+  val head = NormalHead("SetImmutablePrototype", List(Param("O", Normal), Param("V", Normal)))
+  val ids = List(
+    "sec-set-immutable-prototype",
+    "sec-immutable-prototype-exotic-objects",
+    "sec-built-in-exotic-object-internal-methods-and-slots",
+    "sec-ordinary-and-exotic-objects-behaviours",
+  )
+  val rawBody = parseInst("""{
+  |  1:app __x0__ = (O.GetPrototypeOf O)
+  |  1:let current = [? __x0__]
+  |  2:app __x1__ = (SameValue V current)
+  |  2:if (= __x1__ true) return true else 0:{}
+  |  3:return false
+  |}""".stripMargin)
+  val code = scala.Array[String](
+    """          1. Assert: Either Type(_V_) is Object or Type(_V_) is Null.""",
+    """          1. Let _current_ be ? _O_.[[GetPrototypeOf]]().""",
+    """          1. If SameValue(_V_, _current_) is *true*, return *true*.""",
+    """          1. Return *false*.""",
+  )
 }

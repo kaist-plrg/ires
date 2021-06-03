@@ -1,6 +1,5 @@
 package kr.ac.kaist.ires.model
 
-import kr.ac.kaist.ires.{ AST, ASTInfo, Lexical }
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.UnexpectedSemantics
 import scala.collection.immutable.{ Set => SSet }
@@ -8,6 +7,7 @@ import scala.collection.immutable.{ Set => SSet }
 trait CoverCallExpressionAndAsyncArrowHead extends AST {
   val kind: String = "CoverCallExpressionAndAsyncArrowHead"
 }
+
 case class CoverCallExpressionAndAsyncArrowHead0(x0: MemberExpression, x1: Arguments, parserParams: List[Boolean]) extends CoverCallExpressionAndAsyncArrowHead {
   x0.parent = Some(this)
   x1.parent = Some(this)
@@ -21,10 +21,10 @@ case class CoverCallExpressionAndAsyncArrowHead0(x0: MemberExpression, x1: Argum
 }
 object CoverCallExpressionAndAsyncArrowHead0 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "BoundNames0" -> CoverCallExpressionAndAsyncArrowHead0BoundNames0.func,
-    "CoveredAsyncArrowHead0" -> CoverCallExpressionAndAsyncArrowHead0CoveredAsyncArrowHead0.func,
-    "CoveredCallExpression0" -> CoverCallExpressionAndAsyncArrowHead0CoveredCallExpression0.func,
-    "IsSimpleParameterList0" -> CoverCallExpressionAndAsyncArrowHead0IsSimpleParameterList0.func
+  val semMap: Map[String, Algo] = Map(
+    "BoundNames0" -> `AL::CoverCallExpressionAndAsyncArrowHead[0,0].BoundNames`,
+    "CoveredCallExpression0" -> `AL::CoverCallExpressionAndAsyncArrowHead[0,0].CoveredCallExpression`,
+    "IsSimpleParameterList0" -> `AL::CoverCallExpressionAndAsyncArrowHead[0,0].IsSimpleParameterList`,
+    "CoveredAsyncArrowHead0" -> `AL::CoverCallExpressionAndAsyncArrowHead[0,0].CoveredAsyncArrowHead`,
   )
 }

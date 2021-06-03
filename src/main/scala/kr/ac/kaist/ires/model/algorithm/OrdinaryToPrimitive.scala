@@ -2,36 +2,48 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.ir.Parser._
+import Param.Kind._
 
-object OrdinaryToPrimitive extends Algorithm {
-  val name: String = "OrdinaryToPrimitive"
-  val length: Int = 2
-  val lang: Boolean = true
-  val func: Func = FixUIdWalker(parseFunc(""""OrdinaryToPrimitive" (O, hint) => {
-    app __x0__ = (Type O)
-    assert (= __x0__ Object)
-    if (= hint "string") let methodNames = (new ["toString", "valueOf"]) else let methodNames = (new ["valueOf", "toString"])
-    let __x1__ = methodNames
-    let __x2__ = 0i
-    while (< __x2__ __x1__["length"]) {
-      let name = __x1__[__x2__]
-      app __x3__ = (Get O name)
-      if (is-completion __x3__) if (= __x3__["Type"] CONST_normal) __x3__ = __x3__["Value"] else return __x3__ else {}
-      let method = __x3__
-      app __x4__ = (IsCallable method)
-      if (= __x4__ true) {
-        app __x5__ = (Call method O)
-        if (is-completion __x5__) if (= __x5__["Type"] CONST_normal) __x5__ = __x5__["Value"] else return __x5__ else {}
-        let result = __x5__
-        app __x6__ = (Type result)
-        if (! (= __x6__ Object)) {
-          app __x7__ = (WrapCompletion result)
-          return __x7__
-        } else {}
-      } else {}
-      __x2__ = (+ __x2__ 1i)
-    }
-    app __x8__ = (ThrowCompletion (new OrdinaryObject("Prototype" -> INTRINSIC_TypeErrorPrototype, "ErrorData" -> undefined, "SubMap" -> (new SubMap()))))
-    return __x8__
-  }"""), this)
+object `AL::OrdinaryToPrimitive` extends Algo {
+  val head = NormalHead("OrdinaryToPrimitive", List(Param("O", Normal), Param("hint", Normal)))
+  val ids = List(
+    "sec-ordinarytoprimitive",
+    "sec-toprimitive",
+    "sec-type-conversion",
+    "sec-abstract-operations",
+  )
+  val rawBody = parseInst("""{
+  |  0:assert (= (typeof O) Object)
+  |  1:assert (|| (= hint CONST_string) (= hint CONST_number))
+  |  4:if (= hint CONST_string) let methodNames = (new ["toString", "valueOf"]) else let methodNames = (new ["valueOf", "toString"])
+  |  6:let __x0__ = methodNames
+  |  6:let __x1__ = 0i
+  |  6:while (< __x1__ __x0__.length) {
+  |    let name = __x0__[__x1__]
+  |    7:app __x2__ = (Get O name)
+  |    7:let method = [? __x2__]
+  |    8:app __x3__ = (IsCallable method)
+  |    8:if (= __x3__ true) {
+  |      9:app __x4__ = (Call method O)
+  |      9:let result = [? __x4__]
+  |      10:if (! (= (typeof result) Object)) return result else 0:{}
+  |    } else 0:{}
+  |    __x1__ = (+ __x1__ 1i)
+  |  }
+  |  11:throw TypeError
+  |}""".stripMargin)
+  val code = scala.Array[String](
+    """          1. Assert: Type(_O_) is Object.""",
+    """          1. Assert: _hint_ is either ~string~ or ~number~.""",
+    """          1. If _hint_ is ~string~, then""",
+    """            1. Let _methodNames_ be « *"toString"*, *"valueOf"* ».""",
+    """          1. Else,""",
+    """            1. Let _methodNames_ be « *"valueOf"*, *"toString"* ».""",
+    """          1. For each element _name_ of _methodNames_, do""",
+    """            1. Let _method_ be ? Get(_O_, _name_).""",
+    """            1. If IsCallable(_method_) is *true*, then""",
+    """              1. Let _result_ be ? Call(_method_, _O_).""",
+    """              1. If Type(_result_) is not Object, return _result_.""",
+    """          1. Throw a *TypeError* exception.""",
+  )
 }

@@ -1,6 +1,5 @@
 package kr.ac.kaist.ires.model
 
-import kr.ac.kaist.ires.{ AST, ASTInfo, Lexical }
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.UnexpectedSemantics
 import scala.collection.immutable.{ Set => SSet }
@@ -8,6 +7,7 @@ import scala.collection.immutable.{ Set => SSet }
 trait CaseClause extends AST {
   val kind: String = "CaseClause"
 }
+
 case class CaseClause0(x1: Expression, x3: Option[StatementList], parserParams: List[Boolean]) extends CaseClause {
   x1.parent = Some(this)
   x3.foreach((m) => m.parent = Some(this))
@@ -21,16 +21,16 @@ case class CaseClause0(x1: Expression, x3: Option[StatementList], parserParams: 
 }
 object CaseClause0 extends ASTInfo {
   val maxK: Int = 1
-  val semMap: Map[String, Func] = Map(
-    "ContainsDuplicateLabels1" -> CaseClause0ContainsDuplicateLabels1.func,
-    "ContainsUndefinedBreakTarget1" -> CaseClause0ContainsUndefinedBreakTarget1.func,
-    "ContainsUndefinedContinueTarget1" -> CaseClause0ContainsUndefinedContinueTarget1.func,
-    "Evaluation0" -> CaseClause0Evaluation0.func,
-    "Evaluation1" -> CaseClause0Evaluation1.func,
-    "HasCallInTailPosition1" -> CaseClause0HasCallInTailPosition1.func,
-    "LexicallyDeclaredNames1" -> CaseClause0LexicallyDeclaredNames1.func,
-    "LexicallyScopedDeclarations1" -> CaseClause0LexicallyScopedDeclarations1.func,
-    "VarDeclaredNames1" -> CaseClause0VarDeclaredNames1.func,
-    "VarScopedDeclarations1" -> CaseClause0VarScopedDeclarations1.func
+  val semMap: Map[String, Algo] = Map(
+    "LexicallyDeclaredNames1" -> `AL::CaseClause[0,1].LexicallyDeclaredNames`,
+    "LexicallyScopedDeclarations1" -> `AL::CaseClause[0,1].LexicallyScopedDeclarations`,
+    "VarDeclaredNames1" -> `AL::CaseClause[0,1].VarDeclaredNames`,
+    "VarScopedDeclarations1" -> `AL::CaseClause[0,1].VarScopedDeclarations`,
+    "ContainsDuplicateLabels1" -> `AL::CaseClause[0,1].ContainsDuplicateLabels`,
+    "ContainsUndefinedBreakTarget1" -> `AL::CaseClause[0,1].ContainsUndefinedBreakTarget`,
+    "ContainsUndefinedContinueTarget1" -> `AL::CaseClause[0,1].ContainsUndefinedContinueTarget`,
+    "Evaluation0" -> `AL::CaseClause[0,0].Evaluation`,
+    "Evaluation1" -> `AL::CaseClause[0,1].Evaluation`,
+    "HasCallInTailPosition1" -> `AL::CaseClause[0,1].HasCallInTailPosition`,
   )
 }

@@ -1,6 +1,5 @@
 package kr.ac.kaist.ires.model
 
-import kr.ac.kaist.ires.{ AST, ASTInfo, Lexical }
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.UnexpectedSemantics
 import scala.collection.immutable.{ Set => SSet }
@@ -8,6 +7,7 @@ import scala.collection.immutable.{ Set => SSet }
 trait ImportDeclaration extends AST {
   val kind: String = "ImportDeclaration"
 }
+
 case class ImportDeclaration0(x1: ImportClause, x2: FromClause, parserParams: List[Boolean]) extends ImportDeclaration {
   x1.parent = Some(this)
   x2.parent = Some(this)
@@ -21,8 +21,13 @@ case class ImportDeclaration0(x1: ImportClause, x2: FromClause, parserParams: Li
 }
 object ImportDeclaration0 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map()
+  val semMap: Map[String, Algo] = Map(
+    "BoundNames0" -> `AL::ImportDeclaration[0,0].BoundNames`,
+    "ModuleRequests0" -> `AL::ImportDeclaration[0,0].ModuleRequests`,
+    "ImportEntries0" -> `AL::ImportDeclaration[0,0].ImportEntries`,
+  )
 }
+
 case class ImportDeclaration1(x1: ModuleSpecifier, parserParams: List[Boolean]) extends ImportDeclaration {
   x1.parent = Some(this)
   val name: String = "ImportDeclaration1"
@@ -35,5 +40,8 @@ case class ImportDeclaration1(x1: ModuleSpecifier, parserParams: List[Boolean]) 
 }
 object ImportDeclaration1 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map()
+  val semMap: Map[String, Algo] = Map(
+    "BoundNames0" -> `AL::ImportDeclaration[1,0].BoundNames`,
+    "ImportEntries0" -> `AL::ImportDeclaration[1,0].ImportEntries`,
+  )
 }

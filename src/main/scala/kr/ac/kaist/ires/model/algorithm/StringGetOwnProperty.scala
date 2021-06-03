@@ -2,45 +2,46 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.ir.Parser._
+import Param.Kind._
 
-object StringGetOwnProperty extends Algorithm {
-  val name: String = "StringGetOwnProperty"
-  val length: Int = 2
-  val lang: Boolean = true
-  val func: Func = FixUIdWalker(parseFunc(""""StringGetOwnProperty" (S, P) => {
-    app __x0__ = (IsPropertyKey P)
-    assert (= __x0__ true)
-    app __x1__ = (Type P)
-    if (! (= __x1__ String)) {
-      app __x2__ = (WrapCompletion undefined)
-      return __x2__
-    } else {}
-    app __x3__ = (CanonicalNumericIndexString P)
-    if (is-completion __x3__) if (= __x3__["Type"] CONST_normal) __x3__ = __x3__["Value"] else return __x3__ else {}
-    let index = __x3__
-    if (= index undefined) {
-      app __x4__ = (WrapCompletion undefined)
-      return __x4__
-    } else {}
-    app __x5__ = (IsInteger index)
-    if (= __x5__ false) {
-      app __x6__ = (WrapCompletion undefined)
-      return __x6__
-    } else {}
-    if (= index -0.0) {
-      app __x7__ = (WrapCompletion undefined)
-      return __x7__
-    } else {}
-    let str = S["StringData"]
-    app __x8__ = (Type str)
-    assert (= __x8__ String)
-    let len = str["length"]
-    if (|| (< index 0i) (! (< index len))) {
-      app __x9__ = (WrapCompletion undefined)
-      return __x9__
-    } else {}
-    let resultStr = str[index]
-    app __x10__ = (WrapCompletion (new PropertyDescriptor("Value" -> resultStr, "Writable" -> false, "Enumerable" -> true, "Configurable" -> false)))
-    return __x10__
-  }"""), this)
+object `AL::StringGetOwnProperty` extends Algo {
+  val head = NormalHead("StringGetOwnProperty", List(Param("S", Normal), Param("P", Normal)))
+  val ids = List(
+    "sec-stringgetownproperty",
+    "sec-string-exotic-objects",
+    "sec-built-in-exotic-object-internal-methods-and-slots",
+    "sec-ordinary-and-exotic-objects-behaviours",
+  )
+  val rawBody = parseInst("""{
+  |  1:app __x0__ = (IsPropertyKey P)
+  |  1:assert (= __x0__ true)
+  |  2:if (! (= (typeof P) String)) return undefined else 0:{}
+  |  3:app __x1__ = (CanonicalNumericIndexString P)
+  |  3:let index = [! __x1__]
+  |  4:if (= index undefined) return undefined else 0:{}
+  |  5:app __x2__ = (IsIntegralNumber index)
+  |  5:if (= __x2__ false) return undefined else 0:{}
+  |  6:if (= index -0.0) return undefined else 0:{}
+  |  7:let str = S.StringData
+  |  8:assert (= (typeof str) String)
+  |  9:let len = str.length
+  |  10:if (|| (< index 0i) (! (< index len))) return undefined else 0:{}
+  |  11:??? "Let id:{resultStr} be the String value of length 1 , containing one code unit from id:{str} , specifically the code unit at index ℝ ( id:{index} ) ."
+  |  12:return (new PropertyDescriptor("Value" -> resultStr, "Writable" -> false, "Enumerable" -> true, "Configurable" -> false))
+  |}""".stripMargin)
+  val code = scala.Array[String](
+    """          1. Assert: _S_ is an Object that has a [[StringData]] internal slot.""",
+    """          1. Assert: IsPropertyKey(_P_) is *true*.""",
+    """          1. If Type(_P_) is not String, return *undefined*.""",
+    """          1. Let _index_ be ! CanonicalNumericIndexString(_P_).""",
+    """          1. If _index_ is *undefined*, return *undefined*.""",
+    """          1. If IsIntegralNumber(_index_) is *false*, return *undefined*.""",
+    """          1. If _index_ is *-0*<sub>𝔽</sub>, return *undefined*.""",
+    """          1. Let _str_ be _S_.[[StringData]].""",
+    """          1. Assert: Type(_str_) is String.""",
+    """          1. Let _len_ be the length of _str_.""",
+    """          1. If ℝ(_index_) < 0 or _len_ ≤ ℝ(_index_), return *undefined*.""",
+    """          1. Let _resultStr_ be the String value of length 1, containing one code unit from _str_, specifically the code unit at index ℝ(_index_).""",
+    """          1. Return the PropertyDescriptor { [[Value]]: _resultStr_, [[Writable]]: *false*, [[Enumerable]]: *true*, [[Configurable]]: *false* }.""",
+  )
 }

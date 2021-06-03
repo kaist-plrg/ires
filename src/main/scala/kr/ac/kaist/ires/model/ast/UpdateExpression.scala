@@ -1,6 +1,5 @@
 package kr.ac.kaist.ires.model
 
-import kr.ac.kaist.ires.{ AST, ASTInfo, Lexical }
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.UnexpectedSemantics
 import scala.collection.immutable.{ Set => SSet }
@@ -8,6 +7,7 @@ import scala.collection.immutable.{ Set => SSet }
 trait UpdateExpression extends AST {
   val kind: String = "UpdateExpression"
 }
+
 case class UpdateExpression0(x0: LeftHandSideExpression, parserParams: List[Boolean]) extends UpdateExpression {
   x0.parent = Some(this)
   val name: String = "UpdateExpression0"
@@ -20,8 +20,9 @@ case class UpdateExpression0(x0: LeftHandSideExpression, parserParams: List[Bool
 }
 object UpdateExpression0 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map()
+  val semMap: Map[String, Algo] = Map()
 }
+
 case class UpdateExpression1(x0: LeftHandSideExpression, parserParams: List[Boolean]) extends UpdateExpression {
   x0.parent = Some(this)
   val name: String = "UpdateExpression1"
@@ -34,13 +35,15 @@ case class UpdateExpression1(x0: LeftHandSideExpression, parserParams: List[Bool
 }
 object UpdateExpression1 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "AssignmentTargetType0" -> UpdateExpression1AssignmentTargetType0.func,
-    "Evaluation0" -> UpdateExpression1Evaluation0.func,
-    "HasCallInTailPosition0" -> UpdateExpression1HasCallInTailPosition0.func,
-    "IsFunctionDefinition0" -> UpdateExpression1IsFunctionDefinition0.func
+  val semMap: Map[String, Algo] = Map(
+    "IsFunctionDefinition0" -> `AL::UpdateExpression[1,0].IsFunctionDefinition`,
+    "AssignmentTargetType0" -> `AL::UpdateExpression[1,0].AssignmentTargetType`,
+    "Evaluation0" -> `AL::UpdateExpression[1,0].Evaluation`,
+    "HasCallInTailPosition0" -> `AL::UpdateExpression[1,0].HasCallInTailPosition`,
+    "EarlyErrors0" -> `AL::UpdateExpression[1,0].EarlyErrors`,
   )
 }
+
 case class UpdateExpression2(x0: LeftHandSideExpression, parserParams: List[Boolean]) extends UpdateExpression {
   x0.parent = Some(this)
   val name: String = "UpdateExpression2"
@@ -53,13 +56,15 @@ case class UpdateExpression2(x0: LeftHandSideExpression, parserParams: List[Bool
 }
 object UpdateExpression2 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "AssignmentTargetType0" -> UpdateExpression2AssignmentTargetType0.func,
-    "Evaluation0" -> UpdateExpression2Evaluation0.func,
-    "HasCallInTailPosition0" -> UpdateExpression2HasCallInTailPosition0.func,
-    "IsFunctionDefinition0" -> UpdateExpression2IsFunctionDefinition0.func
+  val semMap: Map[String, Algo] = Map(
+    "IsFunctionDefinition0" -> `AL::UpdateExpression[2,0].IsFunctionDefinition`,
+    "AssignmentTargetType0" -> `AL::UpdateExpression[2,0].AssignmentTargetType`,
+    "Evaluation0" -> `AL::UpdateExpression[2,0].Evaluation`,
+    "HasCallInTailPosition0" -> `AL::UpdateExpression[2,0].HasCallInTailPosition`,
+    "EarlyErrors0" -> `AL::UpdateExpression[2,0].EarlyErrors`,
   )
 }
+
 case class UpdateExpression3(x1: UnaryExpression, parserParams: List[Boolean]) extends UpdateExpression {
   x1.parent = Some(this)
   val name: String = "UpdateExpression3"
@@ -72,13 +77,15 @@ case class UpdateExpression3(x1: UnaryExpression, parserParams: List[Boolean]) e
 }
 object UpdateExpression3 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "AssignmentTargetType0" -> UpdateExpression3AssignmentTargetType0.func,
-    "Evaluation0" -> UpdateExpression3Evaluation0.func,
-    "HasCallInTailPosition0" -> UpdateExpression3HasCallInTailPosition0.func,
-    "IsFunctionDefinition0" -> UpdateExpression3IsFunctionDefinition0.func
+  val semMap: Map[String, Algo] = Map(
+    "IsFunctionDefinition0" -> `AL::UpdateExpression[3,0].IsFunctionDefinition`,
+    "AssignmentTargetType0" -> `AL::UpdateExpression[3,0].AssignmentTargetType`,
+    "Evaluation0" -> `AL::UpdateExpression[3,0].Evaluation`,
+    "HasCallInTailPosition0" -> `AL::UpdateExpression[3,0].HasCallInTailPosition`,
+    "EarlyErrors0" -> `AL::UpdateExpression[3,0].EarlyErrors`,
   )
 }
+
 case class UpdateExpression4(x1: UnaryExpression, parserParams: List[Boolean]) extends UpdateExpression {
   x1.parent = Some(this)
   val name: String = "UpdateExpression4"
@@ -91,10 +98,11 @@ case class UpdateExpression4(x1: UnaryExpression, parserParams: List[Boolean]) e
 }
 object UpdateExpression4 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "AssignmentTargetType0" -> UpdateExpression4AssignmentTargetType0.func,
-    "Evaluation0" -> UpdateExpression4Evaluation0.func,
-    "HasCallInTailPosition0" -> UpdateExpression4HasCallInTailPosition0.func,
-    "IsFunctionDefinition0" -> UpdateExpression4IsFunctionDefinition0.func
+  val semMap: Map[String, Algo] = Map(
+    "IsFunctionDefinition0" -> `AL::UpdateExpression[4,0].IsFunctionDefinition`,
+    "AssignmentTargetType0" -> `AL::UpdateExpression[4,0].AssignmentTargetType`,
+    "Evaluation0" -> `AL::UpdateExpression[4,0].Evaluation`,
+    "HasCallInTailPosition0" -> `AL::UpdateExpression[4,0].HasCallInTailPosition`,
+    "EarlyErrors0" -> `AL::UpdateExpression[4,0].EarlyErrors`,
   )
 }

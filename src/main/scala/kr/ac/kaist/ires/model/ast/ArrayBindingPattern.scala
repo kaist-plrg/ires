@@ -1,6 +1,5 @@
 package kr.ac.kaist.ires.model
 
-import kr.ac.kaist.ires.{ AST, ASTInfo, Lexical }
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.UnexpectedSemantics
 import scala.collection.immutable.{ Set => SSet }
@@ -8,6 +7,7 @@ import scala.collection.immutable.{ Set => SSet }
 trait ArrayBindingPattern extends AST {
   val kind: String = "ArrayBindingPattern"
 }
+
 case class ArrayBindingPattern0(x1: Option[Elision], x2: Option[BindingRestElement], parserParams: List[Boolean]) extends ArrayBindingPattern {
   x1.foreach((m) => m.parent = Some(this))
   x2.foreach((m) => m.parent = Some(this))
@@ -21,17 +21,17 @@ case class ArrayBindingPattern0(x1: Option[Elision], x2: Option[BindingRestEleme
 }
 object ArrayBindingPattern0 extends ASTInfo {
   val maxK: Int = 3
-  val semMap: Map[String, Func] = Map(
-    "BoundNames0" -> ArrayBindingPattern0BoundNames0.func,
-    "BoundNames2" -> ArrayBindingPattern0BoundNames2.func,
-    "BoundNames3" -> ArrayBindingPattern0BoundNames3.func,
-    "ContainsExpression2" -> ArrayBindingPattern0ContainsExpression2.func,
-    "ContainsExpression3" -> ArrayBindingPattern0ContainsExpression3.func,
-    "IteratorBindingInitialization0" -> ArrayBindingPattern0IteratorBindingInitialization0.func,
-    "IteratorBindingInitialization2" -> ArrayBindingPattern0IteratorBindingInitialization2.func,
-    "IteratorBindingInitialization3" -> ArrayBindingPattern0IteratorBindingInitialization3.func
+  val semMap: Map[String, Algo] = Map(
+    "BoundNames2" -> `AL::ArrayBindingPattern[0,2].BoundNames`,
+    "BoundNames3" -> `AL::ArrayBindingPattern[0,3].BoundNames`,
+    "IteratorBindingInitialization0" -> `AL::ArrayBindingPattern[0,0].IteratorBindingInitialization`,
+    "IteratorBindingInitialization2" -> `AL::ArrayBindingPattern[0,2].IteratorBindingInitialization`,
+    "IteratorBindingInitialization3" -> `AL::ArrayBindingPattern[0,3].IteratorBindingInitialization`,
+    "ContainsExpression2" -> `AL::ArrayBindingPattern[0,2].ContainsExpression`,
+    "ContainsExpression3" -> `AL::ArrayBindingPattern[0,3].ContainsExpression`,
   )
 }
+
 case class ArrayBindingPattern1(x1: BindingElementList, parserParams: List[Boolean]) extends ArrayBindingPattern {
   x1.parent = Some(this)
   val name: String = "ArrayBindingPattern1"
@@ -44,10 +44,9 @@ case class ArrayBindingPattern1(x1: BindingElementList, parserParams: List[Boole
 }
 object ArrayBindingPattern1 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "IteratorBindingInitialization0" -> ArrayBindingPattern1IteratorBindingInitialization0.func
-  )
+  val semMap: Map[String, Algo] = Map()
 }
+
 case class ArrayBindingPattern2(x1: BindingElementList, x3: Option[Elision], x4: Option[BindingRestElement], parserParams: List[Boolean]) extends ArrayBindingPattern {
   x1.parent = Some(this)
   x3.foreach((m) => m.parent = Some(this))
@@ -62,14 +61,12 @@ case class ArrayBindingPattern2(x1: BindingElementList, x3: Option[Elision], x4:
 }
 object ArrayBindingPattern2 extends ASTInfo {
   val maxK: Int = 3
-  val semMap: Map[String, Func] = Map(
-    "BoundNames0" -> ArrayBindingPattern2BoundNames0.func,
-    "BoundNames2" -> ArrayBindingPattern2BoundNames2.func,
-    "BoundNames3" -> ArrayBindingPattern2BoundNames3.func,
-    "ContainsExpression2" -> ArrayBindingPattern2ContainsExpression2.func,
-    "ContainsExpression3" -> ArrayBindingPattern2ContainsExpression3.func,
-    "IteratorBindingInitialization0" -> ArrayBindingPattern2IteratorBindingInitialization0.func,
-    "IteratorBindingInitialization2" -> ArrayBindingPattern2IteratorBindingInitialization2.func,
-    "IteratorBindingInitialization3" -> ArrayBindingPattern2IteratorBindingInitialization3.func
+  val semMap: Map[String, Algo] = Map(
+    "BoundNames2" -> `AL::ArrayBindingPattern[2,2].BoundNames`,
+    "BoundNames3" -> `AL::ArrayBindingPattern[2,3].BoundNames`,
+    "IteratorBindingInitialization2" -> `AL::ArrayBindingPattern[2,2].IteratorBindingInitialization`,
+    "IteratorBindingInitialization3" -> `AL::ArrayBindingPattern[2,3].IteratorBindingInitialization`,
+    "ContainsExpression2" -> `AL::ArrayBindingPattern[2,2].ContainsExpression`,
+    "ContainsExpression3" -> `AL::ArrayBindingPattern[2,3].ContainsExpression`,
   )
 }

@@ -2,42 +2,122 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.ir.Parser._
+import Param.Kind._
 
-object ToString extends Algorithm {
-  val name: String = "ToString"
-  val length: Int = 1
-  val lang: Boolean = true
-  val func: Func = FixUIdWalker(parseFunc(""""ToString" (argument) => {
-    app atype = (Type argument)
-    if (= atype "Undefined") return "undefined"
-    else if (= atype "Null") return "null"
-    else if (= atype "Boolean") if argument return "true" else return "false"
-    else if (= atype "Number") {
-      app __x0__ = (NumberToString argument)
-      return __x0__
-    }
-    else if (= atype "String") return argument
-    else if (= atype "Symbol") return (new Completion (
-      "Type" -> CONST_throw,
-      "Value" -> (new OrdinaryObject(
-        "Prototype" -> INTRINSIC_TypeErrorPrototype,
-        "ErrorData" -> undefined,
-        "SubMap" -> (new SubMap())
-      )),
-      "Target" -> CONST_empty
-    )) else {
-      app __x0__ = (ToPrimitive argument "String")
-      if (is-completion __x0__) {
-        if (= __x0__.Type CONST_normal) __x0__ = __x0__.Value
-        else return __x0__
-      } else {}
-      let primValue = __x0__
-      app __x1__ = (ToString primValue)
-      if (is-completion __x1__) {
-        if (= __x1__.Type CONST_normal) __x1__ = __x1__.Value
-        else return __x1__
-      } else {}
-      return __x1__
-    }
-  }"""), this)
+object `AL::ToString` extends Algo {
+  val head = NormalHead("ToString", List(Param("argument", Normal)))
+  val ids = List(
+    "table-tostring-conversions",
+    "sec-tostring",
+    "sec-type-conversion",
+    "sec-abstract-operations",
+  )
+  val rawBody = parseInst("""{
+  |  1:if (= (typeof argument) Undefined) return "undefined" else 8:{}
+  |  3:if (= (typeof argument) Null) return "null" else 8:{}
+  |  6:if (= (typeof argument) Boolean) {
+  |    4:if (= argument true) return "true" else 8:{}
+  |    5:if (= argument false) return "false" else 8:{}
+  |  } else 8:{}
+  |  8:if (= (typeof argument) Number) {
+  |    7:app __x0__ = (PRIMITIVE[Number].toString argument)
+  |    7:return [! __x0__]
+  |  } else 8:{}
+  |  10:if (= (typeof argument) String) return argument else 8:{}
+  |  12:if (= (typeof argument) Symbol) throw TypeError else 8:{}
+  |  14:if (= (typeof argument) BigInt) {
+  |    13:app __x1__ = (PRIMITIVE[BigInt].toString argument)
+  |    13:return [! __x1__]
+  |  } else 8:{}
+  |  17:if (= (typeof argument) Object) {
+  |    15:app __x2__ = (ToPrimitive argument CONST_string)
+  |    15:let primValue = [? __x2__]
+  |    16:app __x3__ = (ToString primValue)
+  |    16:return [? __x3__]
+  |  } else 8:{}
+  |  18:assert false
+  |}""".stripMargin)
+  val code = scala.Array[String](
+    """        <table>""",
+    """          <tbody>""",
+    """          <tr>""",
+    """            <th>""",
+    """              Argument Type""",
+    """            </th>""",
+    """            <th>""",
+    """              Result""",
+    """            </th>""",
+    """          </tr>""",
+    """          <tr>""",
+    """            <td>""",
+    """              Undefined""",
+    """            </td>""",
+    """            <td>""",
+    """              Return *"undefined"*.""",
+    """            </td>""",
+    """          </tr>""",
+    """          <tr>""",
+    """            <td>""",
+    """              Null""",
+    """            </td>""",
+    """            <td>""",
+    """              Return *"null"*.""",
+    """            </td>""",
+    """          </tr>""",
+    """          <tr>""",
+    """            <td>""",
+    """              Boolean""",
+    """            </td>""",
+    """            <td>""",
+    """              <p>If _argument_ is *true*, return *"true"*.</p>""",
+    """              <p>If _argument_ is *false*, return *"false"*.</p>""",
+    """            </td>""",
+    """          </tr>""",
+    """          <tr>""",
+    """            <td>""",
+    """              Number""",
+    """            </td>""",
+    """            <td>""",
+    """              Return ! Number::toString(_argument_).""",
+    """            </td>""",
+    """          </tr>""",
+    """          <tr>""",
+    """            <td>""",
+    """              String""",
+    """            </td>""",
+    """            <td>""",
+    """              Return _argument_.""",
+    """            </td>""",
+    """          </tr>""",
+    """          <tr>""",
+    """            <td>""",
+    """              Symbol""",
+    """            </td>""",
+    """            <td>""",
+    """              Throw a *TypeError* exception.""",
+    """            </td>""",
+    """          </tr>""",
+    """          <tr>""",
+    """            <td>""",
+    """              BigInt""",
+    """            </td>""",
+    """            <td>""",
+    """              Return ! BigInt::toString(_argument_).""",
+    """            </td>""",
+    """          </tr>""",
+    """          <tr>""",
+    """            <td>""",
+    """              Object""",
+    """            </td>""",
+    """            <td>""",
+    """              <p>Apply the following steps:</p>""",
+    """              <emu-alg>""",
+    """                1. Let _primValue_ be ? ToPrimitive(_argument_, ~string~).""",
+    """                1. Return ? ToString(_primValue_).""",
+    """              </emu-alg>""",
+    """            </td>""",
+    """          </tr>""",
+    """          </tbody>""",
+    """        </table>""",
+  )
 }

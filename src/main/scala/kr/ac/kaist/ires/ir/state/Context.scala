@@ -1,10 +1,10 @@
 package kr.ac.kaist.ires.ir
 
 case class Context(
-    retId: Id = Id("__retId__"),
-    name: String = "<top-level>",
-    insts: List[Inst] = Nil,
-    locals: Map[Id, Value] = Map()
+  retId: Id = Id("__retId__"),
+  name: String = "<top-level>",
+  insts: List[Inst] = Nil,
+  locals: Map[Id, Value] = Map()
 ) extends IRNode {
 
   // initialize local variables

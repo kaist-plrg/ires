@@ -1,6 +1,5 @@
 package kr.ac.kaist.ires.model
 
-import kr.ac.kaist.ires.{ AST, ASTInfo, Lexical }
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.UnexpectedSemantics
 import scala.collection.immutable.{ Set => SSet }
@@ -8,6 +7,7 @@ import scala.collection.immutable.{ Set => SSet }
 trait ClassElement extends AST {
   val kind: String = "ClassElement"
 }
+
 case class ClassElement0(x0: MethodDefinition, parserParams: List[Boolean]) extends ClassElement {
   x0.parent = Some(this)
   val name: String = "ClassElement0"
@@ -20,11 +20,13 @@ case class ClassElement0(x0: MethodDefinition, parserParams: List[Boolean]) exte
 }
 object ClassElement0 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "ComputedPropertyContains0" -> ClassElement0ComputedPropertyContains0.func,
-    "IsStatic0" -> ClassElement0IsStatic0.func
+  val semMap: Map[String, Algo] = Map(
+    "ClassElementKind0" -> `AL::ClassElement[0,0].ClassElementKind`,
+    "IsStatic0" -> `AL::ClassElement[0,0].IsStatic`,
+    "EarlyErrors0" -> `AL::ClassElement[0,0].EarlyErrors`,
   )
 }
+
 case class ClassElement1(x1: MethodDefinition, parserParams: List[Boolean]) extends ClassElement {
   x1.parent = Some(this)
   val name: String = "ClassElement1"
@@ -37,11 +39,13 @@ case class ClassElement1(x1: MethodDefinition, parserParams: List[Boolean]) exte
 }
 object ClassElement1 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "ComputedPropertyContains0" -> ClassElement1ComputedPropertyContains0.func,
-    "IsStatic0" -> ClassElement1IsStatic0.func
+  val semMap: Map[String, Algo] = Map(
+    "ClassElementKind0" -> `AL::ClassElement[1,0].ClassElementKind`,
+    "IsStatic0" -> `AL::ClassElement[1,0].IsStatic`,
+    "EarlyErrors0" -> `AL::ClassElement[1,0].EarlyErrors`,
   )
 }
+
 case class ClassElement2(parserParams: List[Boolean]) extends ClassElement {
   val name: String = "ClassElement2"
   override def toString: String = {
@@ -53,9 +57,10 @@ case class ClassElement2(parserParams: List[Boolean]) extends ClassElement {
 }
 object ClassElement2 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "ComputedPropertyContains0" -> ClassElement2ComputedPropertyContains0.func,
-    "IsStatic0" -> ClassElement2IsStatic0.func,
-    "PropName0" -> ClassElement2PropName0.func
+  val semMap: Map[String, Algo] = Map(
+    "ComputedPropertyContains0" -> `AL::ClassElement[2,0].ComputedPropertyContains`,
+    "PropName0" -> `AL::ClassElement[2,0].PropName`,
+    "ClassElementKind0" -> `AL::ClassElement[2,0].ClassElementKind`,
+    "IsStatic0" -> `AL::ClassElement[2,0].IsStatic`,
   )
 }

@@ -1,6 +1,5 @@
 package kr.ac.kaist.ires.model
 
-import kr.ac.kaist.ires.{ AST, ASTInfo, Lexical }
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.UnexpectedSemantics
 import scala.collection.immutable.{ Set => SSet }
@@ -8,6 +7,7 @@ import scala.collection.immutable.{ Set => SSet }
 trait BindingRestElement extends AST {
   val kind: String = "BindingRestElement"
 }
+
 case class BindingRestElement0(x1: BindingIdentifier, parserParams: List[Boolean]) extends BindingRestElement {
   x1.parent = Some(this)
   val name: String = "BindingRestElement0"
@@ -20,11 +20,12 @@ case class BindingRestElement0(x1: BindingIdentifier, parserParams: List[Boolean
 }
 object BindingRestElement0 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "ContainsExpression0" -> BindingRestElement0ContainsExpression0.func,
-    "IteratorBindingInitialization0" -> BindingRestElement0IteratorBindingInitialization0.func
+  val semMap: Map[String, Algo] = Map(
+    "IteratorBindingInitialization0" -> `AL::BindingRestElement[0,0].IteratorBindingInitialization`,
+    "ContainsExpression0" -> `AL::BindingRestElement[0,0].ContainsExpression`,
   )
 }
+
 case class BindingRestElement1(x1: BindingPattern, parserParams: List[Boolean]) extends BindingRestElement {
   x1.parent = Some(this)
   val name: String = "BindingRestElement1"
@@ -37,8 +38,8 @@ case class BindingRestElement1(x1: BindingPattern, parserParams: List[Boolean]) 
 }
 object BindingRestElement1 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "ContainsExpression0" -> BindingRestElement1ContainsExpression0.func,
-    "IteratorBindingInitialization0" -> BindingRestElement1IteratorBindingInitialization0.func
+  val semMap: Map[String, Algo] = Map(
+    "IteratorBindingInitialization0" -> `AL::BindingRestElement[1,0].IteratorBindingInitialization`,
+    "ContainsExpression0" -> `AL::BindingRestElement[1,0].ContainsExpression`,
   )
 }

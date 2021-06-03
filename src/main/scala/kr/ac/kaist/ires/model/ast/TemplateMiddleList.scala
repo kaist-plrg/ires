@@ -1,6 +1,5 @@
 package kr.ac.kaist.ires.model
 
-import kr.ac.kaist.ires.{ AST, ASTInfo, Lexical }
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.UnexpectedSemantics
 import scala.collection.immutable.{ Set => SSet }
@@ -8,6 +7,7 @@ import scala.collection.immutable.{ Set => SSet }
 trait TemplateMiddleList extends AST {
   val kind: String = "TemplateMiddleList"
 }
+
 case class TemplateMiddleList0(x0: Lexical, x1: Expression, parserParams: List[Boolean]) extends TemplateMiddleList {
   x0.parent = Some(this)
   x1.parent = Some(this)
@@ -21,12 +21,14 @@ case class TemplateMiddleList0(x0: Lexical, x1: Expression, parserParams: List[B
 }
 object TemplateMiddleList0 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "Evaluation0" -> TemplateMiddleList0Evaluation0.func,
-    "SubstitutionEvaluation0" -> TemplateMiddleList0SubstitutionEvaluation0.func,
-    "TemplateStrings0" -> TemplateMiddleList0TemplateStrings0.func
+  val semMap: Map[String, Algo] = Map(
+    "TemplateStrings0" -> `AL::TemplateMiddleList[0,0].TemplateStrings`,
+    "SubstitutionEvaluation0" -> `AL::TemplateMiddleList[0,0].SubstitutionEvaluation`,
+    "Evaluation0" -> `AL::TemplateMiddleList[0,0].Evaluation`,
+    "EarlyErrors0" -> `AL::TemplateMiddleList[0,0].EarlyErrors`,
   )
 }
+
 case class TemplateMiddleList1(x0: TemplateMiddleList, x1: Lexical, x2: Expression, parserParams: List[Boolean]) extends TemplateMiddleList {
   x0.parent = Some(this)
   x1.parent = Some(this)
@@ -41,9 +43,10 @@ case class TemplateMiddleList1(x0: TemplateMiddleList, x1: Lexical, x2: Expressi
 }
 object TemplateMiddleList1 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "Evaluation0" -> TemplateMiddleList1Evaluation0.func,
-    "SubstitutionEvaluation0" -> TemplateMiddleList1SubstitutionEvaluation0.func,
-    "TemplateStrings0" -> TemplateMiddleList1TemplateStrings0.func
+  val semMap: Map[String, Algo] = Map(
+    "TemplateStrings0" -> `AL::TemplateMiddleList[1,0].TemplateStrings`,
+    "SubstitutionEvaluation0" -> `AL::TemplateMiddleList[1,0].SubstitutionEvaluation`,
+    "Evaluation0" -> `AL::TemplateMiddleList[1,0].Evaluation`,
+    "EarlyErrors0" -> `AL::TemplateMiddleList[1,0].EarlyErrors`,
   )
 }

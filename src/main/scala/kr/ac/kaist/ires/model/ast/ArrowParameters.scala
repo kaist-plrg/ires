@@ -1,6 +1,5 @@
 package kr.ac.kaist.ires.model
 
-import kr.ac.kaist.ires.{ AST, ASTInfo, Lexical }
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.UnexpectedSemantics
 import scala.collection.immutable.{ Set => SSet }
@@ -8,6 +7,7 @@ import scala.collection.immutable.{ Set => SSet }
 trait ArrowParameters extends AST {
   val kind: String = "ArrowParameters"
 }
+
 case class ArrowParameters0(x0: BindingIdentifier, parserParams: List[Boolean]) extends ArrowParameters {
   x0.parent = Some(this)
   val name: String = "ArrowParameters0"
@@ -20,14 +20,15 @@ case class ArrowParameters0(x0: BindingIdentifier, parserParams: List[Boolean]) 
 }
 object ArrowParameters0 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "ContainsExpression0" -> ArrowParameters0ContainsExpression0.func,
-    "CoveredFormalsList0" -> ArrowParameters0CoveredFormalsList0.func,
-    "ExpectedArgumentCount0" -> ArrowParameters0ExpectedArgumentCount0.func,
-    "IsSimpleParameterList0" -> ArrowParameters0IsSimpleParameterList0.func,
-    "IteratorBindingInitialization0" -> ArrowParameters0IteratorBindingInitialization0.func
+  val semMap: Map[String, Algo] = Map(
+    "IteratorBindingInitialization0" -> `AL::ArrowParameters[0,0].IteratorBindingInitialization`,
+    "ContainsExpression0" -> `AL::ArrowParameters[0,0].ContainsExpression`,
+    "IsSimpleParameterList0" -> `AL::ArrowParameters[0,0].IsSimpleParameterList`,
+    "ExpectedArgumentCount0" -> `AL::ArrowParameters[0,0].ExpectedArgumentCount`,
+    "CoveredFormalsList0" -> `AL::ArrowParameters[0,0].CoveredFormalsList`,
   )
 }
+
 case class ArrowParameters1(x0: CoverParenthesizedExpressionAndArrowParameterList, parserParams: List[Boolean]) extends ArrowParameters {
   x0.parent = Some(this)
   val name: String = "ArrowParameters1"
@@ -40,9 +41,13 @@ case class ArrowParameters1(x0: CoverParenthesizedExpressionAndArrowParameterLis
 }
 object ArrowParameters1 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "BoundNames0" -> ArrowParameters1BoundNames0.func,
-    "Contains0" -> ArrowParameters1Contains0.func,
-    "IsSimpleParameterList0" -> ArrowParameters1IsSimpleParameterList0.func
+  val semMap: Map[String, Algo] = Map(
+    "BoundNames0" -> `AL::ArrowParameters[1,0].BoundNames`,
+    "Contains0" -> `AL::ArrowParameters[1,0].Contains`,
+    "IteratorBindingInitialization0" -> `AL::ArrowParameters[1,0].IteratorBindingInitialization`,
+    "ContainsExpression0" -> `AL::ArrowParameters[1,0].ContainsExpression`,
+    "IsSimpleParameterList0" -> `AL::ArrowParameters[1,0].IsSimpleParameterList`,
+    "ExpectedArgumentCount0" -> `AL::ArrowParameters[1,0].ExpectedArgumentCount`,
+    "EarlyErrors0" -> `AL::ArrowParameters[1,0].EarlyErrors`,
   )
 }

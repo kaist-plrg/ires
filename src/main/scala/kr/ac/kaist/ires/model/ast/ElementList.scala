@@ -1,6 +1,5 @@
 package kr.ac.kaist.ires.model
 
-import kr.ac.kaist.ires.{ AST, ASTInfo, Lexical }
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.UnexpectedSemantics
 import scala.collection.immutable.{ Set => SSet }
@@ -8,6 +7,7 @@ import scala.collection.immutable.{ Set => SSet }
 trait ElementList extends AST {
   val kind: String = "ElementList"
 }
+
 case class ElementList0(x0: Option[Elision], x1: AssignmentExpression, parserParams: List[Boolean]) extends ElementList {
   x0.foreach((m) => m.parent = Some(this))
   x1.parent = Some(this)
@@ -21,10 +21,11 @@ case class ElementList0(x0: Option[Elision], x1: AssignmentExpression, parserPar
 }
 object ElementList0 extends ASTInfo {
   val maxK: Int = 1
-  val semMap: Map[String, Func] = Map(
-    "ArrayAccumulation1" -> ElementList0ArrayAccumulation1.func
+  val semMap: Map[String, Algo] = Map(
+    "ArrayAccumulation1" -> `AL::ElementList[0,1].ArrayAccumulation`,
   )
 }
+
 case class ElementList1(x0: Option[Elision], x1: SpreadElement, parserParams: List[Boolean]) extends ElementList {
   x0.foreach((m) => m.parent = Some(this))
   x1.parent = Some(this)
@@ -38,10 +39,11 @@ case class ElementList1(x0: Option[Elision], x1: SpreadElement, parserParams: Li
 }
 object ElementList1 extends ASTInfo {
   val maxK: Int = 1
-  val semMap: Map[String, Func] = Map(
-    "ArrayAccumulation1" -> ElementList1ArrayAccumulation1.func
+  val semMap: Map[String, Algo] = Map(
+    "ArrayAccumulation1" -> `AL::ElementList[1,1].ArrayAccumulation`,
   )
 }
+
 case class ElementList2(x0: ElementList, x2: Option[Elision], x3: AssignmentExpression, parserParams: List[Boolean]) extends ElementList {
   x0.parent = Some(this)
   x2.foreach((m) => m.parent = Some(this))
@@ -56,10 +58,11 @@ case class ElementList2(x0: ElementList, x2: Option[Elision], x3: AssignmentExpr
 }
 object ElementList2 extends ASTInfo {
   val maxK: Int = 1
-  val semMap: Map[String, Func] = Map(
-    "ArrayAccumulation1" -> ElementList2ArrayAccumulation1.func
+  val semMap: Map[String, Algo] = Map(
+    "ArrayAccumulation1" -> `AL::ElementList[2,1].ArrayAccumulation`,
   )
 }
+
 case class ElementList3(x0: ElementList, x2: Option[Elision], x3: SpreadElement, parserParams: List[Boolean]) extends ElementList {
   x0.parent = Some(this)
   x2.foreach((m) => m.parent = Some(this))
@@ -74,7 +77,7 @@ case class ElementList3(x0: ElementList, x2: Option[Elision], x3: SpreadElement,
 }
 object ElementList3 extends ASTInfo {
   val maxK: Int = 1
-  val semMap: Map[String, Func] = Map(
-    "ArrayAccumulation1" -> ElementList3ArrayAccumulation1.func
+  val semMap: Map[String, Algo] = Map(
+    "ArrayAccumulation1" -> `AL::ElementList[3,1].ArrayAccumulation`,
   )
 }

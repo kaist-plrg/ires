@@ -1,6 +1,5 @@
 package kr.ac.kaist.ires.model
 
-import kr.ac.kaist.ires.{ AST, ASTInfo, Lexical }
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.UnexpectedSemantics
 import scala.collection.immutable.{ Set => SSet }
@@ -8,6 +7,7 @@ import scala.collection.immutable.{ Set => SSet }
 trait SingleNameBinding extends AST {
   val kind: String = "SingleNameBinding"
 }
+
 case class SingleNameBinding0(x0: BindingIdentifier, x1: Option[Initializer], parserParams: List[Boolean]) extends SingleNameBinding {
   x0.parent = Some(this)
   x1.foreach((m) => m.parent = Some(this))
@@ -21,15 +21,15 @@ case class SingleNameBinding0(x0: BindingIdentifier, x1: Option[Initializer], pa
 }
 object SingleNameBinding0 extends ASTInfo {
   val maxK: Int = 1
-  val semMap: Map[String, Func] = Map(
-    "BoundNames1" -> SingleNameBinding0BoundNames1.func,
-    "ContainsExpression0" -> SingleNameBinding0ContainsExpression0.func,
-    "ContainsExpression1" -> SingleNameBinding0ContainsExpression1.func,
-    "HasInitializer0" -> SingleNameBinding0HasInitializer0.func,
-    "HasInitializer1" -> SingleNameBinding0HasInitializer1.func,
-    "IsSimpleParameterList0" -> SingleNameBinding0IsSimpleParameterList0.func,
-    "IsSimpleParameterList1" -> SingleNameBinding0IsSimpleParameterList1.func,
-    "IteratorBindingInitialization1" -> SingleNameBinding0IteratorBindingInitialization1.func,
-    "KeyedBindingInitialization1" -> SingleNameBinding0KeyedBindingInitialization1.func
+  val semMap: Map[String, Algo] = Map(
+    "BoundNames1" -> `AL::SingleNameBinding[0,1].BoundNames`,
+    "IteratorBindingInitialization1" -> `AL::SingleNameBinding[0,1].IteratorBindingInitialization`,
+    "KeyedBindingInitialization1" -> `AL::SingleNameBinding[0,1].KeyedBindingInitialization`,
+    "ContainsExpression0" -> `AL::SingleNameBinding[0,0].ContainsExpression`,
+    "ContainsExpression1" -> `AL::SingleNameBinding[0,1].ContainsExpression`,
+    "IsSimpleParameterList0" -> `AL::SingleNameBinding[0,0].IsSimpleParameterList`,
+    "IsSimpleParameterList1" -> `AL::SingleNameBinding[0,1].IsSimpleParameterList`,
+    "HasInitializer0" -> `AL::SingleNameBinding[0,0].HasInitializer`,
+    "HasInitializer1" -> `AL::SingleNameBinding[0,1].HasInitializer`,
   )
 }

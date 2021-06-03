@@ -2,28 +2,32 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.ir.Parser._
+import Param.Kind._
 
-object IsConcatSpreadable extends Algorithm {
-  val name: String = "IsConcatSpreadable"
-  val length: Int = 1
-  val lang: Boolean = false
-  val func: Func = FixUIdWalker(parseFunc(""""IsConcatSpreadable" (O) => {
-    app __x0__ = (Type O)
-    if (! (= __x0__ Object)) {
-      app __x1__ = (WrapCompletion false)
-      return __x1__
-    } else {}
-    app __x2__ = (Get O SYMBOL_isConcatSpreadable)
-    if (is-completion __x2__) if (= __x2__["Type"] CONST_normal) __x2__ = __x2__["Value"] else return __x2__ else {}
-    let spreadable = __x2__
-    if (! (= spreadable undefined)) {
-      app __x3__ = (ToBoolean spreadable)
-      app __x4__ = (WrapCompletion __x3__)
-      return __x4__
-    } else {}
-    app __x5__ = (IsArray O)
-    if (is-completion __x5__) if (= __x5__["Type"] CONST_normal) __x5__ = __x5__["Value"] else return __x5__ else {}
-    app __x6__ = (WrapCompletion __x5__)
-    return __x6__
-  }"""), this)
+object `AL::IsConcatSpreadable` extends Algo {
+  val head = NormalHead("IsConcatSpreadable", List(Param("O", Normal)))
+  val ids = List(
+    "sec-isconcatspreadable",
+    "sec-array.prototype.concat",
+    "sec-properties-of-the-array-prototype-object",
+    "sec-array-objects",
+    "sec-indexed-collections",
+  )
+  val rawBody = parseInst("""{
+  |  0:if (! (= (typeof O) Object)) return false else 19:{}
+  |  1:app __x0__ = (Get O SYMBOL_isConcatSpreadable)
+  |  1:let spreadable = [? __x0__]
+  |  2:if (! (= spreadable undefined)) {
+  |    app __x1__ = (ToBoolean spreadable)
+  |    return [! __x1__]
+  |  } else 19:{}
+  |  3:app __x2__ = (IsArray O)
+  |  3:return [? __x2__]
+  |}""".stripMargin)
+  val code = scala.Array[String](
+    """            1. If Type(_O_) is not Object, return *false*.""",
+    """            1. Let _spreadable_ be ? Get(_O_, @@isConcatSpreadable).""",
+    """            1. If _spreadable_ is not *undefined*, return ! ToBoolean(_spreadable_).""",
+    """            1. Return ? IsArray(_O_).""",
+  )
 }

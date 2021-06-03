@@ -1,6 +1,5 @@
 package kr.ac.kaist.ires.model
 
-import kr.ac.kaist.ires.{ AST, ASTInfo, Lexical }
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.UnexpectedSemantics
 import scala.collection.immutable.{ Set => SSet }
@@ -8,6 +7,7 @@ import scala.collection.immutable.{ Set => SSet }
 trait NewExpression extends AST {
   val kind: String = "NewExpression"
 }
+
 case class NewExpression0(x0: MemberExpression, parserParams: List[Boolean]) extends NewExpression {
   x0.parent = Some(this)
   val name: String = "NewExpression0"
@@ -20,8 +20,9 @@ case class NewExpression0(x0: MemberExpression, parserParams: List[Boolean]) ext
 }
 object NewExpression0 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map()
+  val semMap: Map[String, Algo] = Map()
 }
+
 case class NewExpression1(x1: NewExpression, parserParams: List[Boolean]) extends NewExpression {
   x1.parent = Some(this)
   val name: String = "NewExpression1"
@@ -34,12 +35,12 @@ case class NewExpression1(x1: NewExpression, parserParams: List[Boolean]) extend
 }
 object NewExpression1 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "AssignmentTargetType0" -> NewExpression1AssignmentTargetType0.func,
-    "Evaluation0" -> NewExpression1Evaluation0.func,
-    "HasCallInTailPosition0" -> NewExpression1HasCallInTailPosition0.func,
-    "IsDestructuring0" -> NewExpression1IsDestructuring0.func,
-    "IsFunctionDefinition0" -> NewExpression1IsFunctionDefinition0.func,
-    "IsIdentifierRef0" -> NewExpression1IsIdentifierRef0.func
+  val semMap: Map[String, Algo] = Map(
+    "IsFunctionDefinition0" -> `AL::NewExpression[1,0].IsFunctionDefinition`,
+    "IsIdentifierRef0" -> `AL::NewExpression[1,0].IsIdentifierRef`,
+    "AssignmentTargetType0" -> `AL::NewExpression[1,0].AssignmentTargetType`,
+    "Evaluation0" -> `AL::NewExpression[1,0].Evaluation`,
+    "IsDestructuring0" -> `AL::NewExpression[1,0].IsDestructuring`,
+    "HasCallInTailPosition0" -> `AL::NewExpression[1,0].HasCallInTailPosition`,
   )
 }

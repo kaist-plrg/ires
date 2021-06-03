@@ -2,67 +2,72 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.ir.Parser._
+import Param.Kind._
 
-object AddEntriesFromIterable extends Algorithm {
-  val name: String = "AddEntriesFromIterable"
-  val length: Int = 3
-  val lang: Boolean = true
-  val func: Func = FixUIdWalker(parseFunc(""""AddEntriesFromIterable" (target, iterable, adder) => {
-    app __x0__ = (IsCallable adder)
-    if (= __x0__ false) {
-      app __x1__ = (ThrowCompletion (new OrdinaryObject("Prototype" -> INTRINSIC_TypeErrorPrototype, "ErrorData" -> undefined, "SubMap" -> (new SubMap()))))
-      return __x1__
-    } else {}
-    app __x2__ = (GetIterator iterable)
-    if (is-completion __x2__) if (= __x2__["Type"] CONST_normal) __x2__ = __x2__["Value"] else return __x2__ else {}
-    let iteratorRecord = __x2__
-    while true {
-      app __x3__ = (IteratorStep iteratorRecord)
-      if (is-completion __x3__) if (= __x3__["Type"] CONST_normal) __x3__ = __x3__["Value"] else return __x3__ else {}
-      let next = __x3__
-      if (= next false) {
-        app __x4__ = (WrapCompletion target)
-        return __x4__
-      } else {}
-      app __x5__ = (IteratorValue next)
-      if (is-completion __x5__) if (= __x5__["Type"] CONST_normal) __x5__ = __x5__["Value"] else return __x5__ else {}
-      let nextItem = __x5__
-      app __x6__ = (Type nextItem)
-      if (! (= __x6__ Object)) {
-        app __x7__ = (ThrowCompletion (new OrdinaryObject("Prototype" -> INTRINSIC_TypeErrorPrototype, "ErrorData" -> undefined, "SubMap" -> (new SubMap()))))
-        let error = __x7__
-        app __x8__ = (IteratorClose iteratorRecord error)
-        if (is-completion __x8__) if (= __x8__["Type"] CONST_normal) __x8__ = __x8__["Value"] else return __x8__ else {}
-        app __x9__ = (WrapCompletion __x8__)
-        return __x9__
-      } else {}
-      app __x10__ = (Get nextItem "0")
-      let k = __x10__
-      app __x11__ = (IsAbruptCompletion k)
-      if __x11__ {
-        app __x12__ = (IteratorClose iteratorRecord k)
-        if (is-completion __x12__) if (= __x12__["Type"] CONST_normal) __x12__ = __x12__["Value"] else return __x12__ else {}
-        app __x13__ = (WrapCompletion __x12__)
-        return __x13__
-      } else {}
-      app __x14__ = (Get nextItem "1")
-      let v = __x14__
-      app __x15__ = (IsAbruptCompletion v)
-      if __x15__ {
-        app __x16__ = (IteratorClose iteratorRecord v)
-        if (is-completion __x16__) if (= __x16__["Type"] CONST_normal) __x16__ = __x16__["Value"] else return __x16__ else {}
-        app __x17__ = (WrapCompletion __x16__)
-        return __x17__
-      } else {}
-      app __x18__ = (Call adder target (new [k["Value"], v["Value"]]))
-      let status = __x18__
-      app __x19__ = (IsAbruptCompletion status)
-      if __x19__ {
-        app __x20__ = (IteratorClose iteratorRecord status)
-        if (is-completion __x20__) if (= __x20__["Type"] CONST_normal) __x20__ = __x20__["Value"] else return __x20__ else {}
-        app __x21__ = (WrapCompletion __x20__)
-        return __x21__
-      } else {}
-    }
-  }"""), this)
+object `AL::AddEntriesFromIterable` extends Algo {
+  val head = NormalHead("AddEntriesFromIterable", List(Param("target", Normal), Param("iterable", Normal), Param("adder", Normal)))
+  val ids = List(
+    "sec-add-entries-from-iterable",
+    "sec-map-constructor",
+    "sec-map-objects",
+    "sec-keyed-collections",
+  )
+  val rawBody = parseInst("""{
+  |  0:app __x0__ = (IsCallable adder)
+  |  0:if (= __x0__ false) throw TypeError else 1:{}
+  |  2:app __x1__ = (GetIterator iterable)
+  |  2:let iteratorRecord = [? __x1__]
+  |  3:while true {
+  |    4:app __x2__ = (IteratorStep iteratorRecord)
+  |    4:let next = [? __x2__]
+  |    5:if (= next false) return target else 1:{}
+  |    6:app __x3__ = (IteratorValue next)
+  |    6:let nextItem = [? __x3__]
+  |    7:if (! (= (typeof nextItem) Object)) {
+  |      8:app __x4__ = (ThrowCompletion (new OrdinaryObject()))
+  |      8:let error = __x4__
+  |      9:app __x5__ = (IteratorClose iteratorRecord error)
+  |      9:return [? __x5__]
+  |    } else 1:{}
+  |    10:app __x6__ = (Get nextItem "0")
+  |    10:let k = __x6__
+  |    11:app __x7__ = (IsAbruptCompletion k)
+  |    11:if __x7__ {
+  |      app __x8__ = (IteratorClose iteratorRecord k)
+  |      return [? __x8__]
+  |    } else 1:{}
+  |    12:app __x9__ = (Get nextItem "1")
+  |    12:let v = __x9__
+  |    13:app __x10__ = (IsAbruptCompletion v)
+  |    13:if __x10__ {
+  |      app __x11__ = (IteratorClose iteratorRecord v)
+  |      return [? __x11__]
+  |    } else 1:{}
+  |    14:app __x12__ = (Call adder target (new [k.Value, v.Value]))
+  |    14:let status = __x12__
+  |    15:app __x13__ = (IsAbruptCompletion status)
+  |    15:if __x13__ {
+  |      app __x14__ = (IteratorClose iteratorRecord status)
+  |      return [? __x14__]
+  |    } else 1:{}
+  |  }
+  |}""".stripMargin)
+  val code = scala.Array[String](
+    """          1. If IsCallable(_adder_) is *false*, throw a *TypeError* exception.""",
+    """          1. Assert: _iterable_ is present, and is neither *undefined* nor *null*.""",
+    """          1. Let _iteratorRecord_ be ? GetIterator(_iterable_).""",
+    """          1. Repeat,""",
+    """            1. Let _next_ be ? IteratorStep(_iteratorRecord_).""",
+    """            1. If _next_ is *false*, return _target_.""",
+    """            1. Let _nextItem_ be ? IteratorValue(_next_).""",
+    """            1. If Type(_nextItem_) is not Object, then""",
+    """              1. Let _error_ be ThrowCompletion(a newly created *TypeError* object).""",
+    """              1. Return ? IteratorClose(_iteratorRecord_, _error_).""",
+    """            1. Let _k_ be Get(_nextItem_, *"0"*).""",
+    """            1. If _k_ is an abrupt completion, return ? IteratorClose(_iteratorRecord_, _k_).""",
+    """            1. Let _v_ be Get(_nextItem_, *"1"*).""",
+    """            1. If _v_ is an abrupt completion, return ? IteratorClose(_iteratorRecord_, _v_).""",
+    """            1. Let _status_ be Call(_adder_, _target_, « _k_.[[Value]], _v_.[[Value]] »).""",
+    """            1. If _status_ is an abrupt completion, return ? IteratorClose(_iteratorRecord_, _status_).""",
+  )
 }

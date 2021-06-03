@@ -1,6 +1,5 @@
 package kr.ac.kaist.ires.model
 
-import kr.ac.kaist.ires.{ AST, ASTInfo, Lexical }
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.UnexpectedSemantics
 import scala.collection.immutable.{ Set => SSet }
@@ -8,6 +7,7 @@ import scala.collection.immutable.{ Set => SSet }
 trait MultiplicativeOperator extends AST {
   val kind: String = "MultiplicativeOperator"
 }
+
 case class MultiplicativeOperator0(parserParams: List[Boolean]) extends MultiplicativeOperator {
   val name: String = "MultiplicativeOperator0"
   override def toString: String = {
@@ -19,8 +19,9 @@ case class MultiplicativeOperator0(parserParams: List[Boolean]) extends Multipli
 }
 object MultiplicativeOperator0 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map()
+  val semMap: Map[String, Algo] = Map()
 }
+
 case class MultiplicativeOperator1(parserParams: List[Boolean]) extends MultiplicativeOperator {
   val name: String = "MultiplicativeOperator1"
   override def toString: String = {
@@ -32,8 +33,9 @@ case class MultiplicativeOperator1(parserParams: List[Boolean]) extends Multipli
 }
 object MultiplicativeOperator1 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map()
+  val semMap: Map[String, Algo] = Map()
 }
+
 case class MultiplicativeOperator2(parserParams: List[Boolean]) extends MultiplicativeOperator {
   val name: String = "MultiplicativeOperator2"
   override def toString: String = {
@@ -45,5 +47,5 @@ case class MultiplicativeOperator2(parserParams: List[Boolean]) extends Multipli
 }
 object MultiplicativeOperator2 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map()
+  val semMap: Map[String, Algo] = Map()
 }

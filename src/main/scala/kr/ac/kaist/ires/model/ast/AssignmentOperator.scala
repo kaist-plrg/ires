@@ -1,6 +1,5 @@
 package kr.ac.kaist.ires.model
 
-import kr.ac.kaist.ires.{ AST, ASTInfo, Lexical }
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.UnexpectedSemantics
 import scala.collection.immutable.{ Set => SSet }
@@ -8,6 +7,7 @@ import scala.collection.immutable.{ Set => SSet }
 trait AssignmentOperator extends AST {
   val kind: String = "AssignmentOperator"
 }
+
 case class AssignmentOperator0(parserParams: List[Boolean]) extends AssignmentOperator {
   val name: String = "AssignmentOperator0"
   override def toString: String = {
@@ -19,8 +19,9 @@ case class AssignmentOperator0(parserParams: List[Boolean]) extends AssignmentOp
 }
 object AssignmentOperator0 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map()
+  val semMap: Map[String, Algo] = Map()
 }
+
 case class AssignmentOperator1(parserParams: List[Boolean]) extends AssignmentOperator {
   val name: String = "AssignmentOperator1"
   override def toString: String = {
@@ -32,8 +33,9 @@ case class AssignmentOperator1(parserParams: List[Boolean]) extends AssignmentOp
 }
 object AssignmentOperator1 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map()
+  val semMap: Map[String, Algo] = Map()
 }
+
 case class AssignmentOperator2(parserParams: List[Boolean]) extends AssignmentOperator {
   val name: String = "AssignmentOperator2"
   override def toString: String = {
@@ -45,8 +47,9 @@ case class AssignmentOperator2(parserParams: List[Boolean]) extends AssignmentOp
 }
 object AssignmentOperator2 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map()
+  val semMap: Map[String, Algo] = Map()
 }
+
 case class AssignmentOperator3(parserParams: List[Boolean]) extends AssignmentOperator {
   val name: String = "AssignmentOperator3"
   override def toString: String = {
@@ -58,8 +61,9 @@ case class AssignmentOperator3(parserParams: List[Boolean]) extends AssignmentOp
 }
 object AssignmentOperator3 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map()
+  val semMap: Map[String, Algo] = Map()
 }
+
 case class AssignmentOperator4(parserParams: List[Boolean]) extends AssignmentOperator {
   val name: String = "AssignmentOperator4"
   override def toString: String = {
@@ -71,8 +75,9 @@ case class AssignmentOperator4(parserParams: List[Boolean]) extends AssignmentOp
 }
 object AssignmentOperator4 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map()
+  val semMap: Map[String, Algo] = Map()
 }
+
 case class AssignmentOperator5(parserParams: List[Boolean]) extends AssignmentOperator {
   val name: String = "AssignmentOperator5"
   override def toString: String = {
@@ -84,8 +89,9 @@ case class AssignmentOperator5(parserParams: List[Boolean]) extends AssignmentOp
 }
 object AssignmentOperator5 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map()
+  val semMap: Map[String, Algo] = Map()
 }
+
 case class AssignmentOperator6(parserParams: List[Boolean]) extends AssignmentOperator {
   val name: String = "AssignmentOperator6"
   override def toString: String = {
@@ -97,8 +103,9 @@ case class AssignmentOperator6(parserParams: List[Boolean]) extends AssignmentOp
 }
 object AssignmentOperator6 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map()
+  val semMap: Map[String, Algo] = Map()
 }
+
 case class AssignmentOperator7(parserParams: List[Boolean]) extends AssignmentOperator {
   val name: String = "AssignmentOperator7"
   override def toString: String = {
@@ -110,8 +117,9 @@ case class AssignmentOperator7(parserParams: List[Boolean]) extends AssignmentOp
 }
 object AssignmentOperator7 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map()
+  val semMap: Map[String, Algo] = Map()
 }
+
 case class AssignmentOperator8(parserParams: List[Boolean]) extends AssignmentOperator {
   val name: String = "AssignmentOperator8"
   override def toString: String = {
@@ -123,8 +131,9 @@ case class AssignmentOperator8(parserParams: List[Boolean]) extends AssignmentOp
 }
 object AssignmentOperator8 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map()
+  val semMap: Map[String, Algo] = Map()
 }
+
 case class AssignmentOperator9(parserParams: List[Boolean]) extends AssignmentOperator {
   val name: String = "AssignmentOperator9"
   override def toString: String = {
@@ -136,8 +145,9 @@ case class AssignmentOperator9(parserParams: List[Boolean]) extends AssignmentOp
 }
 object AssignmentOperator9 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map()
+  val semMap: Map[String, Algo] = Map()
 }
+
 case class AssignmentOperator10(parserParams: List[Boolean]) extends AssignmentOperator {
   val name: String = "AssignmentOperator10"
   override def toString: String = {
@@ -149,8 +159,9 @@ case class AssignmentOperator10(parserParams: List[Boolean]) extends AssignmentO
 }
 object AssignmentOperator10 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map()
+  val semMap: Map[String, Algo] = Map()
 }
+
 case class AssignmentOperator11(parserParams: List[Boolean]) extends AssignmentOperator {
   val name: String = "AssignmentOperator11"
   override def toString: String = {
@@ -162,5 +173,5 @@ case class AssignmentOperator11(parserParams: List[Boolean]) extends AssignmentO
 }
 object AssignmentOperator11 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map()
+  val semMap: Map[String, Algo] = Map()
 }

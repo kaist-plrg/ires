@@ -1,6 +1,5 @@
 package kr.ac.kaist.ires.model
 
-import kr.ac.kaist.ires.{ AST, ASTInfo, Lexical }
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.UnexpectedSemantics
 import scala.collection.immutable.{ Set => SSet }
@@ -8,6 +7,7 @@ import scala.collection.immutable.{ Set => SSet }
 trait Elision extends AST {
   val kind: String = "Elision"
 }
+
 case class Elision0(parserParams: List[Boolean]) extends Elision {
   val name: String = "Elision0"
   override def toString: String = {
@@ -19,11 +19,12 @@ case class Elision0(parserParams: List[Boolean]) extends Elision {
 }
 object Elision0 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "ElisionWidth0" -> Elision0ElisionWidth0.func,
-    "IteratorDestructuringAssignmentEvaluation0" -> Elision0IteratorDestructuringAssignmentEvaluation0.func
+  val semMap: Map[String, Algo] = Map(
+    "ArrayAccumulation0" -> `AL::Elision[0,0].ArrayAccumulation`,
+    "IteratorDestructuringAssignmentEvaluation0" -> `AL::Elision[0,0].IteratorDestructuringAssignmentEvaluation`,
   )
 }
+
 case class Elision1(x0: Elision, parserParams: List[Boolean]) extends Elision {
   x0.parent = Some(this)
   val name: String = "Elision1"
@@ -36,8 +37,8 @@ case class Elision1(x0: Elision, parserParams: List[Boolean]) extends Elision {
 }
 object Elision1 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "ElisionWidth0" -> Elision1ElisionWidth0.func,
-    "IteratorDestructuringAssignmentEvaluation0" -> Elision1IteratorDestructuringAssignmentEvaluation0.func
+  val semMap: Map[String, Algo] = Map(
+    "ArrayAccumulation0" -> `AL::Elision[1,0].ArrayAccumulation`,
+    "IteratorDestructuringAssignmentEvaluation0" -> `AL::Elision[1,0].IteratorDestructuringAssignmentEvaluation`,
   )
 }

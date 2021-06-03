@@ -45,32 +45,38 @@ trait Walker {
   ////////////////////////////////////////////////////////////////////////////////
   // Syntax
   ////////////////////////////////////////////////////////////////////////////////
-
   // programs
   def walk(program: Program): Program = Program(walkList[Inst](program.insts, walk))
 
   // instructions
-  def walk(inst: Inst): Inst = inst match {
-    case IExpr(expr) => IExpr(walk(expr))
-    case ILet(id, expr) => ILet(walk(id), walk(expr))
-    case IAssign(ref, expr) => IAssign(walk(ref), walk(expr))
-    case IDelete(ref) => IDelete(walk(ref))
-    case IAppend(expr, list) => IAppend(walk(expr), walk(list))
-    case IPrepend(expr, list) => IPrepend(walk(expr), walk(list))
-    case IReturn(expr) => IReturn(walk(expr))
-    case IIf(cond, thenInst, elseInst) => IIf(walk(cond), walk(thenInst), walk(elseInst))
-    case IWhile(cond, body) => IWhile(walk(cond), walk(body))
-    case ISeq(insts) => ISeq(walkList[Inst](insts, walk))
-    case IAssert(expr) => IAssert(walk(expr))
-    case IPrint(expr) => IPrint(walk(expr))
-    case IApp(id, fexpr, args) => IApp(walk(id), walk(fexpr), walkList[Expr](args, walk))
-    case IAccess(id, bexpr, expr) => IAccess(walk(id), walk(bexpr), walk(expr))
-    case IWithCont(id, params, body) => IWithCont(walk(id), walkList[Id](params, walk), walk(body))
+  def walk(inst: Inst): Inst = {
+    val newInst = inst match {
+      case IExpr(expr) => IExpr(walk(expr))
+      case ILet(id, expr) => ILet(walk(id), walk(expr))
+      case IAssign(ref, expr) => IAssign(walk(ref), walk(expr))
+      case IDelete(ref) => IDelete(walk(ref))
+      case IAppend(expr, list) => IAppend(walk(expr), walk(list))
+      case IPrepend(expr, list) => IPrepend(walk(expr), walk(list))
+      case IReturn(expr) => IReturn(walk(expr))
+      case IThrow(id) => IThrow(walk(id))
+      case IIf(cond, thenInst, elseInst) => IIf(walk(cond), walk(thenInst), walk(elseInst))
+      case IWhile(cond, body) => IWhile(walk(cond), walk(body))
+      case ISeq(insts) => ISeq(walkList[Inst](insts, walk))
+      case IAssert(expr) => IAssert(walk(expr))
+      case IPrint(expr) => IPrint(walk(expr))
+      case IApp(id, fexpr, args) => IApp(walk(id), walk(fexpr), walkList[Expr](args, walk))
+      case IAccess(id, bexpr, expr, args) =>
+        IAccess(walk(id), walk(bexpr), walk(expr), walkList[Expr](args, walk))
+      case IWithCont(id, params, body) => IWithCont(walk(id), walkList[Id](params, walk), walk(body))
+      case ISetType(expr, ty) => ISetType(walk(expr), walk(ty))
+    }
+    newInst.line = inst.line
+    newInst
   }
 
   // expressions
   def walk(expr: Expr): Expr = expr match {
-    case ENum(_) | EINum(_) | EStr(_) | EBool(_) | EUndef | ENull | EAbsent => expr
+    case ENum(_) | EINum(_) | EBigINum(_) | EStr(_) | EBool(_) | EUndef | ENull | EAbsent => expr
     case EMap(ty, props) => EMap(
       walk(ty),
       walkList[(Expr, Expr)](props, { case (x, y) => (walk(x), walk(y)) })
@@ -87,9 +93,10 @@ trait Walker {
     case EIsInstanceOf(base, name) => EIsInstanceOf(walk(base), walk(name))
     case EGetElems(base, name) => EGetElems(walk(base), walk(name))
     case EGetSyntax(base) => EGetSyntax(walk(base))
-    case EParseSyntax(code, rule, flags) => EParseSyntax(walk(code), walk(rule), walkList[Expr](flags, walk))
+    case EParseSyntax(code, rule, flags) => EParseSyntax(walk(code), walk(rule), walk(flags))
     case EConvert(expr, cop, list) => EConvert(walk(expr), walk(cop), walkList[Expr](list, walk))
     case EContains(list, elem) => EContains(walk(list), walk(elem))
+    case EReturnIfAbrupt(expr, check) => EReturnIfAbrupt(walk(expr), check)
     case ECopy(obj) => ECopy(walk(obj))
     case EKeys(obj) => EKeys(walk(obj))
     case ENotSupported(msg) => ENotSupported(walk(msg))
@@ -114,6 +121,7 @@ trait Walker {
   def walk(bop: BOp): BOp = bop
 
   def walk(cop: COp): COp = cop
+
   ////////////////////////////////////////////////////////////////////////////////
   // States
   ////////////////////////////////////////////////////////////////////////////////

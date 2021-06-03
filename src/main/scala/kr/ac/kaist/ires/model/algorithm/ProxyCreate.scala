@@ -2,45 +2,41 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.ir.Parser._
+import Param.Kind._
 
-object ProxyCreate extends Algorithm {
-  val name: String = "ProxyCreate"
-  val length: Int = 2
-  val lang: Boolean = true
-  val func: Func = FixUIdWalker(parseFunc(""""ProxyCreate" (target, handler) => {
-    app __x0__ = (Type target)
-    if (! (= __x0__ Object)) {
-      app __x1__ = (ThrowCompletion (new OrdinaryObject("Prototype" -> INTRINSIC_TypeErrorPrototype, "ErrorData" -> undefined, "SubMap" -> (new SubMap()))))
-      return __x1__
-    } else {}
-    !!! "Etc"
-    app __x2__ = (Type handler)
-    if (! (= __x2__ Object)) {
-      app __x3__ = (ThrowCompletion (new OrdinaryObject("Prototype" -> INTRINSIC_TypeErrorPrototype, "ErrorData" -> undefined, "SubMap" -> (new SubMap()))))
-      return __x3__
-    } else {}
-    !!! "Etc"
-    let P = (new OrdinaryObject("SubMap" -> (new SubMap())))
-    if (= P["HasProperty"] absent) P["HasProperty"] = OrdinaryObjectDOTHasProperty else {}
-    if (= P["DefineOwnProperty"] absent) P["DefineOwnProperty"] = OrdinaryObjectDOTDefineOwnProperty else {}
-    if (= P["Set"] absent) P["Set"] = OrdinaryObjectDOTSet else {}
-    if (= P["SetPrototypeOf"] absent) P["SetPrototypeOf"] = OrdinaryObjectDOTSetPrototypeOf else {}
-    if (= P["Get"] absent) P["Get"] = OrdinaryObjectDOTGet else {}
-    if (= P["PreventExtensions"] absent) P["PreventExtensions"] = OrdinaryObjectDOTPreventExtensions else {}
-    if (= P["Delete"] absent) P["Delete"] = OrdinaryObjectDOTDelete else {}
-    if (= P["GetOwnProperty"] absent) P["GetOwnProperty"] = OrdinaryObjectDOTGetOwnProperty else {}
-    if (= P["OwnPropertyKeys"] absent) P["OwnPropertyKeys"] = OrdinaryObjectDOTOwnPropertyKeys else {}
-    if (= P["GetPrototypeOf"] absent) P["GetPrototypeOf"] = OrdinaryObjectDOTGetPrototypeOf else {}
-    if (= P["IsExtensible"] absent) P["IsExtensible"] = OrdinaryObjectDOTIsExtensible else {}
-    app __x4__ = (IsCallable target)
-    if (= __x4__ true) {
-      P["Call"] = ProxyExoticObjectDOTCall
-      app __x5__ = (IsConstructor target)
-      if (= __x5__ true) P["Construct"] = ProxyExoticObjectDOTConstruct else {}
-    } else {}
-    P["ProxyTarget"] = target
-    P["ProxyHandler"] = handler
-    app __x6__ = (WrapCompletion P)
-    return __x6__
-  }"""), this)
+object `AL::ProxyCreate` extends Algo {
+  val head = NormalHead("ProxyCreate", List(Param("target", Normal), Param("handler", Normal)))
+  val ids = List(
+    "sec-proxycreate",
+    "sec-proxy-object-internal-methods-and-internal-slots",
+    "sec-ordinary-and-exotic-objects-behaviours",
+  )
+  val rawBody = parseInst("""{
+  |  0:if (! (= (typeof target) Object)) throw TypeError else 3:{}
+  |  1:if (! (= (typeof handler) Object)) throw TypeError else 3:{}
+  |  2:app __x0__ = (MakeBasicObject (new ["ProxyHandler", "ProxyTarget"]))
+  |  2:let P = [! __x0__]
+  |  4:app __x1__ = (IsCallable target)
+  |  4:if (= __x1__ true) {
+  |    5:P.Call = ProxyObjectDOTCall
+  |    6:app __x2__ = (IsConstructor target)
+  |    6:if (= __x2__ true) P.Construct = ProxyObjectDOTConstruct else 3:{}
+  |  } else 3:{}
+  |  8:P.ProxyTarget = target
+  |  9:P.ProxyHandler = handler
+  |  10:return P
+  |}""".stripMargin)
+  val code = scala.Array[String](
+    """        1. If Type(_target_) is not Object, throw a *TypeError* exception.""",
+    """        1. If Type(_handler_) is not Object, throw a *TypeError* exception.""",
+    """        1. Let _P_ be ! MakeBasicObject(« [[ProxyHandler]], [[ProxyTarget]] »).""",
+    """        1. Set _P_'s essential internal methods, except for [[Call]] and [[Construct]], to the definitions specified in <emu-xref href="#sec-proxy-object-internal-methods-and-internal-slots"></emu-xref>.""",
+    """        1. If IsCallable(_target_) is *true*, then""",
+    """          1. Set _P_.[[Call]] as specified in <emu-xref href="#sec-proxy-object-internal-methods-and-internal-slots-call-thisargument-argumentslist"></emu-xref>.""",
+    """          1. If IsConstructor(_target_) is *true*, then""",
+    """            1. Set _P_.[[Construct]] as specified in <emu-xref href="#sec-proxy-object-internal-methods-and-internal-slots-construct-argumentslist-newtarget"></emu-xref>.""",
+    """        1. Set _P_.[[ProxyTarget]] to _target_.""",
+    """        1. Set _P_.[[ProxyHandler]] to _handler_.""",
+    """        1. Return _P_.""",
+  )
 }

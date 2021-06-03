@@ -1,6 +1,5 @@
 package kr.ac.kaist.ires.model
 
-import kr.ac.kaist.ires.{ AST, ASTInfo, Lexical }
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.UnexpectedSemantics
 import scala.collection.immutable.{ Set => SSet }
@@ -8,6 +7,7 @@ import scala.collection.immutable.{ Set => SSet }
 trait FunctionRestParameter extends AST {
   val kind: String = "FunctionRestParameter"
 }
+
 case class FunctionRestParameter0(x0: BindingRestElement, parserParams: List[Boolean]) extends FunctionRestParameter {
   x0.parent = Some(this)
   val name: String = "FunctionRestParameter0"
@@ -20,7 +20,5 @@ case class FunctionRestParameter0(x0: BindingRestElement, parserParams: List[Boo
 }
 object FunctionRestParameter0 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "IteratorBindingInitialization0" -> FunctionRestParameter0IteratorBindingInitialization0.func
-  )
+  val semMap: Map[String, Algo] = Map()
 }

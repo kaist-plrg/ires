@@ -1,6 +1,5 @@
 package kr.ac.kaist.ires.model
 
-import kr.ac.kaist.ires.{ AST, ASTInfo, Lexical }
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.UnexpectedSemantics
 import scala.collection.immutable.{ Set => SSet }
@@ -8,6 +7,7 @@ import scala.collection.immutable.{ Set => SSet }
 trait ArrayLiteral extends AST {
   val kind: String = "ArrayLiteral"
 }
+
 case class ArrayLiteral0(x1: Option[Elision], parserParams: List[Boolean]) extends ArrayLiteral {
   x1.foreach((m) => m.parent = Some(this))
   val name: String = "ArrayLiteral0"
@@ -20,10 +20,11 @@ case class ArrayLiteral0(x1: Option[Elision], parserParams: List[Boolean]) exten
 }
 object ArrayLiteral0 extends ASTInfo {
   val maxK: Int = 1
-  val semMap: Map[String, Func] = Map(
-    "Evaluation1" -> ArrayLiteral0Evaluation1.func
+  val semMap: Map[String, Algo] = Map(
+    "Evaluation1" -> `AL::ArrayLiteral[0,1].Evaluation`,
   )
 }
+
 case class ArrayLiteral1(x1: ElementList, parserParams: List[Boolean]) extends ArrayLiteral {
   x1.parent = Some(this)
   val name: String = "ArrayLiteral1"
@@ -36,10 +37,11 @@ case class ArrayLiteral1(x1: ElementList, parserParams: List[Boolean]) extends A
 }
 object ArrayLiteral1 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "Evaluation0" -> ArrayLiteral1Evaluation0.func
+  val semMap: Map[String, Algo] = Map(
+    "Evaluation0" -> `AL::ArrayLiteral[1,0].Evaluation`,
   )
 }
+
 case class ArrayLiteral2(x1: ElementList, x3: Option[Elision], parserParams: List[Boolean]) extends ArrayLiteral {
   x1.parent = Some(this)
   x3.foreach((m) => m.parent = Some(this))
@@ -53,7 +55,7 @@ case class ArrayLiteral2(x1: ElementList, x3: Option[Elision], parserParams: Lis
 }
 object ArrayLiteral2 extends ASTInfo {
   val maxK: Int = 1
-  val semMap: Map[String, Func] = Map(
-    "Evaluation1" -> ArrayLiteral2Evaluation1.func
+  val semMap: Map[String, Algo] = Map(
+    "Evaluation1" -> `AL::ArrayLiteral[2,1].Evaluation`,
   )
 }

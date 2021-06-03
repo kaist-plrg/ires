@@ -2,70 +2,60 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.ir.Parser._
+import Param.Kind._
 
-object PutValue extends Algorithm {
-  val name: String = "PutValue"
-  val length: Int = 2
-  val lang: Boolean = true
-  val func: Func = FixUIdWalker(parseFunc(""""PutValue" (V, W) => {
-    if (is-completion V) if (= V["Type"] CONST_normal) V = V["Value"] else return V else {}
-    V
-    if (is-completion W) if (= W["Type"] CONST_normal) W = W["Value"] else return W else {}
-    W
-    app __x0__ = (Type V)
-    if (! (= __x0__ Reference)) {
-      app __x1__ = (ThrowCompletion (new OrdinaryObject("Prototype" -> INTRINSIC_ReferenceErrorPrototype, "ErrorData" -> undefined, "SubMap" -> (new SubMap()))))
-      return __x1__
-    } else {}
-    app __x2__ = (GetBase V)
-    let base = __x2__
-    app __x3__ = (IsUnresolvableReference V)
-    if (= __x3__ true) {
-      app __x4__ = (IsStrictReference V)
-      if (= __x4__ true) {
-        app __x5__ = (ThrowCompletion (new OrdinaryObject("Prototype" -> INTRINSIC_ReferenceErrorPrototype, "ErrorData" -> undefined, "SubMap" -> (new SubMap()))))
-        return __x5__
-      } else {}
-      app __x6__ = (GetGlobalObject )
-      let globalObj = __x6__
-      app __x7__ = (GetReferencedName V)
-      app __x8__ = (Set globalObj __x7__ W false)
-      if (is-completion __x8__) if (= __x8__["Type"] CONST_normal) __x8__ = __x8__["Value"] else return __x8__ else {}
-      app __x9__ = (WrapCompletion __x8__)
-      return __x9__
-    } else {
-      app __x10__ = (IsPropertyReference V)
-      if (= __x10__ true) {
-        app __x11__ = (HasPrimitiveBase V)
-        if (= __x11__ true) {
-          app __x12__ = (ToObject base)
-          if (is-completion __x12__) if (= __x12__["Type"] CONST_normal) __x12__ = __x12__["Value"] else return __x12__ else {}
-          base = __x12__
-        } else {}
-        app __x13__ = (GetReferencedName V)
-        app __x14__ = (GetThisValue V)
-        app __x15__ = (base["Set"] base __x13__ W __x14__)
-        if (is-completion __x15__) if (= __x15__["Type"] CONST_normal) __x15__ = __x15__["Value"] else return __x15__ else {}
-        let succeeded = __x15__
-        let __x16__ = (= succeeded false)
-        if __x16__ {
-          app __x17__ = (IsStrictReference V)
-          __x16__ = (= __x17__ true)
-        } else {}
-        if __x16__ {
-          app __x18__ = (ThrowCompletion (new OrdinaryObject("Prototype" -> INTRINSIC_TypeErrorPrototype, "ErrorData" -> undefined, "SubMap" -> (new SubMap()))))
-          return __x18__
-        } else {}
-        app __x19__ = (NormalCompletion undefined)
-        return __x19__
-      } else {
-        app __x20__ = (GetReferencedName V)
-        app __x21__ = (IsStrictReference V)
-        app __x22__ = (base["SetMutableBinding"] base __x20__ W __x21__)
-        if (is-completion __x22__) if (= __x22__["Type"] CONST_normal) __x22__ = __x22__["Value"] else return __x22__ else {}
-        app __x23__ = (WrapCompletion __x22__)
-        return __x23__
-      }
-    }
-  }"""), this)
+object `AL::PutValue` extends Algo {
+  val head = NormalHead("PutValue", List(Param("V", Normal), Param("W", Normal)))
+  val ids = List(
+    "sec-putvalue",
+    "sec-reference-record-specification-type",
+    "sec-ecmascript-specification-types",
+    "sec-ecmascript-data-types-and-values",
+  )
+  val rawBody = parseInst("""{
+  |  0:[? V]
+  |  1:[? W]
+  |  2:if (! (is-instance-of V ReferenceRecord)) throw ReferenceError else 0:{}
+  |  3:app __x0__ = (IsUnresolvableReference V)
+  |  3:if (= __x0__ true) {
+  |    4:if (= V.Strict true) throw ReferenceError else 0:{}
+  |    5:app __x1__ = (GetGlobalObject)
+  |    5:let globalObj = __x1__
+  |    6:app __x2__ = (Set globalObj V.ReferencedName W false)
+  |    6:return [? __x2__]
+  |  } else 0:{}
+  |  12:app __x3__ = (IsPropertyReference V)
+  |  12:if (= __x3__ true) {
+  |    8:app __x4__ = (ToObject V.Base)
+  |    8:let baseObj = [! __x4__]
+  |    9:app __x5__ = (GetThisValue V)
+  |    9:app __x6__ = (baseObj.Set baseObj V.ReferencedName W __x5__)
+  |    9:let succeeded = [? __x6__]
+  |    10:if (&& (= succeeded false) (= V.Strict true)) throw TypeError else 0:{}
+  |    11:return undefined
+  |  } else {
+  |    13:let base = V.Base
+  |    14:assert (is-instance-of base EnvironmentRecord)
+  |    15:app __x7__ = (base.SetMutableBinding base V.ReferencedName W V.Strict)
+  |    15:return [? __x7__]
+  |  }
+  |}""".stripMargin)
+  val code = scala.Array[String](
+    """          1. ReturnIfAbrupt(_V_).""",
+    """          1. ReturnIfAbrupt(_W_).""",
+    """          1. If _V_ is not a Reference Record, throw a *ReferenceError* exception.""",
+    """          1. If IsUnresolvableReference(_V_) is *true*, then""",
+    """            1. If _V_.[[Strict]] is *true*, throw a *ReferenceError* exception.""",
+    """            1. Let _globalObj_ be GetGlobalObject().""",
+    """            1. Return ? Set(_globalObj_, _V_.[[ReferencedName]], _W_, *false*).""",
+    """          1. If IsPropertyReference(_V_) is *true*, then""",
+    """            1. [id="step-putvalue-toobject"] Let _baseObj_ be ! ToObject(_V_.[[Base]]).""",
+    """            1. Let _succeeded_ be ? _baseObj_.[[Set]](_V_.[[ReferencedName]], _W_, GetThisValue(_V_)).""",
+    """            1. If _succeeded_ is *false* and _V_.[[Strict]] is *true*, throw a *TypeError* exception.""",
+    """            1. Return.""",
+    """          1. Else,""",
+    """            1. Let _base_ be _V_.[[Base]].""",
+    """            1. Assert: _base_ is an Environment Record.""",
+    """            1. Return ? _base_.SetMutableBinding(_V_.[[ReferencedName]], _W_, _V_.[[Strict]]) (see <emu-xref href="#sec-environment-records"></emu-xref>).""",
+  )
 }

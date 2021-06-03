@@ -2,75 +2,85 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.ir.Parser._
+import Param.Kind._
 
-object ArraySetLength extends Algorithm {
-  val name: String = "ArraySetLength"
-  val length: Int = 2
-  val lang: Boolean = true
-  val func: Func = FixUIdWalker(parseFunc(""""ArraySetLength" (A, Desc) => {
-    if (= Desc["Value"] absent) {
-      app __x0__ = (OrdinaryDefineOwnProperty A "length" Desc)
-      app __x1__ = (WrapCompletion __x0__)
-      return __x1__
-    } else {}
-    let newLenDesc = (copy-obj Desc)
-    app __x2__ = (ToUint32 Desc["Value"])
-    if (is-completion __x2__) if (= __x2__["Type"] CONST_normal) __x2__ = __x2__["Value"] else return __x2__ else {}
-    let newLen = __x2__
-    app __x3__ = (ToNumber Desc["Value"])
-    if (is-completion __x3__) if (= __x3__["Type"] CONST_normal) __x3__ = __x3__["Value"] else return __x3__ else {}
-    let numberLen = __x3__
-    if (! (== newLen numberLen)) {
-      app __x4__ = (ThrowCompletion (new OrdinaryObject("Prototype" -> INTRINSIC_RangeErrorPrototype, "ErrorData" -> undefined, "SubMap" -> (new SubMap()))))
-      return __x4__
-    } else {}
-    newLenDesc["Value"] = newLen
-    app __x5__ = (OrdinaryGetOwnProperty A "length")
-    let oldLenDesc = __x5__
-    let oldLen = oldLenDesc["Value"]
-    if (! (< newLen oldLen)) {
-      app __x6__ = (OrdinaryDefineOwnProperty A "length" newLenDesc)
-      app __x7__ = (WrapCompletion __x6__)
-      return __x7__
-    } else {}
-    if (= oldLenDesc["Writable"] false) {
-      app __x8__ = (WrapCompletion false)
-      return __x8__
-    } else {}
-    if (|| (= newLenDesc["Writable"] absent) (= newLenDesc["Writable"] true)) let newWritable = true else {
-      let newWritable = false
-      newLenDesc["Writable"] = true
-    }
-    app __x9__ = (OrdinaryDefineOwnProperty A "length" newLenDesc)
-    if (is-completion __x9__) if (= __x9__["Type"] CONST_normal) __x9__ = __x9__["Value"] else return __x9__ else {}
-    let succeeded = __x9__
-    if (= succeeded false) {
-      app __x10__ = (WrapCompletion false)
-      return __x10__
-    } else {}
-    while (< newLen oldLen) {
-      oldLen = (- oldLen 1i)
-      app __x11__ = (ToString oldLen)
-      if (is-completion __x11__) if (= __x11__["Type"] CONST_normal) __x11__ = __x11__["Value"] else return __x11__ else {}
-      app __x12__ = (A["Delete"] A __x11__)
-      if (is-completion __x12__) if (= __x12__["Type"] CONST_normal) __x12__ = __x12__["Value"] else return __x12__ else {}
-      let deleteSucceeded = __x12__
-      if (= deleteSucceeded false) {
-        newLenDesc["Value"] = (+ oldLen 1i)
-        if (= newWritable false) newLenDesc["Writable"] = false else {}
-        app __x13__ = (OrdinaryDefineOwnProperty A "length" newLenDesc)
-        if (is-completion __x13__) if (= __x13__["Type"] CONST_normal) __x13__ = __x13__["Value"] else return __x13__ else {}
-        __x13__
-        app __x14__ = (WrapCompletion false)
-        return __x14__
-      } else {}
-    }
-    if (= newWritable false) {
-      app __x15__ = (OrdinaryDefineOwnProperty A "length" (new PropertyDescriptor("Writable" -> false)))
-      app __x16__ = (WrapCompletion __x15__)
-      return __x16__
-    } else {}
-    app __x17__ = (WrapCompletion true)
-    return __x17__
-  }"""), this)
+object `AL::ArraySetLength` extends Algo {
+  val head = NormalHead("ArraySetLength", List(Param("A", Normal), Param("Desc", Normal)))
+  val ids = List(
+    "sec-arraysetlength",
+    "sec-array-exotic-objects",
+    "sec-built-in-exotic-object-internal-methods-and-slots",
+    "sec-ordinary-and-exotic-objects-behaviours",
+  )
+  val rawBody = parseInst("""{
+  |  0:if (= Desc.Value absent) {
+  |    1:app __x0__ = (OrdinaryDefineOwnProperty A "length" Desc)
+  |    1:return __x0__
+  |  } else 16:{}
+  |  2:let newLenDesc = (copy-obj Desc)
+  |  3:app __x1__ = (ToUint32 Desc.Value)
+  |  3:let newLen = [? __x1__]
+  |  4:app __x2__ = (ToNumber Desc.Value)
+  |  4:let numberLen = [? __x2__]
+  |  5:if (! (= newLen numberLen)) throw RangeError else 16:{}
+  |  6:newLenDesc.Value = newLen
+  |  7:app __x3__ = (OrdinaryGetOwnProperty A "length")
+  |  7:let oldLenDesc = __x3__
+  |  8:app __x4__ = (IsDataDescriptor oldLenDesc)
+  |  8:assert (= [! __x4__] true)
+  |  9:assert (= oldLenDesc.Configurable false)
+  |  10:let oldLen = oldLenDesc.Value
+  |  11:if (! (< newLen oldLen)) {
+  |    12:app __x5__ = (OrdinaryDefineOwnProperty A "length" newLenDesc)
+  |    12:return __x5__
+  |  } else 16:{}
+  |  13:if (= oldLenDesc.Writable false) return false else 16:{}
+  |  15:if (|| (= newLenDesc.Writable absent) (= newLenDesc.Writable true)) let newWritable = true else {
+  |    17:let newWritable = false
+  |    18:newLenDesc.Writable = true
+  |  }
+  |  19:app __x6__ = (OrdinaryDefineOwnProperty A "length" newLenDesc)
+  |  19:let succeeded = [! __x6__]
+  |  20:if (= succeeded false) return false else 16:{}
+  |  28:if (= newWritable false) {
+  |    29:app __x7__ = (OrdinaryDefineOwnProperty A "length" (new PropertyDescriptor("Writable" -> false)))
+  |    29:let succeeded = [! __x7__]
+  |    30:assert (= succeeded true)
+  |  } else 16:{}
+  |  31:return true
+  |}""".stripMargin)
+  val code = scala.Array[String](
+    """          1. If _Desc_.[[Value]] is absent, then""",
+    """            1. Return OrdinaryDefineOwnProperty(_A_, *"length"*, _Desc_).""",
+    """          1. Let _newLenDesc_ be a copy of _Desc_.""",
+    """          1. [id="step-arraysetlength-newlen"] Let _newLen_ be ? ToUint32(_Desc_.[[Value]]).""",
+    """          1. [id="step-arraysetlength-numberlen"] Let _numberLen_ be ? ToNumber(_Desc_.[[Value]]).""",
+    """          1. If _newLen_ is not the same value as _numberLen_, throw a *RangeError* exception.""",
+    """          1. Set _newLenDesc_.[[Value]] to _newLen_.""",
+    """          1. Let _oldLenDesc_ be OrdinaryGetOwnProperty(_A_, *"length"*).""",
+    """          1. Assert: ! IsDataDescriptor(_oldLenDesc_) is *true*.""",
+    """          1. Assert: _oldLenDesc_.[[Configurable]] is *false*.""",
+    """          1. Let _oldLen_ be _oldLenDesc_.[[Value]].""",
+    """          1. If _newLen_ ≥ _oldLen_, then""",
+    """            1. Return OrdinaryDefineOwnProperty(_A_, *"length"*, _newLenDesc_).""",
+    """          1. If _oldLenDesc_.[[Writable]] is *false*, return *false*.""",
+    """          1. If _newLenDesc_.[[Writable]] is absent or has the value *true*, let _newWritable_ be *true*.""",
+    """          1. Else,""",
+    """            1. NOTE: Setting the [[Writable]] attribute to *false* is deferred in case any elements cannot be deleted.""",
+    """            1. Let _newWritable_ be *false*.""",
+    """            1. Set _newLenDesc_.[[Writable]] to *true*.""",
+    """          1. Let _succeeded_ be ! OrdinaryDefineOwnProperty(_A_, *"length"*, _newLenDesc_).""",
+    """          1. If _succeeded_ is *false*, return *false*.""",
+    """          1. For each own property key _P_ of _A_ that is an array index, whose numeric value is greater than or equal to _newLen_, in descending numeric index order, do""",
+    """            1. Let _deleteSucceeded_ be ! _A_.[[Delete]](_P_).""",
+    """            1. If _deleteSucceeded_ is *false*, then""",
+    """              1. Set _newLenDesc_.[[Value]] to ! ToUint32(_P_) + *1*<sub>𝔽</sub>.""",
+    """              1. If _newWritable_ is *false*, set _newLenDesc_.[[Writable]] to *false*.""",
+    """              1. Perform ! OrdinaryDefineOwnProperty(_A_, *"length"*, _newLenDesc_).""",
+    """              1. Return *false*.""",
+    """          1. If _newWritable_ is *false*, then""",
+    """            1. Let _succeeded_ be ! OrdinaryDefineOwnProperty(_A_, *"length"*, PropertyDescriptor { [[Writable]]: *false* }).""",
+    """            1. Assert: _succeeded_ is *true*.""",
+    """          1. Return *true*.""",
+  )
 }

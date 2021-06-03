@@ -1,4 +1,4 @@
-package kr.ac.kaist.ires.util
+package kr.ac.kaist.jiset.util
 
 sealed abstract class FileKind
 object FileKind {

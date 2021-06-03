@@ -1,6 +1,5 @@
 package kr.ac.kaist.ires.model
 
-import kr.ac.kaist.ires.{ AST, ASTInfo, Lexical }
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.UnexpectedSemantics
 import scala.collection.immutable.{ Set => SSet }
@@ -8,6 +7,7 @@ import scala.collection.immutable.{ Set => SSet }
 trait UnaryExpression extends AST {
   val kind: String = "UnaryExpression"
 }
+
 case class UnaryExpression0(x0: UpdateExpression, parserParams: List[Boolean]) extends UnaryExpression {
   x0.parent = Some(this)
   val name: String = "UnaryExpression0"
@@ -20,8 +20,9 @@ case class UnaryExpression0(x0: UpdateExpression, parserParams: List[Boolean]) e
 }
 object UnaryExpression0 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map()
+  val semMap: Map[String, Algo] = Map()
 }
+
 case class UnaryExpression1(x1: UnaryExpression, parserParams: List[Boolean]) extends UnaryExpression {
   x1.parent = Some(this)
   val name: String = "UnaryExpression1"
@@ -34,13 +35,14 @@ case class UnaryExpression1(x1: UnaryExpression, parserParams: List[Boolean]) ex
 }
 object UnaryExpression1 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "AssignmentTargetType0" -> UnaryExpression1AssignmentTargetType0.func,
-    "Evaluation0" -> UnaryExpression1Evaluation0.func,
-    "HasCallInTailPosition0" -> UnaryExpression1HasCallInTailPosition0.func,
-    "IsFunctionDefinition0" -> UnaryExpression1IsFunctionDefinition0.func
+  val semMap: Map[String, Algo] = Map(
+    "IsFunctionDefinition0" -> `AL::UnaryExpression[1,0].IsFunctionDefinition`,
+    "AssignmentTargetType0" -> `AL::UnaryExpression[1,0].AssignmentTargetType`,
+    "Evaluation0" -> `AL::UnaryExpression[1,0].Evaluation`,
+    "HasCallInTailPosition0" -> `AL::UnaryExpression[1,0].HasCallInTailPosition`,
   )
 }
+
 case class UnaryExpression2(x1: UnaryExpression, parserParams: List[Boolean]) extends UnaryExpression {
   x1.parent = Some(this)
   val name: String = "UnaryExpression2"
@@ -53,13 +55,14 @@ case class UnaryExpression2(x1: UnaryExpression, parserParams: List[Boolean]) ex
 }
 object UnaryExpression2 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "AssignmentTargetType0" -> UnaryExpression2AssignmentTargetType0.func,
-    "Evaluation0" -> UnaryExpression2Evaluation0.func,
-    "HasCallInTailPosition0" -> UnaryExpression2HasCallInTailPosition0.func,
-    "IsFunctionDefinition0" -> UnaryExpression2IsFunctionDefinition0.func
+  val semMap: Map[String, Algo] = Map(
+    "IsFunctionDefinition0" -> `AL::UnaryExpression[2,0].IsFunctionDefinition`,
+    "AssignmentTargetType0" -> `AL::UnaryExpression[2,0].AssignmentTargetType`,
+    "Evaluation0" -> `AL::UnaryExpression[2,0].Evaluation`,
+    "HasCallInTailPosition0" -> `AL::UnaryExpression[2,0].HasCallInTailPosition`,
   )
 }
+
 case class UnaryExpression3(x1: UnaryExpression, parserParams: List[Boolean]) extends UnaryExpression {
   x1.parent = Some(this)
   val name: String = "UnaryExpression3"
@@ -72,13 +75,14 @@ case class UnaryExpression3(x1: UnaryExpression, parserParams: List[Boolean]) ex
 }
 object UnaryExpression3 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "AssignmentTargetType0" -> UnaryExpression3AssignmentTargetType0.func,
-    "Evaluation0" -> UnaryExpression3Evaluation0.func,
-    "HasCallInTailPosition0" -> UnaryExpression3HasCallInTailPosition0.func,
-    "IsFunctionDefinition0" -> UnaryExpression3IsFunctionDefinition0.func
+  val semMap: Map[String, Algo] = Map(
+    "IsFunctionDefinition0" -> `AL::UnaryExpression[3,0].IsFunctionDefinition`,
+    "AssignmentTargetType0" -> `AL::UnaryExpression[3,0].AssignmentTargetType`,
+    "Evaluation0" -> `AL::UnaryExpression[3,0].Evaluation`,
+    "HasCallInTailPosition0" -> `AL::UnaryExpression[3,0].HasCallInTailPosition`,
   )
 }
+
 case class UnaryExpression4(x1: UnaryExpression, parserParams: List[Boolean]) extends UnaryExpression {
   x1.parent = Some(this)
   val name: String = "UnaryExpression4"
@@ -91,13 +95,14 @@ case class UnaryExpression4(x1: UnaryExpression, parserParams: List[Boolean]) ex
 }
 object UnaryExpression4 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "AssignmentTargetType0" -> UnaryExpression4AssignmentTargetType0.func,
-    "Evaluation0" -> UnaryExpression4Evaluation0.func,
-    "HasCallInTailPosition0" -> UnaryExpression4HasCallInTailPosition0.func,
-    "IsFunctionDefinition0" -> UnaryExpression4IsFunctionDefinition0.func
+  val semMap: Map[String, Algo] = Map(
+    "IsFunctionDefinition0" -> `AL::UnaryExpression[4,0].IsFunctionDefinition`,
+    "AssignmentTargetType0" -> `AL::UnaryExpression[4,0].AssignmentTargetType`,
+    "Evaluation0" -> `AL::UnaryExpression[4,0].Evaluation`,
+    "HasCallInTailPosition0" -> `AL::UnaryExpression[4,0].HasCallInTailPosition`,
   )
 }
+
 case class UnaryExpression5(x1: UnaryExpression, parserParams: List[Boolean]) extends UnaryExpression {
   x1.parent = Some(this)
   val name: String = "UnaryExpression5"
@@ -110,13 +115,14 @@ case class UnaryExpression5(x1: UnaryExpression, parserParams: List[Boolean]) ex
 }
 object UnaryExpression5 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "AssignmentTargetType0" -> UnaryExpression5AssignmentTargetType0.func,
-    "Evaluation0" -> UnaryExpression5Evaluation0.func,
-    "HasCallInTailPosition0" -> UnaryExpression5HasCallInTailPosition0.func,
-    "IsFunctionDefinition0" -> UnaryExpression5IsFunctionDefinition0.func
+  val semMap: Map[String, Algo] = Map(
+    "IsFunctionDefinition0" -> `AL::UnaryExpression[5,0].IsFunctionDefinition`,
+    "AssignmentTargetType0" -> `AL::UnaryExpression[5,0].AssignmentTargetType`,
+    "Evaluation0" -> `AL::UnaryExpression[5,0].Evaluation`,
+    "HasCallInTailPosition0" -> `AL::UnaryExpression[5,0].HasCallInTailPosition`,
   )
 }
+
 case class UnaryExpression6(x1: UnaryExpression, parserParams: List[Boolean]) extends UnaryExpression {
   x1.parent = Some(this)
   val name: String = "UnaryExpression6"
@@ -129,13 +135,14 @@ case class UnaryExpression6(x1: UnaryExpression, parserParams: List[Boolean]) ex
 }
 object UnaryExpression6 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "AssignmentTargetType0" -> UnaryExpression6AssignmentTargetType0.func,
-    "Evaluation0" -> UnaryExpression6Evaluation0.func,
-    "HasCallInTailPosition0" -> UnaryExpression6HasCallInTailPosition0.func,
-    "IsFunctionDefinition0" -> UnaryExpression6IsFunctionDefinition0.func
+  val semMap: Map[String, Algo] = Map(
+    "IsFunctionDefinition0" -> `AL::UnaryExpression[6,0].IsFunctionDefinition`,
+    "AssignmentTargetType0" -> `AL::UnaryExpression[6,0].AssignmentTargetType`,
+    "Evaluation0" -> `AL::UnaryExpression[6,0].Evaluation`,
+    "HasCallInTailPosition0" -> `AL::UnaryExpression[6,0].HasCallInTailPosition`,
   )
 }
+
 case class UnaryExpression7(x1: UnaryExpression, parserParams: List[Boolean]) extends UnaryExpression {
   x1.parent = Some(this)
   val name: String = "UnaryExpression7"
@@ -148,13 +155,14 @@ case class UnaryExpression7(x1: UnaryExpression, parserParams: List[Boolean]) ex
 }
 object UnaryExpression7 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "AssignmentTargetType0" -> UnaryExpression7AssignmentTargetType0.func,
-    "Evaluation0" -> UnaryExpression7Evaluation0.func,
-    "HasCallInTailPosition0" -> UnaryExpression7HasCallInTailPosition0.func,
-    "IsFunctionDefinition0" -> UnaryExpression7IsFunctionDefinition0.func
+  val semMap: Map[String, Algo] = Map(
+    "IsFunctionDefinition0" -> `AL::UnaryExpression[7,0].IsFunctionDefinition`,
+    "AssignmentTargetType0" -> `AL::UnaryExpression[7,0].AssignmentTargetType`,
+    "Evaluation0" -> `AL::UnaryExpression[7,0].Evaluation`,
+    "HasCallInTailPosition0" -> `AL::UnaryExpression[7,0].HasCallInTailPosition`,
   )
 }
+
 case class UnaryExpression8(x0: AwaitExpression, parserParams: List[Boolean]) extends UnaryExpression {
   x0.parent = Some(this)
   val name: String = "UnaryExpression8"
@@ -167,9 +175,9 @@ case class UnaryExpression8(x0: AwaitExpression, parserParams: List[Boolean]) ex
 }
 object UnaryExpression8 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "AssignmentTargetType0" -> UnaryExpression8AssignmentTargetType0.func,
-    "HasCallInTailPosition0" -> UnaryExpression8HasCallInTailPosition0.func,
-    "IsFunctionDefinition0" -> UnaryExpression8IsFunctionDefinition0.func
+  val semMap: Map[String, Algo] = Map(
+    "IsFunctionDefinition0" -> `AL::UnaryExpression[8,0].IsFunctionDefinition`,
+    "AssignmentTargetType0" -> `AL::UnaryExpression[8,0].AssignmentTargetType`,
+    "HasCallInTailPosition0" -> `AL::UnaryExpression[8,0].HasCallInTailPosition`,
   )
 }

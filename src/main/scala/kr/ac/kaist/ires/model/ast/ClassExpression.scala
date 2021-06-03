@@ -1,6 +1,5 @@
 package kr.ac.kaist.ires.model
 
-import kr.ac.kaist.ires.{ AST, ASTInfo, Lexical }
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.UnexpectedSemantics
 import scala.collection.immutable.{ Set => SSet }
@@ -8,6 +7,7 @@ import scala.collection.immutable.{ Set => SSet }
 trait ClassExpression extends AST {
   val kind: String = "ClassExpression"
 }
+
 case class ClassExpression0(x1: Option[BindingIdentifier], x2: ClassTail, parserParams: List[Boolean]) extends ClassExpression {
   x1.foreach((m) => m.parent = Some(this))
   x2.parent = Some(this)
@@ -21,11 +21,12 @@ case class ClassExpression0(x1: Option[BindingIdentifier], x2: ClassTail, parser
 }
 object ClassExpression0 extends ASTInfo {
   val maxK: Int = 1
-  val semMap: Map[String, Func] = Map(
-    "Evaluation1" -> ClassExpression0Evaluation1.func,
-    "HasName0" -> ClassExpression0HasName0.func,
-    "HasName1" -> ClassExpression0HasName1.func,
-    "IsFunctionDefinition1" -> ClassExpression0IsFunctionDefinition1.func,
-    "NamedEvaluation0" -> ClassExpression0NamedEvaluation0.func
+  val semMap: Map[String, Algo] = Map(
+    "HasName0" -> `AL::ClassExpression[0,0].HasName`,
+    "HasName1" -> `AL::ClassExpression[0,1].HasName`,
+    "IsFunctionDefinition1" -> `AL::ClassExpression[0,1].IsFunctionDefinition`,
+    "NamedEvaluation0" -> `AL::ClassExpression[0,0].NamedEvaluation`,
+    "Evaluation0" -> `AL::ClassExpression[0,0].Evaluation`,
+    "Evaluation1" -> `AL::ClassExpression[0,1].Evaluation`,
   )
 }

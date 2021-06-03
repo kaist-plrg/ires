@@ -1,6 +1,5 @@
 package kr.ac.kaist.ires.model
 
-import kr.ac.kaist.ires.{ AST, ASTInfo, Lexical }
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.UnexpectedSemantics
 import scala.collection.immutable.{ Set => SSet }
@@ -8,6 +7,7 @@ import scala.collection.immutable.{ Set => SSet }
 trait YieldExpression extends AST {
   val kind: String = "YieldExpression"
 }
+
 case class YieldExpression0(parserParams: List[Boolean]) extends YieldExpression {
   val name: String = "YieldExpression0"
   override def toString: String = {
@@ -19,10 +19,11 @@ case class YieldExpression0(parserParams: List[Boolean]) extends YieldExpression
 }
 object YieldExpression0 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "Evaluation0" -> YieldExpression0Evaluation0.func
+  val semMap: Map[String, Algo] = Map(
+    "Evaluation0" -> `AL::YieldExpression[0,0].Evaluation`,
   )
 }
+
 case class YieldExpression1(x2: AssignmentExpression, parserParams: List[Boolean]) extends YieldExpression {
   x2.parent = Some(this)
   val name: String = "YieldExpression1"
@@ -35,10 +36,11 @@ case class YieldExpression1(x2: AssignmentExpression, parserParams: List[Boolean
 }
 object YieldExpression1 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "Evaluation0" -> YieldExpression1Evaluation0.func
+  val semMap: Map[String, Algo] = Map(
+    "Evaluation0" -> `AL::YieldExpression[1,0].Evaluation`,
   )
 }
+
 case class YieldExpression2(x3: AssignmentExpression, parserParams: List[Boolean]) extends YieldExpression {
   x3.parent = Some(this)
   val name: String = "YieldExpression2"
@@ -51,7 +53,7 @@ case class YieldExpression2(x3: AssignmentExpression, parserParams: List[Boolean
 }
 object YieldExpression2 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "Evaluation0" -> YieldExpression2Evaluation0.func
+  val semMap: Map[String, Algo] = Map(
+    "Evaluation0" -> `AL::YieldExpression[2,0].Evaluation`,
   )
 }

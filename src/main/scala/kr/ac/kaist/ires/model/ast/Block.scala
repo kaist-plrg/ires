@@ -1,6 +1,5 @@
 package kr.ac.kaist.ires.model
 
-import kr.ac.kaist.ires.{ AST, ASTInfo, Lexical }
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.UnexpectedSemantics
 import scala.collection.immutable.{ Set => SSet }
@@ -8,6 +7,7 @@ import scala.collection.immutable.{ Set => SSet }
 trait Block extends AST {
   val kind: String = "Block"
 }
+
 case class Block0(x1: Option[StatementList], parserParams: List[Boolean]) extends Block {
   x1.foreach((m) => m.parent = Some(this))
   val name: String = "Block0"
@@ -20,18 +20,19 @@ case class Block0(x1: Option[StatementList], parserParams: List[Boolean]) extend
 }
 object Block0 extends ASTInfo {
   val maxK: Int = 1
-  val semMap: Map[String, Func] = Map(
-    "ContainsDuplicateLabels0" -> Block0ContainsDuplicateLabels0.func,
-    "ContainsUndefinedBreakTarget0" -> Block0ContainsUndefinedBreakTarget0.func,
-    "ContainsUndefinedContinueTarget0" -> Block0ContainsUndefinedContinueTarget0.func,
-    "Evaluation0" -> Block0Evaluation0.func,
-    "Evaluation1" -> Block0Evaluation1.func,
-    "HasCallInTailPosition0" -> Block0HasCallInTailPosition0.func,
-    "LexicallyDeclaredNames0" -> Block0LexicallyDeclaredNames0.func,
-    "TopLevelLexicallyScopedDeclarations0" -> Block0TopLevelLexicallyScopedDeclarations0.func,
-    "TopLevelVarDeclaredNames0" -> Block0TopLevelVarDeclaredNames0.func,
-    "TopLevelVarScopedDeclarations0" -> Block0TopLevelVarScopedDeclarations0.func,
-    "VarDeclaredNames0" -> Block0VarDeclaredNames0.func,
-    "VarScopedDeclarations0" -> Block0VarScopedDeclarations0.func
+  val semMap: Map[String, Algo] = Map(
+    "LexicallyDeclaredNames0" -> `AL::Block[0,0].LexicallyDeclaredNames`,
+    "VarDeclaredNames0" -> `AL::Block[0,0].VarDeclaredNames`,
+    "VarScopedDeclarations0" -> `AL::Block[0,0].VarScopedDeclarations`,
+    "TopLevelLexicallyScopedDeclarations0" -> `AL::Block[0,0].TopLevelLexicallyScopedDeclarations`,
+    "TopLevelVarDeclaredNames0" -> `AL::Block[0,0].TopLevelVarDeclaredNames`,
+    "TopLevelVarScopedDeclarations0" -> `AL::Block[0,0].TopLevelVarScopedDeclarations`,
+    "ContainsDuplicateLabels0" -> `AL::Block[0,0].ContainsDuplicateLabels`,
+    "ContainsUndefinedBreakTarget0" -> `AL::Block[0,0].ContainsUndefinedBreakTarget`,
+    "ContainsUndefinedContinueTarget0" -> `AL::Block[0,0].ContainsUndefinedContinueTarget`,
+    "Evaluation0" -> `AL::Block[0,0].Evaluation`,
+    "Evaluation1" -> `AL::Block[0,1].Evaluation`,
+    "HasCallInTailPosition0" -> `AL::Block[0,0].HasCallInTailPosition`,
+    "EarlyErrors1" -> `AL::Block[0,1].EarlyErrors`,
   )
 }

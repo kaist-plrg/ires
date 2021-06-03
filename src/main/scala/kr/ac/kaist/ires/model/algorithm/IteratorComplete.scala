@@ -2,18 +2,23 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.ir.Parser._
+import Param.Kind._
 
-object IteratorComplete extends Algorithm {
-  val name: String = "IteratorComplete"
-  val length: Int = 1
-  val lang: Boolean = true
-  val func: Func = FixUIdWalker(parseFunc(""""IteratorComplete" (iterResult) => {
-    app __x0__ = (Type iterResult)
-    assert (= __x0__ Object)
-    app __x1__ = (Get iterResult "done")
-    if (is-completion __x1__) if (= __x1__["Type"] CONST_normal) __x1__ = __x1__["Value"] else return __x1__ else {}
-    app __x2__ = (ToBoolean __x1__)
-    app __x3__ = (WrapCompletion __x2__)
-    return __x3__
-  }"""), this)
+object `AL::IteratorComplete` extends Algo {
+  val head = NormalHead("IteratorComplete", List(Param("iterResult", Normal)))
+  val ids = List(
+    "sec-iteratorcomplete",
+    "sec-operations-on-iterator-objects",
+    "sec-abstract-operations",
+  )
+  val rawBody = parseInst("""{
+  |  0:assert (= (typeof iterResult) Object)
+  |  1:app __x0__ = (Get iterResult "done")
+  |  1:app __x1__ = (ToBoolean [? __x0__])
+  |  1:return [! __x1__]
+  |}""".stripMargin)
+  val code = scala.Array[String](
+    """        1. Assert: Type(_iterResult_) is Object.""",
+    """        1. Return ! ToBoolean(? Get(_iterResult_, *"done"*)).""",
+  )
 }

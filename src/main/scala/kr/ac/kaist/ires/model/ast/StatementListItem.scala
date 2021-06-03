@@ -1,6 +1,5 @@
 package kr.ac.kaist.ires.model
 
-import kr.ac.kaist.ires.{ AST, ASTInfo, Lexical }
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.UnexpectedSemantics
 import scala.collection.immutable.{ Set => SSet }
@@ -8,6 +7,7 @@ import scala.collection.immutable.{ Set => SSet }
 trait StatementListItem extends AST {
   val kind: String = "StatementListItem"
 }
+
 case class StatementListItem0(x0: Statement, parserParams: List[Boolean]) extends StatementListItem {
   x0.parent = Some(this)
   val name: String = "StatementListItem0"
@@ -20,15 +20,16 @@ case class StatementListItem0(x0: Statement, parserParams: List[Boolean]) extend
 }
 object StatementListItem0 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "LexicallyDeclaredNames0" -> StatementListItem0LexicallyDeclaredNames0.func,
-    "LexicallyScopedDeclarations0" -> StatementListItem0LexicallyScopedDeclarations0.func,
-    "TopLevelLexicallyDeclaredNames0" -> StatementListItem0TopLevelLexicallyDeclaredNames0.func,
-    "TopLevelLexicallyScopedDeclarations0" -> StatementListItem0TopLevelLexicallyScopedDeclarations0.func,
-    "TopLevelVarDeclaredNames0" -> StatementListItem0TopLevelVarDeclaredNames0.func,
-    "TopLevelVarScopedDeclarations0" -> StatementListItem0TopLevelVarScopedDeclarations0.func
+  val semMap: Map[String, Algo] = Map(
+    "LexicallyDeclaredNames0" -> `AL::StatementListItem[0,0].LexicallyDeclaredNames`,
+    "LexicallyScopedDeclarations0" -> `AL::StatementListItem[0,0].LexicallyScopedDeclarations`,
+    "TopLevelLexicallyDeclaredNames0" -> `AL::StatementListItem[0,0].TopLevelLexicallyDeclaredNames`,
+    "TopLevelLexicallyScopedDeclarations0" -> `AL::StatementListItem[0,0].TopLevelLexicallyScopedDeclarations`,
+    "TopLevelVarDeclaredNames0" -> `AL::StatementListItem[0,0].TopLevelVarDeclaredNames`,
+    "TopLevelVarScopedDeclarations0" -> `AL::StatementListItem[0,0].TopLevelVarScopedDeclarations`,
   )
 }
+
 case class StatementListItem1(x0: Declaration, parserParams: List[Boolean]) extends StatementListItem {
   x0.parent = Some(this)
   val name: String = "StatementListItem1"
@@ -41,18 +42,18 @@ case class StatementListItem1(x0: Declaration, parserParams: List[Boolean]) exte
 }
 object StatementListItem1 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "ContainsDuplicateLabels0" -> StatementListItem1ContainsDuplicateLabels0.func,
-    "ContainsUndefinedBreakTarget0" -> StatementListItem1ContainsUndefinedBreakTarget0.func,
-    "ContainsUndefinedContinueTarget0" -> StatementListItem1ContainsUndefinedContinueTarget0.func,
-    "HasCallInTailPosition0" -> StatementListItem1HasCallInTailPosition0.func,
-    "LexicallyDeclaredNames0" -> StatementListItem1LexicallyDeclaredNames0.func,
-    "LexicallyScopedDeclarations0" -> StatementListItem1LexicallyScopedDeclarations0.func,
-    "TopLevelLexicallyDeclaredNames0" -> StatementListItem1TopLevelLexicallyDeclaredNames0.func,
-    "TopLevelLexicallyScopedDeclarations0" -> StatementListItem1TopLevelLexicallyScopedDeclarations0.func,
-    "TopLevelVarDeclaredNames0" -> StatementListItem1TopLevelVarDeclaredNames0.func,
-    "TopLevelVarScopedDeclarations0" -> StatementListItem1TopLevelVarScopedDeclarations0.func,
-    "VarDeclaredNames0" -> StatementListItem1VarDeclaredNames0.func,
-    "VarScopedDeclarations0" -> StatementListItem1VarScopedDeclarations0.func
+  val semMap: Map[String, Algo] = Map(
+    "LexicallyDeclaredNames0" -> `AL::StatementListItem[1,0].LexicallyDeclaredNames`,
+    "LexicallyScopedDeclarations0" -> `AL::StatementListItem[1,0].LexicallyScopedDeclarations`,
+    "VarDeclaredNames0" -> `AL::StatementListItem[1,0].VarDeclaredNames`,
+    "VarScopedDeclarations0" -> `AL::StatementListItem[1,0].VarScopedDeclarations`,
+    "TopLevelLexicallyDeclaredNames0" -> `AL::StatementListItem[1,0].TopLevelLexicallyDeclaredNames`,
+    "TopLevelLexicallyScopedDeclarations0" -> `AL::StatementListItem[1,0].TopLevelLexicallyScopedDeclarations`,
+    "TopLevelVarDeclaredNames0" -> `AL::StatementListItem[1,0].TopLevelVarDeclaredNames`,
+    "TopLevelVarScopedDeclarations0" -> `AL::StatementListItem[1,0].TopLevelVarScopedDeclarations`,
+    "ContainsDuplicateLabels0" -> `AL::StatementListItem[1,0].ContainsDuplicateLabels`,
+    "ContainsUndefinedBreakTarget0" -> `AL::StatementListItem[1,0].ContainsUndefinedBreakTarget`,
+    "ContainsUndefinedContinueTarget0" -> `AL::StatementListItem[1,0].ContainsUndefinedContinueTarget`,
+    "HasCallInTailPosition0" -> `AL::StatementListItem[1,0].HasCallInTailPosition`,
   )
 }

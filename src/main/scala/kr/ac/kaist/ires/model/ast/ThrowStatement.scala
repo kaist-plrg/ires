@@ -1,6 +1,5 @@
 package kr.ac.kaist.ires.model
 
-import kr.ac.kaist.ires.{ AST, ASTInfo, Lexical }
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.UnexpectedSemantics
 import scala.collection.immutable.{ Set => SSet }
@@ -8,6 +7,7 @@ import scala.collection.immutable.{ Set => SSet }
 trait ThrowStatement extends AST {
   val kind: String = "ThrowStatement"
 }
+
 case class ThrowStatement0(x2: Expression, parserParams: List[Boolean]) extends ThrowStatement {
   x2.parent = Some(this)
   val name: String = "ThrowStatement0"
@@ -20,7 +20,7 @@ case class ThrowStatement0(x2: Expression, parserParams: List[Boolean]) extends 
 }
 object ThrowStatement0 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "Evaluation0" -> ThrowStatement0Evaluation0.func
+  val semMap: Map[String, Algo] = Map(
+    "Evaluation0" -> `AL::ThrowStatement[0,0].Evaluation`,
   )
 }

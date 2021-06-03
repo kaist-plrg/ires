@@ -1,6 +1,5 @@
 package kr.ac.kaist.ires.model
 
-import kr.ac.kaist.ires.{ AST, ASTInfo, Lexical }
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.UnexpectedSemantics
 import scala.collection.immutable.{ Set => SSet }
@@ -8,6 +7,7 @@ import scala.collection.immutable.{ Set => SSet }
 trait CatchParameter extends AST {
   val kind: String = "CatchParameter"
 }
+
 case class CatchParameter0(x0: BindingIdentifier, parserParams: List[Boolean]) extends CatchParameter {
   x0.parent = Some(this)
   val name: String = "CatchParameter0"
@@ -20,8 +20,9 @@ case class CatchParameter0(x0: BindingIdentifier, parserParams: List[Boolean]) e
 }
 object CatchParameter0 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map()
+  val semMap: Map[String, Algo] = Map()
 }
+
 case class CatchParameter1(x0: BindingPattern, parserParams: List[Boolean]) extends CatchParameter {
   x0.parent = Some(this)
   val name: String = "CatchParameter1"
@@ -34,5 +35,5 @@ case class CatchParameter1(x0: BindingPattern, parserParams: List[Boolean]) exte
 }
 object CatchParameter1 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map()
+  val semMap: Map[String, Algo] = Map()
 }

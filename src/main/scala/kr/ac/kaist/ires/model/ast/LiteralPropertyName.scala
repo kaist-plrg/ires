@@ -1,6 +1,5 @@
 package kr.ac.kaist.ires.model
 
-import kr.ac.kaist.ires.{ AST, ASTInfo, Lexical }
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.UnexpectedSemantics
 import scala.collection.immutable.{ Set => SSet }
@@ -8,6 +7,7 @@ import scala.collection.immutable.{ Set => SSet }
 trait LiteralPropertyName extends AST {
   val kind: String = "LiteralPropertyName"
 }
+
 case class LiteralPropertyName0(x0: Lexical, parserParams: List[Boolean]) extends LiteralPropertyName {
   x0.parent = Some(this)
   val name: String = "LiteralPropertyName0"
@@ -20,12 +20,13 @@ case class LiteralPropertyName0(x0: Lexical, parserParams: List[Boolean]) extend
 }
 object LiteralPropertyName0 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "Contains0" -> LiteralPropertyName0Contains0.func,
-    "Evaluation0" -> LiteralPropertyName0Evaluation0.func,
-    "PropName0" -> LiteralPropertyName0PropName0.func
+  val semMap: Map[String, Algo] = Map(
+    "Contains0" -> `AL::LiteralPropertyName[0,0].Contains`,
+    "PropName0" -> `AL::LiteralPropertyName[0,0].PropName`,
+    "Evaluation0" -> `AL::LiteralPropertyName[0,0].Evaluation`,
   )
 }
+
 case class LiteralPropertyName1(x0: Lexical, parserParams: List[Boolean]) extends LiteralPropertyName {
   x0.parent = Some(this)
   val name: String = "LiteralPropertyName1"
@@ -38,11 +39,12 @@ case class LiteralPropertyName1(x0: Lexical, parserParams: List[Boolean]) extend
 }
 object LiteralPropertyName1 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "Evaluation0" -> LiteralPropertyName1Evaluation0.func,
-    "PropName0" -> LiteralPropertyName1PropName0.func
+  val semMap: Map[String, Algo] = Map(
+    "PropName0" -> `AL::LiteralPropertyName[1,0].PropName`,
+    "Evaluation0" -> `AL::LiteralPropertyName[1,0].Evaluation`,
   )
 }
+
 case class LiteralPropertyName2(x0: Lexical, parserParams: List[Boolean]) extends LiteralPropertyName {
   x0.parent = Some(this)
   val name: String = "LiteralPropertyName2"
@@ -55,8 +57,8 @@ case class LiteralPropertyName2(x0: Lexical, parserParams: List[Boolean]) extend
 }
 object LiteralPropertyName2 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "Evaluation0" -> LiteralPropertyName2Evaluation0.func,
-    "PropName0" -> LiteralPropertyName2PropName0.func
+  val semMap: Map[String, Algo] = Map(
+    "PropName0" -> `AL::LiteralPropertyName[2,0].PropName`,
+    "Evaluation0" -> `AL::LiteralPropertyName[2,0].Evaluation`,
   )
 }

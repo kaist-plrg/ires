@@ -1,6 +1,5 @@
 package kr.ac.kaist.ires.model
 
-import kr.ac.kaist.ires.{ AST, ASTInfo, Lexical }
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.UnexpectedSemantics
 import scala.collection.immutable.{ Set => SSet }
@@ -8,6 +7,7 @@ import scala.collection.immutable.{ Set => SSet }
 trait RelationalExpression extends AST {
   val kind: String = "RelationalExpression"
 }
+
 case class RelationalExpression0(x0: ShiftExpression, parserParams: List[Boolean]) extends RelationalExpression {
   x0.parent = Some(this)
   val name: String = "RelationalExpression0"
@@ -20,8 +20,9 @@ case class RelationalExpression0(x0: ShiftExpression, parserParams: List[Boolean
 }
 object RelationalExpression0 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map()
+  val semMap: Map[String, Algo] = Map()
 }
+
 case class RelationalExpression1(x0: RelationalExpression, x2: ShiftExpression, parserParams: List[Boolean]) extends RelationalExpression {
   x0.parent = Some(this)
   x2.parent = Some(this)
@@ -35,13 +36,14 @@ case class RelationalExpression1(x0: RelationalExpression, x2: ShiftExpression, 
 }
 object RelationalExpression1 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "AssignmentTargetType0" -> RelationalExpression1AssignmentTargetType0.func,
-    "Evaluation0" -> RelationalExpression1Evaluation0.func,
-    "HasCallInTailPosition0" -> RelationalExpression1HasCallInTailPosition0.func,
-    "IsFunctionDefinition0" -> RelationalExpression1IsFunctionDefinition0.func
+  val semMap: Map[String, Algo] = Map(
+    "IsFunctionDefinition0" -> `AL::RelationalExpression[1,0].IsFunctionDefinition`,
+    "AssignmentTargetType0" -> `AL::RelationalExpression[1,0].AssignmentTargetType`,
+    "Evaluation0" -> `AL::RelationalExpression[1,0].Evaluation`,
+    "HasCallInTailPosition0" -> `AL::RelationalExpression[1,0].HasCallInTailPosition`,
   )
 }
+
 case class RelationalExpression2(x0: RelationalExpression, x2: ShiftExpression, parserParams: List[Boolean]) extends RelationalExpression {
   x0.parent = Some(this)
   x2.parent = Some(this)
@@ -55,13 +57,14 @@ case class RelationalExpression2(x0: RelationalExpression, x2: ShiftExpression, 
 }
 object RelationalExpression2 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "AssignmentTargetType0" -> RelationalExpression2AssignmentTargetType0.func,
-    "Evaluation0" -> RelationalExpression2Evaluation0.func,
-    "HasCallInTailPosition0" -> RelationalExpression2HasCallInTailPosition0.func,
-    "IsFunctionDefinition0" -> RelationalExpression2IsFunctionDefinition0.func
+  val semMap: Map[String, Algo] = Map(
+    "IsFunctionDefinition0" -> `AL::RelationalExpression[2,0].IsFunctionDefinition`,
+    "AssignmentTargetType0" -> `AL::RelationalExpression[2,0].AssignmentTargetType`,
+    "Evaluation0" -> `AL::RelationalExpression[2,0].Evaluation`,
+    "HasCallInTailPosition0" -> `AL::RelationalExpression[2,0].HasCallInTailPosition`,
   )
 }
+
 case class RelationalExpression3(x0: RelationalExpression, x2: ShiftExpression, parserParams: List[Boolean]) extends RelationalExpression {
   x0.parent = Some(this)
   x2.parent = Some(this)
@@ -75,13 +78,14 @@ case class RelationalExpression3(x0: RelationalExpression, x2: ShiftExpression, 
 }
 object RelationalExpression3 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "AssignmentTargetType0" -> RelationalExpression3AssignmentTargetType0.func,
-    "Evaluation0" -> RelationalExpression3Evaluation0.func,
-    "HasCallInTailPosition0" -> RelationalExpression3HasCallInTailPosition0.func,
-    "IsFunctionDefinition0" -> RelationalExpression3IsFunctionDefinition0.func
+  val semMap: Map[String, Algo] = Map(
+    "IsFunctionDefinition0" -> `AL::RelationalExpression[3,0].IsFunctionDefinition`,
+    "AssignmentTargetType0" -> `AL::RelationalExpression[3,0].AssignmentTargetType`,
+    "Evaluation0" -> `AL::RelationalExpression[3,0].Evaluation`,
+    "HasCallInTailPosition0" -> `AL::RelationalExpression[3,0].HasCallInTailPosition`,
   )
 }
+
 case class RelationalExpression4(x0: RelationalExpression, x2: ShiftExpression, parserParams: List[Boolean]) extends RelationalExpression {
   x0.parent = Some(this)
   x2.parent = Some(this)
@@ -95,13 +99,14 @@ case class RelationalExpression4(x0: RelationalExpression, x2: ShiftExpression, 
 }
 object RelationalExpression4 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "AssignmentTargetType0" -> RelationalExpression4AssignmentTargetType0.func,
-    "Evaluation0" -> RelationalExpression4Evaluation0.func,
-    "HasCallInTailPosition0" -> RelationalExpression4HasCallInTailPosition0.func,
-    "IsFunctionDefinition0" -> RelationalExpression4IsFunctionDefinition0.func
+  val semMap: Map[String, Algo] = Map(
+    "IsFunctionDefinition0" -> `AL::RelationalExpression[4,0].IsFunctionDefinition`,
+    "AssignmentTargetType0" -> `AL::RelationalExpression[4,0].AssignmentTargetType`,
+    "Evaluation0" -> `AL::RelationalExpression[4,0].Evaluation`,
+    "HasCallInTailPosition0" -> `AL::RelationalExpression[4,0].HasCallInTailPosition`,
   )
 }
+
 case class RelationalExpression5(x0: RelationalExpression, x2: ShiftExpression, parserParams: List[Boolean]) extends RelationalExpression {
   x0.parent = Some(this)
   x2.parent = Some(this)
@@ -115,13 +120,14 @@ case class RelationalExpression5(x0: RelationalExpression, x2: ShiftExpression, 
 }
 object RelationalExpression5 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "AssignmentTargetType0" -> RelationalExpression5AssignmentTargetType0.func,
-    "Evaluation0" -> RelationalExpression5Evaluation0.func,
-    "HasCallInTailPosition0" -> RelationalExpression5HasCallInTailPosition0.func,
-    "IsFunctionDefinition0" -> RelationalExpression5IsFunctionDefinition0.func
+  val semMap: Map[String, Algo] = Map(
+    "IsFunctionDefinition0" -> `AL::RelationalExpression[5,0].IsFunctionDefinition`,
+    "AssignmentTargetType0" -> `AL::RelationalExpression[5,0].AssignmentTargetType`,
+    "Evaluation0" -> `AL::RelationalExpression[5,0].Evaluation`,
+    "HasCallInTailPosition0" -> `AL::RelationalExpression[5,0].HasCallInTailPosition`,
   )
 }
+
 case class RelationalExpression6(x0: RelationalExpression, x2: ShiftExpression, parserParams: List[Boolean]) extends RelationalExpression {
   x0.parent = Some(this)
   x2.parent = Some(this)
@@ -135,10 +141,10 @@ case class RelationalExpression6(x0: RelationalExpression, x2: ShiftExpression, 
 }
 object RelationalExpression6 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "AssignmentTargetType0" -> RelationalExpression6AssignmentTargetType0.func,
-    "Evaluation0" -> RelationalExpression6Evaluation0.func,
-    "HasCallInTailPosition0" -> RelationalExpression6HasCallInTailPosition0.func,
-    "IsFunctionDefinition0" -> RelationalExpression6IsFunctionDefinition0.func
+  val semMap: Map[String, Algo] = Map(
+    "IsFunctionDefinition0" -> `AL::RelationalExpression[6,0].IsFunctionDefinition`,
+    "AssignmentTargetType0" -> `AL::RelationalExpression[6,0].AssignmentTargetType`,
+    "Evaluation0" -> `AL::RelationalExpression[6,0].Evaluation`,
+    "HasCallInTailPosition0" -> `AL::RelationalExpression[6,0].HasCallInTailPosition`,
   )
 }

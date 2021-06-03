@@ -2,35 +2,35 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.ir.Parser._
+import Param.Kind._
 
-object InstanceofOperator extends Algorithm {
-  val name: String = "InstanceofOperator"
-  val length: Int = 2
-  val lang: Boolean = true
-  val func: Func = FixUIdWalker(parseFunc(""""InstanceofOperator" (V, target) => {
-    app __x0__ = (Type target)
-    if (! (= __x0__ Object)) {
-      app __x1__ = (ThrowCompletion (new OrdinaryObject("Prototype" -> INTRINSIC_TypeErrorPrototype, "ErrorData" -> undefined, "SubMap" -> (new SubMap()))))
-      return __x1__
-    } else {}
-    app __x2__ = (GetMethod target SYMBOL_hasInstance)
-    if (is-completion __x2__) if (= __x2__["Type"] CONST_normal) __x2__ = __x2__["Value"] else return __x2__ else {}
-    let instOfHandler = __x2__
-    if (! (= instOfHandler undefined)) {
-      app __x3__ = (Call instOfHandler target (new [V]))
-      if (is-completion __x3__) if (= __x3__["Type"] CONST_normal) __x3__ = __x3__["Value"] else return __x3__ else {}
-      app __x4__ = (ToBoolean __x3__)
-      app __x5__ = (WrapCompletion __x4__)
-      return __x5__
-    } else {}
-    app __x6__ = (IsCallable target)
-    if (= __x6__ false) {
-      app __x7__ = (ThrowCompletion (new OrdinaryObject("Prototype" -> INTRINSIC_TypeErrorPrototype, "ErrorData" -> undefined, "SubMap" -> (new SubMap()))))
-      return __x7__
-    } else {}
-    app __x8__ = (OrdinaryHasInstance target V)
-    if (is-completion __x8__) if (= __x8__["Type"] CONST_normal) __x8__ = __x8__["Value"] else return __x8__ else {}
-    app __x9__ = (WrapCompletion __x8__)
-    return __x9__
-  }"""), this)
+object `AL::InstanceofOperator` extends Algo {
+  val head = NormalHead("InstanceofOperator", List(Param("V", Normal), Param("target", Normal)))
+  val ids = List(
+    "sec-instanceofoperator",
+    "sec-relational-operators",
+    "sec-ecmascript-language-expressions",
+  )
+  val rawBody = parseInst("""{
+  |  0:if (! (= (typeof target) Object)) throw TypeError else 3:{}
+  |  1:app __x0__ = (GetMethod target SYMBOL_hasInstance)
+  |  1:let instOfHandler = [? __x0__]
+  |  2:if (! (= instOfHandler undefined)) {
+  |    3:app __x1__ = (Call instOfHandler target (new [V]))
+  |    3:app __x2__ = (ToBoolean [? __x1__])
+  |    3:return [! __x2__]
+  |  } else 3:{}
+  |  4:app __x3__ = (IsCallable target)
+  |  4:if (= __x3__ false) throw TypeError else 3:{}
+  |  5:app __x4__ = (OrdinaryHasInstance target V)
+  |  5:return [? __x4__]
+  |}""".stripMargin)
+  val code = scala.Array[String](
+    """        1. If Type(_target_) is not Object, throw a *TypeError* exception.""",
+    """        1. Let _instOfHandler_ be ? GetMethod(_target_, @@hasInstance).""",
+    """        1. If _instOfHandler_ is not *undefined*, then""",
+    """          1. Return ! ToBoolean(? Call(_instOfHandler_, _target_, « _V_ »)).""",
+    """        1. [id="step-instanceof-check-function"] If IsCallable(_target_) is *false*, throw a *TypeError* exception.""",
+    """        1. [id="step-instanceof-fallback"] Return ? OrdinaryHasInstance(_target_, _V_).""",
+  )
 }

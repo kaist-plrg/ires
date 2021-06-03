@@ -1,6 +1,5 @@
 package kr.ac.kaist.ires.model
 
-import kr.ac.kaist.ires.{ AST, ASTInfo, Lexical }
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.UnexpectedSemantics
 import scala.collection.immutable.{ Set => SSet }
@@ -8,6 +7,7 @@ import scala.collection.immutable.{ Set => SSet }
 trait IfStatement extends AST {
   val kind: String = "IfStatement"
 }
+
 case class IfStatement0(x2: Expression, x4: Statement, x6: Statement, parserParams: List[Boolean]) extends IfStatement {
   x2.parent = Some(this)
   x4.parent = Some(this)
@@ -22,16 +22,18 @@ case class IfStatement0(x2: Expression, x4: Statement, x6: Statement, parserPara
 }
 object IfStatement0 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "ContainsDuplicateLabels0" -> IfStatement0ContainsDuplicateLabels0.func,
-    "ContainsUndefinedBreakTarget0" -> IfStatement0ContainsUndefinedBreakTarget0.func,
-    "ContainsUndefinedContinueTarget0" -> IfStatement0ContainsUndefinedContinueTarget0.func,
-    "Evaluation0" -> IfStatement0Evaluation0.func,
-    "HasCallInTailPosition0" -> IfStatement0HasCallInTailPosition0.func,
-    "VarDeclaredNames0" -> IfStatement0VarDeclaredNames0.func,
-    "VarScopedDeclarations0" -> IfStatement0VarScopedDeclarations0.func
+  val semMap: Map[String, Algo] = Map(
+    "VarDeclaredNames0" -> `AL::IfStatement[0,0].VarDeclaredNames`,
+    "VarScopedDeclarations0" -> `AL::IfStatement[0,0].VarScopedDeclarations`,
+    "ContainsDuplicateLabels0" -> `AL::IfStatement[0,0].ContainsDuplicateLabels`,
+    "ContainsUndefinedBreakTarget0" -> `AL::IfStatement[0,0].ContainsUndefinedBreakTarget`,
+    "ContainsUndefinedContinueTarget0" -> `AL::IfStatement[0,0].ContainsUndefinedContinueTarget`,
+    "Evaluation0" -> `AL::IfStatement[0,0].Evaluation`,
+    "HasCallInTailPosition0" -> `AL::IfStatement[0,0].HasCallInTailPosition`,
+    "EarlyErrors0" -> `AL::IfStatement[0,0].EarlyErrors`,
   )
 }
+
 case class IfStatement1(x2: Expression, x4: Statement, parserParams: List[Boolean]) extends IfStatement {
   x2.parent = Some(this)
   x4.parent = Some(this)
@@ -45,13 +47,14 @@ case class IfStatement1(x2: Expression, x4: Statement, parserParams: List[Boolea
 }
 object IfStatement1 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "ContainsDuplicateLabels0" -> IfStatement1ContainsDuplicateLabels0.func,
-    "ContainsUndefinedBreakTarget0" -> IfStatement1ContainsUndefinedBreakTarget0.func,
-    "ContainsUndefinedContinueTarget0" -> IfStatement1ContainsUndefinedContinueTarget0.func,
-    "Evaluation0" -> IfStatement1Evaluation0.func,
-    "HasCallInTailPosition0" -> IfStatement1HasCallInTailPosition0.func,
-    "VarDeclaredNames0" -> IfStatement1VarDeclaredNames0.func,
-    "VarScopedDeclarations0" -> IfStatement1VarScopedDeclarations0.func
+  val semMap: Map[String, Algo] = Map(
+    "VarDeclaredNames0" -> `AL::IfStatement[1,0].VarDeclaredNames`,
+    "VarScopedDeclarations0" -> `AL::IfStatement[1,0].VarScopedDeclarations`,
+    "ContainsDuplicateLabels0" -> `AL::IfStatement[1,0].ContainsDuplicateLabels`,
+    "ContainsUndefinedBreakTarget0" -> `AL::IfStatement[1,0].ContainsUndefinedBreakTarget`,
+    "ContainsUndefinedContinueTarget0" -> `AL::IfStatement[1,0].ContainsUndefinedContinueTarget`,
+    "Evaluation0" -> `AL::IfStatement[1,0].Evaluation`,
+    "HasCallInTailPosition0" -> `AL::IfStatement[1,0].HasCallInTailPosition`,
+    "EarlyErrors0" -> `AL::IfStatement[1,0].EarlyErrors`,
   )
 }

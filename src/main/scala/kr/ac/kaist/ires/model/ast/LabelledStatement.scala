@@ -1,6 +1,5 @@
 package kr.ac.kaist.ires.model
 
-import kr.ac.kaist.ires.{ AST, ASTInfo, Lexical }
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.UnexpectedSemantics
 import scala.collection.immutable.{ Set => SSet }
@@ -8,6 +7,7 @@ import scala.collection.immutable.{ Set => SSet }
 trait LabelledStatement extends AST {
   val kind: String = "LabelledStatement"
 }
+
 case class LabelledStatement0(x0: LabelIdentifier, x2: LabelledItem, parserParams: List[Boolean]) extends LabelledStatement {
   x0.parent = Some(this)
   x2.parent = Some(this)
@@ -21,20 +21,20 @@ case class LabelledStatement0(x0: LabelIdentifier, x2: LabelledItem, parserParam
 }
 object LabelledStatement0 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "ContainsDuplicateLabels0" -> LabelledStatement0ContainsDuplicateLabels0.func,
-    "ContainsUndefinedBreakTarget0" -> LabelledStatement0ContainsUndefinedBreakTarget0.func,
-    "ContainsUndefinedContinueTarget0" -> LabelledStatement0ContainsUndefinedContinueTarget0.func,
-    "Evaluation0" -> LabelledStatement0Evaluation0.func,
-    "HasCallInTailPosition0" -> LabelledStatement0HasCallInTailPosition0.func,
-    "LabelledEvaluation0" -> LabelledStatement0LabelledEvaluation0.func,
-    "LexicallyDeclaredNames0" -> LabelledStatement0LexicallyDeclaredNames0.func,
-    "LexicallyScopedDeclarations0" -> LabelledStatement0LexicallyScopedDeclarations0.func,
-    "TopLevelLexicallyDeclaredNames0" -> LabelledStatement0TopLevelLexicallyDeclaredNames0.func,
-    "TopLevelLexicallyScopedDeclarations0" -> LabelledStatement0TopLevelLexicallyScopedDeclarations0.func,
-    "TopLevelVarDeclaredNames0" -> LabelledStatement0TopLevelVarDeclaredNames0.func,
-    "TopLevelVarScopedDeclarations0" -> LabelledStatement0TopLevelVarScopedDeclarations0.func,
-    "VarDeclaredNames0" -> LabelledStatement0VarDeclaredNames0.func,
-    "VarScopedDeclarations0" -> LabelledStatement0VarScopedDeclarations0.func
+  val semMap: Map[String, Algo] = Map(
+    "LexicallyDeclaredNames0" -> `AL::LabelledStatement[0,0].LexicallyDeclaredNames`,
+    "LexicallyScopedDeclarations0" -> `AL::LabelledStatement[0,0].LexicallyScopedDeclarations`,
+    "VarDeclaredNames0" -> `AL::LabelledStatement[0,0].VarDeclaredNames`,
+    "VarScopedDeclarations0" -> `AL::LabelledStatement[0,0].VarScopedDeclarations`,
+    "TopLevelLexicallyDeclaredNames0" -> `AL::LabelledStatement[0,0].TopLevelLexicallyDeclaredNames`,
+    "TopLevelLexicallyScopedDeclarations0" -> `AL::LabelledStatement[0,0].TopLevelLexicallyScopedDeclarations`,
+    "TopLevelVarDeclaredNames0" -> `AL::LabelledStatement[0,0].TopLevelVarDeclaredNames`,
+    "TopLevelVarScopedDeclarations0" -> `AL::LabelledStatement[0,0].TopLevelVarScopedDeclarations`,
+    "ContainsDuplicateLabels0" -> `AL::LabelledStatement[0,0].ContainsDuplicateLabels`,
+    "ContainsUndefinedBreakTarget0" -> `AL::LabelledStatement[0,0].ContainsUndefinedBreakTarget`,
+    "ContainsUndefinedContinueTarget0" -> `AL::LabelledStatement[0,0].ContainsUndefinedContinueTarget`,
+    "Evaluation0" -> `AL::LabelledStatement[0,0].Evaluation`,
+    "LabelledEvaluation0" -> `AL::LabelledStatement[0,0].LabelledEvaluation`,
+    "HasCallInTailPosition0" -> `AL::LabelledStatement[0,0].HasCallInTailPosition`,
   )
 }

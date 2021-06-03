@@ -2,12 +2,11 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.ir.Parser._
+import Param.Kind._
 
-object HostPromiseRejectionTracker extends Algorithm {
-  val name: String = "HostPromiseRejectionTracker"
-  val length: Int = 2
-  val lang: Boolean = false
-  val func: Func = FixUIdWalker(parseFunc(""""HostPromiseRejectionTracker" (promise, operation) => {
-    return (new Completion("Type" -> CONST_normal, "Value" -> undefined, "Target" -> CONST_empty))
-  }"""), this)
+object `AL::HostPromiseRejectionTracker` extends Algo {
+  val head = NormalHead("HostPromiseRejectionTracker", List(Param("promise", Normal), Param("operation", Normal)))
+  val ids = List()
+  val rawBody = parseInst("""return CONST_empty""".stripMargin)
+  val code = scala.Array[String]()
 }

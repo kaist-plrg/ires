@@ -1,6 +1,5 @@
 package kr.ac.kaist.ires.model
 
-import kr.ac.kaist.ires.{ AST, ASTInfo, Lexical }
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.UnexpectedSemantics
 import scala.collection.immutable.{ Set => SSet }
@@ -8,6 +7,7 @@ import scala.collection.immutable.{ Set => SSet }
 trait AsyncMethod extends AST {
   val kind: String = "AsyncMethod"
 }
+
 case class AsyncMethod0(x2: PropertyName, x4: UniqueFormalParameters, x7: AsyncFunctionBody, parserParams: List[Boolean]) extends AsyncMethod {
   x2.parent = Some(this)
   x4.parent = Some(this)
@@ -22,10 +22,12 @@ case class AsyncMethod0(x2: PropertyName, x4: UniqueFormalParameters, x7: AsyncF
 }
 object AsyncMethod0 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "ComputedPropertyContains0" -> AsyncMethod0ComputedPropertyContains0.func,
-    "HasDirectSuper0" -> AsyncMethod0HasDirectSuper0.func,
-    "PropName0" -> AsyncMethod0PropName0.func,
-    "PropertyDefinitionEvaluation0" -> AsyncMethod0PropertyDefinitionEvaluation0.func
+  val semMap: Map[String, Algo] = Map(
+    "ComputedPropertyContains0" -> `AL::AsyncMethod[0,0].ComputedPropertyContains`,
+    "PropName0" -> `AL::AsyncMethod[0,0].PropName`,
+    "PropertyDefinitionEvaluation0" -> `AL::AsyncMethod[0,0].PropertyDefinitionEvaluation`,
+    "HasDirectSuper0" -> `AL::AsyncMethod[0,0].HasDirectSuper`,
+    "MethodDefinitionEvaluation0" -> `AL::AsyncMethod[0,0].MethodDefinitionEvaluation`,
+    "EarlyErrors0" -> `AL::AsyncMethod[0,0].EarlyErrors`,
   )
 }

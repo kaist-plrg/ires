@@ -1,6 +1,5 @@
 package kr.ac.kaist.ires.model
 
-import kr.ac.kaist.ires.{ AST, ASTInfo, Lexical }
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.UnexpectedSemantics
 import scala.collection.immutable.{ Set => SSet }
@@ -8,6 +7,7 @@ import scala.collection.immutable.{ Set => SSet }
 trait BindingProperty extends AST {
   val kind: String = "BindingProperty"
 }
+
 case class BindingProperty0(x0: SingleNameBinding, parserParams: List[Boolean]) extends BindingProperty {
   x0.parent = Some(this)
   val name: String = "BindingProperty0"
@@ -20,10 +20,11 @@ case class BindingProperty0(x0: SingleNameBinding, parserParams: List[Boolean]) 
 }
 object BindingProperty0 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "PropertyBindingInitialization0" -> BindingProperty0PropertyBindingInitialization0.func
+  val semMap: Map[String, Algo] = Map(
+    "PropertyBindingInitialization0" -> `AL::BindingProperty[0,0].PropertyBindingInitialization`,
   )
 }
+
 case class BindingProperty1(x0: PropertyName, x2: BindingElement, parserParams: List[Boolean]) extends BindingProperty {
   x0.parent = Some(this)
   x2.parent = Some(this)
@@ -37,9 +38,9 @@ case class BindingProperty1(x0: PropertyName, x2: BindingElement, parserParams: 
 }
 object BindingProperty1 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "BoundNames0" -> BindingProperty1BoundNames0.func,
-    "ContainsExpression0" -> BindingProperty1ContainsExpression0.func,
-    "PropertyBindingInitialization0" -> BindingProperty1PropertyBindingInitialization0.func
+  val semMap: Map[String, Algo] = Map(
+    "BoundNames0" -> `AL::BindingProperty[1,0].BoundNames`,
+    "PropertyBindingInitialization0" -> `AL::BindingProperty[1,0].PropertyBindingInitialization`,
+    "ContainsExpression0" -> `AL::BindingProperty[1,0].ContainsExpression`,
   )
 }

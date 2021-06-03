@@ -25,8 +25,11 @@ package object ires {
   val CUR_DIR = System.getProperty("user.dir")
 
   // Debugging mode
-  val DEBUG_SEMI_INSERT: Boolean = false
-  val DEBUG_PARSER: Boolean = false
-  val DEBUG_INTERP: Boolean = false
-  val DEBUG_FILTER: Boolean = false
+  var DEBUG: Boolean = false
+
+  // Logging mode
+  var LOG: Boolean = false
+
+  // Test mode
+  var TEST_MODE: Boolean = false
 }

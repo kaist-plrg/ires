@@ -2,33 +2,33 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.ir.Parser._
+import Param.Kind._
 
-object IsArray extends Algorithm {
-  val name: String = "IsArray"
-  val length: Int = 1
-  val lang: Boolean = true
-  val func: Func = FixUIdWalker(parseFunc(""""IsArray" (argument) => {
-    app __x0__ = (Type argument)
-    if (! (= __x0__ Object)) {
-      app __x1__ = (WrapCompletion false)
-      return __x1__
-    } else {}
-    if (= (typeof argument) "ArrayExoticObject") {
-      app __x2__ = (WrapCompletion true)
-      return __x2__
-    } else {}
-    if (= (typeof argument) "ProxyExoticObject") {
-      if (= argument["ProxyHandler"] null) {
-        app __x3__ = (ThrowCompletion (new OrdinaryObject("Prototype" -> INTRINSIC_TypeErrorPrototype, "ErrorData" -> undefined, "SubMap" -> (new SubMap()))))
-        return __x3__
-      } else {}
-      let target = argument["ProxyTarget"]
-      app __x4__ = (IsArray target)
-      if (is-completion __x4__) if (= __x4__["Type"] CONST_normal) __x4__ = __x4__["Value"] else return __x4__ else {}
-      app __x5__ = (WrapCompletion __x4__)
-      return __x5__
-    } else {}
-    app __x6__ = (WrapCompletion false)
-    return __x6__
-  }"""), this)
+object `AL::IsArray` extends Algo {
+  val head = NormalHead("IsArray", List(Param("argument", Normal)))
+  val ids = List(
+    "sec-isarray",
+    "sec-testing-and-comparison-operations",
+    "sec-abstract-operations",
+  )
+  val rawBody = parseInst("""{
+  |  0:if (! (= (typeof argument) Object)) return false else 0:{}
+  |  1:if (is-instance-of argument ArrayExoticObject) return true else 0:{}
+  |  2:if (is-instance-of argument ProxyExoticObject) {
+  |    3:if (= argument.ProxyHandler null) throw TypeError else 0:{}
+  |    4:let target = argument.ProxyTarget
+  |    5:app __x0__ = (IsArray target)
+  |    5:return [? __x0__]
+  |  } else 0:{}
+  |  6:return false
+  |}""".stripMargin)
+  val code = scala.Array[String](
+    """        1. If Type(_argument_) is not Object, return *false*.""",
+    """        1. If _argument_ is an Array exotic object, return *true*.""",
+    """        1. If _argument_ is a Proxy exotic object, then""",
+    """          1. If _argument_.[[ProxyHandler]] is *null*, throw a *TypeError* exception.""",
+    """          1. Let _target_ be _argument_.[[ProxyTarget]].""",
+    """          1. Return ? IsArray(_target_).""",
+    """        1. Return *false*.""",
+  )
 }

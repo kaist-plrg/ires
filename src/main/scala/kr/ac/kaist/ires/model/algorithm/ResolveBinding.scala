@@ -2,18 +2,27 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.ir.Parser._
+import Param.Kind._
 
-object ResolveBinding extends Algorithm {
-  val name: String = "ResolveBinding"
-  val length: Int = 1
-  val lang: Boolean = true
-  val func: Func = FixUIdWalker(parseFunc(""""ResolveBinding" (name, env) => {
-    if (|| (= env absent) (= env undefined)) env = GLOBAL_context["LexicalEnvironment"] else {}
-    assert (= (typeof env) "LexicalEnvironment")
-    if true let strict = true else let strict = false
-    app __x0__ = (GetIdentifierReference env name strict)
-    if (is-completion __x0__) if (= __x0__["Type"] CONST_normal) __x0__ = __x0__["Value"] else return __x0__ else {}
-    app __x1__ = (WrapCompletion __x0__)
-    return __x1__
-  }"""), this)
+object `AL::ResolveBinding` extends Algo {
+  val head = NormalHead("ResolveBinding", List(Param("name", Normal), Param("env", Optional)))
+  val ids = List(
+    "sec-resolvebinding",
+    "sec-execution-contexts",
+    "sec-executable-code-and-execution-contexts",
+  )
+  val rawBody = parseInst("""{
+  |  0:if (|| (= env absent) (= env undefined)) env = CONTEXT.LexicalEnvironment else 2:{}
+  |  2:assert (is-instance-of env EnvironmentRecord)
+  |  3:if true let strict = true else let strict = false
+  |  4:app __x0__ = (GetIdentifierReference env name strict)
+  |  4:return [? __x0__]
+  |}""".stripMargin)
+  val code = scala.Array[String](
+    """        1. If _env_ is not present or if _env_ is *undefined*, then""",
+    """          1. Set _env_ to the running execution context's LexicalEnvironment.""",
+    """        1. Assert: _env_ is an Environment Record.""",
+    """        1. If the code matching the syntactic production that is being evaluated is contained in strict mode code, let _strict_ be *true*; else let _strict_ be *false*.""",
+    """        1. Return ? GetIdentifierReference(_env_, _name_, _strict_).""",
+  )
 }

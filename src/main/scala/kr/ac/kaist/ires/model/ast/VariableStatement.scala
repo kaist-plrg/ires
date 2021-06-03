@@ -1,6 +1,5 @@
 package kr.ac.kaist.ires.model
 
-import kr.ac.kaist.ires.{ AST, ASTInfo, Lexical }
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.UnexpectedSemantics
 import scala.collection.immutable.{ Set => SSet }
@@ -8,6 +7,7 @@ import scala.collection.immutable.{ Set => SSet }
 trait VariableStatement extends AST {
   val kind: String = "VariableStatement"
 }
+
 case class VariableStatement0(x1: VariableDeclarationList, parserParams: List[Boolean]) extends VariableStatement {
   x1.parent = Some(this)
   val name: String = "VariableStatement0"
@@ -20,8 +20,8 @@ case class VariableStatement0(x1: VariableDeclarationList, parserParams: List[Bo
 }
 object VariableStatement0 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "Evaluation0" -> VariableStatement0Evaluation0.func,
-    "VarDeclaredNames0" -> VariableStatement0VarDeclaredNames0.func
+  val semMap: Map[String, Algo] = Map(
+    "VarDeclaredNames0" -> `AL::VariableStatement[0,0].VarDeclaredNames`,
+    "Evaluation0" -> `AL::VariableStatement[0,0].Evaluation`,
   )
 }

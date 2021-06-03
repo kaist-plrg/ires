@@ -1,6 +1,5 @@
 package kr.ac.kaist.ires.model
 
-import kr.ac.kaist.ires.{ AST, ASTInfo, Lexical }
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.UnexpectedSemantics
 import scala.collection.immutable.{ Set => SSet }
@@ -8,6 +7,7 @@ import scala.collection.immutable.{ Set => SSet }
 trait VariableDeclarationList extends AST {
   val kind: String = "VariableDeclarationList"
 }
+
 case class VariableDeclarationList0(x0: VariableDeclaration, parserParams: List[Boolean]) extends VariableDeclarationList {
   x0.parent = Some(this)
   val name: String = "VariableDeclarationList0"
@@ -20,10 +20,11 @@ case class VariableDeclarationList0(x0: VariableDeclaration, parserParams: List[
 }
 object VariableDeclarationList0 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "VarScopedDeclarations0" -> VariableDeclarationList0VarScopedDeclarations0.func
+  val semMap: Map[String, Algo] = Map(
+    "VarScopedDeclarations0" -> `AL::VariableDeclarationList[0,0].VarScopedDeclarations`,
   )
 }
+
 case class VariableDeclarationList1(x0: VariableDeclarationList, x2: VariableDeclaration, parserParams: List[Boolean]) extends VariableDeclarationList {
   x0.parent = Some(this)
   x2.parent = Some(this)
@@ -37,9 +38,9 @@ case class VariableDeclarationList1(x0: VariableDeclarationList, x2: VariableDec
 }
 object VariableDeclarationList1 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "BoundNames0" -> VariableDeclarationList1BoundNames0.func,
-    "Evaluation0" -> VariableDeclarationList1Evaluation0.func,
-    "VarScopedDeclarations0" -> VariableDeclarationList1VarScopedDeclarations0.func
+  val semMap: Map[String, Algo] = Map(
+    "BoundNames0" -> `AL::VariableDeclarationList[1,0].BoundNames`,
+    "VarScopedDeclarations0" -> `AL::VariableDeclarationList[1,0].VarScopedDeclarations`,
+    "Evaluation0" -> `AL::VariableDeclarationList[1,0].Evaluation`,
   )
 }

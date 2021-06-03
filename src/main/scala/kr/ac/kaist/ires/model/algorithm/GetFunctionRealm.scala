@@ -2,35 +2,43 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.ir.Parser._
+import Param.Kind._
 
-object GetFunctionRealm extends Algorithm {
-  val name: String = "GetFunctionRealm"
-  val length: Int = 1
-  val lang: Boolean = true
-  val func: Func = FixUIdWalker(parseFunc(""""GetFunctionRealm" (obj) => {
-    if (! (= obj["Realm"] absent)) {
-      app __x0__ = (WrapCompletion obj["Realm"])
-      return __x0__
-    } else {}
-    if (= (typeof obj) "BoundFunctionExoticObject") {
-      let target = obj["BoundTargetFunction"]
-      app __x1__ = (GetFunctionRealm target)
-      if (is-completion __x1__) if (= __x1__["Type"] CONST_normal) __x1__ = __x1__["Value"] else return __x1__ else {}
-      app __x2__ = (WrapCompletion __x1__)
-      return __x2__
-    } else {}
-    if (= (typeof obj) "ProxyExoticObject") {
-      if (= obj["ProxyHandler"] null) {
-        app __x3__ = (ThrowCompletion (new OrdinaryObject("Prototype" -> INTRINSIC_TypeErrorPrototype, "ErrorData" -> undefined, "SubMap" -> (new SubMap()))))
-        return __x3__
-      } else {}
-      let proxyTarget = obj["ProxyTarget"]
-      app __x4__ = (GetFunctionRealm proxyTarget)
-      if (is-completion __x4__) if (= __x4__["Type"] CONST_normal) __x4__ = __x4__["Value"] else return __x4__ else {}
-      app __x5__ = (WrapCompletion __x4__)
-      return __x5__
-    } else {}
-    app __x6__ = (WrapCompletion REALM)
-    return __x6__
-  }"""), this)
+object `AL::GetFunctionRealm` extends Algo {
+  val head = NormalHead("GetFunctionRealm", List(Param("obj", Normal)))
+  val ids = List(
+    "sec-getfunctionrealm",
+    "sec-operations-on-objects",
+    "sec-abstract-operations",
+  )
+  val rawBody = parseInst("""{
+  |  0:app __x0__ = (IsCallable obj)
+  |  0:assert (= [! __x0__] true)
+  |  1:if (! (= obj.Realm absent)) return obj.Realm else 0:{}
+  |  3:if (is-instance-of obj BoundFunctionExoticObject) {
+  |    4:let target = obj.BoundTargetFunction
+  |    5:app __x1__ = (GetFunctionRealm target)
+  |    5:return [? __x1__]
+  |  } else 0:{}
+  |  6:if (is-instance-of obj ProxyExoticObject) {
+  |    7:if (= obj.ProxyHandler null) throw TypeError else 0:{}
+  |    8:let proxyTarget = obj.ProxyTarget
+  |    9:app __x2__ = (GetFunctionRealm proxyTarget)
+  |    9:return [? __x2__]
+  |  } else 0:{}
+  |  10:return REALM
+  |}""".stripMargin)
+  val code = scala.Array[String](
+    """        1. Assert: ! IsCallable(_obj_) is *true*.""",
+    """        1. If _obj_ has a [[Realm]] internal slot, then""",
+    """          1. Return _obj_.[[Realm]].""",
+    """        1. If _obj_ is a bound function exotic object, then""",
+    """          1. Let _target_ be _obj_.[[BoundTargetFunction]].""",
+    """          1. Return ? GetFunctionRealm(_target_).""",
+    """        1. If _obj_ is a Proxy exotic object, then""",
+    """          1. If _obj_.[[ProxyHandler]] is *null*, throw a *TypeError* exception.""",
+    """          1. Let _proxyTarget_ be _obj_.[[ProxyTarget]].""",
+    """          1. Return ? GetFunctionRealm(_proxyTarget_).""",
+    """        1. [id="step-getfunctionrealm-default-return"] Return the current Realm Record.""",
+  )
 }

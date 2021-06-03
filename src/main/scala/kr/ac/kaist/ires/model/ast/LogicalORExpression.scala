@@ -1,6 +1,5 @@
 package kr.ac.kaist.ires.model
 
-import kr.ac.kaist.ires.{ AST, ASTInfo, Lexical }
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.UnexpectedSemantics
 import scala.collection.immutable.{ Set => SSet }
@@ -8,6 +7,7 @@ import scala.collection.immutable.{ Set => SSet }
 trait LogicalORExpression extends AST {
   val kind: String = "LogicalORExpression"
 }
+
 case class LogicalORExpression0(x0: LogicalANDExpression, parserParams: List[Boolean]) extends LogicalORExpression {
   x0.parent = Some(this)
   val name: String = "LogicalORExpression0"
@@ -20,8 +20,9 @@ case class LogicalORExpression0(x0: LogicalANDExpression, parserParams: List[Boo
 }
 object LogicalORExpression0 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map()
+  val semMap: Map[String, Algo] = Map()
 }
+
 case class LogicalORExpression1(x0: LogicalORExpression, x2: LogicalANDExpression, parserParams: List[Boolean]) extends LogicalORExpression {
   x0.parent = Some(this)
   x2.parent = Some(this)
@@ -35,10 +36,10 @@ case class LogicalORExpression1(x0: LogicalORExpression, x2: LogicalANDExpressio
 }
 object LogicalORExpression1 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "AssignmentTargetType0" -> LogicalORExpression1AssignmentTargetType0.func,
-    "Evaluation0" -> LogicalORExpression1Evaluation0.func,
-    "HasCallInTailPosition0" -> LogicalORExpression1HasCallInTailPosition0.func,
-    "IsFunctionDefinition0" -> LogicalORExpression1IsFunctionDefinition0.func
+  val semMap: Map[String, Algo] = Map(
+    "IsFunctionDefinition0" -> `AL::LogicalORExpression[1,0].IsFunctionDefinition`,
+    "AssignmentTargetType0" -> `AL::LogicalORExpression[1,0].AssignmentTargetType`,
+    "Evaluation0" -> `AL::LogicalORExpression[1,0].Evaluation`,
+    "HasCallInTailPosition0" -> `AL::LogicalORExpression[1,0].HasCallInTailPosition`,
   )
 }

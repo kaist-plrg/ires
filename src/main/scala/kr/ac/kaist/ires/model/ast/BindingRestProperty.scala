@@ -1,6 +1,5 @@
 package kr.ac.kaist.ires.model
 
-import kr.ac.kaist.ires.{ AST, ASTInfo, Lexical }
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.UnexpectedSemantics
 import scala.collection.immutable.{ Set => SSet }
@@ -8,6 +7,7 @@ import scala.collection.immutable.{ Set => SSet }
 trait BindingRestProperty extends AST {
   val kind: String = "BindingRestProperty"
 }
+
 case class BindingRestProperty0(x1: BindingIdentifier, parserParams: List[Boolean]) extends BindingRestProperty {
   x1.parent = Some(this)
   val name: String = "BindingRestProperty0"
@@ -20,7 +20,7 @@ case class BindingRestProperty0(x1: BindingIdentifier, parserParams: List[Boolea
 }
 object BindingRestProperty0 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "RestBindingInitialization0" -> BindingRestProperty0RestBindingInitialization0.func
+  val semMap: Map[String, Algo] = Map(
+    "RestBindingInitialization0" -> `AL::BindingRestProperty[0,0].RestBindingInitialization`,
   )
 }

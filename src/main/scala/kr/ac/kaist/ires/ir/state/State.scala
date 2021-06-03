@@ -1,11 +1,13 @@
 package kr.ac.kaist.ires.ir
 
+import kr.ac.kaist.ires.util.Useful._
+
 // IR States
 case class State(
-    context: Context = Context(),
-    ctxStack: List[Context] = List(),
-    globals: Map[Id, Value] = Map(),
-    heap: Heap = Heap()
+  context: Context = Context(),
+  ctxStack: List[Context] = List(),
+  globals: Map[Id, Value] = Map(),
+  heap: Heap = Heap()
 ) extends IRNode {
   // getters
   def get(addr: Addr): Option[Obj] = heap.get(addr)

@@ -83,7 +83,7 @@ class ArgParser(cmd: Command, iresConfig: IRESConfig) extends RegexParsers {
 
     // a filename list
     lazy val fileName: Parser[Unit] = str ^^ {
-      s => iresConfig.fileNames = s :: iresConfig.fileNames
+      s => iresConfig.args = s :: iresConfig.args
     }
 
     // Generate a parser.
@@ -97,6 +97,6 @@ class ArgParser(cmd: Command, iresConfig: IRESConfig) extends RegexParsers {
       jsonArgs = Nil
     })
 
-    iresConfig.fileNames = iresConfig.fileNames.reverse
+    iresConfig.args = iresConfig.args.reverse
   }
 }

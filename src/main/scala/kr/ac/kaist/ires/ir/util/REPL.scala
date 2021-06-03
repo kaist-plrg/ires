@@ -2,6 +2,7 @@ package kr.ac.kaist.ires.ir
 
 import kr.ac.kaist.ires.LINE_SEP
 import kr.ac.kaist.ires.ir.Parser._
+import kr.ac.kaist.ires.util.Useful._
 import org.jline.builtins.Completers.TreeCompleter
 import org.jline.builtins.Completers.TreeCompleter._
 import org.jline.reader._
@@ -10,12 +11,11 @@ import org.jline.terminal._
 import org.jline.utils.InfoCmp.Capability
 import org.jline.utils._
 import scala.util.{ Try, Success, Failure }
+import scala.Console.CYAN
 
 // REPL
 object REPL {
-  def run(initial: State, detail: Boolean, isDebug: Boolean, timeLimit: Option[Long]): Unit = {
-    val cyan = "\u001b[36m"
-    val reset = "\u001b[0m"
+  def run(initial: State, detail: Boolean, timeLimit: Option[Long]): Unit = {
     val builder: TerminalBuilder = TerminalBuilder.builder()
     val terminal: Terminal = builder.build()
     val completer: TreeCompleter = new TreeCompleter(
@@ -46,9 +46,9 @@ object REPL {
     }
 
     var st: State = initial
-    val interp: Interp = new Interp(isDebug, timeLimit)
-    def pre: String = "Instruction: " + st.context.insts.map(inst => LINE_SEP + "  " + beautify(inst, detail = detail)).mkString
-    def prompt: String = pre + LINE_SEP + s"${cyan}ir>${reset} "
+    val interp: Interp = new Interp(timeLimit)
+    def pre: String = "Instruction: " + st.context.insts.map(inst => LINE_SEP + "  " + inst.beautified(detail = detail)).mkString
+    def prompt: String = pre + LINE_SEP + setColor(CYAN)("ir> ")
     def fixMsg: String = pre + LINE_SEP + "Please press the enter key..."
 
     def fixpoint: Unit = {

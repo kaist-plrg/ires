@@ -1,6 +1,5 @@
 package kr.ac.kaist.ires.model
 
-import kr.ac.kaist.ires.{ AST, ASTInfo, Lexical }
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.UnexpectedSemantics
 import scala.collection.immutable.{ Set => SSet }
@@ -8,6 +7,7 @@ import scala.collection.immutable.{ Set => SSet }
 trait FunctionStatementList extends AST {
   val kind: String = "FunctionStatementList"
 }
+
 case class FunctionStatementList0(x0: Option[StatementList], parserParams: List[Boolean]) extends FunctionStatementList {
   x0.foreach((m) => m.parent = Some(this))
   val name: String = "FunctionStatementList0"
@@ -20,16 +20,19 @@ case class FunctionStatementList0(x0: Option[StatementList], parserParams: List[
 }
 object FunctionStatementList0 extends ASTInfo {
   val maxK: Int = 1
-  val semMap: Map[String, Func] = Map(
-    "Evaluation0" -> FunctionStatementList0Evaluation0.func,
-    "HasCallInTailPosition0" -> FunctionStatementList0HasCallInTailPosition0.func,
-    "LexicallyDeclaredNames0" -> FunctionStatementList0LexicallyDeclaredNames0.func,
-    "LexicallyDeclaredNames1" -> FunctionStatementList0LexicallyDeclaredNames1.func,
-    "LexicallyScopedDeclarations0" -> FunctionStatementList0LexicallyScopedDeclarations0.func,
-    "LexicallyScopedDeclarations1" -> FunctionStatementList0LexicallyScopedDeclarations1.func,
-    "VarDeclaredNames0" -> FunctionStatementList0VarDeclaredNames0.func,
-    "VarDeclaredNames1" -> FunctionStatementList0VarDeclaredNames1.func,
-    "VarScopedDeclarations0" -> FunctionStatementList0VarScopedDeclarations0.func,
-    "VarScopedDeclarations1" -> FunctionStatementList0VarScopedDeclarations1.func
+  val semMap: Map[String, Algo] = Map(
+    "LexicallyDeclaredNames0" -> `AL::FunctionStatementList[0,0].LexicallyDeclaredNames`,
+    "LexicallyDeclaredNames1" -> `AL::FunctionStatementList[0,1].LexicallyDeclaredNames`,
+    "LexicallyScopedDeclarations0" -> `AL::FunctionStatementList[0,0].LexicallyScopedDeclarations`,
+    "LexicallyScopedDeclarations1" -> `AL::FunctionStatementList[0,1].LexicallyScopedDeclarations`,
+    "VarDeclaredNames0" -> `AL::FunctionStatementList[0,0].VarDeclaredNames`,
+    "VarDeclaredNames1" -> `AL::FunctionStatementList[0,1].VarDeclaredNames`,
+    "VarScopedDeclarations0" -> `AL::FunctionStatementList[0,0].VarScopedDeclarations`,
+    "VarScopedDeclarations1" -> `AL::FunctionStatementList[0,1].VarScopedDeclarations`,
+    "ContainsDuplicateLabels0" -> `AL::FunctionStatementList[0,0].ContainsDuplicateLabels`,
+    "ContainsUndefinedBreakTarget0" -> `AL::FunctionStatementList[0,0].ContainsUndefinedBreakTarget`,
+    "ContainsUndefinedContinueTarget0" -> `AL::FunctionStatementList[0,0].ContainsUndefinedContinueTarget`,
+    "Evaluation0" -> `AL::FunctionStatementList[0,0].Evaluation`,
+    "HasCallInTailPosition0" -> `AL::FunctionStatementList[0,0].HasCallInTailPosition`,
   )
 }

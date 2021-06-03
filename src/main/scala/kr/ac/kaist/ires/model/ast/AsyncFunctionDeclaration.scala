@@ -1,6 +1,5 @@
 package kr.ac.kaist.ires.model
 
-import kr.ac.kaist.ires.{ AST, ASTInfo, Lexical }
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.UnexpectedSemantics
 import scala.collection.immutable.{ Set => SSet }
@@ -8,6 +7,7 @@ import scala.collection.immutable.{ Set => SSet }
 trait AsyncFunctionDeclaration extends AST {
   val kind: String = "AsyncFunctionDeclaration"
 }
+
 case class AsyncFunctionDeclaration0(x3: BindingIdentifier, x5: FormalParameters, x8: AsyncFunctionBody, parserParams: List[Boolean]) extends AsyncFunctionDeclaration {
   x3.parent = Some(this)
   x5.parent = Some(this)
@@ -22,14 +22,17 @@ case class AsyncFunctionDeclaration0(x3: BindingIdentifier, x5: FormalParameters
 }
 object AsyncFunctionDeclaration0 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "BoundNames0" -> AsyncFunctionDeclaration0BoundNames0.func,
-    "Contains0" -> AsyncFunctionDeclaration0Contains0.func,
-    "Evaluation0" -> AsyncFunctionDeclaration0Evaluation0.func,
-    "InstantiateFunctionObject0" -> AsyncFunctionDeclaration0InstantiateFunctionObject0.func,
-    "IsConstantDeclaration0" -> AsyncFunctionDeclaration0IsConstantDeclaration0.func
+  val semMap: Map[String, Algo] = Map(
+    "BoundNames0" -> `AL::AsyncFunctionDeclaration[0,0].BoundNames`,
+    "IsConstantDeclaration0" -> `AL::AsyncFunctionDeclaration[0,0].IsConstantDeclaration`,
+    "Contains0" -> `AL::AsyncFunctionDeclaration[0,0].Contains`,
+    "InstantiateFunctionObject0" -> `AL::AsyncFunctionDeclaration[0,0].InstantiateFunctionObject`,
+    "InstantiateAsyncFunctionObject0" -> `AL::AsyncFunctionDeclaration[0,0].InstantiateAsyncFunctionObject`,
+    "Evaluation0" -> `AL::AsyncFunctionDeclaration[0,0].Evaluation`,
+    "EarlyErrors0" -> `AL::AsyncFunctionDeclaration[0,0].EarlyErrors`,
   )
 }
+
 case class AsyncFunctionDeclaration1(x4: FormalParameters, x7: AsyncFunctionBody, parserParams: List[Boolean]) extends AsyncFunctionDeclaration {
   x4.parent = Some(this)
   x7.parent = Some(this)
@@ -43,11 +46,13 @@ case class AsyncFunctionDeclaration1(x4: FormalParameters, x7: AsyncFunctionBody
 }
 object AsyncFunctionDeclaration1 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "BoundNames0" -> AsyncFunctionDeclaration1BoundNames0.func,
-    "Contains0" -> AsyncFunctionDeclaration1Contains0.func,
-    "Evaluation0" -> AsyncFunctionDeclaration1Evaluation0.func,
-    "InstantiateFunctionObject0" -> AsyncFunctionDeclaration1InstantiateFunctionObject0.func,
-    "IsConstantDeclaration0" -> AsyncFunctionDeclaration1IsConstantDeclaration0.func
+  val semMap: Map[String, Algo] = Map(
+    "BoundNames0" -> `AL::AsyncFunctionDeclaration[1,0].BoundNames`,
+    "IsConstantDeclaration0" -> `AL::AsyncFunctionDeclaration[1,0].IsConstantDeclaration`,
+    "Contains0" -> `AL::AsyncFunctionDeclaration[1,0].Contains`,
+    "InstantiateFunctionObject0" -> `AL::AsyncFunctionDeclaration[1,0].InstantiateFunctionObject`,
+    "InstantiateAsyncFunctionObject0" -> `AL::AsyncFunctionDeclaration[1,0].InstantiateAsyncFunctionObject`,
+    "Evaluation0" -> `AL::AsyncFunctionDeclaration[1,0].Evaluation`,
+    "EarlyErrors0" -> `AL::AsyncFunctionDeclaration[1,0].EarlyErrors`,
   )
 }

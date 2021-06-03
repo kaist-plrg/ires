@@ -2,21 +2,25 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.ir.Parser._
+import Param.Kind._
 
-object Call extends Algorithm {
-  val name: String = "Call"
-  val length: Int = 2
-  val lang: Boolean = true
-  val func: Func = FixUIdWalker(parseFunc(""""Call" (F, V, argumentsList) => {
-    if (= argumentsList absent) argumentsList = (new []) else {}
-    app __x0__ = (IsCallable F)
-    if (= __x0__ false) {
-      app __x1__ = (ThrowCompletion (new OrdinaryObject("Prototype" -> INTRINSIC_TypeErrorPrototype, "ErrorData" -> undefined, "SubMap" -> (new SubMap()))))
-      return __x1__
-    } else {}
-    app __x2__ = (F["Call"] F V argumentsList)
-    if (is-completion __x2__) if (= __x2__["Type"] CONST_normal) __x2__ = __x2__["Value"] else return __x2__ else {}
-    app __x3__ = (WrapCompletion __x2__)
-    return __x3__
-  }"""), this)
+object `AL::Call` extends Algo {
+  val head = NormalHead("Call", List(Param("F", Normal), Param("V", Normal), Param("argumentsList", Optional)))
+  val ids = List(
+    "sec-call",
+    "sec-operations-on-objects",
+    "sec-abstract-operations",
+  )
+  val rawBody = parseInst("""{
+  |  0:if (= argumentsList absent) argumentsList = (new []) else 4:{}
+  |  1:app __x0__ = (IsCallable F)
+  |  1:if (= __x0__ false) throw TypeError else 4:{}
+  |  2:app __x1__ = (F.Call F V argumentsList)
+  |  2:return [? __x1__]
+  |}""".stripMargin)
+  val code = scala.Array[String](
+    """        1. If _argumentsList_ is not present, set _argumentsList_ to a new empty List.""",
+    """        1. If IsCallable(_F_) is *false*, throw a *TypeError* exception.""",
+    """        1. Return ? _F_.[[Call]](_V_, _argumentsList_).""",
+  )
 }

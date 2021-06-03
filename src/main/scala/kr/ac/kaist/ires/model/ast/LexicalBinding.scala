@@ -1,6 +1,5 @@
 package kr.ac.kaist.ires.model
 
-import kr.ac.kaist.ires.{ AST, ASTInfo, Lexical }
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.UnexpectedSemantics
 import scala.collection.immutable.{ Set => SSet }
@@ -8,6 +7,7 @@ import scala.collection.immutable.{ Set => SSet }
 trait LexicalBinding extends AST {
   val kind: String = "LexicalBinding"
 }
+
 case class LexicalBinding0(x0: BindingIdentifier, x1: Option[Initializer], parserParams: List[Boolean]) extends LexicalBinding {
   x0.parent = Some(this)
   x1.foreach((m) => m.parent = Some(this))
@@ -21,12 +21,14 @@ case class LexicalBinding0(x0: BindingIdentifier, x1: Option[Initializer], parse
 }
 object LexicalBinding0 extends ASTInfo {
   val maxK: Int = 1
-  val semMap: Map[String, Func] = Map(
-    "BoundNames1" -> LexicalBinding0BoundNames1.func,
-    "Evaluation0" -> LexicalBinding0Evaluation0.func,
-    "Evaluation1" -> LexicalBinding0Evaluation1.func
+  val semMap: Map[String, Algo] = Map(
+    "BoundNames1" -> `AL::LexicalBinding[0,1].BoundNames`,
+    "Evaluation0" -> `AL::LexicalBinding[0,0].Evaluation`,
+    "Evaluation1" -> `AL::LexicalBinding[0,1].Evaluation`,
+    "EarlyErrors1" -> `AL::LexicalBinding[0,1].EarlyErrors`,
   )
 }
+
 case class LexicalBinding1(x0: BindingPattern, x1: Initializer, parserParams: List[Boolean]) extends LexicalBinding {
   x0.parent = Some(this)
   x1.parent = Some(this)
@@ -40,8 +42,8 @@ case class LexicalBinding1(x0: BindingPattern, x1: Initializer, parserParams: Li
 }
 object LexicalBinding1 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "BoundNames0" -> LexicalBinding1BoundNames0.func,
-    "Evaluation0" -> LexicalBinding1Evaluation0.func
+  val semMap: Map[String, Algo] = Map(
+    "BoundNames0" -> `AL::LexicalBinding[1,0].BoundNames`,
+    "Evaluation0" -> `AL::LexicalBinding[1,0].Evaluation`,
   )
 }

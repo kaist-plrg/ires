@@ -1,6 +1,5 @@
 package kr.ac.kaist.ires.model
 
-import kr.ac.kaist.ires.{ AST, ASTInfo, Lexical }
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.UnexpectedSemantics
 import scala.collection.immutable.{ Set => SSet }
@@ -8,6 +7,7 @@ import scala.collection.immutable.{ Set => SSet }
 trait CaseBlock extends AST {
   val kind: String = "CaseBlock"
 }
+
 case class CaseBlock0(x1: Option[CaseClauses], parserParams: List[Boolean]) extends CaseBlock {
   x1.foreach((m) => m.parent = Some(this))
   val name: String = "CaseBlock0"
@@ -20,19 +20,20 @@ case class CaseBlock0(x1: Option[CaseClauses], parserParams: List[Boolean]) exte
 }
 object CaseBlock0 extends ASTInfo {
   val maxK: Int = 1
-  val semMap: Map[String, Func] = Map(
-    "CaseBlockEvaluation0" -> CaseBlock0CaseBlockEvaluation0.func,
-    "CaseBlockEvaluation1" -> CaseBlock0CaseBlockEvaluation1.func,
-    "ContainsDuplicateLabels0" -> CaseBlock0ContainsDuplicateLabels0.func,
-    "ContainsUndefinedBreakTarget0" -> CaseBlock0ContainsUndefinedBreakTarget0.func,
-    "ContainsUndefinedContinueTarget0" -> CaseBlock0ContainsUndefinedContinueTarget0.func,
-    "HasCallInTailPosition0" -> CaseBlock0HasCallInTailPosition0.func,
-    "LexicallyDeclaredNames0" -> CaseBlock0LexicallyDeclaredNames0.func,
-    "LexicallyScopedDeclarations0" -> CaseBlock0LexicallyScopedDeclarations0.func,
-    "VarDeclaredNames0" -> CaseBlock0VarDeclaredNames0.func,
-    "VarScopedDeclarations0" -> CaseBlock0VarScopedDeclarations0.func
+  val semMap: Map[String, Algo] = Map(
+    "LexicallyDeclaredNames0" -> `AL::CaseBlock[0,0].LexicallyDeclaredNames`,
+    "LexicallyScopedDeclarations0" -> `AL::CaseBlock[0,0].LexicallyScopedDeclarations`,
+    "VarDeclaredNames0" -> `AL::CaseBlock[0,0].VarDeclaredNames`,
+    "VarScopedDeclarations0" -> `AL::CaseBlock[0,0].VarScopedDeclarations`,
+    "ContainsDuplicateLabels0" -> `AL::CaseBlock[0,0].ContainsDuplicateLabels`,
+    "ContainsUndefinedBreakTarget0" -> `AL::CaseBlock[0,0].ContainsUndefinedBreakTarget`,
+    "ContainsUndefinedContinueTarget0" -> `AL::CaseBlock[0,0].ContainsUndefinedContinueTarget`,
+    "CaseBlockEvaluation0" -> `AL::CaseBlock[0,0].CaseBlockEvaluation`,
+    "CaseBlockEvaluation1" -> `AL::CaseBlock[0,1].CaseBlockEvaluation`,
+    "HasCallInTailPosition0" -> `AL::CaseBlock[0,0].HasCallInTailPosition`,
   )
 }
+
 case class CaseBlock1(x1: Option[CaseClauses], x2: DefaultClause, x3: Option[CaseClauses], parserParams: List[Boolean]) extends CaseBlock {
   x1.foreach((m) => m.parent = Some(this))
   x2.parent = Some(this)
@@ -47,15 +48,15 @@ case class CaseBlock1(x1: Option[CaseClauses], x2: DefaultClause, x3: Option[Cas
 }
 object CaseBlock1 extends ASTInfo {
   val maxK: Int = 3
-  val semMap: Map[String, Func] = Map(
-    "CaseBlockEvaluation3" -> CaseBlock1CaseBlockEvaluation3.func,
-    "ContainsDuplicateLabels3" -> CaseBlock1ContainsDuplicateLabels3.func,
-    "ContainsUndefinedBreakTarget3" -> CaseBlock1ContainsUndefinedBreakTarget3.func,
-    "ContainsUndefinedContinueTarget3" -> CaseBlock1ContainsUndefinedContinueTarget3.func,
-    "HasCallInTailPosition3" -> CaseBlock1HasCallInTailPosition3.func,
-    "LexicallyDeclaredNames3" -> CaseBlock1LexicallyDeclaredNames3.func,
-    "LexicallyScopedDeclarations3" -> CaseBlock1LexicallyScopedDeclarations3.func,
-    "VarDeclaredNames3" -> CaseBlock1VarDeclaredNames3.func,
-    "VarScopedDeclarations3" -> CaseBlock1VarScopedDeclarations3.func
+  val semMap: Map[String, Algo] = Map(
+    "LexicallyDeclaredNames3" -> `AL::CaseBlock[1,3].LexicallyDeclaredNames`,
+    "LexicallyScopedDeclarations3" -> `AL::CaseBlock[1,3].LexicallyScopedDeclarations`,
+    "VarDeclaredNames3" -> `AL::CaseBlock[1,3].VarDeclaredNames`,
+    "VarScopedDeclarations3" -> `AL::CaseBlock[1,3].VarScopedDeclarations`,
+    "ContainsDuplicateLabels3" -> `AL::CaseBlock[1,3].ContainsDuplicateLabels`,
+    "ContainsUndefinedBreakTarget3" -> `AL::CaseBlock[1,3].ContainsUndefinedBreakTarget`,
+    "ContainsUndefinedContinueTarget3" -> `AL::CaseBlock[1,3].ContainsUndefinedContinueTarget`,
+    "CaseBlockEvaluation3" -> `AL::CaseBlock[1,3].CaseBlockEvaluation`,
+    "HasCallInTailPosition3" -> `AL::CaseBlock[1,3].HasCallInTailPosition`,
   )
 }

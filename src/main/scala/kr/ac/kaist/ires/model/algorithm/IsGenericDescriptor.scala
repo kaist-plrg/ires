@@ -2,23 +2,26 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.ir.Parser._
+import Param.Kind._
 
-object IsGenericDescriptor extends Algorithm {
-  val name: String = "IsGenericDescriptor"
-  val length: Int = 1
-  val lang: Boolean = true
-  val func: Func = FixUIdWalker(parseFunc(""""IsGenericDescriptor" (Desc) => {
-    if (= Desc undefined) {
-      app __x0__ = (WrapCompletion false)
-      return __x0__
-    } else {}
-    app __x1__ = (IsAccessorDescriptor Desc)
-    app __x2__ = (IsDataDescriptor Desc)
-    if (&& (= __x1__ false) (= __x2__ false)) {
-      app __x3__ = (WrapCompletion true)
-      return __x3__
-    } else {}
-    app __x4__ = (WrapCompletion false)
-    return __x4__
-  }"""), this)
+object `AL::IsGenericDescriptor` extends Algo {
+  val head = NormalHead("IsGenericDescriptor", List(Param("Desc", Normal)))
+  val ids = List(
+    "sec-isgenericdescriptor",
+    "sec-property-descriptor-specification-type",
+    "sec-ecmascript-specification-types",
+    "sec-ecmascript-data-types-and-values",
+  )
+  val rawBody = parseInst("""{
+  |  0:if (= Desc undefined) return false else 0:{}
+  |  1:app __x0__ = (IsAccessorDescriptor Desc)
+  |  1:app __x1__ = (IsDataDescriptor Desc)
+  |  1:if (&& (= __x0__ false) (= __x1__ false)) return true else 0:{}
+  |  2:return false
+  |}""".stripMargin)
+  val code = scala.Array[String](
+    """          1. If _Desc_ is *undefined*, return *false*.""",
+    """          1. If IsAccessorDescriptor(_Desc_) and IsDataDescriptor(_Desc_) are both *false*, return *true*.""",
+    """          1. Return *false*.""",
+  )
 }

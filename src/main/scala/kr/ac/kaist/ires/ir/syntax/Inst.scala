@@ -1,38 +1,32 @@
 package kr.ac.kaist.ires.ir
 
-import kr.ac.kaist.ires.model.Algorithm
-import scala.collection.mutable.{ Map => MMap }
-
 // IR Instructions
-sealed trait Inst extends IRNode {
-  private var algo: Option[Algorithm] = None
-
-  def setAlgo(algo: Algorithm): Unit = this.algo = Some(algo)
-}
-object Inst {
-  private var _insts: Vector[Inst] = Vector()
-  def insts: Vector[Inst] = _insts
-
-  private var _instToAlgo: Vector[Algorithm] = Vector()
-  def instToAlgo: Vector[Algorithm] = _instToAlgo
-}
+sealed trait Inst extends IRNode { var line: Int = -1 }
 
 // conditional instructions
 sealed trait CondInst extends Inst { val cond: Expr }
 case class IIf(cond: Expr, thenInst: Inst, elseInst: Inst) extends CondInst
 case class IWhile(cond: Expr, body: Inst) extends CondInst
 
-// other instructions
-case class IExpr(expr: Expr) extends Inst
-case class ILet(id: Id, expr: Expr) extends Inst
-case class IAssign(ref: Ref, expr: Expr) extends Inst
-case class IDelete(ref: Ref) extends Inst
-case class IAppend(expr: Expr, list: Expr) extends Inst
-case class IPrepend(expr: Expr, list: Expr) extends Inst
-case class IReturn(expr: Expr) extends Inst
+// call instructions
+sealed trait CallInst extends Inst { val id: Id; var csite: Int = -1 }
+case class IApp(id: Id, fexpr: Expr, args: List[Expr]) extends CallInst
+case class IAccess(id: Id, bexpr: Expr, expr: Expr, args: List[Expr]) extends CallInst
+
+// normal instructions
+sealed trait NormalInst extends Inst
+case class IExpr(expr: Expr) extends NormalInst
+case class ILet(id: Id, expr: Expr) extends NormalInst
+case class IAssign(ref: Ref, expr: Expr) extends NormalInst
+case class IDelete(ref: Ref) extends NormalInst
+case class IAppend(expr: Expr, list: Expr) extends NormalInst
+case class IPrepend(expr: Expr, list: Expr) extends NormalInst
+case class IReturn(expr: Expr) extends NormalInst
+case class IThrow(name: String) extends NormalInst { var asite: Int = -1 }
+case class IAssert(expr: Expr) extends NormalInst
+case class IPrint(expr: Expr) extends NormalInst
+case class IWithCont(id: Id, params: List[Id], bodyInst: Inst) extends NormalInst
+case class ISetType(expr: Expr, ty: Ty) extends NormalInst
+
+// sequence instructions
 case class ISeq(insts: List[Inst]) extends Inst
-case class IAssert(expr: Expr) extends Inst
-case class IPrint(expr: Expr) extends Inst
-case class IApp(id: Id, fexpr: Expr, args: List[Expr]) extends Inst
-case class IAccess(id: Id, bexpr: Expr, expr: Expr) extends Inst
-case class IWithCont(id: Id, params: List[Id], bodyInst: Inst) extends Inst

@@ -2,30 +2,31 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.ir.Parser._
+import Param.Kind._
 
-object IsRegExp extends Algorithm {
-  val name: String = "IsRegExp"
-  val length: Int = 1
-  val lang: Boolean = true
-  val func: Func = FixUIdWalker(parseFunc(""""IsRegExp" (argument) => {
-    app __x0__ = (Type argument)
-    if (! (= __x0__ Object)) {
-      app __x1__ = (WrapCompletion false)
-      return __x1__
-    } else {}
-    app __x2__ = (Get argument SYMBOL_match)
-    if (is-completion __x2__) if (= __x2__["Type"] CONST_normal) __x2__ = __x2__["Value"] else return __x2__ else {}
-    let matcher = __x2__
-    if (! (= matcher undefined)) {
-      app __x3__ = (ToBoolean matcher)
-      app __x4__ = (WrapCompletion __x3__)
-      return __x4__
-    } else {}
-    if (! (= argument["RegExpMatcher"] absent)) {
-      app __x5__ = (WrapCompletion true)
-      return __x5__
-    } else {}
-    app __x6__ = (WrapCompletion false)
-    return __x6__
-  }"""), this)
+object `AL::IsRegExp` extends Algo {
+  val head = NormalHead("IsRegExp", List(Param("argument", Normal)))
+  val ids = List(
+    "sec-isregexp",
+    "sec-testing-and-comparison-operations",
+    "sec-abstract-operations",
+  )
+  val rawBody = parseInst("""{
+  |  0:if (! (= (typeof argument) Object)) return false else 0:{}
+  |  1:app __x0__ = (Get argument SYMBOL_match)
+  |  1:let matcher = [? __x0__]
+  |  2:if (! (= matcher undefined)) {
+  |    app __x1__ = (ToBoolean matcher)
+  |    return [! __x1__]
+  |  } else 0:{}
+  |  3:if (! (= argument.RegExpMatcher absent)) return true else 0:{}
+  |  4:return false
+  |}""".stripMargin)
+  val code = scala.Array[String](
+    """        1. If Type(_argument_) is not Object, return *false*.""",
+    """        1. Let _matcher_ be ? Get(_argument_, @@match).""",
+    """        1. If _matcher_ is not *undefined*, return ! ToBoolean(_matcher_).""",
+    """        1. If _argument_ has a [[RegExpMatcher]] internal slot, return *true*.""",
+    """        1. Return *false*.""",
+  )
 }

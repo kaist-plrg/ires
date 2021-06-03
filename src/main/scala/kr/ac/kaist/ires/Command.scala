@@ -11,8 +11,8 @@ sealed trait Command {
 }
 
 class CommandObj[Result](
-    override val name: String,
-    pList: PhaseList[Result]
+  override val name: String,
+  pList: PhaseList[Result]
 ) extends Command {
   def apply(args: List[String]): Result = {
     val iresConfig = IRESConfig(this)
@@ -45,7 +45,7 @@ case object CmdLoad extends CommandObj("load", CmdParse >> Load)
 
 // eval
 case object CmdEval extends CommandObj("eval", CmdLoad >> IREval) {
-  override def display(st: ir.State): Unit = println(ir.beautify(st))
+  override def display(st: ir.State): Unit = println(st.beautified)
 }
 
 // repl
@@ -53,17 +53,17 @@ case object CmdREPL extends CommandObj("repl", CmdLoad >> IRREPL)
 
 // parse-ir
 case object CmdIRParse extends CommandObj("parse-ir", CmdBase >> IRParse) {
-  override def display(pgm: ir.Program): Unit = println(ir.beautify(pgm))
+  override def display(pgm: ir.Program): Unit = println(pgm.beautified)
 }
 
 // load-ir
 case object CmdIRLoad extends CommandObj("load-ir", CmdIRParse >> IRLoad) {
-  override def display(st: ir.State): Unit = println(ir.beautify(st))
+  override def display(st: ir.State): Unit = println(st.beautified)
 }
 
 // eval-ir
 case object CmdIREval extends CommandObj("eval-ir", CmdIRLoad >> IREval) {
-  override def display(st: ir.State): Unit = println(ir.beautify(st))
+  override def display(st: ir.State): Unit = println(st.beautified)
 }
 
 // repl-ir

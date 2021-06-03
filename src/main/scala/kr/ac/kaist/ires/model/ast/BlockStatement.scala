@@ -1,6 +1,5 @@
 package kr.ac.kaist.ires.model
 
-import kr.ac.kaist.ires.{ AST, ASTInfo, Lexical }
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.UnexpectedSemantics
 import scala.collection.immutable.{ Set => SSet }
@@ -8,6 +7,7 @@ import scala.collection.immutable.{ Set => SSet }
 trait BlockStatement extends AST {
   val kind: String = "BlockStatement"
 }
+
 case class BlockStatement0(x0: Block, parserParams: List[Boolean]) extends BlockStatement {
   x0.parent = Some(this)
   val name: String = "BlockStatement0"
@@ -20,5 +20,5 @@ case class BlockStatement0(x0: Block, parserParams: List[Boolean]) extends Block
 }
 object BlockStatement0 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map()
+  val semMap: Map[String, Algo] = Map()
 }

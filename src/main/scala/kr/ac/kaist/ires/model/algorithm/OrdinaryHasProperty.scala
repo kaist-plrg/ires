@@ -2,31 +2,37 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.ir.Parser._
+import Param.Kind._
 
-object OrdinaryHasProperty extends Algorithm {
-  val name: String = "OrdinaryHasProperty"
-  val length: Int = 2
-  val lang: Boolean = true
-  val func: Func = FixUIdWalker(parseFunc(""""OrdinaryHasProperty" (O, P) => {
-    app __x0__ = (IsPropertyKey P)
-    assert (= __x0__ true)
-    app __x1__ = (O["GetOwnProperty"] O P)
-    if (is-completion __x1__) if (= __x1__["Type"] CONST_normal) __x1__ = __x1__["Value"] else return __x1__ else {}
-    let hasOwn = __x1__
-    if (! (= hasOwn undefined)) {
-      app __x2__ = (WrapCompletion true)
-      return __x2__
-    } else {}
-    app __x3__ = (O["GetPrototypeOf"] O)
-    if (is-completion __x3__) if (= __x3__["Type"] CONST_normal) __x3__ = __x3__["Value"] else return __x3__ else {}
-    let parent = __x3__
-    if (! (= parent null)) {
-      app __x4__ = (parent["HasProperty"] parent P)
-      if (is-completion __x4__) if (= __x4__["Type"] CONST_normal) __x4__ = __x4__["Value"] else return __x4__ else {}
-      app __x5__ = (WrapCompletion __x4__)
-      return __x5__
-    } else {}
-    app __x6__ = (WrapCompletion false)
-    return __x6__
-  }"""), this)
+object `AL::OrdinaryHasProperty` extends Algo {
+  val head = NormalHead("OrdinaryHasProperty", List(Param("O", Normal), Param("P", Normal)))
+  val ids = List(
+    "sec-ordinaryhasproperty",
+    "sec-ordinary-object-internal-methods-and-internal-slots-hasproperty-p",
+    "sec-ordinary-object-internal-methods-and-internal-slots",
+    "sec-ordinary-and-exotic-objects-behaviours",
+  )
+  val rawBody = parseInst("""{
+  |  0:app __x0__ = (IsPropertyKey P)
+  |  0:assert (= __x0__ true)
+  |  1:app __x1__ = (O.GetOwnProperty O P)
+  |  1:let hasOwn = [? __x1__]
+  |  2:if (! (= hasOwn undefined)) return true else 15:{}
+  |  3:app __x2__ = (O.GetPrototypeOf O)
+  |  3:let parent = [? __x2__]
+  |  4:if (! (= parent null)) {
+  |    5:app __x3__ = (parent.HasProperty parent P)
+  |    5:return [? __x3__]
+  |  } else 15:{}
+  |  6:return false
+  |}""".stripMargin)
+  val code = scala.Array[String](
+    """          1. Assert: IsPropertyKey(_P_) is *true*.""",
+    """          1. Let _hasOwn_ be ? _O_.[[GetOwnProperty]](_P_).""",
+    """          1. If _hasOwn_ is not *undefined*, return *true*.""",
+    """          1. Let _parent_ be ? _O_.[[GetPrototypeOf]]().""",
+    """          1. If _parent_ is not *null*, then""",
+    """            1. Return ? _parent_.[[HasProperty]](_P_).""",
+    """          1. Return *false*.""",
+  )
 }

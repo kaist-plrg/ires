@@ -1,9 +1,9 @@
 package kr.ac.kaist.ires.parser
 
 import kr.ac.kaist.ires.error.{ WrongNumberOfParserParams, TooManySemicolonInsertion }
-import kr.ac.kaist.ires.model.{ Script }
+import kr.ac.kaist.ires.model.{ AST, Lexical, Script }
 import kr.ac.kaist.ires.util.Useful._
-import kr.ac.kaist.ires.{ AST, Lexical, DEBUG_PARSER, DEBUG_SEMI_INSERT, LINE_SEP }
+import kr.ac.kaist.ires.{ DEBUG, LINE_SEP }
 import scala.collection.mutable
 import scala.util.matching.Regex
 import scala.util.parsing.combinator._
@@ -20,12 +20,11 @@ trait ESParsers extends LAParsers {
         val lines = source.replace("\r\n", "\n").split(Array('\n', '\r'))
         val revStr = rev.mkString
 
-        if (DEBUG_SEMI_INSERT) {
-          lines.zipWithIndex.foreach {
-            case (x, i) => println(f"$i%4d: $x")
-          }
-          stop(s"line: $line, column: $column")
-        }
+        // XXX Debugging for semicolon insertion
+        // lines.zipWithIndex.foreach {
+        //   case (x, i) => println(f"$i%4d: $x")
+        // }
+        // stop(s"line: $line, column: $column")
 
         lazy val curLine = lines(line)
         lazy val curChar = curLine.charAt(column)

@@ -2,50 +2,46 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.ir.Parser._
+import Param.Kind._
 
-object OrdinaryHasInstance extends Algorithm {
-  val name: String = "OrdinaryHasInstance"
-  val length: Int = 2
-  val lang: Boolean = true
-  val func: Func = FixUIdWalker(parseFunc(""""OrdinaryHasInstance" (C, O) => {
-    app __x0__ = (IsCallable C)
-    if (= __x0__ false) {
-      app __x1__ = (WrapCompletion false)
-      return __x1__
-    } else {}
-    if (! (= C["BoundTargetFunction"] absent)) {
-      let BC = C["BoundTargetFunction"]
-      app __x2__ = (InstanceofOperator O BC)
-      if (is-completion __x2__) if (= __x2__["Type"] CONST_normal) __x2__ = __x2__["Value"] else return __x2__ else {}
-      app __x3__ = (WrapCompletion __x2__)
-      return __x3__
-    } else {}
-    app __x4__ = (Type O)
-    if (! (= __x4__ Object)) {
-      app __x5__ = (WrapCompletion false)
-      return __x5__
-    } else {}
-    app __x6__ = (Get C "prototype")
-    if (is-completion __x6__) if (= __x6__["Type"] CONST_normal) __x6__ = __x6__["Value"] else return __x6__ else {}
-    let P = __x6__
-    app __x7__ = (Type P)
-    if (! (= __x7__ Object)) {
-      app __x8__ = (ThrowCompletion (new OrdinaryObject("Prototype" -> INTRINSIC_TypeErrorPrototype, "ErrorData" -> undefined, "SubMap" -> (new SubMap()))))
-      return __x8__
-    } else {}
-    while true {
-      app __x9__ = (O["GetPrototypeOf"] O)
-      if (is-completion __x9__) if (= __x9__["Type"] CONST_normal) __x9__ = __x9__["Value"] else return __x9__ else {}
-      O = __x9__
-      if (= O null) {
-        app __x10__ = (WrapCompletion false)
-        return __x10__
-      } else {}
-      app __x11__ = (SameValue P O)
-      if (= __x11__ true) {
-        app __x12__ = (WrapCompletion true)
-        return __x12__
-      } else {}
-    }
-  }"""), this)
+object `AL::OrdinaryHasInstance` extends Algo {
+  val head = NormalHead("OrdinaryHasInstance", List(Param("C", Normal), Param("O", Normal)))
+  val ids = List(
+    "sec-ordinaryhasinstance",
+    "sec-operations-on-objects",
+    "sec-abstract-operations",
+  )
+  val rawBody = parseInst("""{
+  |  0:app __x0__ = (IsCallable C)
+  |  0:if (= __x0__ false) return false else 0:{}
+  |  1:if (! (= C.BoundTargetFunction absent)) {
+  |    2:let BC = C.BoundTargetFunction
+  |    3:app __x1__ = (InstanceofOperator O BC)
+  |    3:return [? __x1__]
+  |  } else 0:{}
+  |  4:if (! (= (typeof O) Object)) return false else 0:{}
+  |  5:app __x2__ = (Get C "prototype")
+  |  5:let P = [? __x2__]
+  |  6:if (! (= (typeof P) Object)) throw TypeError else 0:{}
+  |  7:while true {
+  |    8:app __x3__ = (O.GetPrototypeOf O)
+  |    8:O = [? __x3__]
+  |    9:if (= O null) return false else 0:{}
+  |    10:app __x4__ = (SameValue P O)
+  |    10:if (= __x4__ true) return true else 0:{}
+  |  }
+  |}""".stripMargin)
+  val code = scala.Array[String](
+    """        1. If IsCallable(_C_) is *false*, return *false*.""",
+    """        1. If _C_ has a [[BoundTargetFunction]] internal slot, then""",
+    """          1. Let _BC_ be _C_.[[BoundTargetFunction]].""",
+    """          1. Return ? InstanceofOperator(_O_, _BC_).""",
+    """        1. If Type(_O_) is not Object, return *false*.""",
+    """        1. Let _P_ be ? Get(_C_, *"prototype"*).""",
+    """        1. If Type(_P_) is not Object, throw a *TypeError* exception.""",
+    """        1. Repeat,""",
+    """          1. Set _O_ to ? _O_.[[GetPrototypeOf]]().""",
+    """          1. If _O_ is *null*, return *false*.""",
+    """          1. If SameValue(_P_, _O_) is *true*, return *true*.""",
+  )
 }

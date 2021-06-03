@@ -2,39 +2,37 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.ir.Parser._
+import Param.Kind._
 
-object ToUint8Clamp extends Algorithm {
-  val name: String = "ToUint8Clamp"
-  val length: Int = 1
-  val lang: Boolean = true
-  val func: Func = FixUIdWalker(parseFunc(""""ToUint8Clamp" (argument) => {
-    app __x0__ = (ToNumber argument)
-    if (is-completion __x0__) if (= __x0__["Type"] CONST_normal) __x0__ = __x0__["Value"] else return __x0__ else {}
-    let number = __x0__
-    if (= number NaN) {
-      app __x1__ = (WrapCompletion 0i)
-      return __x1__
-    } else {}
-    if (! (< 0i number)) {
-      app __x2__ = (WrapCompletion 0i)
-      return __x2__
-    } else {}
-    if (! (< number 255i)) {
-      app __x3__ = (WrapCompletion 255i)
-      return __x3__
-    } else {}
-    app __x4__ = (floor number)
-    let f = __x4__
-    if (< (+ f 0.5) number) {
-      app __x5__ = (WrapCompletion (+ f 1i))
-      return __x5__
-    } else {}
-    if (< number (+ f 0.5)) {
-      app __x6__ = (WrapCompletion f)
-      return __x6__
-    } else {}
-    !!! "Etc"
-    app __x7__ = (WrapCompletion f)
-    return __x7__
-  }"""), this)
+object `AL::ToUint8Clamp` extends Algo {
+  val head = NormalHead("ToUint8Clamp", List(Param("argument", Normal)))
+  val ids = List(
+    "sec-touint8clamp",
+    "sec-type-conversion",
+    "sec-abstract-operations",
+  )
+  val rawBody = parseInst("""{
+  |  0:app __x0__ = (ToNumber argument)
+  |  0:let number = [? __x0__]
+  |  1:if (= number NaN) return 0i else 0:{}
+  |  2:if (! (< 0i number)) return 0i else 0:{}
+  |  3:if (! (< number 255i)) return 255i else 0:{}
+  |  4:app __x1__ = (floor number)
+  |  4:let f = __x1__
+  |  5:if (< (+ f 0.5) number) return (+ f 1i) else 0:{}
+  |  6:if (< number (+ f 0.5)) return f else 0:{}
+  |  7:if (= (% f 2i) 1i) return (+ f 1i) else 0:{}
+  |  8:return f
+  |}""".stripMargin)
+  val code = scala.Array[String](
+    """        1. Let _number_ be ? ToNumber(_argument_).""",
+    """        1. If _number_ is *NaN*, return *+0*<sub>𝔽</sub>.""",
+    """        1. If ℝ(_number_) ≤ 0, return *+0*<sub>𝔽</sub>.""",
+    """        1. If ℝ(_number_) ≥ 255, return *255*<sub>𝔽</sub>.""",
+    """        1. Let _f_ be floor(ℝ(_number_)).""",
+    """        1. If _f_ + 0.5 < ℝ(_number_), return 𝔽(_f_ + 1).""",
+    """        1. If ℝ(_number_) < _f_ + 0.5, return 𝔽(_f_).""",
+    """        1. If _f_ is odd, return 𝔽(_f_ + 1).""",
+    """        1. Return 𝔽(_f_).""",
+  )
 }

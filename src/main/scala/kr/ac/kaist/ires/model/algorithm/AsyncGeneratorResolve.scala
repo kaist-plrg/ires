@@ -2,26 +2,40 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.ir.Parser._
+import Param.Kind._
 
-object AsyncGeneratorResolve extends Algorithm {
-  val name: String = "AsyncGeneratorResolve"
-  val length: Int = 3
-  val lang: Boolean = true
-  val func: Func = FixUIdWalker(parseFunc(""""AsyncGeneratorResolve" (generator, value, done) => {
-    let queue = generator["AsyncGeneratorQueue"]
-    assert (< 0i queue["length"])
-    let next = (pop queue 0i)
-    let promiseCapability = next["Capability"]
-    app __x0__ = (CreateIterResultObject value done)
-    if (is-completion __x0__) if (= __x0__["Type"] CONST_normal) __x0__ = __x0__["Value"] else return __x0__ else {}
-    let iteratorResult = __x0__
-    app __x1__ = (Call promiseCapability["Resolve"] undefined (new [iteratorResult]))
-    if (is-completion __x1__) if (= __x1__["Type"] CONST_normal) __x1__ = __x1__["Value"] else return __x1__ else {}
-    __x1__
-    app __x2__ = (AsyncGeneratorResumeNext generator)
-    if (is-completion __x2__) if (= __x2__["Type"] CONST_normal) __x2__ = __x2__["Value"] else return __x2__ else {}
-    __x2__
-    app __x3__ = (WrapCompletion undefined)
-    return __x3__
-  }"""), this)
+object `AL::AsyncGeneratorResolve` extends Algo {
+  val head = NormalHead("AsyncGeneratorResolve", List(Param("generator", Normal), Param("value", Normal), Param("done", Normal)))
+  val ids = List(
+    "sec-asyncgeneratorresolve",
+    "sec-asyncgenerator-abstract-operations",
+    "sec-asyncgenerator-objects",
+    "sec-control-abstraction-objects",
+  )
+  val rawBody = parseInst("""{
+  |  1:let queue = generator.AsyncGeneratorQueue
+  |  2:assert (< 0i queue.length)
+  |  3:let next = queue[0i]
+  |  4:let __x0__ = (pop queue 0i)
+  |  5:let promiseCapability = next.Capability
+  |  6:app __x1__ = (CreateIterResultObject value done)
+  |  6:let iteratorResult = [! __x1__]
+  |  7:app __x2__ = (Call promiseCapability.Resolve undefined (new [iteratorResult]))
+  |  7:[! __x2__]
+  |  8:app __x3__ = (AsyncGeneratorResumeNext generator)
+  |  8:[! __x3__]
+  |  9:return undefined
+  |}""".stripMargin)
+  val code = scala.Array[String](
+    """          1. Assert: _generator_ is an AsyncGenerator instance.""",
+    """          1. Let _queue_ be _generator_.[[AsyncGeneratorQueue]].""",
+    """          1. Assert: _queue_ is not an empty List.""",
+    """          1. Let _next_ be the first element of _queue_.""",
+    """          1. Remove the first element from _queue_.""",
+    """          1. Let _promiseCapability_ be _next_.[[Capability]].""",
+    """          1. Let _iteratorResult_ be ! CreateIterResultObject(_value_, _done_).""",
+    """          1. Perform ! Call(_promiseCapability_.[[Resolve]], *undefined*, « _iteratorResult_ »).""",
+    """          1. Perform ! AsyncGeneratorResumeNext(_generator_).""",
+    """          1. Return *undefined*.""",
+  )
 }

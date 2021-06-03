@@ -1,5 +1,7 @@
 package kr.ac.kaist.ires.ir
 
+import kr.ac.kaist.ires.util.Useful._
+
 // IR Objects
 sealed trait Obj extends IRNode {
   // types

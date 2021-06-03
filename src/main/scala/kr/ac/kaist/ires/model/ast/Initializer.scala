@@ -1,6 +1,5 @@
 package kr.ac.kaist.ires.model
 
-import kr.ac.kaist.ires.{ AST, ASTInfo, Lexical }
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.UnexpectedSemantics
 import scala.collection.immutable.{ Set => SSet }
@@ -8,6 +7,7 @@ import scala.collection.immutable.{ Set => SSet }
 trait Initializer extends AST {
   val kind: String = "Initializer"
 }
+
 case class Initializer0(x1: AssignmentExpression, parserParams: List[Boolean]) extends Initializer {
   x1.parent = Some(this)
   val name: String = "Initializer0"
@@ -20,5 +20,5 @@ case class Initializer0(x1: AssignmentExpression, parserParams: List[Boolean]) e
 }
 object Initializer0 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map()
+  val semMap: Map[String, Algo] = Map()
 }

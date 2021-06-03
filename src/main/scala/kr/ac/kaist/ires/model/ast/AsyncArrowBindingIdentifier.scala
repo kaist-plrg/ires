@@ -1,6 +1,5 @@
 package kr.ac.kaist.ires.model
 
-import kr.ac.kaist.ires.{ AST, ASTInfo, Lexical }
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.UnexpectedSemantics
 import scala.collection.immutable.{ Set => SSet }
@@ -8,6 +7,7 @@ import scala.collection.immutable.{ Set => SSet }
 trait AsyncArrowBindingIdentifier extends AST {
   val kind: String = "AsyncArrowBindingIdentifier"
 }
+
 case class AsyncArrowBindingIdentifier0(x0: BindingIdentifier, parserParams: List[Boolean]) extends AsyncArrowBindingIdentifier {
   x0.parent = Some(this)
   val name: String = "AsyncArrowBindingIdentifier0"
@@ -20,10 +20,10 @@ case class AsyncArrowBindingIdentifier0(x0: BindingIdentifier, parserParams: Lis
 }
 object AsyncArrowBindingIdentifier0 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "ContainsExpression0" -> AsyncArrowBindingIdentifier0ContainsExpression0.func,
-    "ExpectedArgumentCount0" -> AsyncArrowBindingIdentifier0ExpectedArgumentCount0.func,
-    "IsSimpleParameterList0" -> AsyncArrowBindingIdentifier0IsSimpleParameterList0.func,
-    "IteratorBindingInitialization0" -> AsyncArrowBindingIdentifier0IteratorBindingInitialization0.func
+  val semMap: Map[String, Algo] = Map(
+    "IteratorBindingInitialization0" -> `AL::AsyncArrowBindingIdentifier[0,0].IteratorBindingInitialization`,
+    "ContainsExpression0" -> `AL::AsyncArrowBindingIdentifier[0,0].ContainsExpression`,
+    "IsSimpleParameterList0" -> `AL::AsyncArrowBindingIdentifier[0,0].IsSimpleParameterList`,
+    "ExpectedArgumentCount0" -> `AL::AsyncArrowBindingIdentifier[0,0].ExpectedArgumentCount`,
   )
 }

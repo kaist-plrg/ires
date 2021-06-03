@@ -1,6 +1,5 @@
 package kr.ac.kaist.ires.model
 
-import kr.ac.kaist.ires.{ AST, ASTInfo, Lexical }
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.UnexpectedSemantics
 import scala.collection.immutable.{ Set => SSet }
@@ -8,6 +7,7 @@ import scala.collection.immutable.{ Set => SSet }
 trait AssignmentRestElement extends AST {
   val kind: String = "AssignmentRestElement"
 }
+
 case class AssignmentRestElement0(x1: DestructuringAssignmentTarget, parserParams: List[Boolean]) extends AssignmentRestElement {
   x1.parent = Some(this)
   val name: String = "AssignmentRestElement0"
@@ -20,7 +20,7 @@ case class AssignmentRestElement0(x1: DestructuringAssignmentTarget, parserParam
 }
 object AssignmentRestElement0 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "IteratorDestructuringAssignmentEvaluation0" -> AssignmentRestElement0IteratorDestructuringAssignmentEvaluation0.func
+  val semMap: Map[String, Algo] = Map(
+    "IteratorDestructuringAssignmentEvaluation0" -> `AL::AssignmentRestElement[0,0].IteratorDestructuringAssignmentEvaluation`,
   )
 }

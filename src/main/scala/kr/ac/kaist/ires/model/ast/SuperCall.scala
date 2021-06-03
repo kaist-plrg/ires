@@ -1,6 +1,5 @@
 package kr.ac.kaist.ires.model
 
-import kr.ac.kaist.ires.{ AST, ASTInfo, Lexical }
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.UnexpectedSemantics
 import scala.collection.immutable.{ Set => SSet }
@@ -8,6 +7,7 @@ import scala.collection.immutable.{ Set => SSet }
 trait SuperCall extends AST {
   val kind: String = "SuperCall"
 }
+
 case class SuperCall0(x1: Arguments, parserParams: List[Boolean]) extends SuperCall {
   x1.parent = Some(this)
   val name: String = "SuperCall0"
@@ -20,7 +20,7 @@ case class SuperCall0(x1: Arguments, parserParams: List[Boolean]) extends SuperC
 }
 object SuperCall0 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "Evaluation0" -> SuperCall0Evaluation0.func
+  val semMap: Map[String, Algo] = Map(
+    "Evaluation0" -> `AL::SuperCall[0,0].Evaluation`,
   )
 }

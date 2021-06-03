@@ -1,6 +1,5 @@
 package kr.ac.kaist.ires.model
 
-import kr.ac.kaist.ires.{ AST, ASTInfo, Lexical }
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.UnexpectedSemantics
 import scala.collection.immutable.{ Set => SSet }
@@ -8,6 +7,7 @@ import scala.collection.immutable.{ Set => SSet }
 trait ObjectLiteral extends AST {
   val kind: String = "ObjectLiteral"
 }
+
 case class ObjectLiteral0(parserParams: List[Boolean]) extends ObjectLiteral {
   val name: String = "ObjectLiteral0"
   override def toString: String = {
@@ -19,10 +19,11 @@ case class ObjectLiteral0(parserParams: List[Boolean]) extends ObjectLiteral {
 }
 object ObjectLiteral0 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "Evaluation0" -> ObjectLiteral0Evaluation0.func
+  val semMap: Map[String, Algo] = Map(
+    "Evaluation0" -> `AL::ObjectLiteral[0,0].Evaluation`,
   )
 }
+
 case class ObjectLiteral1(x1: PropertyDefinitionList, parserParams: List[Boolean]) extends ObjectLiteral {
   x1.parent = Some(this)
   val name: String = "ObjectLiteral1"
@@ -35,10 +36,11 @@ case class ObjectLiteral1(x1: PropertyDefinitionList, parserParams: List[Boolean
 }
 object ObjectLiteral1 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "Evaluation0" -> ObjectLiteral1Evaluation0.func
+  val semMap: Map[String, Algo] = Map(
+    "Evaluation0" -> `AL::ObjectLiteral[1,0].Evaluation`,
   )
 }
+
 case class ObjectLiteral2(x1: PropertyDefinitionList, parserParams: List[Boolean]) extends ObjectLiteral {
   x1.parent = Some(this)
   val name: String = "ObjectLiteral2"
@@ -51,7 +53,7 @@ case class ObjectLiteral2(x1: PropertyDefinitionList, parserParams: List[Boolean
 }
 object ObjectLiteral2 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "Evaluation0" -> ObjectLiteral2Evaluation0.func
+  val semMap: Map[String, Algo] = Map(
+    "Evaluation0" -> `AL::ObjectLiteral[2,0].Evaluation`,
   )
 }

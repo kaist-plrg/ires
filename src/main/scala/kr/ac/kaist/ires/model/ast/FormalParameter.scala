@@ -1,6 +1,5 @@
 package kr.ac.kaist.ires.model
 
-import kr.ac.kaist.ires.{ AST, ASTInfo, Lexical }
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.UnexpectedSemantics
 import scala.collection.immutable.{ Set => SSet }
@@ -8,6 +7,7 @@ import scala.collection.immutable.{ Set => SSet }
 trait FormalParameter extends AST {
   val kind: String = "FormalParameter"
 }
+
 case class FormalParameter0(x0: BindingElement, parserParams: List[Boolean]) extends FormalParameter {
   x0.parent = Some(this)
   val name: String = "FormalParameter0"
@@ -20,8 +20,7 @@ case class FormalParameter0(x0: BindingElement, parserParams: List[Boolean]) ext
 }
 object FormalParameter0 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "IsSimpleParameterList0" -> FormalParameter0IsSimpleParameterList0.func,
-    "IteratorBindingInitialization0" -> FormalParameter0IteratorBindingInitialization0.func
+  val semMap: Map[String, Algo] = Map(
+    "IsSimpleParameterList0" -> `AL::FormalParameter[0,0].IsSimpleParameterList`,
   )
 }

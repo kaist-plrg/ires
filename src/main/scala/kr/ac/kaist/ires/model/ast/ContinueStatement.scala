@@ -1,6 +1,5 @@
 package kr.ac.kaist.ires.model
 
-import kr.ac.kaist.ires.{ AST, ASTInfo, Lexical }
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.UnexpectedSemantics
 import scala.collection.immutable.{ Set => SSet }
@@ -8,6 +7,7 @@ import scala.collection.immutable.{ Set => SSet }
 trait ContinueStatement extends AST {
   val kind: String = "ContinueStatement"
 }
+
 case class ContinueStatement0(parserParams: List[Boolean]) extends ContinueStatement {
   val name: String = "ContinueStatement0"
   override def toString: String = {
@@ -19,11 +19,13 @@ case class ContinueStatement0(parserParams: List[Boolean]) extends ContinueState
 }
 object ContinueStatement0 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "ContainsUndefinedContinueTarget0" -> ContinueStatement0ContainsUndefinedContinueTarget0.func,
-    "Evaluation0" -> ContinueStatement0Evaluation0.func
+  val semMap: Map[String, Algo] = Map(
+    "ContainsUndefinedContinueTarget0" -> `AL::ContinueStatement[0,0].ContainsUndefinedContinueTarget`,
+    "Evaluation0" -> `AL::ContinueStatement[0,0].Evaluation`,
+    "EarlyErrors0" -> `AL::ContinueStatement[0,0].EarlyErrors`,
   )
 }
+
 case class ContinueStatement1(x2: LabelIdentifier, parserParams: List[Boolean]) extends ContinueStatement {
   x2.parent = Some(this)
   val name: String = "ContinueStatement1"
@@ -36,8 +38,9 @@ case class ContinueStatement1(x2: LabelIdentifier, parserParams: List[Boolean]) 
 }
 object ContinueStatement1 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "ContainsUndefinedContinueTarget0" -> ContinueStatement1ContainsUndefinedContinueTarget0.func,
-    "Evaluation0" -> ContinueStatement1Evaluation0.func
+  val semMap: Map[String, Algo] = Map(
+    "ContainsUndefinedContinueTarget0" -> `AL::ContinueStatement[1,0].ContainsUndefinedContinueTarget`,
+    "Evaluation0" -> `AL::ContinueStatement[1,0].Evaluation`,
+    "EarlyErrors0" -> `AL::ContinueStatement[1,0].EarlyErrors`,
   )
 }

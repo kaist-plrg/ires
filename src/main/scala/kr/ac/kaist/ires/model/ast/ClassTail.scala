@@ -1,6 +1,5 @@
 package kr.ac.kaist.ires.model
 
-import kr.ac.kaist.ires.{ AST, ASTInfo, Lexical }
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.UnexpectedSemantics
 import scala.collection.immutable.{ Set => SSet }
@@ -8,6 +7,7 @@ import scala.collection.immutable.{ Set => SSet }
 trait ClassTail extends AST {
   val kind: String = "ClassTail"
 }
+
 case class ClassTail0(x0: Option[ClassHeritage], x2: Option[ClassBody], parserParams: List[Boolean]) extends ClassTail {
   x0.foreach((m) => m.parent = Some(this))
   x2.foreach((m) => m.parent = Some(this))
@@ -21,8 +21,8 @@ case class ClassTail0(x0: Option[ClassHeritage], x2: Option[ClassBody], parserPa
 }
 object ClassTail0 extends ASTInfo {
   val maxK: Int = 3
-  val semMap: Map[String, Func] = Map(
-    "ClassDefinitionEvaluation3" -> ClassTail0ClassDefinitionEvaluation3.func,
-    "Contains3" -> ClassTail0Contains3.func
+  val semMap: Map[String, Algo] = Map(
+    "Contains3" -> `AL::ClassTail[0,3].Contains`,
+    "ClassDefinitionEvaluation3" -> `AL::ClassTail[0,3].ClassDefinitionEvaluation`,
   )
 }

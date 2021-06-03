@@ -1,6 +1,5 @@
 package kr.ac.kaist.ires.model
 
-import kr.ac.kaist.ires.{ AST, ASTInfo, Lexical }
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.UnexpectedSemantics
 import scala.collection.immutable.{ Set => SSet }
@@ -8,6 +7,7 @@ import scala.collection.immutable.{ Set => SSet }
 trait ImportClause extends AST {
   val kind: String = "ImportClause"
 }
+
 case class ImportClause0(x0: ImportedDefaultBinding, parserParams: List[Boolean]) extends ImportClause {
   x0.parent = Some(this)
   val name: String = "ImportClause0"
@@ -20,8 +20,9 @@ case class ImportClause0(x0: ImportedDefaultBinding, parserParams: List[Boolean]
 }
 object ImportClause0 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map()
+  val semMap: Map[String, Algo] = Map()
 }
+
 case class ImportClause1(x0: NameSpaceImport, parserParams: List[Boolean]) extends ImportClause {
   x0.parent = Some(this)
   val name: String = "ImportClause1"
@@ -34,8 +35,9 @@ case class ImportClause1(x0: NameSpaceImport, parserParams: List[Boolean]) exten
 }
 object ImportClause1 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map()
+  val semMap: Map[String, Algo] = Map()
 }
+
 case class ImportClause2(x0: NamedImports, parserParams: List[Boolean]) extends ImportClause {
   x0.parent = Some(this)
   val name: String = "ImportClause2"
@@ -48,8 +50,9 @@ case class ImportClause2(x0: NamedImports, parserParams: List[Boolean]) extends 
 }
 object ImportClause2 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map()
+  val semMap: Map[String, Algo] = Map()
 }
+
 case class ImportClause3(x0: ImportedDefaultBinding, x2: NameSpaceImport, parserParams: List[Boolean]) extends ImportClause {
   x0.parent = Some(this)
   x2.parent = Some(this)
@@ -63,8 +66,12 @@ case class ImportClause3(x0: ImportedDefaultBinding, x2: NameSpaceImport, parser
 }
 object ImportClause3 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map()
+  val semMap: Map[String, Algo] = Map(
+    "BoundNames0" -> `AL::ImportClause[3,0].BoundNames`,
+    "ImportEntriesForModule0" -> `AL::ImportClause[3,0].ImportEntriesForModule`,
+  )
 }
+
 case class ImportClause4(x0: ImportedDefaultBinding, x2: NamedImports, parserParams: List[Boolean]) extends ImportClause {
   x0.parent = Some(this)
   x2.parent = Some(this)
@@ -78,5 +85,8 @@ case class ImportClause4(x0: ImportedDefaultBinding, x2: NamedImports, parserPar
 }
 object ImportClause4 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map()
+  val semMap: Map[String, Algo] = Map(
+    "BoundNames0" -> `AL::ImportClause[4,0].BoundNames`,
+    "ImportEntriesForModule0" -> `AL::ImportClause[4,0].ImportEntriesForModule`,
+  )
 }

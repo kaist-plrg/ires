@@ -2,25 +2,34 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.ir.Parser._
+import Param.Kind._
 
-object InitializeReferencedBinding extends Algorithm {
-  val name: String = "InitializeReferencedBinding"
-  val length: Int = 2
-  val lang: Boolean = true
-  val func: Func = FixUIdWalker(parseFunc(""""InitializeReferencedBinding" (V, W) => {
-    if (is-completion V) if (= V["Type"] CONST_normal) V = V["Value"] else return V else {}
-    V
-    if (is-completion W) if (= W["Type"] CONST_normal) W = W["Value"] else return W else {}
-    W
-    app __x0__ = (Type V)
-    assert (= __x0__ Reference)
-    app __x1__ = (IsUnresolvableReference V)
-    assert (= __x1__ false)
-    app __x2__ = (GetBase V)
-    let base = __x2__
-    app __x3__ = (GetReferencedName V)
-    app __x4__ = (base["InitializeBinding"] base __x3__ W)
-    app __x5__ = (WrapCompletion __x4__)
-    return __x5__
-  }"""), this)
+object `AL::InitializeReferencedBinding` extends Algo {
+  val head = NormalHead("InitializeReferencedBinding", List(Param("V", Normal), Param("W", Normal)))
+  val ids = List(
+    "sec-initializereferencedbinding",
+    "sec-reference-record-specification-type",
+    "sec-ecmascript-specification-types",
+    "sec-ecmascript-data-types-and-values",
+  )
+  val rawBody = parseInst("""{
+  |  0:[? V]
+  |  1:[? W]
+  |  2:assert (is-instance-of V ReferenceRecord)
+  |  3:app __x0__ = (IsUnresolvableReference V)
+  |  3:assert (= __x0__ false)
+  |  4:let base = V.Base
+  |  5:assert (is-instance-of base EnvironmentRecord)
+  |  6:app __x1__ = (base.InitializeBinding base V.ReferencedName W)
+  |  6:return __x1__
+  |}""".stripMargin)
+  val code = scala.Array[String](
+    """          1. ReturnIfAbrupt(_V_).""",
+    """          1. ReturnIfAbrupt(_W_).""",
+    """          1. Assert: _V_ is a Reference Record.""",
+    """          1. Assert: IsUnresolvableReference(_V_) is *false*.""",
+    """          1. Let _base_ be _V_.[[Base]].""",
+    """          1. Assert: _base_ is an Environment Record.""",
+    """          1. Return _base_.InitializeBinding(_V_.[[ReferencedName]], _W_).""",
+  )
 }

@@ -1,6 +1,5 @@
 package kr.ac.kaist.ires.model
 
-import kr.ac.kaist.ires.{ AST, ASTInfo, Lexical }
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.UnexpectedSemantics
 import scala.collection.immutable.{ Set => SSet }
@@ -8,6 +7,7 @@ import scala.collection.immutable.{ Set => SSet }
 trait Declaration extends AST {
   val kind: String = "Declaration"
 }
+
 case class Declaration0(x0: HoistableDeclaration, parserParams: List[Boolean]) extends Declaration {
   x0.parent = Some(this)
   val name: String = "Declaration0"
@@ -20,8 +20,9 @@ case class Declaration0(x0: HoistableDeclaration, parserParams: List[Boolean]) e
 }
 object Declaration0 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map()
+  val semMap: Map[String, Algo] = Map()
 }
+
 case class Declaration1(x0: ClassDeclaration, parserParams: List[Boolean]) extends Declaration {
   x0.parent = Some(this)
   val name: String = "Declaration1"
@@ -34,10 +35,11 @@ case class Declaration1(x0: ClassDeclaration, parserParams: List[Boolean]) exten
 }
 object Declaration1 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "DeclarationPart0" -> Declaration1DeclarationPart0.func
+  val semMap: Map[String, Algo] = Map(
+    "DeclarationPart0" -> `AL::Declaration[1,0].DeclarationPart`,
   )
 }
+
 case class Declaration2(x0: LexicalDeclaration, parserParams: List[Boolean]) extends Declaration {
   x0.parent = Some(this)
   val name: String = "Declaration2"
@@ -50,7 +52,7 @@ case class Declaration2(x0: LexicalDeclaration, parserParams: List[Boolean]) ext
 }
 object Declaration2 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "DeclarationPart0" -> Declaration2DeclarationPart0.func
+  val semMap: Map[String, Algo] = Map(
+    "DeclarationPart0" -> `AL::Declaration[2,0].DeclarationPart`,
   )
 }

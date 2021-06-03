@@ -2,41 +2,35 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.ir.Parser._
+import Param.Kind._
 
-object IntegerIndexedElementGet extends Algorithm {
-  val name: String = "IntegerIndexedElementGet"
-  val length: Int = 2
-  val lang: Boolean = true
-  val func: Func = FixUIdWalker(parseFunc(""""IntegerIndexedElementGet" (O, index) => {
-    app __x0__ = (Type index)
-    assert (= __x0__ Number)
-    let buffer = O["ViewedArrayBuffer"]
-    app __x1__ = (IsDetachedBuffer buffer)
-    if (= __x1__ true) {
-      app __x2__ = (ThrowCompletion (new OrdinaryObject("Prototype" -> INTRINSIC_TypeErrorPrototype, "ErrorData" -> undefined, "SubMap" -> (new SubMap()))))
-      return __x2__
-    } else {}
-    app __x3__ = (IsInteger index)
-    if (= __x3__ false) {
-      app __x4__ = (WrapCompletion undefined)
-      return __x4__
-    } else {}
-    if (== index -0.0) {
-      app __x5__ = (WrapCompletion undefined)
-      return __x5__
-    } else {}
-    let length = O["ArrayLength"]
-    if (|| (< index 0i) (! (< index length))) {
-      app __x6__ = (WrapCompletion undefined)
-      return __x6__
-    } else {}
-    let offset = O["ByteOffset"]
-    let arrayTypeName = O["TypedArrayName"]
-    !!! "Etc"
-    let indexedPosition = (+ (* index elementSize) offset)
-    !!! "Etc"
-    app __x7__ = (GetValueFromBuffer buffer indexedPosition elementType true "Unordered")
-    app __x8__ = (WrapCompletion __x7__)
-    return __x8__
-  }"""), this)
+object `AL::IntegerIndexedElementGet` extends Algo {
+  val head = NormalHead("IntegerIndexedElementGet", List(Param("O", Normal), Param("index", Normal)))
+  val ids = List(
+    "sec-integerindexedelementget",
+    "sec-integer-indexed-exotic-objects",
+    "sec-built-in-exotic-object-internal-methods-and-slots",
+    "sec-ordinary-and-exotic-objects-behaviours",
+  )
+  val rawBody = parseInst("""{
+  |  1:app __x0__ = (IsValidIntegerIndex O index)
+  |  1:if (= [! __x0__] false) return undefined else 0:{}
+  |  2:let offset = O.ByteOffset
+  |  3:let arrayTypeName = O.TypedArrayName
+  |  4:??? "Let id:{elementSize} be the Element Size value specified in link:{unhandled: table-the-typedarray-constructors} for id:{arrayTypeName} ."
+  |  5:let indexedPosition = (+ (* index elementSize) offset)
+  |  6:let elementType = CONST_Int8
+  |  7:app __x1__ = (GetValueFromBuffer O.ViewedArrayBuffer indexedPosition elementType true CONST_Unordered)
+  |  7:return __x1__
+  |}""".stripMargin)
+  val code = scala.Array[String](
+    """          1. Assert: _O_ is an Integer-Indexed exotic object.""",
+    """          1. If ! IsValidIntegerIndex(_O_, _index_) is *false*, return *undefined*.""",
+    """          1. Let _offset_ be _O_.[[ByteOffset]].""",
+    """          1. Let _arrayTypeName_ be the String value of _O_.[[TypedArrayName]].""",
+    """          1. Let _elementSize_ be the Element Size value specified in <emu-xref href="#table-the-typedarray-constructors"></emu-xref> for _arrayTypeName_.""",
+    """          1. Let _indexedPosition_ be (ℝ(_index_) × _elementSize_) + _offset_.""",
+    """          1. Let _elementType_ be the Element Type value in <emu-xref href="#table-the-typedarray-constructors"></emu-xref> for _arrayTypeName_.""",
+    """          1. Return GetValueFromBuffer(_O_.[[ViewedArrayBuffer]], _indexedPosition_, _elementType_, *true*, ~Unordered~).""",
+  )
 }

@@ -1,6 +1,5 @@
 package kr.ac.kaist.ires.model
 
-import kr.ac.kaist.ires.{ AST, ASTInfo, Lexical }
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.UnexpectedSemantics
 import scala.collection.immutable.{ Set => SSet }
@@ -8,6 +7,7 @@ import scala.collection.immutable.{ Set => SSet }
 trait HoistableDeclaration extends AST {
   val kind: String = "HoistableDeclaration"
 }
+
 case class HoistableDeclaration0(x0: FunctionDeclaration, parserParams: List[Boolean]) extends HoistableDeclaration {
   x0.parent = Some(this)
   val name: String = "HoistableDeclaration0"
@@ -20,11 +20,12 @@ case class HoistableDeclaration0(x0: FunctionDeclaration, parserParams: List[Boo
 }
 object HoistableDeclaration0 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "DeclarationPart0" -> HoistableDeclaration0DeclarationPart0.func,
-    "Evaluation0" -> HoistableDeclaration0Evaluation0.func
+  val semMap: Map[String, Algo] = Map(
+    "DeclarationPart0" -> `AL::HoistableDeclaration[0,0].DeclarationPart`,
+    "Evaluation0" -> `AL::HoistableDeclaration[0,0].Evaluation`,
   )
 }
+
 case class HoistableDeclaration1(x0: GeneratorDeclaration, parserParams: List[Boolean]) extends HoistableDeclaration {
   x0.parent = Some(this)
   val name: String = "HoistableDeclaration1"
@@ -37,11 +38,12 @@ case class HoistableDeclaration1(x0: GeneratorDeclaration, parserParams: List[Bo
 }
 object HoistableDeclaration1 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "DeclarationPart0" -> HoistableDeclaration1DeclarationPart0.func,
-    "Evaluation0" -> HoistableDeclaration1Evaluation0.func
+  val semMap: Map[String, Algo] = Map(
+    "DeclarationPart0" -> `AL::HoistableDeclaration[1,0].DeclarationPart`,
+    "Evaluation0" -> `AL::HoistableDeclaration[1,0].Evaluation`,
   )
 }
+
 case class HoistableDeclaration2(x0: AsyncFunctionDeclaration, parserParams: List[Boolean]) extends HoistableDeclaration {
   x0.parent = Some(this)
   val name: String = "HoistableDeclaration2"
@@ -54,11 +56,12 @@ case class HoistableDeclaration2(x0: AsyncFunctionDeclaration, parserParams: Lis
 }
 object HoistableDeclaration2 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "DeclarationPart0" -> HoistableDeclaration2DeclarationPart0.func,
-    "Evaluation0" -> HoistableDeclaration2Evaluation0.func
+  val semMap: Map[String, Algo] = Map(
+    "DeclarationPart0" -> `AL::HoistableDeclaration[2,0].DeclarationPart`,
+    "Evaluation0" -> `AL::HoistableDeclaration[2,0].Evaluation`,
   )
 }
+
 case class HoistableDeclaration3(x0: AsyncGeneratorDeclaration, parserParams: List[Boolean]) extends HoistableDeclaration {
   x0.parent = Some(this)
   val name: String = "HoistableDeclaration3"
@@ -71,8 +74,8 @@ case class HoistableDeclaration3(x0: AsyncGeneratorDeclaration, parserParams: Li
 }
 object HoistableDeclaration3 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "DeclarationPart0" -> HoistableDeclaration3DeclarationPart0.func,
-    "Evaluation0" -> HoistableDeclaration3Evaluation0.func
+  val semMap: Map[String, Algo] = Map(
+    "DeclarationPart0" -> `AL::HoistableDeclaration[3,0].DeclarationPart`,
+    "Evaluation0" -> `AL::HoistableDeclaration[3,0].Evaluation`,
   )
 }

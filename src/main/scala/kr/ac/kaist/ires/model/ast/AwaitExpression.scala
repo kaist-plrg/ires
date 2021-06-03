@@ -1,6 +1,5 @@
 package kr.ac.kaist.ires.model
 
-import kr.ac.kaist.ires.{ AST, ASTInfo, Lexical }
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.UnexpectedSemantics
 import scala.collection.immutable.{ Set => SSet }
@@ -8,6 +7,7 @@ import scala.collection.immutable.{ Set => SSet }
 trait AwaitExpression extends AST {
   val kind: String = "AwaitExpression"
 }
+
 case class AwaitExpression0(x1: UnaryExpression, parserParams: List[Boolean]) extends AwaitExpression {
   x1.parent = Some(this)
   val name: String = "AwaitExpression0"
@@ -20,7 +20,7 @@ case class AwaitExpression0(x1: UnaryExpression, parserParams: List[Boolean]) ex
 }
 object AwaitExpression0 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "Evaluation0" -> AwaitExpression0Evaluation0.func
+  val semMap: Map[String, Algo] = Map(
+    "Evaluation0" -> `AL::AwaitExpression[0,0].Evaluation`,
   )
 }

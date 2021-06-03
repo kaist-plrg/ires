@@ -2,19 +2,25 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.ir.Parser._
+import Param.Kind._
 
-object HasProperty extends Algorithm {
-  val name: String = "HasProperty"
-  val length: Int = 2
-  val lang: Boolean = true
-  val func: Func = FixUIdWalker(parseFunc(""""HasProperty" (O, P) => {
-    app __x0__ = (Type O)
-    assert (= __x0__ Object)
-    app __x1__ = (IsPropertyKey P)
-    assert (= __x1__ true)
-    app __x2__ = (O["HasProperty"] O P)
-    if (is-completion __x2__) if (= __x2__["Type"] CONST_normal) __x2__ = __x2__["Value"] else return __x2__ else {}
-    app __x3__ = (WrapCompletion __x2__)
-    return __x3__
-  }"""), this)
+object `AL::HasProperty` extends Algo {
+  val head = NormalHead("HasProperty", List(Param("O", Normal), Param("P", Normal)))
+  val ids = List(
+    "sec-hasproperty",
+    "sec-operations-on-objects",
+    "sec-abstract-operations",
+  )
+  val rawBody = parseInst("""{
+  |  0:assert (= (typeof O) Object)
+  |  1:app __x0__ = (IsPropertyKey P)
+  |  1:assert (= __x0__ true)
+  |  2:app __x1__ = (O.HasProperty O P)
+  |  2:return [? __x1__]
+  |}""".stripMargin)
+  val code = scala.Array[String](
+    """        1. Assert: Type(_O_) is Object.""",
+    """        1. Assert: IsPropertyKey(_P_) is *true*.""",
+    """        1. Return ? _O_.[[HasProperty]](_P_).""",
+  )
 }

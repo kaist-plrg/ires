@@ -2,47 +2,45 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.ir.Parser._
+import Param.Kind._
 
-object GetValue extends Algorithm {
-  val name: String = "GetValue"
-  val length: Int = 1
-  val lang: Boolean = true
-  val func: Func = FixUIdWalker(parseFunc(""""GetValue" (V) => {
-    if (is-completion V) if (= V["Type"] CONST_normal) V = V["Value"] else return V else {}
-    V
-    app __x0__ = (Type V)
-    if (! (= __x0__ Reference)) {
-      app __x1__ = (WrapCompletion V)
-      return __x1__
-    } else {}
-    app __x2__ = (GetBase V)
-    let base = __x2__
-    app __x3__ = (IsUnresolvableReference V)
-    if (= __x3__ true) {
-      app __x4__ = (ThrowCompletion (new OrdinaryObject("Prototype" -> INTRINSIC_ReferenceErrorPrototype, "ErrorData" -> undefined, "SubMap" -> (new SubMap()))))
-      return __x4__
-    } else {}
-    app __x5__ = (IsPropertyReference V)
-    if (= __x5__ true) {
-      app __x6__ = (HasPrimitiveBase V)
-      if (= __x6__ true) {
-        app __x7__ = (ToObject base)
-        if (is-completion __x7__) if (= __x7__["Type"] CONST_normal) __x7__ = __x7__["Value"] else return __x7__ else {}
-        base = __x7__
-      } else {}
-      app __x8__ = (GetReferencedName V)
-      app __x9__ = (GetThisValue V)
-      app __x10__ = (base["Get"] base __x8__ __x9__)
-      if (is-completion __x10__) if (= __x10__["Type"] CONST_normal) __x10__ = __x10__["Value"] else return __x10__ else {}
-      app __x11__ = (WrapCompletion __x10__)
-      return __x11__
-    } else {
-      app __x12__ = (GetReferencedName V)
-      app __x13__ = (IsStrictReference V)
-      app __x14__ = (base["GetBindingValue"] base __x12__ __x13__)
-      if (is-completion __x14__) if (= __x14__["Type"] CONST_normal) __x14__ = __x14__["Value"] else return __x14__ else {}
-      app __x15__ = (WrapCompletion __x14__)
-      return __x15__
-    }
-  }"""), this)
+object `AL::GetValue` extends Algo {
+  val head = NormalHead("GetValue", List(Param("V", Normal)))
+  val ids = List(
+    "sec-getvalue",
+    "sec-reference-record-specification-type",
+    "sec-ecmascript-specification-types",
+    "sec-ecmascript-data-types-and-values",
+  )
+  val rawBody = parseInst("""{
+  |  0:[? V]
+  |  1:if (! (is-instance-of V ReferenceRecord)) return V else 0:{}
+  |  2:app __x0__ = (IsUnresolvableReference V)
+  |  2:if (= __x0__ true) throw ReferenceError else 0:{}
+  |  6:app __x1__ = (IsPropertyReference V)
+  |  6:if (= __x1__ true) {
+  |    4:app __x2__ = (ToObject V.Base)
+  |    4:let baseObj = [! __x2__]
+  |    5:app __x3__ = (GetThisValue V)
+  |    5:app __x4__ = (baseObj.Get baseObj V.ReferencedName __x3__)
+  |    5:return [? __x4__]
+  |  } else {
+  |    7:let base = V.Base
+  |    8:assert (is-instance-of base EnvironmentRecord)
+  |    9:app __x5__ = (base.GetBindingValue base V.ReferencedName V.Strict)
+  |    9:return [? __x5__]
+  |  }
+  |}""".stripMargin)
+  val code = scala.Array[String](
+    """          1. ReturnIfAbrupt(_V_).""",
+    """          1. If _V_ is not a Reference Record, return _V_.""",
+    """          1. If IsUnresolvableReference(_V_) is *true*, throw a *ReferenceError* exception.""",
+    """          1. If IsPropertyReference(_V_) is *true*, then""",
+    """            1. [id="step-getvalue-toobject"] Let _baseObj_ be ! ToObject(_V_.[[Base]]).""",
+    """            1. Return ? _baseObj_.[[Get]](_V_.[[ReferencedName]], GetThisValue(_V_)).""",
+    """          1. Else,""",
+    """            1. Let _base_ be _V_.[[Base]].""",
+    """            1. Assert: _base_ is an Environment Record.""",
+    """            1. Return ? _base_.GetBindingValue(_V_.[[ReferencedName]], _V_.[[Strict]]) (see <emu-xref href="#sec-environment-records"></emu-xref>).""",
+  )
 }

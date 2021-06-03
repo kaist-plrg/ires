@@ -1,6 +1,5 @@
 package kr.ac.kaist.ires.model
 
-import kr.ac.kaist.ires.{ AST, ASTInfo, Lexical }
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.UnexpectedSemantics
 import scala.collection.immutable.{ Set => SSet }
@@ -8,6 +7,7 @@ import scala.collection.immutable.{ Set => SSet }
 trait GeneratorMethod extends AST {
   val kind: String = "GeneratorMethod"
 }
+
 case class GeneratorMethod0(x1: PropertyName, x3: UniqueFormalParameters, x6: GeneratorBody, parserParams: List[Boolean]) extends GeneratorMethod {
   x1.parent = Some(this)
   x3.parent = Some(this)
@@ -22,10 +22,12 @@ case class GeneratorMethod0(x1: PropertyName, x3: UniqueFormalParameters, x6: Ge
 }
 object GeneratorMethod0 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "ComputedPropertyContains0" -> GeneratorMethod0ComputedPropertyContains0.func,
-    "HasDirectSuper0" -> GeneratorMethod0HasDirectSuper0.func,
-    "PropName0" -> GeneratorMethod0PropName0.func,
-    "PropertyDefinitionEvaluation0" -> GeneratorMethod0PropertyDefinitionEvaluation0.func
+  val semMap: Map[String, Algo] = Map(
+    "ComputedPropertyContains0" -> `AL::GeneratorMethod[0,0].ComputedPropertyContains`,
+    "PropName0" -> `AL::GeneratorMethod[0,0].PropName`,
+    "PropertyDefinitionEvaluation0" -> `AL::GeneratorMethod[0,0].PropertyDefinitionEvaluation`,
+    "HasDirectSuper0" -> `AL::GeneratorMethod[0,0].HasDirectSuper`,
+    "MethodDefinitionEvaluation0" -> `AL::GeneratorMethod[0,0].MethodDefinitionEvaluation`,
+    "EarlyErrors0" -> `AL::GeneratorMethod[0,0].EarlyErrors`,
   )
 }

@@ -1,6 +1,5 @@
 package kr.ac.kaist.ires.model
 
-import kr.ac.kaist.ires.{ AST, ASTInfo, Lexical }
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.UnexpectedSemantics
 import scala.collection.immutable.{ Set => SSet }
@@ -8,6 +7,7 @@ import scala.collection.immutable.{ Set => SSet }
 trait AsyncGeneratorExpression extends AST {
   val kind: String = "AsyncGeneratorExpression"
 }
+
 case class AsyncGeneratorExpression0(x4: Option[BindingIdentifier], x6: FormalParameters, x9: AsyncGeneratorBody, parserParams: List[Boolean]) extends AsyncGeneratorExpression {
   x4.foreach((m) => m.parent = Some(this))
   x6.parent = Some(this)
@@ -22,13 +22,15 @@ case class AsyncGeneratorExpression0(x4: Option[BindingIdentifier], x6: FormalPa
 }
 object AsyncGeneratorExpression0 extends ASTInfo {
   val maxK: Int = 1
-  val semMap: Map[String, Func] = Map(
-    "Contains1" -> AsyncGeneratorExpression0Contains1.func,
-    "Evaluation0" -> AsyncGeneratorExpression0Evaluation0.func,
-    "Evaluation1" -> AsyncGeneratorExpression0Evaluation1.func,
-    "HasName0" -> AsyncGeneratorExpression0HasName0.func,
-    "HasName1" -> AsyncGeneratorExpression0HasName1.func,
-    "IsFunctionDefinition1" -> AsyncGeneratorExpression0IsFunctionDefinition1.func,
-    "NamedEvaluation0" -> AsyncGeneratorExpression0NamedEvaluation0.func
+  val semMap: Map[String, Algo] = Map(
+    "HasName0" -> `AL::AsyncGeneratorExpression[0,0].HasName`,
+    "HasName1" -> `AL::AsyncGeneratorExpression[0,1].HasName`,
+    "IsFunctionDefinition1" -> `AL::AsyncGeneratorExpression[0,1].IsFunctionDefinition`,
+    "NamedEvaluation0" -> `AL::AsyncGeneratorExpression[0,0].NamedEvaluation`,
+    "Contains1" -> `AL::AsyncGeneratorExpression[0,1].Contains`,
+    "InstantiateAsyncGeneratorFunctionExpression0" -> `AL::AsyncGeneratorExpression[0,0].InstantiateAsyncGeneratorFunctionExpression`,
+    "InstantiateAsyncGeneratorFunctionExpression1" -> `AL::AsyncGeneratorExpression[0,1].InstantiateAsyncGeneratorFunctionExpression`,
+    "Evaluation1" -> `AL::AsyncGeneratorExpression[0,1].Evaluation`,
+    "EarlyErrors1" -> `AL::AsyncGeneratorExpression[0,1].EarlyErrors`,
   )
 }

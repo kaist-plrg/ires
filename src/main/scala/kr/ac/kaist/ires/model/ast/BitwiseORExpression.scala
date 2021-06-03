@@ -1,6 +1,5 @@
 package kr.ac.kaist.ires.model
 
-import kr.ac.kaist.ires.{ AST, ASTInfo, Lexical }
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.UnexpectedSemantics
 import scala.collection.immutable.{ Set => SSet }
@@ -8,6 +7,7 @@ import scala.collection.immutable.{ Set => SSet }
 trait BitwiseORExpression extends AST {
   val kind: String = "BitwiseORExpression"
 }
+
 case class BitwiseORExpression0(x0: BitwiseXORExpression, parserParams: List[Boolean]) extends BitwiseORExpression {
   x0.parent = Some(this)
   val name: String = "BitwiseORExpression0"
@@ -20,8 +20,9 @@ case class BitwiseORExpression0(x0: BitwiseXORExpression, parserParams: List[Boo
 }
 object BitwiseORExpression0 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map()
+  val semMap: Map[String, Algo] = Map()
 }
+
 case class BitwiseORExpression1(x0: BitwiseORExpression, x2: BitwiseXORExpression, parserParams: List[Boolean]) extends BitwiseORExpression {
   x0.parent = Some(this)
   x2.parent = Some(this)
@@ -35,10 +36,10 @@ case class BitwiseORExpression1(x0: BitwiseORExpression, x2: BitwiseXORExpressio
 }
 object BitwiseORExpression1 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "AssignmentTargetType0" -> BitwiseORExpression1AssignmentTargetType0.func,
-    "Evaluation0" -> BitwiseORExpression1Evaluation0.func,
-    "HasCallInTailPosition0" -> BitwiseORExpression1HasCallInTailPosition0.func,
-    "IsFunctionDefinition0" -> BitwiseORExpression1IsFunctionDefinition0.func
+  val semMap: Map[String, Algo] = Map(
+    "IsFunctionDefinition0" -> `AL::BitwiseORExpression[1,0].IsFunctionDefinition`,
+    "AssignmentTargetType0" -> `AL::BitwiseORExpression[1,0].AssignmentTargetType`,
+    "Evaluation0" -> `AL::BitwiseORExpression[1,0].Evaluation`,
+    "HasCallInTailPosition0" -> `AL::BitwiseORExpression[1,0].HasCallInTailPosition`,
   )
 }

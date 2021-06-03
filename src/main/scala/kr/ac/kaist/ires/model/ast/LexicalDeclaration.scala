@@ -1,6 +1,5 @@
 package kr.ac.kaist.ires.model
 
-import kr.ac.kaist.ires.{ AST, ASTInfo, Lexical }
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.UnexpectedSemantics
 import scala.collection.immutable.{ Set => SSet }
@@ -8,6 +7,7 @@ import scala.collection.immutable.{ Set => SSet }
 trait LexicalDeclaration extends AST {
   val kind: String = "LexicalDeclaration"
 }
+
 case class LexicalDeclaration0(x0: LetOrConst, x1: BindingList, parserParams: List[Boolean]) extends LexicalDeclaration {
   x0.parent = Some(this)
   x1.parent = Some(this)
@@ -21,9 +21,10 @@ case class LexicalDeclaration0(x0: LetOrConst, x1: BindingList, parserParams: Li
 }
 object LexicalDeclaration0 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "BoundNames0" -> LexicalDeclaration0BoundNames0.func,
-    "Evaluation0" -> LexicalDeclaration0Evaluation0.func,
-    "IsConstantDeclaration0" -> LexicalDeclaration0IsConstantDeclaration0.func
+  val semMap: Map[String, Algo] = Map(
+    "BoundNames0" -> `AL::LexicalDeclaration[0,0].BoundNames`,
+    "IsConstantDeclaration0" -> `AL::LexicalDeclaration[0,0].IsConstantDeclaration`,
+    "Evaluation0" -> `AL::LexicalDeclaration[0,0].Evaluation`,
+    "EarlyErrors0" -> `AL::LexicalDeclaration[0,0].EarlyErrors`,
   )
 }

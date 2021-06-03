@@ -1,6 +1,5 @@
 package kr.ac.kaist.ires.model
 
-import kr.ac.kaist.ires.{ AST, ASTInfo, Lexical }
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.UnexpectedSemantics
 import scala.collection.immutable.{ Set => SSet }
@@ -8,6 +7,7 @@ import scala.collection.immutable.{ Set => SSet }
 trait PropertyName extends AST {
   val kind: String = "PropertyName"
 }
+
 case class PropertyName0(x0: LiteralPropertyName, parserParams: List[Boolean]) extends PropertyName {
   x0.parent = Some(this)
   val name: String = "PropertyName0"
@@ -20,11 +20,12 @@ case class PropertyName0(x0: LiteralPropertyName, parserParams: List[Boolean]) e
 }
 object PropertyName0 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "ComputedPropertyContains0" -> PropertyName0ComputedPropertyContains0.func,
-    "IsComputedPropertyKey0" -> PropertyName0IsComputedPropertyKey0.func
+  val semMap: Map[String, Algo] = Map(
+    "ComputedPropertyContains0" -> `AL::PropertyName[0,0].ComputedPropertyContains`,
+    "IsComputedPropertyKey0" -> `AL::PropertyName[0,0].IsComputedPropertyKey`,
   )
 }
+
 case class PropertyName1(x0: ComputedPropertyName, parserParams: List[Boolean]) extends PropertyName {
   x0.parent = Some(this)
   val name: String = "PropertyName1"
@@ -37,8 +38,8 @@ case class PropertyName1(x0: ComputedPropertyName, parserParams: List[Boolean]) 
 }
 object PropertyName1 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "ComputedPropertyContains0" -> PropertyName1ComputedPropertyContains0.func,
-    "IsComputedPropertyKey0" -> PropertyName1IsComputedPropertyKey0.func
+  val semMap: Map[String, Algo] = Map(
+    "ComputedPropertyContains0" -> `AL::PropertyName[1,0].ComputedPropertyContains`,
+    "IsComputedPropertyKey0" -> `AL::PropertyName[1,0].IsComputedPropertyKey`,
   )
 }

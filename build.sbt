@@ -6,7 +6,8 @@ ThisBuild / scalaVersion  := "2.13.1"
 ThisBuild / organization  := "kr.ac.kaist.ires"
 ThisBuild / scalacOptions := Seq(
   "-deprecation", "-feature", "-language:postfixOps",
-  "-language:implicitConversions"
+  "-language:implicitConversions", "-language:existentials",
+  "-language:reflectiveCalls"
 )
 ThisBuild / javacOptions ++= Seq(
   "-encoding", "UTF-8"
@@ -34,7 +35,7 @@ lazy val ires = (project in file("."))
     retrieveManaged := true,
     scalariformPreferences := scalariformPreferences.value
       .setPreference(DanglingCloseParenthesis, Force)
-      .setPreference(DoubleIndentConstructorArguments, true),
+      .setPreference(DoubleIndentConstructorArguments, false),
     test in assembly := {},
     testOptions in Test += Tests.Argument("-fDG", baseDirectory.value + "/tests/detail"),
     parallelExecution in Test := true,

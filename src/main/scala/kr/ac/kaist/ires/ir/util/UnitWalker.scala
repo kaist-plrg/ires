@@ -46,7 +46,6 @@ trait UnitWalker {
   ////////////////////////////////////////////////////////////////////////////////
   // Syntax
   ////////////////////////////////////////////////////////////////////////////////
-
   // programs
   def walk(program: Program): Unit = walkList[Inst](program.insts, walk)
 
@@ -66,6 +65,8 @@ trait UnitWalker {
       walk(expr); walk(list)
     case IReturn(expr) =>
       walk(expr)
+    case IThrow(id) =>
+      walk(id)
     case IIf(cond, thenInst, elseInst) =>
       walk(cond); walk(thenInst); walk(elseInst)
     case IWhile(cond, body) =>
@@ -78,15 +79,17 @@ trait UnitWalker {
       walk(expr)
     case IApp(id, fexpr, args) =>
       walk(id); walk(fexpr); walkList[Expr](args, walk)
-    case IAccess(id, bexpr, expr) =>
-      walk(id); walk(bexpr); walk(expr)
+    case IAccess(id, bexpr, expr, args) =>
+      walk(id); walk(bexpr); walk(expr); walkList[Expr](args, walk)
     case IWithCont(id, params, body) =>
       walk(id); walkList[Id](params, walk); walk(body)
+    case ISetType(expr, ty) =>
+      walk(expr); walk(ty)
   }
 
   // expressions
   def walk(expr: Expr): Unit = expr match {
-    case ENum(_) | EINum(_) | EStr(_) | EBool(_) | EUndef | ENull | EAbsent =>
+    case ENum(_) | EINum(_) | EBigINum(_) | EStr(_) | EBool(_) | EUndef | ENull | EAbsent =>
     case EMap(ty, props) =>
       walk(ty); walkList[(Expr, Expr)](props, { case (x, y) => (walk(x), walk(y)) })
     case EList(exprs) =>
@@ -115,11 +118,13 @@ trait UnitWalker {
     case EGetSyntax(base) =>
       walk(base)
     case EParseSyntax(code, rule, flags) =>
-      walk(code); walk(rule); walkList[Expr](flags, walk)
+      walk(code); walk(rule); walk(flags)
     case EConvert(expr, cop, list) =>
       walk(expr); walk(cop); walkList[Expr](list, walk)
     case EContains(list, elem) =>
       walk(list); walk(elem)
+    case EReturnIfAbrupt(expr, check) =>
+      walk(expr)
     case ECopy(obj) =>
       walk(obj)
     case EKeys(obj) =>

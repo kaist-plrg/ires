@@ -1,6 +1,5 @@
 package kr.ac.kaist.ires.model
 
-import kr.ac.kaist.ires.{ AST, ASTInfo, Lexical }
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.UnexpectedSemantics
 import scala.collection.immutable.{ Set => SSet }
@@ -8,6 +7,7 @@ import scala.collection.immutable.{ Set => SSet }
 trait PropertyDefinition extends AST {
   val kind: String = "PropertyDefinition"
 }
+
 case class PropertyDefinition0(x0: IdentifierReference, parserParams: List[Boolean]) extends PropertyDefinition {
   x0.parent = Some(this)
   val name: String = "PropertyDefinition0"
@@ -20,11 +20,12 @@ case class PropertyDefinition0(x0: IdentifierReference, parserParams: List[Boole
 }
 object PropertyDefinition0 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "PropName0" -> PropertyDefinition0PropName0.func,
-    "PropertyDefinitionEvaluation0" -> PropertyDefinition0PropertyDefinitionEvaluation0.func
+  val semMap: Map[String, Algo] = Map(
+    "PropName0" -> `AL::PropertyDefinition[0,0].PropName`,
+    "PropertyDefinitionEvaluation0" -> `AL::PropertyDefinition[0,0].PropertyDefinitionEvaluation`,
   )
 }
+
 case class PropertyDefinition1(x0: CoverInitializedName, parserParams: List[Boolean]) extends PropertyDefinition {
   x0.parent = Some(this)
   val name: String = "PropertyDefinition1"
@@ -37,8 +38,11 @@ case class PropertyDefinition1(x0: CoverInitializedName, parserParams: List[Bool
 }
 object PropertyDefinition1 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map()
+  val semMap: Map[String, Algo] = Map(
+    "EarlyErrors0" -> `AL::PropertyDefinition[1,0].EarlyErrors`,
+  )
 }
+
 case class PropertyDefinition2(x0: PropertyName, x2: AssignmentExpression, parserParams: List[Boolean]) extends PropertyDefinition {
   x0.parent = Some(this)
   x2.parent = Some(this)
@@ -52,11 +56,12 @@ case class PropertyDefinition2(x0: PropertyName, x2: AssignmentExpression, parse
 }
 object PropertyDefinition2 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "PropName0" -> PropertyDefinition2PropName0.func,
-    "PropertyDefinitionEvaluation0" -> PropertyDefinition2PropertyDefinitionEvaluation0.func
+  val semMap: Map[String, Algo] = Map(
+    "PropName0" -> `AL::PropertyDefinition[2,0].PropName`,
+    "PropertyDefinitionEvaluation0" -> `AL::PropertyDefinition[2,0].PropertyDefinitionEvaluation`,
   )
 }
+
 case class PropertyDefinition3(x0: MethodDefinition, parserParams: List[Boolean]) extends PropertyDefinition {
   x0.parent = Some(this)
   val name: String = "PropertyDefinition3"
@@ -69,10 +74,12 @@ case class PropertyDefinition3(x0: MethodDefinition, parserParams: List[Boolean]
 }
 object PropertyDefinition3 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "Contains0" -> PropertyDefinition3Contains0.func
+  val semMap: Map[String, Algo] = Map(
+    "Contains0" -> `AL::PropertyDefinition[3,0].Contains`,
+    "EarlyErrors0" -> `AL::PropertyDefinition[3,0].EarlyErrors`,
   )
 }
+
 case class PropertyDefinition4(x1: AssignmentExpression, parserParams: List[Boolean]) extends PropertyDefinition {
   x1.parent = Some(this)
   val name: String = "PropertyDefinition4"
@@ -85,8 +92,8 @@ case class PropertyDefinition4(x1: AssignmentExpression, parserParams: List[Bool
 }
 object PropertyDefinition4 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "PropName0" -> PropertyDefinition4PropName0.func,
-    "PropertyDefinitionEvaluation0" -> PropertyDefinition4PropertyDefinitionEvaluation0.func
+  val semMap: Map[String, Algo] = Map(
+    "PropName0" -> `AL::PropertyDefinition[4,0].PropName`,
+    "PropertyDefinitionEvaluation0" -> `AL::PropertyDefinition[4,0].PropertyDefinitionEvaluation`,
   )
 }

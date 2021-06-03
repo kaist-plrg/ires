@@ -1,6 +1,5 @@
 package kr.ac.kaist.ires.model
 
-import kr.ac.kaist.ires.{ AST, ASTInfo, Lexical }
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.UnexpectedSemantics
 import scala.collection.immutable.{ Set => SSet }
@@ -8,6 +7,7 @@ import scala.collection.immutable.{ Set => SSet }
 trait SwitchStatement extends AST {
   val kind: String = "SwitchStatement"
 }
+
 case class SwitchStatement0(x2: Expression, x4: CaseBlock, parserParams: List[Boolean]) extends SwitchStatement {
   x2.parent = Some(this)
   x4.parent = Some(this)
@@ -21,13 +21,14 @@ case class SwitchStatement0(x2: Expression, x4: CaseBlock, parserParams: List[Bo
 }
 object SwitchStatement0 extends ASTInfo {
   val maxK: Int = 0
-  val semMap: Map[String, Func] = Map(
-    "ContainsDuplicateLabels0" -> SwitchStatement0ContainsDuplicateLabels0.func,
-    "ContainsUndefinedBreakTarget0" -> SwitchStatement0ContainsUndefinedBreakTarget0.func,
-    "ContainsUndefinedContinueTarget0" -> SwitchStatement0ContainsUndefinedContinueTarget0.func,
-    "Evaluation0" -> SwitchStatement0Evaluation0.func,
-    "HasCallInTailPosition0" -> SwitchStatement0HasCallInTailPosition0.func,
-    "VarDeclaredNames0" -> SwitchStatement0VarDeclaredNames0.func,
-    "VarScopedDeclarations0" -> SwitchStatement0VarScopedDeclarations0.func
+  val semMap: Map[String, Algo] = Map(
+    "VarDeclaredNames0" -> `AL::SwitchStatement[0,0].VarDeclaredNames`,
+    "VarScopedDeclarations0" -> `AL::SwitchStatement[0,0].VarScopedDeclarations`,
+    "ContainsDuplicateLabels0" -> `AL::SwitchStatement[0,0].ContainsDuplicateLabels`,
+    "ContainsUndefinedBreakTarget0" -> `AL::SwitchStatement[0,0].ContainsUndefinedBreakTarget`,
+    "ContainsUndefinedContinueTarget0" -> `AL::SwitchStatement[0,0].ContainsUndefinedContinueTarget`,
+    "Evaluation0" -> `AL::SwitchStatement[0,0].Evaluation`,
+    "HasCallInTailPosition0" -> `AL::SwitchStatement[0,0].HasCallInTailPosition`,
+    "EarlyErrors0" -> `AL::SwitchStatement[0,0].EarlyErrors`,
   )
 }

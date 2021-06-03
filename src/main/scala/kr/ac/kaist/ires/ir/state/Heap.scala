@@ -1,16 +1,17 @@
 package kr.ac.kaist.ires.ir
 
+import kr.ac.kaist.ires.util.Useful._
 import kr.ac.kaist.ires.error.NotSupported
-import kr.ac.kaist.ires.model.Model.tyMap
+// XXX import kr.ac.kaist.ires.model.Model.tyMap
 
 // IR Heaps
 case class Heap(
-    map: Map[Addr, Obj] = Map(),
-    size: Long = 0L
+  map: Map[Addr, Obj] = Map(),
+  size: Long = 0L
 ) extends IRNode {
   // getters
   def get(addr: Addr): Option[Obj] = map.get(addr)
-  def apply(addr: Addr): Obj = map.getOrElse(addr, error(s"unknown address1: ${beautify(addr)}"))
+  def apply(addr: Addr): Obj = map.getOrElse(addr, error(s"unknown address1: ${addr.beautified}"))
   def apply(addr: Addr, key: Value): Value = this(addr) match {
     case (s: IRSymbol) => s(key)
     case (m: IRMap) => m(key)
@@ -74,7 +75,8 @@ case class Heap(
     m: Map[Value, Value] = Map()
   ): (Addr, Heap) = {
     val newAddr = DynamicAddr(size)
-    val newM = tyMap.getOrElse(ty.name, Map()) ++ m
+    // XXX val newM = tyMap.getOrElse(ty.name, Map()) ++ m
+    val newM = m
     val newIRMap = newM.foldLeft(IRMap(ty, Map())) {
       case (m, (k, v)) => m.updated(k, v)
     }

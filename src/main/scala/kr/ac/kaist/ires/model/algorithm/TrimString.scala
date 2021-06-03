@@ -2,23 +2,35 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.ir.Parser._
+import Param.Kind._
 
-object TrimString extends Algorithm {
-  val name: String = "TrimString"
-  val length: Int = 2
-  val lang: Boolean = false
-  val func: Func = FixUIdWalker(parseFunc(""""TrimString" (string, where) => {
-    app __x0__ = (RequireObjectCoercible string)
-    if (is-completion __x0__) if (= __x0__["Type"] CONST_normal) __x0__ = __x0__["Value"] else return __x0__ else {}
-    let str = __x0__
-    app __x1__ = (ToString str)
-    if (is-completion __x1__) if (= __x1__["Type"] CONST_normal) __x1__ = __x1__["Value"] else return __x1__ else {}
-    let S = __x1__
-    if (= where "start") let T = !!! "StringOp" else if (= where "end") let T = !!! "StringOp" else {
-      assert (= where "start+end")
-      let T = !!! "StringOp"
-    }
-    app __x2__ = (WrapCompletion T)
-    return __x2__
-  }"""), this)
+object `AL::TrimString` extends Algo {
+  val head = NormalHead("TrimString", List(Param("string", Normal), Param("where", Normal)))
+  val ids = List(
+    "sec-trimstring",
+    "sec-string.prototype.trim",
+    "sec-properties-of-the-string-prototype-object",
+    "sec-string-objects",
+    "sec-text-processing",
+  )
+  val rawBody = parseInst("""{
+  |  0:app __x0__ = (RequireObjectCoercible string)
+  |  0:let str = [? __x0__]
+  |  1:app __x1__ = (ToString str)
+  |  1:let S = [? __x1__]
+  |  2:??? "If id:{where} is const:{start} , let id:{T} be the String value that is a copy of id:{S} with leading white space removed ."
+  |  3:??? "Else if id:{where} is const:{end} , let id:{T} be the String value that is a copy of id:{S} with trailing white space removed ."
+  |  4:??? "Else , in:{} out:{}"
+  |  7:return T
+  |}""".stripMargin)
+  val code = scala.Array[String](
+    """            1. Let _str_ be ? RequireObjectCoercible(_string_).""",
+    """            1. Let _S_ be ? ToString(_str_).""",
+    """            1. If _where_ is ~start~, let _T_ be the String value that is a copy of _S_ with leading white space removed.""",
+    """            1. Else if _where_ is ~end~, let _T_ be the String value that is a copy of _S_ with trailing white space removed.""",
+    """            1. Else,""",
+    """              1. Assert: _where_ is ~start+end~.""",
+    """              1. Let _T_ be the String value that is a copy of _S_ with both leading and trailing white space removed.""",
+    """            1. Return _T_.""",
+  )
 }

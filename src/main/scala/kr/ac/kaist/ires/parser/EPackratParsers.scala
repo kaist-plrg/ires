@@ -8,8 +8,8 @@ import scala.language.implicitConversions
 trait EPackratParsers extends Parsers {
   type ParseCase[+T]
   case class Container(
-      var cache: Map[ParseCase[_], ParseResult[_]] = Map(),
-      var rightmostFailedPos: Option[(Position, List[Elem])] = None
+    var cache: Map[ParseCase[_], ParseResult[_]] = Map(),
+    var rightmostFailedPos: Option[(Position, List[Elem])] = None
   )
 
   case class EPos(underlying: Position, emptyMatched: Boolean) extends Position {
