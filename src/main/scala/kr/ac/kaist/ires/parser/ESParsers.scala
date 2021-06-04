@@ -20,11 +20,16 @@ trait ESParsers extends LAParsers {
         val lines = source.replace("\r\n", "\n").split(Array('\n', '\r'))
         val revStr = rev.mkString
 
-        // XXX Debugging for semicolon insertion
-        // lines.zipWithIndex.foreach {
-        //   case (x, i) => println(f"$i%4d: $x")
-        // }
-        // stop(s"line: $line, column: $column")
+        // Debugging for semicolon insertion
+        if (DEBUG && keepLog) {
+          lines.zipWithIndex.foreach {
+            case (x, i) => println(f"$i%4d: $x")
+          }
+          stop(s"line: $line, column: $column") match {
+            case "q" => keepLog = false
+            case _ =>
+          }
+        }
 
         lazy val curLine = lines(line)
         lazy val curChar = curLine.charAt(column)
@@ -121,7 +126,7 @@ trait ESParsers extends LAParsers {
 
   // resolve left recursions
   type FLAParser[T] = LAParser[T => T]
-  def resolveLL[T](f: LAParser[T], s: FLAParser[T]): LAParser[T] = {
+  def resolveLR[T](f: LAParser[T], s: FLAParser[T]): LAParser[T] = {
     lazy val p: FLAParser[T] = s ~ p ^^ { case b ~ f => (x: T) => f(b(x)) } | MATCH ^^^ { (x: T) => x }
     f ~ p ^^ { case a ~ f => f(a) }
   }

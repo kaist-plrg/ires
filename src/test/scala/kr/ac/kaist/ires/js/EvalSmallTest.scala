@@ -2,7 +2,7 @@ package kr.ac.kaist.ires
 
 import kr.ac.kaist.ires.util.Useful._
 
-class BasicSmallTest extends JSTest {
+class EvalSmallTest extends JSTest {
   val name: String = "jsEvalTest"
 
   // registration

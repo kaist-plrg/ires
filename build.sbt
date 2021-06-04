@@ -24,13 +24,14 @@ lazy val largeTest = taskKey[Unit]("Launch large tests (may hours)")
 
 // ir
 lazy val irTest = taskKey[Unit]("Launch ir tests")
-lazy val irParseTest = taskKey[Unit]("Launch parse ir tests (small)")
-lazy val irEvalTest = taskKey[Unit]("Launch eval ir tests (small)")
-lazy val irBeautifierTest = taskKey[Unit]("Launch beautifier ir tests (small)")
+lazy val irParseTest = taskKey[Unit]("Launch parse ir tests (tiny)")
+lazy val irBeautifierTest = taskKey[Unit]("Launch beautifier ir tests (tiny)")
+// TODO lazy val irEvalTest = taskKey[Unit]("Launch eval ir tests (small)")
 
 // js
 lazy val jsTest = taskKey[Unit]("Launch js tests")
-lazy val jsEvalTest = taskKey[Unit]("Launch eval js tests (small)")
+lazy val jsParseTest = taskKey[Unit]("Launch parse js tests (small)")
+// TODO lazy val jsEvalTest = taskKey[Unit]("Launch eval js tests (small)")
 
 // test262
 lazy val test262Test = taskKey[Unit]("Launch test262 tests")
@@ -57,10 +58,12 @@ lazy val ires = (project in file("."))
     assemblyOutputPath in assembly := file("bin/ires"),
     assemblyOption in assembly := (assemblyOption in assembly).value
       .copy(prependShellScript = Some(defaultUniversalScript(shebang = false))),
+    fork in run := true,
+    connectInput in run := true,
     // basic tests
     test := (testOnly in Test).toTask(List(
-      "*.ir.*Test",
-      "*.js.*Test"
+      "*TinyTest",
+      "*SmallTest"
     ).mkString(" ", " ", "")).value,
     // size
     tinyTest := (testOnly in Test).toTask(" *TinyTest").value,
@@ -70,13 +73,14 @@ lazy val ires = (project in file("."))
     // ir
     irTest := (testOnly in Test).toTask(" *.ir.*Test").value,
     irParseTest := (testOnly in Test).toTask(" *.ir.Parse*Test").value,
-    irEvalTest := (testOnly in Test).toTask(" *.ir.Eval*Test").value,
 		irBeautifierTest := (testOnly in Test).toTask(" *.ir.Beautifier*Test").value,
+    // TODO irEvalTest := (testOnly in Test).toTask(" *.ir.Eval*Test").value,
     // js
     jsTest := (testOnly in Test).toTask(" *.js.*Test").value,
-    jsEvalTest := (testOnly in Test).toTask(" *.js.Eval*Test").value,
+    jsParseTest := (testOnly in Test).toTask(" *.js.Parse*Test").value
+    // TODO jsEvalTest := (testOnly in Test).toTask(" *.js.Eval*Test").value,
     // test262
-    test262Test := (testOnly in Test).toTask(" *.test262.*Test").value,
-    test262ParseTest := (testOnly in Test).toTask(" *.test262.Parse*Test").value,
-    test262EvalTest := (testOnly in Test).toTask(" *.test262.Eval*Test").value
+    // TODO test262Test := (testOnly in Test).toTask(" *.test262.*Test").value,
+    // TODO test262ParseTest := (testOnly in Test).toTask(" *.test262.Parse*Test").value,
+    // TODO test262EvalTest := (testOnly in Test).toTask(" *.test262.Eval*Test").value
   )
