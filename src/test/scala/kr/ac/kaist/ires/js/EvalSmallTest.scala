@@ -1,5 +1,6 @@
-package kr.ac.kaist.ires
+package kr.ac.kaist.ires.js
 
+import kr.ac.kaist.ires.JS_DIR
 import kr.ac.kaist.ires.util.Useful._
 
 class EvalSmallTest extends JSTest {

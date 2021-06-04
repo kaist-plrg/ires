@@ -1,34 +1,33 @@
-package kr.ac.kaist.ires
+package kr.ac.kaist.ires.test262
 
-import kr.ac.kaist.ires.model.{ AST, Parser => JSParser }
+import java.util.concurrent.atomic.AtomicInteger
+import kr.ac.kaist.ires._
+import kr.ac.kaist.ires.phase.FilterMeta
+import kr.ac.kaist.ires.util.Useful._
 
 class ParseLargeTest extends Test262Test {
   val name: String = "test262ParseTest"
 
-  // tests for js-parser
-  def parseJSTest(ast: AST): Unit = {
-    val newAST = JSParser.parse(JSParser.Script(Nil), ast.toString).get
-    assert(ast == newAST)
-  }
-
-  // do nothing after all tests
-  override def afterAll(): Unit = {}
+  // registration
+  val config = FilterMeta.test262configSummary
 
   // registration
-  def init: Unit = {
-    // for (file <- walkTree(new File(test262all))) {
-    //   val filename = file.getName
-    //   if (jsFilter(filename)) {
-    //     val name = removedExt(filename)
-    //     val jsName = file.toString
-    //     val jsConfig = aseConfig.copy(fileNames = List(jsName))
-    //     val testName = jsName.drop(test262all.length)
+  def init: Unit = check(name, {
+    val failed = (for {
+      file <- walkTree(TEST262_TEST_DIR)
+      if jsFilter(file.getName)
+      jsName = file.toString
+      _ = passMsg(jsName)
+      if optional(parseTest(parseFile(jsName))).isEmpty
+      testName = jsName.drop(TEST262_TEST_DIR.length + 1)
+    } yield {
+      failMsg(testName)
+      testName
+    }).toList
 
-    //     lazy val ast = Parse((), jsConfig)
-    //     check("Test262AllParse", testName, parseJSTest(ast))
-    //   }
-    // }
-  }
-
+    if (!failed.isEmpty) {
+      fail(s"${failed.length} tests are failed to be parsed")
+    }
+  })
   init
 }

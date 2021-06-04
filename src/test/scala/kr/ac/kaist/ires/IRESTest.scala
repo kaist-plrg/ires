@@ -100,6 +100,11 @@ abstract class IRESTest extends FunSuite with BeforeAndAfterAll {
     }
   }
 
+  // show failure message
+  def failMsg(msg: String): Unit = printlnColor(RED)("[FAIL] " + msg)
+  def warnMsg(msg: String): Unit = printlnColor(YELLOW)("[WARN] " + msg)
+  def passMsg(msg: String): Unit = printlnColor(GREEN)("[PASS] " + msg)
+
   // test name
   val name: String
 

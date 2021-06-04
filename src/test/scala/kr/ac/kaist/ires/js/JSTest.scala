@@ -1,4 +1,4 @@
-package kr.ac.kaist.ires
+package kr.ac.kaist.ires.js
 
 import kr.ac.kaist.ires.IRESTest
 import kr.ac.kaist.ires.ir._

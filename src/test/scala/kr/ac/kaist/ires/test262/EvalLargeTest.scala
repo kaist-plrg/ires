@@ -1,9 +1,10 @@
-package kr.ac.kaist.ires
+package kr.ac.kaist.ires.test262
 
 import java.text.SimpleDateFormat
 import java.util.Date
-import kr.ac.kaist.ires.util.Useful._
+import kr.ac.kaist.ires._
 import kr.ac.kaist.ires.ir._
+import kr.ac.kaist.ires.util.Useful._
 
 class EvalLargeTest extends Test262Test {
   val name: String = "test262EvalTest"

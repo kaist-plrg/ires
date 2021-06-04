@@ -43,6 +43,7 @@ case object FilterMeta extends PhaseObj[Unit, FilterMetaConfig, Unit] {
     "Float64Array",
     "generators",
     "Int8Array",
+    "Int16Array",
     "Int32Array",
     "json-superset",
     "let",
@@ -52,6 +53,7 @@ case object FilterMeta extends PhaseObj[Unit, FilterMetaConfig, Unit] {
     "object-spread",
     "Object.is",
     "optional-catch-binding",
+    "Promise",
     "Promise.prototype.finally",
     "Proxy",
     "Reflect",
@@ -62,6 +64,7 @@ case object FilterMeta extends PhaseObj[Unit, FilterMetaConfig, Unit] {
     "regexp-lookbehind",
     "regexp-named-groups",
     "regexp-unicode-property-escapes",
+    "rest-parameters",
     "Set",
     "SharedArrayBuffer",
     "String.fromCodePoint",
@@ -87,22 +90,14 @@ case object FilterMeta extends PhaseObj[Unit, FilterMetaConfig, Unit] {
     "u180e",
     "Uint8Array",
     "Uint16Array",
+    "Uint32Array",
     "Uint8ClampedArray",
     "WeakMap",
-    "WeakSet"
-  ) ++ List(
-      "Object.fromEntries",
-      "dynamic-import",
-      "Array.prototype.flat",
-      "Array.prototype.flatMap",
-      "string-trimming",
-      "String.prototype.trimEnd",
-      "String.prototype.trimStart",
-      "String.prototype.matchAll",
-      "Symbol.matchAll",
-      "Symbol.prototype.description",
-      "well-formed-json-stringify"
-    )
+    "WeakSet",
+    "__proto__",
+    "__getter__",
+    "__setter__",
+  )
 
   lazy val test262Dir = new File(s"$TEST_DIR/test262/test")
   lazy val allTests = TestList(
