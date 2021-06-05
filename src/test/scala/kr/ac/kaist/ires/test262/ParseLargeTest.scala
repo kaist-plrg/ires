@@ -15,7 +15,6 @@ class ParseLargeTest extends Test262Test {
 
   // registration
   def init: Unit = check(name, {
-    info("!!!")
     val targets = walkTree(TEST262_TEST_DIR)
       .filter(file => jsFilter(file.getName))
     val nf = getPrintWriter("./test262-parse-failed.log")
@@ -24,8 +23,8 @@ class ParseLargeTest extends Test262Test {
       val jsName = file.toString
       val testName = jsName.drop(TEST262_TEST_DIR.length + 1)
       getError {
-        timeout(parseTest(parseFile(jsName)), PARSE_TIMEOUT)
-        nf.println(passMsg(s"$testName"))
+        val (duration, _) = time(timeout(parseTest(parseFile(jsName)), PARSE_TIMEOUT))
+        nf.println(passMsg(f"$testName [$duration%,d ms]"))
       }.foreach(e => {
         failed += 1
         nf.println(failMsg(s"$testName - ${e.getMessage}"))
