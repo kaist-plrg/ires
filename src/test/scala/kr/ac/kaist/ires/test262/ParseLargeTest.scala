@@ -21,13 +21,12 @@ class ParseLargeTest extends Test262Test {
     ProgressBar("test262 parse test", targets).foreach(name => {
       val jsName = s"$TEST262_TEST_DIR/$name"
       getError {
-        val (duration, _) = time(timeout(parseTest(parseFile(jsName)), PARSE_TIMEOUT))
-        nf.println(passMsg(f"$name [$duration%,d ms]"))
+        timeout(parseTest(parseFile(jsName)), PARSE_TIMEOUT)
       }.foreach(e => {
         failed += 1
-        nf.println(failMsg(s"$name - ${e.getMessage}"))
+        nf.println(s"$name: ${e.getMessage}")
+        nf.flush()
       })
-      nf.flush()
     })
     if (failed > 0) fail(s"$failed tests are failed to be parsed")
     nf.close()
