@@ -4,6 +4,7 @@ import sbtassembly.AssemblyPlugin.defaultUniversalScript
 ThisBuild / version       := "1.0"
 ThisBuild / scalaVersion  := "2.13.1"
 ThisBuild / organization  := "kr.ac.kaist.ires"
+ThisBuild / useSuperShell := false
 ThisBuild / scalacOptions := Seq(
   "-deprecation", "-feature", "-language:postfixOps",
   "-language:implicitConversions", "-language:existentials",
@@ -34,7 +35,6 @@ lazy val jsParseTest = taskKey[Unit]("Launch parse js tests (small)")
 lazy val jsEvalTest = taskKey[Unit]("Launch eval js tests (small)")
 
 // test262
-lazy val test262Test = taskKey[Unit]("Launch test262 tests")
 lazy val test262ParseTest = taskKey[Unit]("Launch parse test262 tests (large)")
 lazy val test262EvalTest = taskKey[Unit]("Launch eval test262 tests (large)")
 
@@ -80,7 +80,6 @@ lazy val ires = (project in file("."))
     jsParseTest := (testOnly in Test).toTask(" *.js.Parse*Test").value,
     // TODO jsEvalTest := (testOnly in Test).toTask(" *.js.Eval*Test").value,
     // test262
-    test262Test := (testOnly in Test).toTask(" *.test262.*Test").value,
     test262ParseTest := (testOnly in Test).toTask(" *.test262.Parse*Test").value
     // TODO test262EvalTest := (testOnly in Test).toTask(" *.test262.Eval*Test").value
   )

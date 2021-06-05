@@ -4,9 +4,12 @@ import java.io.{ Reader, File, PrintWriter }
 import java.nio.file.{ Files, StandardCopyOption }
 import kr.ac.kaist.ires._
 import kr.ac.kaist.ires.error._
-import scala.Console.RESET
+import scala.Console._
 import scala.collection.mutable
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent._
+import scala.concurrent._
+import scala.concurrent.duration._
 import scala.io.Source
 import scala.sys.process._
 import scala.util.Random.shuffle
@@ -231,17 +234,24 @@ object Useful {
     aux(list, Nil)
   }
 
-  // trim only right
-  def trimRight(str: String): String =
-    str.reverse.span(_ == ' ')._2.reverse
-
-  // error log
-  def errorLog[T](f: => T)(msg: String): T = try f catch {
-    case e: Throwable => println(msg); throw e
-  }
-
   // normalize strings
   def normStr(str: String): String =
     str.replace("\\", "\\\\").replace("\"", "\\\"")
       .replace("\n", "\\n").replace("\b", "\\b")
+
+  // get catched error message
+  def getError[T](f: => T): Option[Throwable] =
+    try { f; None } catch { case e: Throwable => Some(e) }
+
+  // set timeout
+  def timeout[T](f: => T, limit: Option[Int]): T =
+    timeout(f, limit.fold[Duration](Duration.Inf)(_.seconds))
+  def timeout[T](f: => T, limit: Int): T = timeout(f, limit.seconds)
+  def timeout[T](f: => T, duration: Duration): T =
+    Await.result(Future(f), duration)
+
+  // show failure message
+  def failMsg(msg: String): Unit = printlnColor(RED)("[FAIL] " + msg)
+  def warnMsg(msg: String): Unit = printlnColor(YELLOW)("[WARN] " + msg)
+  def passMsg(msg: String): Unit = printlnColor(GREEN)("[PASS] " + msg)
 }
