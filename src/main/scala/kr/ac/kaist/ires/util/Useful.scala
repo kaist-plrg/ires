@@ -251,7 +251,7 @@ object Useful {
     Await.result(Future(f), duration)
 
   // show failure message
-  def failMsg(msg: String): Unit = printlnColor(RED)("[FAIL] " + msg)
-  def warnMsg(msg: String): Unit = printlnColor(YELLOW)("[WARN] " + msg)
-  def passMsg(msg: String): Unit = printlnColor(GREEN)("[PASS] " + msg)
+  def failMsg(msg: String): String = setColor(RED)("[FAIL] " + msg)
+  def warnMsg(msg: String): String = setColor(YELLOW)("[WARN] " + msg)
+  def passMsg(msg: String): String = setColor(GREEN)("[PASS] " + msg)
 }

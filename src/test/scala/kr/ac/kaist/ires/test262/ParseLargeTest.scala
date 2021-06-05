@@ -11,7 +11,7 @@ class ParseLargeTest extends Test262Test {
   // registration
   val config = FilterMeta.test262configSummary
 
-  val PARSE_TIMEOUT = 1 // second
+  val PARSE_TIMEOUT = 100 // second
 
   // registration
   def init: Unit = check(name, {
@@ -22,14 +22,15 @@ class ParseLargeTest extends Test262Test {
     var failed = 0
     ProgressBar("test262 parse test", targets).foreach(file => {
       val jsName = file.toString
+      val testName = jsName.drop(TEST262_TEST_DIR.length + 1)
       getError {
         timeout(parseTest(parseFile(jsName)), PARSE_TIMEOUT)
+        nf.println(passMsg(s"$testName"))
       }.foreach(e => {
-        val testName = jsName.drop(TEST262_TEST_DIR.length + 1)
         failed += 1
-        nf.println(s"$testName - ${e.getMessage}")
-        nf.flush()
+        nf.println(failMsg(s"$testName - ${e.getMessage}"))
       })
+      nf.flush()
     })
     if (failed > 0) fail(s"$failed tests are failed to be parsed")
     nf.close()
