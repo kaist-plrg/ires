@@ -41,6 +41,7 @@
   "constructor1.js": true,
   "delete1.js": true,
   "empty-statement.js": true,
+  "empty.js": true,
   "equality1.js": true,
   "expression-statement1.js": true,
   "for1.js": true,

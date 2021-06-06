@@ -1,0 +1,41 @@
+{
+  "children": [{
+    "children": [{
+      "children": [{
+        "children": [{
+          "children": [{
+            "children": [{
+              "children": [{
+                "children": [{
+                  "children": [{
+                    "children": ["x"],
+                    "index": 0,
+                    "kind": "Identifier"
+                  }],
+                  "index": 0,
+                  "kind": "BindingIdentifier"
+                }, null],
+                "index": 0,
+                "kind": "VariableDeclaration"
+              }],
+              "index": 0,
+              "kind": "VariableDeclarationList"
+            }],
+            "index": 0,
+            "kind": "VariableStatement"
+          }],
+          "index": 1,
+          "kind": "Statement"
+        }],
+        "index": 0,
+        "kind": "StatementListItem"
+      }],
+      "index": 0,
+      "kind": "StatementList"
+    }],
+    "index": 0,
+    "kind": "ScriptBody"
+  }],
+  "index": 0,
+  "kind": "Script"
+}
