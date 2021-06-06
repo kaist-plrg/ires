@@ -12,7 +12,7 @@ case class ForInOfStatement0(x3: LeftHandSideExpression, x5: Expression, x7: Sta
   x3.parent = Some(this)
   x5.parent = Some(this)
   x7.parent = Some(this)
-  val name: String = "ForInOfStatement0"
+  val idx: Int = 0
   override def toString: String = {
     s"for ( $x3 in $x5 ) $x7"
   }
@@ -38,7 +38,7 @@ case class ForInOfStatement1(x3: ForBinding, x5: Expression, x7: Statement, pars
   x3.parent = Some(this)
   x5.parent = Some(this)
   x7.parent = Some(this)
-  val name: String = "ForInOfStatement1"
+  val idx: Int = 1
   override def toString: String = {
     s"for ( var $x3 in $x5 ) $x7"
   }
@@ -64,7 +64,7 @@ case class ForInOfStatement2(x2: ForDeclaration, x4: Expression, x6: Statement, 
   x2.parent = Some(this)
   x4.parent = Some(this)
   x6.parent = Some(this)
-  val name: String = "ForInOfStatement2"
+  val idx: Int = 2
   override def toString: String = {
     s"for ( $x2 in $x4 ) $x6"
   }
@@ -91,7 +91,7 @@ case class ForInOfStatement3(x3: LeftHandSideExpression, x5: AssignmentExpressio
   x3.parent = Some(this)
   x5.parent = Some(this)
   x7.parent = Some(this)
-  val name: String = "ForInOfStatement3"
+  val idx: Int = 3
   override def toString: String = {
     s"for ( $x3 of $x5 ) $x7"
   }
@@ -117,7 +117,7 @@ case class ForInOfStatement4(x3: ForBinding, x5: AssignmentExpression, x7: State
   x3.parent = Some(this)
   x5.parent = Some(this)
   x7.parent = Some(this)
-  val name: String = "ForInOfStatement4"
+  val idx: Int = 4
   override def toString: String = {
     s"for ( var $x3 of $x5 ) $x7"
   }
@@ -143,7 +143,7 @@ case class ForInOfStatement5(x2: ForDeclaration, x4: AssignmentExpression, x6: S
   x2.parent = Some(this)
   x4.parent = Some(this)
   x6.parent = Some(this)
-  val name: String = "ForInOfStatement5"
+  val idx: Int = 5
   override def toString: String = {
     s"for ( $x2 of $x4 ) $x6"
   }
@@ -170,7 +170,7 @@ case class ForInOfStatement6(x4: LeftHandSideExpression, x6: AssignmentExpressio
   x4.parent = Some(this)
   x6.parent = Some(this)
   x8.parent = Some(this)
-  val name: String = "ForInOfStatement6"
+  val idx: Int = 6
   override def toString: String = {
     s"for await ( $x4 of $x6 ) $x8"
   }
@@ -196,7 +196,7 @@ case class ForInOfStatement7(x4: ForBinding, x6: AssignmentExpression, x8: State
   x4.parent = Some(this)
   x6.parent = Some(this)
   x8.parent = Some(this)
-  val name: String = "ForInOfStatement7"
+  val idx: Int = 7
   override def toString: String = {
     s"for await ( var $x4 of $x6 ) $x8"
   }
@@ -222,7 +222,7 @@ case class ForInOfStatement8(x3: ForDeclaration, x5: AssignmentExpression, x7: S
   x3.parent = Some(this)
   x5.parent = Some(this)
   x7.parent = Some(this)
-  val name: String = "ForInOfStatement8"
+  val idx: Int = 8
   override def toString: String = {
     s"for await ( $x3 of $x5 ) $x7"
   }

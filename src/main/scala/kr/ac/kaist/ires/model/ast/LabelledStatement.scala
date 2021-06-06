@@ -11,7 +11,7 @@ trait LabelledStatement extends AST {
 case class LabelledStatement0(x0: LabelIdentifier, x2: LabelledItem, parserParams: List[Boolean]) extends LabelledStatement {
   x0.parent = Some(this)
   x2.parent = Some(this)
-  val name: String = "LabelledStatement0"
+  val idx: Int = 0
   override def toString: String = {
     s"$x0 : $x2"
   }

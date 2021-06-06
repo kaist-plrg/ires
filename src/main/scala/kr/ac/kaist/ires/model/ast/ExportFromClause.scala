@@ -9,7 +9,7 @@ trait ExportFromClause extends AST {
 }
 
 case class ExportFromClause0(parserParams: List[Boolean]) extends ExportFromClause {
-  val name: String = "ExportFromClause0"
+  val idx: Int = 0
   override def toString: String = {
     s"*"
   }
@@ -27,7 +27,7 @@ object ExportFromClause0 extends ASTInfo {
 
 case class ExportFromClause1(x2: Lexical, parserParams: List[Boolean]) extends ExportFromClause {
   x2.parent = Some(this)
-  val name: String = "ExportFromClause1"
+  val idx: Int = 1
   override def toString: String = {
     s"* as $x2"
   }
@@ -45,7 +45,7 @@ object ExportFromClause1 extends ASTInfo {
 
 case class ExportFromClause2(x0: NamedExports, parserParams: List[Boolean]) extends ExportFromClause {
   x0.parent = Some(this)
-  val name: String = "ExportFromClause2"
+  val idx: Int = 2
   override def toString: String = {
     s"$x0"
   }

@@ -9,7 +9,7 @@ trait MultiplicativeOperator extends AST {
 }
 
 case class MultiplicativeOperator0(parserParams: List[Boolean]) extends MultiplicativeOperator {
-  val name: String = "MultiplicativeOperator0"
+  val idx: Int = 0
   override def toString: String = {
     s"*"
   }
@@ -23,7 +23,7 @@ object MultiplicativeOperator0 extends ASTInfo {
 }
 
 case class MultiplicativeOperator1(parserParams: List[Boolean]) extends MultiplicativeOperator {
-  val name: String = "MultiplicativeOperator1"
+  val idx: Int = 1
   override def toString: String = {
     s"/"
   }
@@ -37,7 +37,7 @@ object MultiplicativeOperator1 extends ASTInfo {
 }
 
 case class MultiplicativeOperator2(parserParams: List[Boolean]) extends MultiplicativeOperator {
-  val name: String = "MultiplicativeOperator2"
+  val idx: Int = 2
   override def toString: String = {
     s"%"
   }

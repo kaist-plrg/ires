@@ -10,7 +10,7 @@ trait PropertyName extends AST {
 
 case class PropertyName0(x0: LiteralPropertyName, parserParams: List[Boolean]) extends PropertyName {
   x0.parent = Some(this)
-  val name: String = "PropertyName0"
+  val idx: Int = 0
   override def toString: String = {
     s"$x0"
   }
@@ -28,7 +28,7 @@ object PropertyName0 extends ASTInfo {
 
 case class PropertyName1(x0: ComputedPropertyName, parserParams: List[Boolean]) extends PropertyName {
   x0.parent = Some(this)
-  val name: String = "PropertyName1"
+  val idx: Int = 1
   override def toString: String = {
     s"$x0"
   }

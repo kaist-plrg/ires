@@ -10,7 +10,7 @@ trait LogicalORExpression extends AST {
 
 case class LogicalORExpression0(x0: LogicalANDExpression, parserParams: List[Boolean]) extends LogicalORExpression {
   x0.parent = Some(this)
-  val name: String = "LogicalORExpression0"
+  val idx: Int = 0
   override def toString: String = {
     s"$x0"
   }
@@ -26,7 +26,7 @@ object LogicalORExpression0 extends ASTInfo {
 case class LogicalORExpression1(x0: LogicalORExpression, x2: LogicalANDExpression, parserParams: List[Boolean]) extends LogicalORExpression {
   x0.parent = Some(this)
   x2.parent = Some(this)
-  val name: String = "LogicalORExpression1"
+  val idx: Int = 1
   override def toString: String = {
     s"$x0 || $x2"
   }

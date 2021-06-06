@@ -11,7 +11,7 @@ trait CoverCallExpressionAndAsyncArrowHead extends AST {
 case class CoverCallExpressionAndAsyncArrowHead0(x0: MemberExpression, x1: Arguments, parserParams: List[Boolean]) extends CoverCallExpressionAndAsyncArrowHead {
   x0.parent = Some(this)
   x1.parent = Some(this)
-  val name: String = "CoverCallExpressionAndAsyncArrowHead0"
+  val idx: Int = 0
   override def toString: String = {
     s"$x0 $x1"
   }

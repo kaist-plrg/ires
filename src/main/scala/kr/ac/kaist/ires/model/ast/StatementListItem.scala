@@ -10,7 +10,7 @@ trait StatementListItem extends AST {
 
 case class StatementListItem0(x0: Statement, parserParams: List[Boolean]) extends StatementListItem {
   x0.parent = Some(this)
-  val name: String = "StatementListItem0"
+  val idx: Int = 0
   override def toString: String = {
     s"$x0"
   }
@@ -32,7 +32,7 @@ object StatementListItem0 extends ASTInfo {
 
 case class StatementListItem1(x0: Declaration, parserParams: List[Boolean]) extends StatementListItem {
   x0.parent = Some(this)
-  val name: String = "StatementListItem1"
+  val idx: Int = 1
   override def toString: String = {
     s"$x0"
   }

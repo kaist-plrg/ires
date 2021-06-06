@@ -10,7 +10,7 @@ trait ImportClause extends AST {
 
 case class ImportClause0(x0: ImportedDefaultBinding, parserParams: List[Boolean]) extends ImportClause {
   x0.parent = Some(this)
-  val name: String = "ImportClause0"
+  val idx: Int = 0
   override def toString: String = {
     s"$x0"
   }
@@ -25,7 +25,7 @@ object ImportClause0 extends ASTInfo {
 
 case class ImportClause1(x0: NameSpaceImport, parserParams: List[Boolean]) extends ImportClause {
   x0.parent = Some(this)
-  val name: String = "ImportClause1"
+  val idx: Int = 1
   override def toString: String = {
     s"$x0"
   }
@@ -40,7 +40,7 @@ object ImportClause1 extends ASTInfo {
 
 case class ImportClause2(x0: NamedImports, parserParams: List[Boolean]) extends ImportClause {
   x0.parent = Some(this)
-  val name: String = "ImportClause2"
+  val idx: Int = 2
   override def toString: String = {
     s"$x0"
   }
@@ -56,7 +56,7 @@ object ImportClause2 extends ASTInfo {
 case class ImportClause3(x0: ImportedDefaultBinding, x2: NameSpaceImport, parserParams: List[Boolean]) extends ImportClause {
   x0.parent = Some(this)
   x2.parent = Some(this)
-  val name: String = "ImportClause3"
+  val idx: Int = 3
   override def toString: String = {
     s"$x0 , $x2"
   }
@@ -75,7 +75,7 @@ object ImportClause3 extends ASTInfo {
 case class ImportClause4(x0: ImportedDefaultBinding, x2: NamedImports, parserParams: List[Boolean]) extends ImportClause {
   x0.parent = Some(this)
   x2.parent = Some(this)
-  val name: String = "ImportClause4"
+  val idx: Int = 4
   override def toString: String = {
     s"$x0 , $x2"
   }

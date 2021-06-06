@@ -11,7 +11,7 @@ trait TryStatement extends AST {
 case class TryStatement0(x1: Block, x2: Catch, parserParams: List[Boolean]) extends TryStatement {
   x1.parent = Some(this)
   x2.parent = Some(this)
-  val name: String = "TryStatement0"
+  val idx: Int = 0
   override def toString: String = {
     s"try $x1 $x2"
   }
@@ -35,7 +35,7 @@ object TryStatement0 extends ASTInfo {
 case class TryStatement1(x1: Block, x2: Finally, parserParams: List[Boolean]) extends TryStatement {
   x1.parent = Some(this)
   x2.parent = Some(this)
-  val name: String = "TryStatement1"
+  val idx: Int = 1
   override def toString: String = {
     s"try $x1 $x2"
   }
@@ -60,7 +60,7 @@ case class TryStatement2(x1: Block, x2: Catch, x3: Finally, parserParams: List[B
   x1.parent = Some(this)
   x2.parent = Some(this)
   x3.parent = Some(this)
-  val name: String = "TryStatement2"
+  val idx: Int = 2
   override def toString: String = {
     s"try $x1 $x2 $x3"
   }

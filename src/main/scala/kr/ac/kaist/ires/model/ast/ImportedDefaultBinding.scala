@@ -10,7 +10,7 @@ trait ImportedDefaultBinding extends AST {
 
 case class ImportedDefaultBinding0(x0: ImportedBinding, parserParams: List[Boolean]) extends ImportedDefaultBinding {
   x0.parent = Some(this)
-  val name: String = "ImportedDefaultBinding0"
+  val idx: Int = 0
   override def toString: String = {
     s"$x0"
   }

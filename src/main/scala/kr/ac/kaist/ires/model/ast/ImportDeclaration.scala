@@ -11,7 +11,7 @@ trait ImportDeclaration extends AST {
 case class ImportDeclaration0(x1: ImportClause, x2: FromClause, parserParams: List[Boolean]) extends ImportDeclaration {
   x1.parent = Some(this)
   x2.parent = Some(this)
-  val name: String = "ImportDeclaration0"
+  val idx: Int = 0
   override def toString: String = {
     s"import $x1 $x2 ;"
   }
@@ -30,7 +30,7 @@ object ImportDeclaration0 extends ASTInfo {
 
 case class ImportDeclaration1(x1: ModuleSpecifier, parserParams: List[Boolean]) extends ImportDeclaration {
   x1.parent = Some(this)
-  val name: String = "ImportDeclaration1"
+  val idx: Int = 1
   override def toString: String = {
     s"import $x1 ;"
   }

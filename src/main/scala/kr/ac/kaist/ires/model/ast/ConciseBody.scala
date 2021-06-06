@@ -10,7 +10,7 @@ trait ConciseBody extends AST {
 
 case class ConciseBody0(x1: ExpressionBody, parserParams: List[Boolean]) extends ConciseBody {
   x1.parent = Some(this)
-  val name: String = "ConciseBody0"
+  val idx: Int = 0
   override def toString: String = {
     s"$x1"
   }
@@ -33,7 +33,7 @@ object ConciseBody0 extends ASTInfo {
 
 case class ConciseBody1(x1: FunctionBody, parserParams: List[Boolean]) extends ConciseBody {
   x1.parent = Some(this)
-  val name: String = "ConciseBody1"
+  val idx: Int = 1
   override def toString: String = {
     s"{ $x1 }"
   }

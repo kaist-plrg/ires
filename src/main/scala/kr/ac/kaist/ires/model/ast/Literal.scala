@@ -10,7 +10,7 @@ trait Literal extends AST {
 
 case class Literal0(x0: Lexical, parserParams: List[Boolean]) extends Literal {
   x0.parent = Some(this)
-  val name: String = "Literal0"
+  val idx: Int = 0
   override def toString: String = {
     s"$x0"
   }
@@ -27,7 +27,7 @@ object Literal0 extends ASTInfo {
 
 case class Literal1(x0: Lexical, parserParams: List[Boolean]) extends Literal {
   x0.parent = Some(this)
-  val name: String = "Literal1"
+  val idx: Int = 1
   override def toString: String = {
     s"$x0"
   }
@@ -44,7 +44,7 @@ object Literal1 extends ASTInfo {
 
 case class Literal2(x0: Lexical, parserParams: List[Boolean]) extends Literal {
   x0.parent = Some(this)
-  val name: String = "Literal2"
+  val idx: Int = 2
   override def toString: String = {
     s"$x0"
   }
@@ -61,7 +61,7 @@ object Literal2 extends ASTInfo {
 
 case class Literal3(x0: Lexical, parserParams: List[Boolean]) extends Literal {
   x0.parent = Some(this)
-  val name: String = "Literal3"
+  val idx: Int = 3
   override def toString: String = {
     s"$x0"
   }

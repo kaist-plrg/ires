@@ -10,7 +10,7 @@ trait PropertyDefinition extends AST {
 
 case class PropertyDefinition0(x0: IdentifierReference, parserParams: List[Boolean]) extends PropertyDefinition {
   x0.parent = Some(this)
-  val name: String = "PropertyDefinition0"
+  val idx: Int = 0
   override def toString: String = {
     s"$x0"
   }
@@ -28,7 +28,7 @@ object PropertyDefinition0 extends ASTInfo {
 
 case class PropertyDefinition1(x0: CoverInitializedName, parserParams: List[Boolean]) extends PropertyDefinition {
   x0.parent = Some(this)
-  val name: String = "PropertyDefinition1"
+  val idx: Int = 1
   override def toString: String = {
     s"$x0"
   }
@@ -46,7 +46,7 @@ object PropertyDefinition1 extends ASTInfo {
 case class PropertyDefinition2(x0: PropertyName, x2: AssignmentExpression, parserParams: List[Boolean]) extends PropertyDefinition {
   x0.parent = Some(this)
   x2.parent = Some(this)
-  val name: String = "PropertyDefinition2"
+  val idx: Int = 2
   override def toString: String = {
     s"$x0 : $x2"
   }
@@ -64,7 +64,7 @@ object PropertyDefinition2 extends ASTInfo {
 
 case class PropertyDefinition3(x0: MethodDefinition, parserParams: List[Boolean]) extends PropertyDefinition {
   x0.parent = Some(this)
-  val name: String = "PropertyDefinition3"
+  val idx: Int = 3
   override def toString: String = {
     s"$x0"
   }
@@ -82,7 +82,7 @@ object PropertyDefinition3 extends ASTInfo {
 
 case class PropertyDefinition4(x1: AssignmentExpression, parserParams: List[Boolean]) extends PropertyDefinition {
   x1.parent = Some(this)
-  val name: String = "PropertyDefinition4"
+  val idx: Int = 4
   override def toString: String = {
     s"... $x1"
   }

@@ -9,7 +9,7 @@ trait DebuggerStatement extends AST {
 }
 
 case class DebuggerStatement0(parserParams: List[Boolean]) extends DebuggerStatement {
-  val name: String = "DebuggerStatement0"
+  val idx: Int = 0
   override def toString: String = {
     s"debugger ;"
   }

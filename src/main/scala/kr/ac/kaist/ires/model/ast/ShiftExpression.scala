@@ -10,7 +10,7 @@ trait ShiftExpression extends AST {
 
 case class ShiftExpression0(x0: AdditiveExpression, parserParams: List[Boolean]) extends ShiftExpression {
   x0.parent = Some(this)
-  val name: String = "ShiftExpression0"
+  val idx: Int = 0
   override def toString: String = {
     s"$x0"
   }
@@ -26,7 +26,7 @@ object ShiftExpression0 extends ASTInfo {
 case class ShiftExpression1(x0: ShiftExpression, x2: AdditiveExpression, parserParams: List[Boolean]) extends ShiftExpression {
   x0.parent = Some(this)
   x2.parent = Some(this)
-  val name: String = "ShiftExpression1"
+  val idx: Int = 1
   override def toString: String = {
     s"$x0 << $x2"
   }
@@ -47,7 +47,7 @@ object ShiftExpression1 extends ASTInfo {
 case class ShiftExpression2(x0: ShiftExpression, x2: AdditiveExpression, parserParams: List[Boolean]) extends ShiftExpression {
   x0.parent = Some(this)
   x2.parent = Some(this)
-  val name: String = "ShiftExpression2"
+  val idx: Int = 2
   override def toString: String = {
     s"$x0 >> $x2"
   }
@@ -68,7 +68,7 @@ object ShiftExpression2 extends ASTInfo {
 case class ShiftExpression3(x0: ShiftExpression, x2: AdditiveExpression, parserParams: List[Boolean]) extends ShiftExpression {
   x0.parent = Some(this)
   x2.parent = Some(this)
-  val name: String = "ShiftExpression3"
+  val idx: Int = 3
   override def toString: String = {
     s"$x0 >>> $x2"
   }

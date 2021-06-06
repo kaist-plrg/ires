@@ -10,7 +10,7 @@ trait Block extends AST {
 
 case class Block0(x1: Option[StatementList], parserParams: List[Boolean]) extends Block {
   x1.foreach((m) => m.parent = Some(this))
-  val name: String = "Block0"
+  val idx: Int = 0
   override def toString: String = {
     s"{ ${x1.getOrElse("")} }"
   }

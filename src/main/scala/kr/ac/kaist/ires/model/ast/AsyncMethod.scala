@@ -12,7 +12,7 @@ case class AsyncMethod0(x2: PropertyName, x4: UniqueFormalParameters, x7: AsyncF
   x2.parent = Some(this)
   x4.parent = Some(this)
   x7.parent = Some(this)
-  val name: String = "AsyncMethod0"
+  val idx: Int = 0
   override def toString: String = {
     s"async $x2 ( $x4 ) { $x7 }"
   }

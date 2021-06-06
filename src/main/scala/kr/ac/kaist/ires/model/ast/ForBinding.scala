@@ -10,7 +10,7 @@ trait ForBinding extends AST {
 
 case class ForBinding0(x0: BindingIdentifier, parserParams: List[Boolean]) extends ForBinding {
   x0.parent = Some(this)
-  val name: String = "ForBinding0"
+  val idx: Int = 0
   override def toString: String = {
     s"$x0"
   }
@@ -28,7 +28,7 @@ object ForBinding0 extends ASTInfo {
 
 case class ForBinding1(x0: BindingPattern, parserParams: List[Boolean]) extends ForBinding {
   x0.parent = Some(this)
-  val name: String = "ForBinding1"
+  val idx: Int = 1
   override def toString: String = {
     s"$x0"
   }

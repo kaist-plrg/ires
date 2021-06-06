@@ -11,7 +11,7 @@ trait DoWhileStatement extends AST {
 case class DoWhileStatement0(x1: Statement, x4: Expression, parserParams: List[Boolean]) extends DoWhileStatement {
   x1.parent = Some(this)
   x4.parent = Some(this)
-  val name: String = "DoWhileStatement0"
+  val idx: Int = 0
   override def toString: String = {
     s"do $x1 while ( $x4 ) ;"
   }

@@ -21,7 +21,7 @@ case object Parse extends PhaseObj[Unit, ParseConfig, Script] {
     config.jsonFile match {
       case Some(name) =>
         val nf = getPrintWriter(name)
-        nf.println(ast.toJson)
+        nf.println(ast.toJson.prettyPrint)
         nf.close()
       case None =>
     }

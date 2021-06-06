@@ -10,7 +10,7 @@ trait ConditionalExpression extends AST {
 
 case class ConditionalExpression0(x0: ShortCircuitExpression, parserParams: List[Boolean]) extends ConditionalExpression {
   x0.parent = Some(this)
-  val name: String = "ConditionalExpression0"
+  val idx: Int = 0
   override def toString: String = {
     s"$x0"
   }
@@ -27,7 +27,7 @@ case class ConditionalExpression1(x0: ShortCircuitExpression, x2: AssignmentExpr
   x0.parent = Some(this)
   x2.parent = Some(this)
   x4.parent = Some(this)
-  val name: String = "ConditionalExpression1"
+  val idx: Int = 1
   override def toString: String = {
     s"$x0 ? $x2 : $x4"
   }

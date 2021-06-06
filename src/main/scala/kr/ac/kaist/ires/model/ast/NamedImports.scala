@@ -9,7 +9,7 @@ trait NamedImports extends AST {
 }
 
 case class NamedImports0(parserParams: List[Boolean]) extends NamedImports {
-  val name: String = "NamedImports0"
+  val idx: Int = 0
   override def toString: String = {
     s"{ }"
   }
@@ -27,7 +27,7 @@ object NamedImports0 extends ASTInfo {
 
 case class NamedImports1(x1: ImportsList, parserParams: List[Boolean]) extends NamedImports {
   x1.parent = Some(this)
-  val name: String = "NamedImports1"
+  val idx: Int = 1
   override def toString: String = {
     s"{ $x1 }"
   }
@@ -42,7 +42,7 @@ object NamedImports1 extends ASTInfo {
 
 case class NamedImports2(x1: ImportsList, parserParams: List[Boolean]) extends NamedImports {
   x1.parent = Some(this)
-  val name: String = "NamedImports2"
+  val idx: Int = 2
   override def toString: String = {
     s"{ $x1 , }"
   }

@@ -10,7 +10,7 @@ trait AssignmentPropertyList extends AST {
 
 case class AssignmentPropertyList0(x0: AssignmentProperty, parserParams: List[Boolean]) extends AssignmentPropertyList {
   x0.parent = Some(this)
-  val name: String = "AssignmentPropertyList0"
+  val idx: Int = 0
   override def toString: String = {
     s"$x0"
   }
@@ -26,7 +26,7 @@ object AssignmentPropertyList0 extends ASTInfo {
 case class AssignmentPropertyList1(x0: AssignmentPropertyList, x2: AssignmentProperty, parserParams: List[Boolean]) extends AssignmentPropertyList {
   x0.parent = Some(this)
   x2.parent = Some(this)
-  val name: String = "AssignmentPropertyList1"
+  val idx: Int = 1
   override def toString: String = {
     s"$x0 , $x2"
   }

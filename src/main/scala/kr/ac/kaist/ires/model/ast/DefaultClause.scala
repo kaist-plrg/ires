@@ -10,7 +10,7 @@ trait DefaultClause extends AST {
 
 case class DefaultClause0(x2: Option[StatementList], parserParams: List[Boolean]) extends DefaultClause {
   x2.foreach((m) => m.parent = Some(this))
-  val name: String = "DefaultClause0"
+  val idx: Int = 0
   override def toString: String = {
     s"default : ${x2.getOrElse("")}"
   }

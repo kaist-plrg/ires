@@ -11,7 +11,7 @@ trait AssignmentElement extends AST {
 case class AssignmentElement0(x0: DestructuringAssignmentTarget, x1: Option[Initializer], parserParams: List[Boolean]) extends AssignmentElement {
   x0.parent = Some(this)
   x1.foreach((m) => m.parent = Some(this))
-  val name: String = "AssignmentElement0"
+  val idx: Int = 0
   override def toString: String = {
     s"$x0 ${x1.getOrElse("")}"
   }

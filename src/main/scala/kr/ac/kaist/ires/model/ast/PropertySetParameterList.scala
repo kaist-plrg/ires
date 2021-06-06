@@ -10,7 +10,7 @@ trait PropertySetParameterList extends AST {
 
 case class PropertySetParameterList0(x0: FormalParameter, parserParams: List[Boolean]) extends PropertySetParameterList {
   x0.parent = Some(this)
-  val name: String = "PropertySetParameterList0"
+  val idx: Int = 0
   override def toString: String = {
     s"$x0"
   }

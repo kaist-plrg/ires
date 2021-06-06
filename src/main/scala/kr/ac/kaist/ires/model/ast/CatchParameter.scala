@@ -10,7 +10,7 @@ trait CatchParameter extends AST {
 
 case class CatchParameter0(x0: BindingIdentifier, parserParams: List[Boolean]) extends CatchParameter {
   x0.parent = Some(this)
-  val name: String = "CatchParameter0"
+  val idx: Int = 0
   override def toString: String = {
     s"$x0"
   }
@@ -25,7 +25,7 @@ object CatchParameter0 extends ASTInfo {
 
 case class CatchParameter1(x0: BindingPattern, parserParams: List[Boolean]) extends CatchParameter {
   x0.parent = Some(this)
-  val name: String = "CatchParameter1"
+  val idx: Int = 1
   override def toString: String = {
     s"$x0"
   }

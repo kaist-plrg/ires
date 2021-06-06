@@ -10,7 +10,7 @@ trait UnaryExpression extends AST {
 
 case class UnaryExpression0(x0: UpdateExpression, parserParams: List[Boolean]) extends UnaryExpression {
   x0.parent = Some(this)
-  val name: String = "UnaryExpression0"
+  val idx: Int = 0
   override def toString: String = {
     s"$x0"
   }
@@ -25,7 +25,7 @@ object UnaryExpression0 extends ASTInfo {
 
 case class UnaryExpression1(x1: UnaryExpression, parserParams: List[Boolean]) extends UnaryExpression {
   x1.parent = Some(this)
-  val name: String = "UnaryExpression1"
+  val idx: Int = 1
   override def toString: String = {
     s"delete $x1"
   }
@@ -45,7 +45,7 @@ object UnaryExpression1 extends ASTInfo {
 
 case class UnaryExpression2(x1: UnaryExpression, parserParams: List[Boolean]) extends UnaryExpression {
   x1.parent = Some(this)
-  val name: String = "UnaryExpression2"
+  val idx: Int = 2
   override def toString: String = {
     s"void $x1"
   }
@@ -65,7 +65,7 @@ object UnaryExpression2 extends ASTInfo {
 
 case class UnaryExpression3(x1: UnaryExpression, parserParams: List[Boolean]) extends UnaryExpression {
   x1.parent = Some(this)
-  val name: String = "UnaryExpression3"
+  val idx: Int = 3
   override def toString: String = {
     s"typeof $x1"
   }
@@ -85,7 +85,7 @@ object UnaryExpression3 extends ASTInfo {
 
 case class UnaryExpression4(x1: UnaryExpression, parserParams: List[Boolean]) extends UnaryExpression {
   x1.parent = Some(this)
-  val name: String = "UnaryExpression4"
+  val idx: Int = 4
   override def toString: String = {
     s"+ $x1"
   }
@@ -105,7 +105,7 @@ object UnaryExpression4 extends ASTInfo {
 
 case class UnaryExpression5(x1: UnaryExpression, parserParams: List[Boolean]) extends UnaryExpression {
   x1.parent = Some(this)
-  val name: String = "UnaryExpression5"
+  val idx: Int = 5
   override def toString: String = {
     s"- $x1"
   }
@@ -125,7 +125,7 @@ object UnaryExpression5 extends ASTInfo {
 
 case class UnaryExpression6(x1: UnaryExpression, parserParams: List[Boolean]) extends UnaryExpression {
   x1.parent = Some(this)
-  val name: String = "UnaryExpression6"
+  val idx: Int = 6
   override def toString: String = {
     s"~ $x1"
   }
@@ -145,7 +145,7 @@ object UnaryExpression6 extends ASTInfo {
 
 case class UnaryExpression7(x1: UnaryExpression, parserParams: List[Boolean]) extends UnaryExpression {
   x1.parent = Some(this)
-  val name: String = "UnaryExpression7"
+  val idx: Int = 7
   override def toString: String = {
     s"! $x1"
   }
@@ -165,7 +165,7 @@ object UnaryExpression7 extends ASTInfo {
 
 case class UnaryExpression8(x0: AwaitExpression, parserParams: List[Boolean]) extends UnaryExpression {
   x0.parent = Some(this)
-  val name: String = "UnaryExpression8"
+  val idx: Int = 8
   override def toString: String = {
     s"$x0"
   }

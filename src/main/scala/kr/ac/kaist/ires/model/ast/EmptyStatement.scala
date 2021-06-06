@@ -9,7 +9,7 @@ trait EmptyStatement extends AST {
 }
 
 case class EmptyStatement0(parserParams: List[Boolean]) extends EmptyStatement {
-  val name: String = "EmptyStatement0"
+  val idx: Int = 0
   override def toString: String = {
     s";"
   }

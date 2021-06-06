@@ -10,7 +10,7 @@ trait LiteralPropertyName extends AST {
 
 case class LiteralPropertyName0(x0: Lexical, parserParams: List[Boolean]) extends LiteralPropertyName {
   x0.parent = Some(this)
-  val name: String = "LiteralPropertyName0"
+  val idx: Int = 0
   override def toString: String = {
     s"$x0"
   }
@@ -29,7 +29,7 @@ object LiteralPropertyName0 extends ASTInfo {
 
 case class LiteralPropertyName1(x0: Lexical, parserParams: List[Boolean]) extends LiteralPropertyName {
   x0.parent = Some(this)
-  val name: String = "LiteralPropertyName1"
+  val idx: Int = 1
   override def toString: String = {
     s"$x0"
   }
@@ -47,7 +47,7 @@ object LiteralPropertyName1 extends ASTInfo {
 
 case class LiteralPropertyName2(x0: Lexical, parserParams: List[Boolean]) extends LiteralPropertyName {
   x0.parent = Some(this)
-  val name: String = "LiteralPropertyName2"
+  val idx: Int = 2
   override def toString: String = {
     s"$x0"
   }

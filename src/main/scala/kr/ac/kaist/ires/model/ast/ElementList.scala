@@ -11,7 +11,7 @@ trait ElementList extends AST {
 case class ElementList0(x0: Option[Elision], x1: AssignmentExpression, parserParams: List[Boolean]) extends ElementList {
   x0.foreach((m) => m.parent = Some(this))
   x1.parent = Some(this)
-  val name: String = "ElementList0"
+  val idx: Int = 0
   override def toString: String = {
     s"${x0.getOrElse("")} $x1"
   }
@@ -29,7 +29,7 @@ object ElementList0 extends ASTInfo {
 case class ElementList1(x0: Option[Elision], x1: SpreadElement, parserParams: List[Boolean]) extends ElementList {
   x0.foreach((m) => m.parent = Some(this))
   x1.parent = Some(this)
-  val name: String = "ElementList1"
+  val idx: Int = 1
   override def toString: String = {
     s"${x0.getOrElse("")} $x1"
   }
@@ -48,7 +48,7 @@ case class ElementList2(x0: ElementList, x2: Option[Elision], x3: AssignmentExpr
   x0.parent = Some(this)
   x2.foreach((m) => m.parent = Some(this))
   x3.parent = Some(this)
-  val name: String = "ElementList2"
+  val idx: Int = 2
   override def toString: String = {
     s"$x0 , ${x2.getOrElse("")} $x3"
   }
@@ -67,7 +67,7 @@ case class ElementList3(x0: ElementList, x2: Option[Elision], x3: SpreadElement,
   x0.parent = Some(this)
   x2.foreach((m) => m.parent = Some(this))
   x3.parent = Some(this)
-  val name: String = "ElementList3"
+  val idx: Int = 3
   override def toString: String = {
     s"$x0 , ${x2.getOrElse("")} $x3"
   }

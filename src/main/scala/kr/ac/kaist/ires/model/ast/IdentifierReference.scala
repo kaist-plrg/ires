@@ -10,7 +10,7 @@ trait IdentifierReference extends AST {
 
 case class IdentifierReference0(x0: Identifier, parserParams: List[Boolean]) extends IdentifierReference {
   x0.parent = Some(this)
-  val name: String = "IdentifierReference0"
+  val idx: Int = 0
   override def toString: String = {
     s"$x0"
   }
@@ -28,7 +28,7 @@ object IdentifierReference0 extends ASTInfo {
 }
 
 case class IdentifierReference1(parserParams: List[Boolean]) extends IdentifierReference {
-  val name: String = "IdentifierReference1"
+  val idx: Int = 1
   override def toString: String = {
     s"yield"
   }
@@ -47,7 +47,7 @@ object IdentifierReference1 extends ASTInfo {
 }
 
 case class IdentifierReference2(parserParams: List[Boolean]) extends IdentifierReference {
-  val name: String = "IdentifierReference2"
+  val idx: Int = 2
   override def toString: String = {
     s"await"
   }

@@ -10,7 +10,7 @@ trait LabelledItem extends AST {
 
 case class LabelledItem0(x0: Statement, parserParams: List[Boolean]) extends LabelledItem {
   x0.parent = Some(this)
-  val name: String = "LabelledItem0"
+  val idx: Int = 0
   override def toString: String = {
     s"$x0"
   }
@@ -30,7 +30,7 @@ object LabelledItem0 extends ASTInfo {
 
 case class LabelledItem1(x0: FunctionDeclaration, parserParams: List[Boolean]) extends LabelledItem {
   x0.parent = Some(this)
-  val name: String = "LabelledItem1"
+  val idx: Int = 1
   override def toString: String = {
     s"$x0"
   }

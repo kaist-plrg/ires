@@ -11,7 +11,7 @@ trait Catch extends AST {
 case class Catch0(x2: CatchParameter, x4: Block, parserParams: List[Boolean]) extends Catch {
   x2.parent = Some(this)
   x4.parent = Some(this)
-  val name: String = "Catch0"
+  val idx: Int = 0
   override def toString: String = {
     s"catch ( $x2 ) $x4"
   }
@@ -35,7 +35,7 @@ object Catch0 extends ASTInfo {
 
 case class Catch1(x1: Block, parserParams: List[Boolean]) extends Catch {
   x1.parent = Some(this)
-  val name: String = "Catch1"
+  val idx: Int = 1
   override def toString: String = {
     s"catch $x1"
   }

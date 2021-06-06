@@ -11,7 +11,7 @@ trait SwitchStatement extends AST {
 case class SwitchStatement0(x2: Expression, x4: CaseBlock, parserParams: List[Boolean]) extends SwitchStatement {
   x2.parent = Some(this)
   x4.parent = Some(this)
-  val name: String = "SwitchStatement0"
+  val idx: Int = 0
   override def toString: String = {
     s"switch ( $x2 ) $x4"
   }

@@ -10,7 +10,7 @@ trait CoalesceExpressionHead extends AST {
 
 case class CoalesceExpressionHead0(x0: CoalesceExpression, parserParams: List[Boolean]) extends CoalesceExpressionHead {
   x0.parent = Some(this)
-  val name: String = "CoalesceExpressionHead0"
+  val idx: Int = 0
   override def toString: String = {
     s"$x0"
   }
@@ -25,7 +25,7 @@ object CoalesceExpressionHead0 extends ASTInfo {
 
 case class CoalesceExpressionHead1(x0: BitwiseORExpression, parserParams: List[Boolean]) extends CoalesceExpressionHead {
   x0.parent = Some(this)
-  val name: String = "CoalesceExpressionHead1"
+  val idx: Int = 1
   override def toString: String = {
     s"$x0"
   }

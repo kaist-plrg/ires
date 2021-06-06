@@ -10,7 +10,7 @@ trait ArrowParameters extends AST {
 
 case class ArrowParameters0(x0: BindingIdentifier, parserParams: List[Boolean]) extends ArrowParameters {
   x0.parent = Some(this)
-  val name: String = "ArrowParameters0"
+  val idx: Int = 0
   override def toString: String = {
     s"$x0"
   }
@@ -31,7 +31,7 @@ object ArrowParameters0 extends ASTInfo {
 
 case class ArrowParameters1(x0: CoverParenthesizedExpressionAndArrowParameterList, parserParams: List[Boolean]) extends ArrowParameters {
   x0.parent = Some(this)
-  val name: String = "ArrowParameters1"
+  val idx: Int = 1
   override def toString: String = {
     s"$x0"
   }

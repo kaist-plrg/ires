@@ -10,7 +10,7 @@ trait BindingProperty extends AST {
 
 case class BindingProperty0(x0: SingleNameBinding, parserParams: List[Boolean]) extends BindingProperty {
   x0.parent = Some(this)
-  val name: String = "BindingProperty0"
+  val idx: Int = 0
   override def toString: String = {
     s"$x0"
   }
@@ -28,7 +28,7 @@ object BindingProperty0 extends ASTInfo {
 case class BindingProperty1(x0: PropertyName, x2: BindingElement, parserParams: List[Boolean]) extends BindingProperty {
   x0.parent = Some(this)
   x2.parent = Some(this)
-  val name: String = "BindingProperty1"
+  val idx: Int = 1
   override def toString: String = {
     s"$x0 : $x2"
   }

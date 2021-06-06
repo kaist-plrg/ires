@@ -10,7 +10,7 @@ trait UpdateExpression extends AST {
 
 case class UpdateExpression0(x0: LeftHandSideExpression, parserParams: List[Boolean]) extends UpdateExpression {
   x0.parent = Some(this)
-  val name: String = "UpdateExpression0"
+  val idx: Int = 0
   override def toString: String = {
     s"$x0"
   }
@@ -25,7 +25,7 @@ object UpdateExpression0 extends ASTInfo {
 
 case class UpdateExpression1(x0: LeftHandSideExpression, parserParams: List[Boolean]) extends UpdateExpression {
   x0.parent = Some(this)
-  val name: String = "UpdateExpression1"
+  val idx: Int = 1
   override def toString: String = {
     s"$x0 ++"
   }
@@ -46,7 +46,7 @@ object UpdateExpression1 extends ASTInfo {
 
 case class UpdateExpression2(x0: LeftHandSideExpression, parserParams: List[Boolean]) extends UpdateExpression {
   x0.parent = Some(this)
-  val name: String = "UpdateExpression2"
+  val idx: Int = 2
   override def toString: String = {
     s"$x0 --"
   }
@@ -67,7 +67,7 @@ object UpdateExpression2 extends ASTInfo {
 
 case class UpdateExpression3(x1: UnaryExpression, parserParams: List[Boolean]) extends UpdateExpression {
   x1.parent = Some(this)
-  val name: String = "UpdateExpression3"
+  val idx: Int = 3
   override def toString: String = {
     s"++ $x1"
   }
@@ -88,7 +88,7 @@ object UpdateExpression3 extends ASTInfo {
 
 case class UpdateExpression4(x1: UnaryExpression, parserParams: List[Boolean]) extends UpdateExpression {
   x1.parent = Some(this)
-  val name: String = "UpdateExpression4"
+  val idx: Int = 4
   override def toString: String = {
     s"-- $x1"
   }

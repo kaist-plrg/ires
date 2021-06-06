@@ -10,7 +10,7 @@ trait Statement extends AST {
 
 case class Statement0(x0: BlockStatement, parserParams: List[Boolean]) extends Statement {
   x0.parent = Some(this)
-  val name: String = "Statement0"
+  val idx: Int = 0
   override def toString: String = {
     s"$x0"
   }
@@ -27,7 +27,7 @@ object Statement0 extends ASTInfo {
 
 case class Statement1(x0: VariableStatement, parserParams: List[Boolean]) extends Statement {
   x0.parent = Some(this)
-  val name: String = "Statement1"
+  val idx: Int = 1
   override def toString: String = {
     s"$x0"
   }
@@ -48,7 +48,7 @@ object Statement1 extends ASTInfo {
 
 case class Statement2(x0: EmptyStatement, parserParams: List[Boolean]) extends Statement {
   x0.parent = Some(this)
-  val name: String = "Statement2"
+  val idx: Int = 2
   override def toString: String = {
     s"$x0"
   }
@@ -71,7 +71,7 @@ object Statement2 extends ASTInfo {
 
 case class Statement3(x0: ExpressionStatement, parserParams: List[Boolean]) extends Statement {
   x0.parent = Some(this)
-  val name: String = "Statement3"
+  val idx: Int = 3
   override def toString: String = {
     s"$x0"
   }
@@ -94,7 +94,7 @@ object Statement3 extends ASTInfo {
 
 case class Statement4(x0: IfStatement, parserParams: List[Boolean]) extends Statement {
   x0.parent = Some(this)
-  val name: String = "Statement4"
+  val idx: Int = 4
   override def toString: String = {
     s"$x0"
   }
@@ -111,7 +111,7 @@ object Statement4 extends ASTInfo {
 
 case class Statement5(x0: BreakableStatement, parserParams: List[Boolean]) extends Statement {
   x0.parent = Some(this)
-  val name: String = "Statement5"
+  val idx: Int = 5
   override def toString: String = {
     s"$x0"
   }
@@ -126,7 +126,7 @@ object Statement5 extends ASTInfo {
 
 case class Statement6(x0: ContinueStatement, parserParams: List[Boolean]) extends Statement {
   x0.parent = Some(this)
-  val name: String = "Statement6"
+  val idx: Int = 6
   override def toString: String = {
     s"$x0"
   }
@@ -148,7 +148,7 @@ object Statement6 extends ASTInfo {
 
 case class Statement7(x0: BreakStatement, parserParams: List[Boolean]) extends Statement {
   x0.parent = Some(this)
-  val name: String = "Statement7"
+  val idx: Int = 7
   override def toString: String = {
     s"$x0"
   }
@@ -170,7 +170,7 @@ object Statement7 extends ASTInfo {
 
 case class Statement8(x0: ReturnStatement, parserParams: List[Boolean]) extends Statement {
   x0.parent = Some(this)
-  val name: String = "Statement8"
+  val idx: Int = 8
   override def toString: String = {
     s"$x0"
   }
@@ -192,7 +192,7 @@ object Statement8 extends ASTInfo {
 
 case class Statement9(x0: WithStatement, parserParams: List[Boolean]) extends Statement {
   x0.parent = Some(this)
-  val name: String = "Statement9"
+  val idx: Int = 9
   override def toString: String = {
     s"$x0"
   }
@@ -209,7 +209,7 @@ object Statement9 extends ASTInfo {
 
 case class Statement10(x0: LabelledStatement, parserParams: List[Boolean]) extends Statement {
   x0.parent = Some(this)
-  val name: String = "Statement10"
+  val idx: Int = 10
   override def toString: String = {
     s"$x0"
   }
@@ -224,7 +224,7 @@ object Statement10 extends ASTInfo {
 
 case class Statement11(x0: ThrowStatement, parserParams: List[Boolean]) extends Statement {
   x0.parent = Some(this)
-  val name: String = "Statement11"
+  val idx: Int = 11
   override def toString: String = {
     s"$x0"
   }
@@ -247,7 +247,7 @@ object Statement11 extends ASTInfo {
 
 case class Statement12(x0: TryStatement, parserParams: List[Boolean]) extends Statement {
   x0.parent = Some(this)
-  val name: String = "Statement12"
+  val idx: Int = 12
   override def toString: String = {
     s"$x0"
   }
@@ -264,7 +264,7 @@ object Statement12 extends ASTInfo {
 
 case class Statement13(x0: DebuggerStatement, parserParams: List[Boolean]) extends Statement {
   x0.parent = Some(this)
-  val name: String = "Statement13"
+  val idx: Int = 13
   override def toString: String = {
     s"$x0"
   }

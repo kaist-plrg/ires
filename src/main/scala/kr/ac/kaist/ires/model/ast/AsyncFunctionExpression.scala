@@ -12,7 +12,7 @@ case class AsyncFunctionExpression0(x3: Option[BindingIdentifier], x5: FormalPar
   x3.foreach((m) => m.parent = Some(this))
   x5.parent = Some(this)
   x8.parent = Some(this)
-  val name: String = "AsyncFunctionExpression0"
+  val idx: Int = 0
   override def toString: String = {
     s"async function ${x3.getOrElse("")} ( $x5 ) { $x8 }"
   }

@@ -9,7 +9,7 @@ trait AssignmentOperator extends AST {
 }
 
 case class AssignmentOperator0(parserParams: List[Boolean]) extends AssignmentOperator {
-  val name: String = "AssignmentOperator0"
+  val idx: Int = 0
   override def toString: String = {
     s"*="
   }
@@ -23,7 +23,7 @@ object AssignmentOperator0 extends ASTInfo {
 }
 
 case class AssignmentOperator1(parserParams: List[Boolean]) extends AssignmentOperator {
-  val name: String = "AssignmentOperator1"
+  val idx: Int = 1
   override def toString: String = {
     s"/="
   }
@@ -37,7 +37,7 @@ object AssignmentOperator1 extends ASTInfo {
 }
 
 case class AssignmentOperator2(parserParams: List[Boolean]) extends AssignmentOperator {
-  val name: String = "AssignmentOperator2"
+  val idx: Int = 2
   override def toString: String = {
     s"%="
   }
@@ -51,7 +51,7 @@ object AssignmentOperator2 extends ASTInfo {
 }
 
 case class AssignmentOperator3(parserParams: List[Boolean]) extends AssignmentOperator {
-  val name: String = "AssignmentOperator3"
+  val idx: Int = 3
   override def toString: String = {
     s"+="
   }
@@ -65,7 +65,7 @@ object AssignmentOperator3 extends ASTInfo {
 }
 
 case class AssignmentOperator4(parserParams: List[Boolean]) extends AssignmentOperator {
-  val name: String = "AssignmentOperator4"
+  val idx: Int = 4
   override def toString: String = {
     s"-="
   }
@@ -79,7 +79,7 @@ object AssignmentOperator4 extends ASTInfo {
 }
 
 case class AssignmentOperator5(parserParams: List[Boolean]) extends AssignmentOperator {
-  val name: String = "AssignmentOperator5"
+  val idx: Int = 5
   override def toString: String = {
     s"<<="
   }
@@ -93,7 +93,7 @@ object AssignmentOperator5 extends ASTInfo {
 }
 
 case class AssignmentOperator6(parserParams: List[Boolean]) extends AssignmentOperator {
-  val name: String = "AssignmentOperator6"
+  val idx: Int = 6
   override def toString: String = {
     s">>="
   }
@@ -107,7 +107,7 @@ object AssignmentOperator6 extends ASTInfo {
 }
 
 case class AssignmentOperator7(parserParams: List[Boolean]) extends AssignmentOperator {
-  val name: String = "AssignmentOperator7"
+  val idx: Int = 7
   override def toString: String = {
     s">>>="
   }
@@ -121,7 +121,7 @@ object AssignmentOperator7 extends ASTInfo {
 }
 
 case class AssignmentOperator8(parserParams: List[Boolean]) extends AssignmentOperator {
-  val name: String = "AssignmentOperator8"
+  val idx: Int = 8
   override def toString: String = {
     s"&="
   }
@@ -135,7 +135,7 @@ object AssignmentOperator8 extends ASTInfo {
 }
 
 case class AssignmentOperator9(parserParams: List[Boolean]) extends AssignmentOperator {
-  val name: String = "AssignmentOperator9"
+  val idx: Int = 9
   override def toString: String = {
     s"^="
   }
@@ -149,7 +149,7 @@ object AssignmentOperator9 extends ASTInfo {
 }
 
 case class AssignmentOperator10(parserParams: List[Boolean]) extends AssignmentOperator {
-  val name: String = "AssignmentOperator10"
+  val idx: Int = 10
   override def toString: String = {
     s"|="
   }
@@ -163,7 +163,7 @@ object AssignmentOperator10 extends ASTInfo {
 }
 
 case class AssignmentOperator11(parserParams: List[Boolean]) extends AssignmentOperator {
-  val name: String = "AssignmentOperator11"
+  val idx: Int = 11
   override def toString: String = {
     s"**="
   }

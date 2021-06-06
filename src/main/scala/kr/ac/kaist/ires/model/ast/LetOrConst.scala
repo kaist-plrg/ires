@@ -9,7 +9,7 @@ trait LetOrConst extends AST {
 }
 
 case class LetOrConst0(parserParams: List[Boolean]) extends LetOrConst {
-  val name: String = "LetOrConst0"
+  val idx: Int = 0
   override def toString: String = {
     s"let"
   }
@@ -25,7 +25,7 @@ object LetOrConst0 extends ASTInfo {
 }
 
 case class LetOrConst1(parserParams: List[Boolean]) extends LetOrConst {
-  val name: String = "LetOrConst1"
+  val idx: Int = 1
   override def toString: String = {
     s"const"
   }

@@ -10,7 +10,7 @@ trait BindingRestElement extends AST {
 
 case class BindingRestElement0(x1: BindingIdentifier, parserParams: List[Boolean]) extends BindingRestElement {
   x1.parent = Some(this)
-  val name: String = "BindingRestElement0"
+  val idx: Int = 0
   override def toString: String = {
     s"... $x1"
   }
@@ -28,7 +28,7 @@ object BindingRestElement0 extends ASTInfo {
 
 case class BindingRestElement1(x1: BindingPattern, parserParams: List[Boolean]) extends BindingRestElement {
   x1.parent = Some(this)
-  val name: String = "BindingRestElement1"
+  val idx: Int = 1
   override def toString: String = {
     s"... $x1"
   }

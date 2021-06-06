@@ -10,7 +10,7 @@ trait Module extends AST {
 
 case class Module0(x0: Option[ModuleBody], parserParams: List[Boolean]) extends Module {
   x0.foreach((m) => m.parent = Some(this))
-  val name: String = "Module0"
+  val idx: Int = 0
   override def toString: String = {
     s"${x0.getOrElse("")}"
   }

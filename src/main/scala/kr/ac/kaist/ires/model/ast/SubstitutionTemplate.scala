@@ -12,7 +12,7 @@ case class SubstitutionTemplate0(x0: Lexical, x1: Expression, x2: TemplateSpans,
   x0.parent = Some(this)
   x1.parent = Some(this)
   x2.parent = Some(this)
-  val name: String = "SubstitutionTemplate0"
+  val idx: Int = 0
   override def toString: String = {
     s"$x0 $x1 $x2"
   }

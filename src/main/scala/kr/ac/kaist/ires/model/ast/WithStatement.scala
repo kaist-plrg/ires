@@ -11,7 +11,7 @@ trait WithStatement extends AST {
 case class WithStatement0(x2: Expression, x4: Statement, parserParams: List[Boolean]) extends WithStatement {
   x2.parent = Some(this)
   x4.parent = Some(this)
-  val name: String = "WithStatement0"
+  val idx: Int = 0
   override def toString: String = {
     s"with ( $x2 ) $x4"
   }

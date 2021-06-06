@@ -10,7 +10,7 @@ trait Initializer extends AST {
 
 case class Initializer0(x1: AssignmentExpression, parserParams: List[Boolean]) extends Initializer {
   x1.parent = Some(this)
-  val name: String = "Initializer0"
+  val idx: Int = 0
   override def toString: String = {
     s"= $x1"
   }

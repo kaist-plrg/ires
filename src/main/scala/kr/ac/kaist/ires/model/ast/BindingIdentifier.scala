@@ -10,7 +10,7 @@ trait BindingIdentifier extends AST {
 
 case class BindingIdentifier0(x0: Identifier, parserParams: List[Boolean]) extends BindingIdentifier {
   x0.parent = Some(this)
-  val name: String = "BindingIdentifier0"
+  val idx: Int = 0
   override def toString: String = {
     s"$x0"
   }
@@ -29,7 +29,7 @@ object BindingIdentifier0 extends ASTInfo {
 }
 
 case class BindingIdentifier1(parserParams: List[Boolean]) extends BindingIdentifier {
-  val name: String = "BindingIdentifier1"
+  val idx: Int = 1
   override def toString: String = {
     s"yield"
   }
@@ -49,7 +49,7 @@ object BindingIdentifier1 extends ASTInfo {
 }
 
 case class BindingIdentifier2(parserParams: List[Boolean]) extends BindingIdentifier {
-  val name: String = "BindingIdentifier2"
+  val idx: Int = 2
   override def toString: String = {
     s"await"
   }

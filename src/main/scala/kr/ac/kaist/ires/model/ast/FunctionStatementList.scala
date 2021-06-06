@@ -10,7 +10,7 @@ trait FunctionStatementList extends AST {
 
 case class FunctionStatementList0(x0: Option[StatementList], parserParams: List[Boolean]) extends FunctionStatementList {
   x0.foreach((m) => m.parent = Some(this))
-  val name: String = "FunctionStatementList0"
+  val idx: Int = 0
   override def toString: String = {
     s"${x0.getOrElse("")}"
   }

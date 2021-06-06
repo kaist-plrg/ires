@@ -10,7 +10,7 @@ trait Identifier extends AST {
 
 case class Identifier0(x0: Lexical, parserParams: List[Boolean]) extends Identifier {
   x0.parent = Some(this)
-  val name: String = "Identifier0"
+  val idx: Int = 0
   override def toString: String = {
     s"$x0"
   }

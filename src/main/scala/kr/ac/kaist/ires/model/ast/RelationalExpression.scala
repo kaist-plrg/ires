@@ -10,7 +10,7 @@ trait RelationalExpression extends AST {
 
 case class RelationalExpression0(x0: ShiftExpression, parserParams: List[Boolean]) extends RelationalExpression {
   x0.parent = Some(this)
-  val name: String = "RelationalExpression0"
+  val idx: Int = 0
   override def toString: String = {
     s"$x0"
   }
@@ -26,7 +26,7 @@ object RelationalExpression0 extends ASTInfo {
 case class RelationalExpression1(x0: RelationalExpression, x2: ShiftExpression, parserParams: List[Boolean]) extends RelationalExpression {
   x0.parent = Some(this)
   x2.parent = Some(this)
-  val name: String = "RelationalExpression1"
+  val idx: Int = 1
   override def toString: String = {
     s"$x0 < $x2"
   }
@@ -47,7 +47,7 @@ object RelationalExpression1 extends ASTInfo {
 case class RelationalExpression2(x0: RelationalExpression, x2: ShiftExpression, parserParams: List[Boolean]) extends RelationalExpression {
   x0.parent = Some(this)
   x2.parent = Some(this)
-  val name: String = "RelationalExpression2"
+  val idx: Int = 2
   override def toString: String = {
     s"$x0 > $x2"
   }
@@ -68,7 +68,7 @@ object RelationalExpression2 extends ASTInfo {
 case class RelationalExpression3(x0: RelationalExpression, x2: ShiftExpression, parserParams: List[Boolean]) extends RelationalExpression {
   x0.parent = Some(this)
   x2.parent = Some(this)
-  val name: String = "RelationalExpression3"
+  val idx: Int = 3
   override def toString: String = {
     s"$x0 <= $x2"
   }
@@ -89,7 +89,7 @@ object RelationalExpression3 extends ASTInfo {
 case class RelationalExpression4(x0: RelationalExpression, x2: ShiftExpression, parserParams: List[Boolean]) extends RelationalExpression {
   x0.parent = Some(this)
   x2.parent = Some(this)
-  val name: String = "RelationalExpression4"
+  val idx: Int = 4
   override def toString: String = {
     s"$x0 >= $x2"
   }
@@ -110,7 +110,7 @@ object RelationalExpression4 extends ASTInfo {
 case class RelationalExpression5(x0: RelationalExpression, x2: ShiftExpression, parserParams: List[Boolean]) extends RelationalExpression {
   x0.parent = Some(this)
   x2.parent = Some(this)
-  val name: String = "RelationalExpression5"
+  val idx: Int = 5
   override def toString: String = {
     s"$x0 instanceof $x2"
   }
@@ -131,7 +131,7 @@ object RelationalExpression5 extends ASTInfo {
 case class RelationalExpression6(x0: RelationalExpression, x2: ShiftExpression, parserParams: List[Boolean]) extends RelationalExpression {
   x0.parent = Some(this)
   x2.parent = Some(this)
-  val name: String = "RelationalExpression6"
+  val idx: Int = 6
   override def toString: String = {
     s"$x0 in $x2"
   }

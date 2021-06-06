@@ -12,7 +12,7 @@ case class FunctionExpression0(x1: Option[BindingIdentifier], x3: FormalParamete
   x1.foreach((m) => m.parent = Some(this))
   x3.parent = Some(this)
   x6.parent = Some(this)
-  val name: String = "FunctionExpression0"
+  val idx: Int = 0
   override def toString: String = {
     s"function ${x1.getOrElse("")} ( $x3 ) { $x6 }"
   }

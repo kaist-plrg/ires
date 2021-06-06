@@ -10,7 +10,7 @@ trait SuperCall extends AST {
 
 case class SuperCall0(x1: Arguments, parserParams: List[Boolean]) extends SuperCall {
   x1.parent = Some(this)
-  val name: String = "SuperCall0"
+  val idx: Int = 0
   override def toString: String = {
     s"super $x1"
   }

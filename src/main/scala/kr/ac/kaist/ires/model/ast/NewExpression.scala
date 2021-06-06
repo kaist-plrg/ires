@@ -10,7 +10,7 @@ trait NewExpression extends AST {
 
 case class NewExpression0(x0: MemberExpression, parserParams: List[Boolean]) extends NewExpression {
   x0.parent = Some(this)
-  val name: String = "NewExpression0"
+  val idx: Int = 0
   override def toString: String = {
     s"$x0"
   }
@@ -25,7 +25,7 @@ object NewExpression0 extends ASTInfo {
 
 case class NewExpression1(x1: NewExpression, parserParams: List[Boolean]) extends NewExpression {
   x1.parent = Some(this)
-  val name: String = "NewExpression1"
+  val idx: Int = 1
   override def toString: String = {
     s"new $x1"
   }

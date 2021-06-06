@@ -10,7 +10,7 @@ trait BitwiseXORExpression extends AST {
 
 case class BitwiseXORExpression0(x0: BitwiseANDExpression, parserParams: List[Boolean]) extends BitwiseXORExpression {
   x0.parent = Some(this)
-  val name: String = "BitwiseXORExpression0"
+  val idx: Int = 0
   override def toString: String = {
     s"$x0"
   }
@@ -26,7 +26,7 @@ object BitwiseXORExpression0 extends ASTInfo {
 case class BitwiseXORExpression1(x0: BitwiseXORExpression, x2: BitwiseANDExpression, parserParams: List[Boolean]) extends BitwiseXORExpression {
   x0.parent = Some(this)
   x2.parent = Some(this)
-  val name: String = "BitwiseXORExpression1"
+  val idx: Int = 1
   override def toString: String = {
     s"$x0 ^ $x2"
   }

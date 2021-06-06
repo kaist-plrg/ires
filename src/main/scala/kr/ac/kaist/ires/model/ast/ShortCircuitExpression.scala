@@ -10,7 +10,7 @@ trait ShortCircuitExpression extends AST {
 
 case class ShortCircuitExpression0(x0: LogicalORExpression, parserParams: List[Boolean]) extends ShortCircuitExpression {
   x0.parent = Some(this)
-  val name: String = "ShortCircuitExpression0"
+  val idx: Int = 0
   override def toString: String = {
     s"$x0"
   }
@@ -25,7 +25,7 @@ object ShortCircuitExpression0 extends ASTInfo {
 
 case class ShortCircuitExpression1(x0: CoalesceExpression, parserParams: List[Boolean]) extends ShortCircuitExpression {
   x0.parent = Some(this)
-  val name: String = "ShortCircuitExpression1"
+  val idx: Int = 1
   override def toString: String = {
     s"$x0"
   }

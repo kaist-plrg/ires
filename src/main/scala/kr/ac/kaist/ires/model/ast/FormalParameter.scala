@@ -10,7 +10,7 @@ trait FormalParameter extends AST {
 
 case class FormalParameter0(x0: BindingElement, parserParams: List[Boolean]) extends FormalParameter {
   x0.parent = Some(this)
-  val name: String = "FormalParameter0"
+  val idx: Int = 0
   override def toString: String = {
     s"$x0"
   }

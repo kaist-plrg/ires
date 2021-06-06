@@ -10,7 +10,7 @@ trait AssignmentRestProperty extends AST {
 
 case class AssignmentRestProperty0(x1: DestructuringAssignmentTarget, parserParams: List[Boolean]) extends AssignmentRestProperty {
   x1.parent = Some(this)
-  val name: String = "AssignmentRestProperty0"
+  val idx: Int = 0
   override def toString: String = {
     s"... $x1"
   }

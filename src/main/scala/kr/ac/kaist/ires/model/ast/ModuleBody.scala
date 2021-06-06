@@ -10,7 +10,7 @@ trait ModuleBody extends AST {
 
 case class ModuleBody0(x0: ModuleItemList, parserParams: List[Boolean]) extends ModuleBody {
   x0.parent = Some(this)
-  val name: String = "ModuleBody0"
+  val idx: Int = 0
   override def toString: String = {
     s"$x0"
   }

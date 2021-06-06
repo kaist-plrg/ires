@@ -10,7 +10,7 @@ trait AsyncArrowHead extends AST {
 
 case class AsyncArrowHead0(x2: ArrowFormalParameters, parserParams: List[Boolean]) extends AsyncArrowHead {
   x2.parent = Some(this)
-  val name: String = "AsyncArrowHead0"
+  val idx: Int = 0
   override def toString: String = {
     s"async $x2"
   }

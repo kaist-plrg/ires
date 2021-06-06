@@ -10,7 +10,7 @@ trait AwaitExpression extends AST {
 
 case class AwaitExpression0(x1: UnaryExpression, parserParams: List[Boolean]) extends AwaitExpression {
   x1.parent = Some(this)
-  val name: String = "AwaitExpression0"
+  val idx: Int = 0
   override def toString: String = {
     s"await $x1"
   }

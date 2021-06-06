@@ -10,7 +10,7 @@ trait Expression extends AST {
 
 case class Expression0(x0: AssignmentExpression, parserParams: List[Boolean]) extends Expression {
   x0.parent = Some(this)
-  val name: String = "Expression0"
+  val idx: Int = 0
   override def toString: String = {
     s"$x0"
   }
@@ -28,7 +28,7 @@ object Expression0 extends ASTInfo {
 case class Expression1(x0: Expression, x2: AssignmentExpression, parserParams: List[Boolean]) extends Expression {
   x0.parent = Some(this)
   x2.parent = Some(this)
-  val name: String = "Expression1"
+  val idx: Int = 1
   override def toString: String = {
     s"$x0 , $x2"
   }

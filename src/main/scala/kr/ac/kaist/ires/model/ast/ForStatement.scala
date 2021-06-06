@@ -13,7 +13,7 @@ case class ForStatement0(x3: Option[Expression], x5: Option[Expression], x7: Opt
   x5.foreach((m) => m.parent = Some(this))
   x7.foreach((m) => m.parent = Some(this))
   x9.parent = Some(this)
-  val name: String = "ForStatement0"
+  val idx: Int = 0
   override def toString: String = {
     s"for ( ${x3.getOrElse("")} ; ${x5.getOrElse("")} ; ${x7.getOrElse("")} ) $x9"
   }
@@ -40,7 +40,7 @@ case class ForStatement1(x3: VariableDeclarationList, x5: Option[Expression], x7
   x5.foreach((m) => m.parent = Some(this))
   x7.foreach((m) => m.parent = Some(this))
   x9.parent = Some(this)
-  val name: String = "ForStatement1"
+  val idx: Int = 1
   override def toString: String = {
     s"for ( var $x3 ; ${x5.getOrElse("")} ; ${x7.getOrElse("")} ) $x9"
   }
@@ -67,7 +67,7 @@ case class ForStatement2(x2: LexicalDeclaration, x3: Option[Expression], x5: Opt
   x3.foreach((m) => m.parent = Some(this))
   x5.foreach((m) => m.parent = Some(this))
   x7.parent = Some(this)
-  val name: String = "ForStatement2"
+  val idx: Int = 2
   override def toString: String = {
     s"for ( $x2 ${x3.getOrElse("")} ; ${x5.getOrElse("")} ) $x7"
   }

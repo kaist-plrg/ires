@@ -11,7 +11,7 @@ trait CoalesceExpression extends AST {
 case class CoalesceExpression0(x0: CoalesceExpressionHead, x2: BitwiseORExpression, parserParams: List[Boolean]) extends CoalesceExpression {
   x0.parent = Some(this)
   x2.parent = Some(this)
-  val name: String = "CoalesceExpression0"
+  val idx: Int = 0
   override def toString: String = {
     s"$x0 ?? $x2"
   }

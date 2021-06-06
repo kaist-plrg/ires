@@ -9,7 +9,7 @@ trait Arguments extends AST {
 }
 
 case class Arguments0(parserParams: List[Boolean]) extends Arguments {
-  val name: String = "Arguments0"
+  val idx: Int = 0
   override def toString: String = {
     s"( )"
   }
@@ -26,7 +26,7 @@ object Arguments0 extends ASTInfo {
 
 case class Arguments1(x1: ArgumentList, parserParams: List[Boolean]) extends Arguments {
   x1.parent = Some(this)
-  val name: String = "Arguments1"
+  val idx: Int = 1
   override def toString: String = {
     s"( $x1 )"
   }
@@ -41,7 +41,7 @@ object Arguments1 extends ASTInfo {
 
 case class Arguments2(x1: ArgumentList, parserParams: List[Boolean]) extends Arguments {
   x1.parent = Some(this)
-  val name: String = "Arguments2"
+  val idx: Int = 2
   override def toString: String = {
     s"( $x1 , )"
   }

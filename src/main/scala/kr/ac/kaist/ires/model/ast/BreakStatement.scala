@@ -9,7 +9,7 @@ trait BreakStatement extends AST {
 }
 
 case class BreakStatement0(parserParams: List[Boolean]) extends BreakStatement {
-  val name: String = "BreakStatement0"
+  val idx: Int = 0
   override def toString: String = {
     s"break ;"
   }
@@ -28,7 +28,7 @@ object BreakStatement0 extends ASTInfo {
 
 case class BreakStatement1(x2: LabelIdentifier, parserParams: List[Boolean]) extends BreakStatement {
   x2.parent = Some(this)
-  val name: String = "BreakStatement1"
+  val idx: Int = 1
   override def toString: String = {
     s"break $x2 ;"
   }

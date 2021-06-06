@@ -11,7 +11,7 @@ trait ClassTail extends AST {
 case class ClassTail0(x0: Option[ClassHeritage], x2: Option[ClassBody], parserParams: List[Boolean]) extends ClassTail {
   x0.foreach((m) => m.parent = Some(this))
   x2.foreach((m) => m.parent = Some(this))
-  val name: String = "ClassTail0"
+  val idx: Int = 0
   override def toString: String = {
     s"${x0.getOrElse("")} { ${x2.getOrElse("")} }"
   }

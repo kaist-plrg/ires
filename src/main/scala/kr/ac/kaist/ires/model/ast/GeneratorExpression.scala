@@ -12,7 +12,7 @@ case class GeneratorExpression0(x2: Option[BindingIdentifier], x4: FormalParamet
   x2.foreach((m) => m.parent = Some(this))
   x4.parent = Some(this)
   x7.parent = Some(this)
-  val name: String = "GeneratorExpression0"
+  val idx: Int = 0
   override def toString: String = {
     s"function * ${x2.getOrElse("")} ( $x4 ) { $x7 }"
   }

@@ -10,7 +10,7 @@ trait CaseClauses extends AST {
 
 case class CaseClauses0(x0: CaseClause, parserParams: List[Boolean]) extends CaseClauses {
   x0.parent = Some(this)
-  val name: String = "CaseClauses0"
+  val idx: Int = 0
   override def toString: String = {
     s"$x0"
   }
@@ -26,7 +26,7 @@ object CaseClauses0 extends ASTInfo {
 case class CaseClauses1(x0: CaseClauses, x1: CaseClause, parserParams: List[Boolean]) extends CaseClauses {
   x0.parent = Some(this)
   x1.parent = Some(this)
-  val name: String = "CaseClauses1"
+  val idx: Int = 1
   override def toString: String = {
     s"$x0 $x1"
   }

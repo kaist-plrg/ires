@@ -11,7 +11,7 @@ trait ExportDeclaration extends AST {
 case class ExportDeclaration0(x1: ExportFromClause, x2: FromClause, parserParams: List[Boolean]) extends ExportDeclaration {
   x1.parent = Some(this)
   x2.parent = Some(this)
-  val name: String = "ExportDeclaration0"
+  val idx: Int = 0
   override def toString: String = {
     s"export $x1 $x2 ;"
   }
@@ -35,7 +35,7 @@ object ExportDeclaration0 extends ASTInfo {
 
 case class ExportDeclaration1(x1: NamedExports, parserParams: List[Boolean]) extends ExportDeclaration {
   x1.parent = Some(this)
-  val name: String = "ExportDeclaration1"
+  val idx: Int = 1
   override def toString: String = {
     s"export $x1 ;"
   }
@@ -59,7 +59,7 @@ object ExportDeclaration1 extends ASTInfo {
 
 case class ExportDeclaration2(x1: VariableStatement, parserParams: List[Boolean]) extends ExportDeclaration {
   x1.parent = Some(this)
-  val name: String = "ExportDeclaration2"
+  val idx: Int = 2
   override def toString: String = {
     s"export $x1"
   }
@@ -82,7 +82,7 @@ object ExportDeclaration2 extends ASTInfo {
 
 case class ExportDeclaration3(x1: Declaration, parserParams: List[Boolean]) extends ExportDeclaration {
   x1.parent = Some(this)
-  val name: String = "ExportDeclaration3"
+  val idx: Int = 3
   override def toString: String = {
     s"export $x1"
   }
@@ -105,7 +105,7 @@ object ExportDeclaration3 extends ASTInfo {
 
 case class ExportDeclaration4(x2: HoistableDeclaration, parserParams: List[Boolean]) extends ExportDeclaration {
   x2.parent = Some(this)
-  val name: String = "ExportDeclaration4"
+  val idx: Int = 4
   override def toString: String = {
     s"export default $x2"
   }
@@ -128,7 +128,7 @@ object ExportDeclaration4 extends ASTInfo {
 
 case class ExportDeclaration5(x2: ClassDeclaration, parserParams: List[Boolean]) extends ExportDeclaration {
   x2.parent = Some(this)
-  val name: String = "ExportDeclaration5"
+  val idx: Int = 5
   override def toString: String = {
     s"export default $x2"
   }
@@ -151,7 +151,7 @@ object ExportDeclaration5 extends ASTInfo {
 
 case class ExportDeclaration6(x3: AssignmentExpression, parserParams: List[Boolean]) extends ExportDeclaration {
   x3.parent = Some(this)
-  val name: String = "ExportDeclaration6"
+  val idx: Int = 6
   override def toString: String = {
     s"export default $x3 ;"
   }

@@ -12,7 +12,7 @@ case class AsyncGeneratorMethod0(x3: PropertyName, x5: UniqueFormalParameters, x
   x3.parent = Some(this)
   x5.parent = Some(this)
   x8.parent = Some(this)
-  val name: String = "AsyncGeneratorMethod0"
+  val idx: Int = 0
   override def toString: String = {
     s"async * $x3 ( $x5 ) { $x8 }"
   }

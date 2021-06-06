@@ -10,7 +10,7 @@ trait FunctionBody extends AST {
 
 case class FunctionBody0(x0: FunctionStatementList, parserParams: List[Boolean]) extends FunctionBody {
   x0.parent = Some(this)
-  val name: String = "FunctionBody0"
+  val idx: Int = 0
   override def toString: String = {
     s"$x0"
   }

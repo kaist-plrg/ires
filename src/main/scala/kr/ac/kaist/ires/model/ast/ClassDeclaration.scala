@@ -11,7 +11,7 @@ trait ClassDeclaration extends AST {
 case class ClassDeclaration0(x1: BindingIdentifier, x2: ClassTail, parserParams: List[Boolean]) extends ClassDeclaration {
   x1.parent = Some(this)
   x2.parent = Some(this)
-  val name: String = "ClassDeclaration0"
+  val idx: Int = 0
   override def toString: String = {
     s"class $x1 $x2"
   }
@@ -31,7 +31,7 @@ object ClassDeclaration0 extends ASTInfo {
 
 case class ClassDeclaration1(x1: ClassTail, parserParams: List[Boolean]) extends ClassDeclaration {
   x1.parent = Some(this)
-  val name: String = "ClassDeclaration1"
+  val idx: Int = 1
   override def toString: String = {
     s"class $x1"
   }

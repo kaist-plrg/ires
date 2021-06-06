@@ -10,7 +10,7 @@ trait VariableStatement extends AST {
 
 case class VariableStatement0(x1: VariableDeclarationList, parserParams: List[Boolean]) extends VariableStatement {
   x1.parent = Some(this)
-  val name: String = "VariableStatement0"
+  val idx: Int = 0
   override def toString: String = {
     s"var $x1 ;"
   }

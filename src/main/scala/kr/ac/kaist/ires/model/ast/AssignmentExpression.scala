@@ -10,7 +10,7 @@ trait AssignmentExpression extends AST {
 
 case class AssignmentExpression0(x0: ConditionalExpression, parserParams: List[Boolean]) extends AssignmentExpression {
   x0.parent = Some(this)
-  val name: String = "AssignmentExpression0"
+  val idx: Int = 0
   override def toString: String = {
     s"$x0"
   }
@@ -25,7 +25,7 @@ object AssignmentExpression0 extends ASTInfo {
 
 case class AssignmentExpression1(x0: YieldExpression, parserParams: List[Boolean]) extends AssignmentExpression {
   x0.parent = Some(this)
-  val name: String = "AssignmentExpression1"
+  val idx: Int = 1
   override def toString: String = {
     s"$x0"
   }
@@ -44,7 +44,7 @@ object AssignmentExpression1 extends ASTInfo {
 
 case class AssignmentExpression2(x0: ArrowFunction, parserParams: List[Boolean]) extends AssignmentExpression {
   x0.parent = Some(this)
-  val name: String = "AssignmentExpression2"
+  val idx: Int = 2
   override def toString: String = {
     s"$x0"
   }
@@ -63,7 +63,7 @@ object AssignmentExpression2 extends ASTInfo {
 
 case class AssignmentExpression3(x0: AsyncArrowFunction, parserParams: List[Boolean]) extends AssignmentExpression {
   x0.parent = Some(this)
-  val name: String = "AssignmentExpression3"
+  val idx: Int = 3
   override def toString: String = {
     s"$x0"
   }
@@ -83,7 +83,7 @@ object AssignmentExpression3 extends ASTInfo {
 case class AssignmentExpression4(x0: LeftHandSideExpression, x2: AssignmentExpression, parserParams: List[Boolean]) extends AssignmentExpression {
   x0.parent = Some(this)
   x2.parent = Some(this)
-  val name: String = "AssignmentExpression4"
+  val idx: Int = 4
   override def toString: String = {
     s"$x0 = $x2"
   }
@@ -105,7 +105,7 @@ case class AssignmentExpression5(x0: LeftHandSideExpression, x1: AssignmentOpera
   x0.parent = Some(this)
   x1.parent = Some(this)
   x2.parent = Some(this)
-  val name: String = "AssignmentExpression5"
+  val idx: Int = 5
   override def toString: String = {
     s"$x0 $x1 $x2"
   }
@@ -127,7 +127,7 @@ object AssignmentExpression5 extends ASTInfo {
 case class AssignmentExpression6(x0: LeftHandSideExpression, x2: AssignmentExpression, parserParams: List[Boolean]) extends AssignmentExpression {
   x0.parent = Some(this)
   x2.parent = Some(this)
-  val name: String = "AssignmentExpression6"
+  val idx: Int = 6
   override def toString: String = {
     s"$x0 &&= $x2"
   }
@@ -149,7 +149,7 @@ object AssignmentExpression6 extends ASTInfo {
 case class AssignmentExpression7(x0: LeftHandSideExpression, x2: AssignmentExpression, parserParams: List[Boolean]) extends AssignmentExpression {
   x0.parent = Some(this)
   x2.parent = Some(this)
-  val name: String = "AssignmentExpression7"
+  val idx: Int = 7
   override def toString: String = {
     s"$x0 ||= $x2"
   }
@@ -171,7 +171,7 @@ object AssignmentExpression7 extends ASTInfo {
 case class AssignmentExpression8(x0: LeftHandSideExpression, x2: AssignmentExpression, parserParams: List[Boolean]) extends AssignmentExpression {
   x0.parent = Some(this)
   x2.parent = Some(this)
-  val name: String = "AssignmentExpression8"
+  val idx: Int = 8
   override def toString: String = {
     s"$x0 ??= $x2"
   }

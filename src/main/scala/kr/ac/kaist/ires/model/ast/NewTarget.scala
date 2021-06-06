@@ -9,7 +9,7 @@ trait NewTarget extends AST {
 }
 
 case class NewTarget0(parserParams: List[Boolean]) extends NewTarget {
-  val name: String = "NewTarget0"
+  val idx: Int = 0
   override def toString: String = {
     s"new . target"
   }

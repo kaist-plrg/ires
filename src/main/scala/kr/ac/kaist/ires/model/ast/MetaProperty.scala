@@ -10,7 +10,7 @@ trait MetaProperty extends AST {
 
 case class MetaProperty0(x0: NewTarget, parserParams: List[Boolean]) extends MetaProperty {
   x0.parent = Some(this)
-  val name: String = "MetaProperty0"
+  val idx: Int = 0
   override def toString: String = {
     s"$x0"
   }
@@ -25,7 +25,7 @@ object MetaProperty0 extends ASTInfo {
 
 case class MetaProperty1(x0: ImportMeta, parserParams: List[Boolean]) extends MetaProperty {
   x0.parent = Some(this)
-  val name: String = "MetaProperty1"
+  val idx: Int = 1
   override def toString: String = {
     s"$x0"
   }

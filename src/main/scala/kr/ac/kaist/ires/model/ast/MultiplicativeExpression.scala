@@ -10,7 +10,7 @@ trait MultiplicativeExpression extends AST {
 
 case class MultiplicativeExpression0(x0: ExponentiationExpression, parserParams: List[Boolean]) extends MultiplicativeExpression {
   x0.parent = Some(this)
-  val name: String = "MultiplicativeExpression0"
+  val idx: Int = 0
   override def toString: String = {
     s"$x0"
   }
@@ -27,7 +27,7 @@ case class MultiplicativeExpression1(x0: MultiplicativeExpression, x1: Multiplic
   x0.parent = Some(this)
   x1.parent = Some(this)
   x2.parent = Some(this)
-  val name: String = "MultiplicativeExpression1"
+  val idx: Int = 1
   override def toString: String = {
     s"$x0 $x1 $x2"
   }

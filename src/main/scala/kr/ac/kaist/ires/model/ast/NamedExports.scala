@@ -9,7 +9,7 @@ trait NamedExports extends AST {
 }
 
 case class NamedExports0(parserParams: List[Boolean]) extends NamedExports {
-  val name: String = "NamedExports0"
+  val idx: Int = 0
   override def toString: String = {
     s"{ }"
   }
@@ -29,7 +29,7 @@ object NamedExports0 extends ASTInfo {
 
 case class NamedExports1(x1: ExportsList, parserParams: List[Boolean]) extends NamedExports {
   x1.parent = Some(this)
-  val name: String = "NamedExports1"
+  val idx: Int = 1
   override def toString: String = {
     s"{ $x1 }"
   }
@@ -44,7 +44,7 @@ object NamedExports1 extends ASTInfo {
 
 case class NamedExports2(x1: ExportsList, parserParams: List[Boolean]) extends NamedExports {
   x1.parent = Some(this)
-  val name: String = "NamedExports2"
+  val idx: Int = 2
   override def toString: String = {
     s"{ $x1 , }"
   }

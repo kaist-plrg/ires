@@ -10,7 +10,7 @@ trait AdditiveExpression extends AST {
 
 case class AdditiveExpression0(x0: MultiplicativeExpression, parserParams: List[Boolean]) extends AdditiveExpression {
   x0.parent = Some(this)
-  val name: String = "AdditiveExpression0"
+  val idx: Int = 0
   override def toString: String = {
     s"$x0"
   }
@@ -26,7 +26,7 @@ object AdditiveExpression0 extends ASTInfo {
 case class AdditiveExpression1(x0: AdditiveExpression, x2: MultiplicativeExpression, parserParams: List[Boolean]) extends AdditiveExpression {
   x0.parent = Some(this)
   x2.parent = Some(this)
-  val name: String = "AdditiveExpression1"
+  val idx: Int = 1
   override def toString: String = {
     s"$x0 + $x2"
   }
@@ -47,7 +47,7 @@ object AdditiveExpression1 extends ASTInfo {
 case class AdditiveExpression2(x0: AdditiveExpression, x2: MultiplicativeExpression, parserParams: List[Boolean]) extends AdditiveExpression {
   x0.parent = Some(this)
   x2.parent = Some(this)
-  val name: String = "AdditiveExpression2"
+  val idx: Int = 2
   override def toString: String = {
     s"$x0 - $x2"
   }

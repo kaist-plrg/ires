@@ -10,7 +10,7 @@ trait ExportSpecifier extends AST {
 
 case class ExportSpecifier0(x0: Lexical, parserParams: List[Boolean]) extends ExportSpecifier {
   x0.parent = Some(this)
-  val name: String = "ExportSpecifier0"
+  val idx: Int = 0
   override def toString: String = {
     s"$x0"
   }
@@ -31,7 +31,7 @@ object ExportSpecifier0 extends ASTInfo {
 case class ExportSpecifier1(x0: Lexical, x2: Lexical, parserParams: List[Boolean]) extends ExportSpecifier {
   x0.parent = Some(this)
   x2.parent = Some(this)
-  val name: String = "ExportSpecifier1"
+  val idx: Int = 1
   override def toString: String = {
     s"$x0 as $x2"
   }

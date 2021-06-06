@@ -11,7 +11,7 @@ trait AsyncArrowFunction extends AST {
 case class AsyncArrowFunction0(x2: AsyncArrowBindingIdentifier, x5: AsyncConciseBody, parserParams: List[Boolean]) extends AsyncArrowFunction {
   x2.parent = Some(this)
   x5.parent = Some(this)
-  val name: String = "AsyncArrowFunction0"
+  val idx: Int = 0
   override def toString: String = {
     s"async $x2 => $x5"
   }
@@ -34,7 +34,7 @@ object AsyncArrowFunction0 extends ASTInfo {
 case class AsyncArrowFunction1(x0: CoverCallExpressionAndAsyncArrowHead, x3: AsyncConciseBody, parserParams: List[Boolean]) extends AsyncArrowFunction {
   x0.parent = Some(this)
   x3.parent = Some(this)
-  val name: String = "AsyncArrowFunction1"
+  val idx: Int = 1
   override def toString: String = {
     s"$x0 => $x3"
   }

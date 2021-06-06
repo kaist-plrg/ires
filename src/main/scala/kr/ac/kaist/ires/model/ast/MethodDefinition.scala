@@ -12,7 +12,7 @@ case class MethodDefinition0(x0: PropertyName, x2: UniqueFormalParameters, x5: F
   x0.parent = Some(this)
   x2.parent = Some(this)
   x5.parent = Some(this)
-  val name: String = "MethodDefinition0"
+  val idx: Int = 0
   override def toString: String = {
     s"$x0 ( $x2 ) { $x5 }"
   }
@@ -36,7 +36,7 @@ object MethodDefinition0 extends ASTInfo {
 
 case class MethodDefinition1(x0: GeneratorMethod, parserParams: List[Boolean]) extends MethodDefinition {
   x0.parent = Some(this)
-  val name: String = "MethodDefinition1"
+  val idx: Int = 1
   override def toString: String = {
     s"$x0"
   }
@@ -53,7 +53,7 @@ object MethodDefinition1 extends ASTInfo {
 
 case class MethodDefinition2(x0: AsyncMethod, parserParams: List[Boolean]) extends MethodDefinition {
   x0.parent = Some(this)
-  val name: String = "MethodDefinition2"
+  val idx: Int = 2
   override def toString: String = {
     s"$x0"
   }
@@ -70,7 +70,7 @@ object MethodDefinition2 extends ASTInfo {
 
 case class MethodDefinition3(x0: AsyncGeneratorMethod, parserParams: List[Boolean]) extends MethodDefinition {
   x0.parent = Some(this)
-  val name: String = "MethodDefinition3"
+  val idx: Int = 3
   override def toString: String = {
     s"$x0"
   }
@@ -88,7 +88,7 @@ object MethodDefinition3 extends ASTInfo {
 case class MethodDefinition4(x1: PropertyName, x5: FunctionBody, parserParams: List[Boolean]) extends MethodDefinition {
   x1.parent = Some(this)
   x5.parent = Some(this)
-  val name: String = "MethodDefinition4"
+  val idx: Int = 4
   override def toString: String = {
     s"get $x1 ( ) { $x5 }"
   }
@@ -112,7 +112,7 @@ case class MethodDefinition5(x1: PropertyName, x3: PropertySetParameterList, x6:
   x1.parent = Some(this)
   x3.parent = Some(this)
   x6.parent = Some(this)
-  val name: String = "MethodDefinition5"
+  val idx: Int = 5
   override def toString: String = {
     s"set $x1 ( $x3 ) { $x6 }"
   }

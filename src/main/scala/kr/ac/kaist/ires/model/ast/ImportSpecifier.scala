@@ -10,7 +10,7 @@ trait ImportSpecifier extends AST {
 
 case class ImportSpecifier0(x0: ImportedBinding, parserParams: List[Boolean]) extends ImportSpecifier {
   x0.parent = Some(this)
-  val name: String = "ImportSpecifier0"
+  val idx: Int = 0
   override def toString: String = {
     s"$x0"
   }
@@ -28,7 +28,7 @@ object ImportSpecifier0 extends ASTInfo {
 case class ImportSpecifier1(x0: Lexical, x2: ImportedBinding, parserParams: List[Boolean]) extends ImportSpecifier {
   x0.parent = Some(this)
   x2.parent = Some(this)
-  val name: String = "ImportSpecifier1"
+  val idx: Int = 1
   override def toString: String = {
     s"$x0 as $x2"
   }

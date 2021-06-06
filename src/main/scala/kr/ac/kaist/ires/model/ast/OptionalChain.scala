@@ -10,7 +10,7 @@ trait OptionalChain extends AST {
 
 case class OptionalChain0(x1: Arguments, parserParams: List[Boolean]) extends OptionalChain {
   x1.parent = Some(this)
-  val name: String = "OptionalChain0"
+  val idx: Int = 0
   override def toString: String = {
     s"?. $x1"
   }
@@ -28,7 +28,7 @@ object OptionalChain0 extends ASTInfo {
 
 case class OptionalChain1(x2: Expression, parserParams: List[Boolean]) extends OptionalChain {
   x2.parent = Some(this)
-  val name: String = "OptionalChain1"
+  val idx: Int = 1
   override def toString: String = {
     s"?. [ $x2 ]"
   }
@@ -46,7 +46,7 @@ object OptionalChain1 extends ASTInfo {
 
 case class OptionalChain2(x1: Lexical, parserParams: List[Boolean]) extends OptionalChain {
   x1.parent = Some(this)
-  val name: String = "OptionalChain2"
+  val idx: Int = 2
   override def toString: String = {
     s"?. $x1"
   }
@@ -65,7 +65,7 @@ object OptionalChain2 extends ASTInfo {
 
 case class OptionalChain3(x1: TemplateLiteral, parserParams: List[Boolean]) extends OptionalChain {
   x1.parent = Some(this)
-  val name: String = "OptionalChain3"
+  val idx: Int = 3
   override def toString: String = {
     s"?. $x1"
   }
@@ -83,7 +83,7 @@ object OptionalChain3 extends ASTInfo {
 case class OptionalChain4(x0: OptionalChain, x1: Arguments, parserParams: List[Boolean]) extends OptionalChain {
   x0.parent = Some(this)
   x1.parent = Some(this)
-  val name: String = "OptionalChain4"
+  val idx: Int = 4
   override def toString: String = {
     s"$x0 $x1"
   }
@@ -102,7 +102,7 @@ object OptionalChain4 extends ASTInfo {
 case class OptionalChain5(x0: OptionalChain, x2: Expression, parserParams: List[Boolean]) extends OptionalChain {
   x0.parent = Some(this)
   x2.parent = Some(this)
-  val name: String = "OptionalChain5"
+  val idx: Int = 5
   override def toString: String = {
     s"$x0 [ $x2 ]"
   }
@@ -121,7 +121,7 @@ object OptionalChain5 extends ASTInfo {
 case class OptionalChain6(x0: OptionalChain, x2: Lexical, parserParams: List[Boolean]) extends OptionalChain {
   x0.parent = Some(this)
   x2.parent = Some(this)
-  val name: String = "OptionalChain6"
+  val idx: Int = 6
   override def toString: String = {
     s"$x0 . $x2"
   }
@@ -141,7 +141,7 @@ object OptionalChain6 extends ASTInfo {
 case class OptionalChain7(x0: OptionalChain, x1: TemplateLiteral, parserParams: List[Boolean]) extends OptionalChain {
   x0.parent = Some(this)
   x1.parent = Some(this)
-  val name: String = "OptionalChain7"
+  val idx: Int = 7
   override def toString: String = {
     s"$x0 $x1"
   }

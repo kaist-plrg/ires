@@ -10,7 +10,7 @@ trait GeneratorBody extends AST {
 
 case class GeneratorBody0(x0: FunctionBody, parserParams: List[Boolean]) extends GeneratorBody {
   x0.parent = Some(this)
-  val name: String = "GeneratorBody0"
+  val idx: Int = 0
   override def toString: String = {
     s"$x0"
   }

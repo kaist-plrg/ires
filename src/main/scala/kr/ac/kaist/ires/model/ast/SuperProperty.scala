@@ -10,7 +10,7 @@ trait SuperProperty extends AST {
 
 case class SuperProperty0(x2: Expression, parserParams: List[Boolean]) extends SuperProperty {
   x2.parent = Some(this)
-  val name: String = "SuperProperty0"
+  val idx: Int = 0
   override def toString: String = {
     s"super [ $x2 ]"
   }
@@ -27,7 +27,7 @@ object SuperProperty0 extends ASTInfo {
 
 case class SuperProperty1(x2: Lexical, parserParams: List[Boolean]) extends SuperProperty {
   x2.parent = Some(this)
-  val name: String = "SuperProperty1"
+  val idx: Int = 1
   override def toString: String = {
     s"super . $x2"
   }

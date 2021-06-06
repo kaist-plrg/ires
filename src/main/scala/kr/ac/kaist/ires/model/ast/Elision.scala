@@ -9,7 +9,7 @@ trait Elision extends AST {
 }
 
 case class Elision0(parserParams: List[Boolean]) extends Elision {
-  val name: String = "Elision0"
+  val idx: Int = 0
   override def toString: String = {
     s","
   }
@@ -27,7 +27,7 @@ object Elision0 extends ASTInfo {
 
 case class Elision1(x0: Elision, parserParams: List[Boolean]) extends Elision {
   x0.parent = Some(this)
-  val name: String = "Elision1"
+  val idx: Int = 1
   override def toString: String = {
     s"$x0 ,"
   }

@@ -10,7 +10,7 @@ trait CaseBlock extends AST {
 
 case class CaseBlock0(x1: Option[CaseClauses], parserParams: List[Boolean]) extends CaseBlock {
   x1.foreach((m) => m.parent = Some(this))
-  val name: String = "CaseBlock0"
+  val idx: Int = 0
   override def toString: String = {
     s"{ ${x1.getOrElse("")} }"
   }
@@ -38,7 +38,7 @@ case class CaseBlock1(x1: Option[CaseClauses], x2: DefaultClause, x3: Option[Cas
   x1.foreach((m) => m.parent = Some(this))
   x2.parent = Some(this)
   x3.foreach((m) => m.parent = Some(this))
-  val name: String = "CaseBlock1"
+  val idx: Int = 1
   override def toString: String = {
     s"{ ${x1.getOrElse("")} $x2 ${x3.getOrElse("")} }"
   }

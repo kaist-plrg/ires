@@ -1,24 +1,33 @@
 package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
+import spray.json._
 
 trait AST {
   var parent: Option[AST] = None
   val kind: String
-  val name: String
+  val idx: Int
   val k: Int
   val parserParams: List[Boolean]
   val info: ASTInfo
   val fullList: List[(String, Value)]
 
+  // position
+  var start: Int = 0
+  var end: Int = 0
+
+  // name
+  def name: String = kind + idx
+
   // to JSON format
-  def toJson: String = "{" + (fullList.map {
-    case (name, value) => "\"" + name + "\":" + (value match {
-      case ASTVal(ast) => ast.toJson
-      case Str(str) => "\"" + str + "\""
-      case _ => null
-    })
-  }).mkString(",") + "}"
+  def toJson: JsValue = JsObject(
+    "kind" -> JsString(kind),
+    "index" -> JsNumber(idx),
+    "children" -> JsArray(fullList.map {
+      case (_, ASTVal(ast)) => ast.toJson
+      case _ => JsNull
+    }: _*),
+  )
 
   // get possible kinds
   def getKinds: Set[String] = (list match {
@@ -107,11 +116,19 @@ trait ASTInfo {
 }
 
 case class Lexical(kind: String, str: String) extends AST {
-  val name: String = kind
+  val idx: Int = 0
   val k: Int = 0
   val parserParams: List[Boolean] = Nil
   val info: ASTInfo = LexicalInfo
   val fullList: List[(String, Value)] = Nil
+
+  // name
+  override def name: String = kind
+
+  // to JSON format
+  override def toJson: JsValue = JsString(str)
+
+  // conversion to string
   override def toString: String = str
 }
 object LexicalInfo extends ASTInfo {

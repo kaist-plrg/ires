@@ -11,7 +11,7 @@ trait CaseClause extends AST {
 case class CaseClause0(x1: Expression, x3: Option[StatementList], parserParams: List[Boolean]) extends CaseClause {
   x1.parent = Some(this)
   x3.foreach((m) => m.parent = Some(this))
-  val name: String = "CaseClause0"
+  val idx: Int = 0
   override def toString: String = {
     s"case $x1 : ${x3.getOrElse("")}"
   }

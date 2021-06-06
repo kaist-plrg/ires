@@ -9,7 +9,7 @@ trait ContinueStatement extends AST {
 }
 
 case class ContinueStatement0(parserParams: List[Boolean]) extends ContinueStatement {
-  val name: String = "ContinueStatement0"
+  val idx: Int = 0
   override def toString: String = {
     s"continue ;"
   }
@@ -28,7 +28,7 @@ object ContinueStatement0 extends ASTInfo {
 
 case class ContinueStatement1(x2: LabelIdentifier, parserParams: List[Boolean]) extends ContinueStatement {
   x2.parent = Some(this)
-  val name: String = "ContinueStatement1"
+  val idx: Int = 1
   override def toString: String = {
     s"continue $x2 ;"
   }

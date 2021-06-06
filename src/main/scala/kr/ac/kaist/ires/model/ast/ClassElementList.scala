@@ -10,7 +10,7 @@ trait ClassElementList extends AST {
 
 case class ClassElementList0(x0: ClassElement, parserParams: List[Boolean]) extends ClassElementList {
   x0.parent = Some(this)
-  val name: String = "ClassElementList0"
+  val idx: Int = 0
   override def toString: String = {
     s"$x0"
   }
@@ -30,7 +30,7 @@ object ClassElementList0 extends ASTInfo {
 case class ClassElementList1(x0: ClassElementList, x1: ClassElement, parserParams: List[Boolean]) extends ClassElementList {
   x0.parent = Some(this)
   x1.parent = Some(this)
-  val name: String = "ClassElementList1"
+  val idx: Int = 1
   override def toString: String = {
     s"$x0 $x1"
   }

@@ -10,7 +10,7 @@ trait ModuleSpecifier extends AST {
 
 case class ModuleSpecifier0(x0: Lexical, parserParams: List[Boolean]) extends ModuleSpecifier {
   x0.parent = Some(this)
-  val name: String = "ModuleSpecifier0"
+  val idx: Int = 0
   override def toString: String = {
     s"$x0"
   }

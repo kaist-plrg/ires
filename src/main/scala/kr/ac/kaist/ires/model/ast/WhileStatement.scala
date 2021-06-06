@@ -11,7 +11,7 @@ trait WhileStatement extends AST {
 case class WhileStatement0(x2: Expression, x4: Statement, parserParams: List[Boolean]) extends WhileStatement {
   x2.parent = Some(this)
   x4.parent = Some(this)
-  val name: String = "WhileStatement0"
+  val idx: Int = 0
   override def toString: String = {
     s"while ( $x2 ) $x4"
   }

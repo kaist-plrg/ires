@@ -10,7 +10,7 @@ trait LeftHandSideExpression extends AST {
 
 case class LeftHandSideExpression0(x0: NewExpression, parserParams: List[Boolean]) extends LeftHandSideExpression {
   x0.parent = Some(this)
-  val name: String = "LeftHandSideExpression0"
+  val idx: Int = 0
   override def toString: String = {
     s"$x0"
   }
@@ -25,7 +25,7 @@ object LeftHandSideExpression0 extends ASTInfo {
 
 case class LeftHandSideExpression1(x0: CallExpression, parserParams: List[Boolean]) extends LeftHandSideExpression {
   x0.parent = Some(this)
-  val name: String = "LeftHandSideExpression1"
+  val idx: Int = 1
   override def toString: String = {
     s"$x0"
   }
@@ -44,7 +44,7 @@ object LeftHandSideExpression1 extends ASTInfo {
 
 case class LeftHandSideExpression2(x0: OptionalExpression, parserParams: List[Boolean]) extends LeftHandSideExpression {
   x0.parent = Some(this)
-  val name: String = "LeftHandSideExpression2"
+  val idx: Int = 2
   override def toString: String = {
     s"$x0"
   }

@@ -9,7 +9,7 @@ trait FormalParameters extends AST {
 }
 
 case class FormalParameters0(parserParams: List[Boolean]) extends FormalParameters {
-  val name: String = "FormalParameters0"
+  val idx: Int = 0
   override def toString: String = {
     s""
   }
@@ -30,7 +30,7 @@ object FormalParameters0 extends ASTInfo {
 
 case class FormalParameters1(x0: FunctionRestParameter, parserParams: List[Boolean]) extends FormalParameters {
   x0.parent = Some(this)
-  val name: String = "FormalParameters1"
+  val idx: Int = 1
   override def toString: String = {
     s"$x0"
   }
@@ -48,7 +48,7 @@ object FormalParameters1 extends ASTInfo {
 
 case class FormalParameters2(x0: FormalParameterList, parserParams: List[Boolean]) extends FormalParameters {
   x0.parent = Some(this)
-  val name: String = "FormalParameters2"
+  val idx: Int = 2
   override def toString: String = {
     s"$x0"
   }
@@ -65,7 +65,7 @@ object FormalParameters2 extends ASTInfo {
 
 case class FormalParameters3(x0: FormalParameterList, parserParams: List[Boolean]) extends FormalParameters {
   x0.parent = Some(this)
-  val name: String = "FormalParameters3"
+  val idx: Int = 3
   override def toString: String = {
     s"$x0 ,"
   }
@@ -81,7 +81,7 @@ object FormalParameters3 extends ASTInfo {
 case class FormalParameters4(x0: FormalParameterList, x2: FunctionRestParameter, parserParams: List[Boolean]) extends FormalParameters {
   x0.parent = Some(this)
   x2.parent = Some(this)
-  val name: String = "FormalParameters4"
+  val idx: Int = 4
   override def toString: String = {
     s"$x0 , $x2"
   }

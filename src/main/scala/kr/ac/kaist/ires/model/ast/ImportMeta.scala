@@ -9,7 +9,7 @@ trait ImportMeta extends AST {
 }
 
 case class ImportMeta0(parserParams: List[Boolean]) extends ImportMeta {
-  val name: String = "ImportMeta0"
+  val idx: Int = 0
   override def toString: String = {
     s"import . meta"
   }

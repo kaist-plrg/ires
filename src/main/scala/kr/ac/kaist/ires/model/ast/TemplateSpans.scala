@@ -10,7 +10,7 @@ trait TemplateSpans extends AST {
 
 case class TemplateSpans0(x0: Lexical, parserParams: List[Boolean]) extends TemplateSpans {
   x0.parent = Some(this)
-  val name: String = "TemplateSpans0"
+  val idx: Int = 0
   override def toString: String = {
     s"$x0"
   }
@@ -31,7 +31,7 @@ object TemplateSpans0 extends ASTInfo {
 case class TemplateSpans1(x0: TemplateMiddleList, x1: Lexical, parserParams: List[Boolean]) extends TemplateSpans {
   x0.parent = Some(this)
   x1.parent = Some(this)
-  val name: String = "TemplateSpans1"
+  val idx: Int = 1
   override def toString: String = {
     s"$x0 $x1"
   }

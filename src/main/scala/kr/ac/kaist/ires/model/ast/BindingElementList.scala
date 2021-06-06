@@ -10,7 +10,7 @@ trait BindingElementList extends AST {
 
 case class BindingElementList0(x0: BindingElisionElement, parserParams: List[Boolean]) extends BindingElementList {
   x0.parent = Some(this)
-  val name: String = "BindingElementList0"
+  val idx: Int = 0
   override def toString: String = {
     s"$x0"
   }
@@ -26,7 +26,7 @@ object BindingElementList0 extends ASTInfo {
 case class BindingElementList1(x0: BindingElementList, x2: BindingElisionElement, parserParams: List[Boolean]) extends BindingElementList {
   x0.parent = Some(this)
   x2.parent = Some(this)
-  val name: String = "BindingElementList1"
+  val idx: Int = 1
   override def toString: String = {
     s"$x0 , $x2"
   }

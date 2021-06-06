@@ -10,7 +10,7 @@ trait BindingPattern extends AST {
 
 case class BindingPattern0(x0: ObjectBindingPattern, parserParams: List[Boolean]) extends BindingPattern {
   x0.parent = Some(this)
-  val name: String = "BindingPattern0"
+  val idx: Int = 0
   override def toString: String = {
     s"$x0"
   }
@@ -27,7 +27,7 @@ object BindingPattern0 extends ASTInfo {
 
 case class BindingPattern1(x0: ArrayBindingPattern, parserParams: List[Boolean]) extends BindingPattern {
   x0.parent = Some(this)
-  val name: String = "BindingPattern1"
+  val idx: Int = 1
   override def toString: String = {
     s"$x0"
   }

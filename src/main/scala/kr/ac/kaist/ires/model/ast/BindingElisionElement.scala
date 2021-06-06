@@ -11,7 +11,7 @@ trait BindingElisionElement extends AST {
 case class BindingElisionElement0(x0: Option[Elision], x1: BindingElement, parserParams: List[Boolean]) extends BindingElisionElement {
   x0.foreach((m) => m.parent = Some(this))
   x1.parent = Some(this)
-  val name: String = "BindingElisionElement0"
+  val idx: Int = 0
   override def toString: String = {
     s"${x0.getOrElse("")} $x1"
   }

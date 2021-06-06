@@ -11,7 +11,7 @@ trait TemplateMiddleList extends AST {
 case class TemplateMiddleList0(x0: Lexical, x1: Expression, parserParams: List[Boolean]) extends TemplateMiddleList {
   x0.parent = Some(this)
   x1.parent = Some(this)
-  val name: String = "TemplateMiddleList0"
+  val idx: Int = 0
   override def toString: String = {
     s"$x0 $x1"
   }
@@ -33,7 +33,7 @@ case class TemplateMiddleList1(x0: TemplateMiddleList, x1: Lexical, x2: Expressi
   x0.parent = Some(this)
   x1.parent = Some(this)
   x2.parent = Some(this)
-  val name: String = "TemplateMiddleList1"
+  val idx: Int = 1
   override def toString: String = {
     s"$x0 $x1 $x2"
   }

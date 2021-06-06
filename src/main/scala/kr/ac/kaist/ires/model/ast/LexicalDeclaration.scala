@@ -11,7 +11,7 @@ trait LexicalDeclaration extends AST {
 case class LexicalDeclaration0(x0: LetOrConst, x1: BindingList, parserParams: List[Boolean]) extends LexicalDeclaration {
   x0.parent = Some(this)
   x1.parent = Some(this)
-  val name: String = "LexicalDeclaration0"
+  val idx: Int = 0
   override def toString: String = {
     s"$x0 $x1 ;"
   }

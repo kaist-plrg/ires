@@ -10,7 +10,7 @@ trait ModuleItem extends AST {
 
 case class ModuleItem0(x0: ImportDeclaration, parserParams: List[Boolean]) extends ModuleItem {
   x0.parent = Some(this)
-  val name: String = "ModuleItem0"
+  val idx: Int = 0
   override def toString: String = {
     s"$x0"
   }
@@ -38,7 +38,7 @@ object ModuleItem0 extends ASTInfo {
 
 case class ModuleItem1(x0: ExportDeclaration, parserParams: List[Boolean]) extends ModuleItem {
   x0.parent = Some(this)
-  val name: String = "ModuleItem1"
+  val idx: Int = 1
   override def toString: String = {
     s"$x0"
   }
@@ -62,7 +62,7 @@ object ModuleItem1 extends ASTInfo {
 
 case class ModuleItem2(x0: StatementListItem, parserParams: List[Boolean]) extends ModuleItem {
   x0.parent = Some(this)
-  val name: String = "ModuleItem2"
+  val idx: Int = 2
   override def toString: String = {
     s"$x0"
   }

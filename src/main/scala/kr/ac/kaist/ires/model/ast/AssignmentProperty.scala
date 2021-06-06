@@ -11,7 +11,7 @@ trait AssignmentProperty extends AST {
 case class AssignmentProperty0(x0: IdentifierReference, x1: Option[Initializer], parserParams: List[Boolean]) extends AssignmentProperty {
   x0.parent = Some(this)
   x1.foreach((m) => m.parent = Some(this))
-  val name: String = "AssignmentProperty0"
+  val idx: Int = 0
   override def toString: String = {
     s"$x0 ${x1.getOrElse("")}"
   }
@@ -30,7 +30,7 @@ object AssignmentProperty0 extends ASTInfo {
 case class AssignmentProperty1(x0: PropertyName, x2: AssignmentElement, parserParams: List[Boolean]) extends AssignmentProperty {
   x0.parent = Some(this)
   x2.parent = Some(this)
-  val name: String = "AssignmentProperty1"
+  val idx: Int = 1
   override def toString: String = {
     s"$x0 : $x2"
   }

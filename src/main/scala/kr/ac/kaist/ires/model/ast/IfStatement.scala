@@ -12,7 +12,7 @@ case class IfStatement0(x2: Expression, x4: Statement, x6: Statement, parserPara
   x2.parent = Some(this)
   x4.parent = Some(this)
   x6.parent = Some(this)
-  val name: String = "IfStatement0"
+  val idx: Int = 0
   override def toString: String = {
     s"if ( $x2 ) $x4 else $x6"
   }
@@ -37,7 +37,7 @@ object IfStatement0 extends ASTInfo {
 case class IfStatement1(x2: Expression, x4: Statement, parserParams: List[Boolean]) extends IfStatement {
   x2.parent = Some(this)
   x4.parent = Some(this)
-  val name: String = "IfStatement1"
+  val idx: Int = 1
   override def toString: String = {
     s"if ( $x2 ) $x4"
   }

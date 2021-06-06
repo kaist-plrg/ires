@@ -9,7 +9,7 @@ trait ObjectBindingPattern extends AST {
 }
 
 case class ObjectBindingPattern0(parserParams: List[Boolean]) extends ObjectBindingPattern {
-  val name: String = "ObjectBindingPattern0"
+  val idx: Int = 0
   override def toString: String = {
     s"{ }"
   }
@@ -28,7 +28,7 @@ object ObjectBindingPattern0 extends ASTInfo {
 
 case class ObjectBindingPattern1(x1: BindingRestProperty, parserParams: List[Boolean]) extends ObjectBindingPattern {
   x1.parent = Some(this)
-  val name: String = "ObjectBindingPattern1"
+  val idx: Int = 1
   override def toString: String = {
     s"{ $x1 }"
   }
@@ -46,7 +46,7 @@ object ObjectBindingPattern1 extends ASTInfo {
 
 case class ObjectBindingPattern2(x1: BindingPropertyList, parserParams: List[Boolean]) extends ObjectBindingPattern {
   x1.parent = Some(this)
-  val name: String = "ObjectBindingPattern2"
+  val idx: Int = 2
   override def toString: String = {
     s"{ $x1 }"
   }
@@ -64,7 +64,7 @@ object ObjectBindingPattern2 extends ASTInfo {
 case class ObjectBindingPattern3(x1: BindingPropertyList, x3: Option[BindingRestProperty], parserParams: List[Boolean]) extends ObjectBindingPattern {
   x1.parent = Some(this)
   x3.foreach((m) => m.parent = Some(this))
-  val name: String = "ObjectBindingPattern3"
+  val idx: Int = 3
   override def toString: String = {
     s"{ $x1 , ${x3.getOrElse("")} }"
   }

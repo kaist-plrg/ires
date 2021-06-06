@@ -10,7 +10,7 @@ trait IterationStatement extends AST {
 
 case class IterationStatement0(x0: DoWhileStatement, parserParams: List[Boolean]) extends IterationStatement {
   x0.parent = Some(this)
-  val name: String = "IterationStatement0"
+  val idx: Int = 0
   override def toString: String = {
     s"$x0"
   }
@@ -27,7 +27,7 @@ object IterationStatement0 extends ASTInfo {
 
 case class IterationStatement1(x0: WhileStatement, parserParams: List[Boolean]) extends IterationStatement {
   x0.parent = Some(this)
-  val name: String = "IterationStatement1"
+  val idx: Int = 1
   override def toString: String = {
     s"$x0"
   }
@@ -44,7 +44,7 @@ object IterationStatement1 extends ASTInfo {
 
 case class IterationStatement2(x0: ForStatement, parserParams: List[Boolean]) extends IterationStatement {
   x0.parent = Some(this)
-  val name: String = "IterationStatement2"
+  val idx: Int = 2
   override def toString: String = {
     s"$x0"
   }
@@ -61,7 +61,7 @@ object IterationStatement2 extends ASTInfo {
 
 case class IterationStatement3(x0: ForInOfStatement, parserParams: List[Boolean]) extends IterationStatement {
   x0.parent = Some(this)
-  val name: String = "IterationStatement3"
+  val idx: Int = 3
   override def toString: String = {
     s"$x0"
   }

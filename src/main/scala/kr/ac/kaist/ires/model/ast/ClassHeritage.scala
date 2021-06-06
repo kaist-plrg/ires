@@ -10,7 +10,7 @@ trait ClassHeritage extends AST {
 
 case class ClassHeritage0(x1: LeftHandSideExpression, parserParams: List[Boolean]) extends ClassHeritage {
   x1.parent = Some(this)
-  val name: String = "ClassHeritage0"
+  val idx: Int = 0
   override def toString: String = {
     s"extends $x1"
   }

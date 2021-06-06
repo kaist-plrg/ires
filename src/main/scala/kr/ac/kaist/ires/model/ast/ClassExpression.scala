@@ -11,7 +11,7 @@ trait ClassExpression extends AST {
 case class ClassExpression0(x1: Option[BindingIdentifier], x2: ClassTail, parserParams: List[Boolean]) extends ClassExpression {
   x1.foreach((m) => m.parent = Some(this))
   x2.parent = Some(this)
-  val name: String = "ClassExpression0"
+  val idx: Int = 0
   override def toString: String = {
     s"class ${x1.getOrElse("")} $x2"
   }

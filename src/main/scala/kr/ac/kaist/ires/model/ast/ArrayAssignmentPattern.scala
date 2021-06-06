@@ -11,7 +11,7 @@ trait ArrayAssignmentPattern extends AST {
 case class ArrayAssignmentPattern0(x1: Option[Elision], x2: Option[AssignmentRestElement], parserParams: List[Boolean]) extends ArrayAssignmentPattern {
   x1.foreach((m) => m.parent = Some(this))
   x2.foreach((m) => m.parent = Some(this))
-  val name: String = "ArrayAssignmentPattern0"
+  val idx: Int = 0
   override def toString: String = {
     s"[ ${x1.getOrElse("")} ${x2.getOrElse("")} ]"
   }
@@ -30,7 +30,7 @@ object ArrayAssignmentPattern0 extends ASTInfo {
 
 case class ArrayAssignmentPattern1(x1: AssignmentElementList, parserParams: List[Boolean]) extends ArrayAssignmentPattern {
   x1.parent = Some(this)
-  val name: String = "ArrayAssignmentPattern1"
+  val idx: Int = 1
   override def toString: String = {
     s"[ $x1 ]"
   }
@@ -49,7 +49,7 @@ case class ArrayAssignmentPattern2(x1: AssignmentElementList, x3: Option[Elision
   x1.parent = Some(this)
   x3.foreach((m) => m.parent = Some(this))
   x4.foreach((m) => m.parent = Some(this))
-  val name: String = "ArrayAssignmentPattern2"
+  val idx: Int = 2
   override def toString: String = {
     s"[ $x1 , ${x3.getOrElse("")} ${x4.getOrElse("")} ]"
   }

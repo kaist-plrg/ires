@@ -9,7 +9,7 @@ trait YieldExpression extends AST {
 }
 
 case class YieldExpression0(parserParams: List[Boolean]) extends YieldExpression {
-  val name: String = "YieldExpression0"
+  val idx: Int = 0
   override def toString: String = {
     s"yield"
   }
@@ -26,7 +26,7 @@ object YieldExpression0 extends ASTInfo {
 
 case class YieldExpression1(x2: AssignmentExpression, parserParams: List[Boolean]) extends YieldExpression {
   x2.parent = Some(this)
-  val name: String = "YieldExpression1"
+  val idx: Int = 1
   override def toString: String = {
     s"yield $x2"
   }
@@ -43,7 +43,7 @@ object YieldExpression1 extends ASTInfo {
 
 case class YieldExpression2(x3: AssignmentExpression, parserParams: List[Boolean]) extends YieldExpression {
   x3.parent = Some(this)
-  val name: String = "YieldExpression2"
+  val idx: Int = 2
   override def toString: String = {
     s"yield * $x3"
   }

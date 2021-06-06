@@ -10,7 +10,7 @@ trait Script extends AST {
 
 case class Script0(x0: Option[ScriptBody], parserParams: List[Boolean]) extends Script {
   x0.foreach((m) => m.parent = Some(this))
-  val name: String = "Script0"
+  val idx: Int = 0
   override def toString: String = {
     s"${x0.getOrElse("")}"
   }

@@ -11,7 +11,7 @@ trait OptionalExpression extends AST {
 case class OptionalExpression0(x0: MemberExpression, x1: OptionalChain, parserParams: List[Boolean]) extends OptionalExpression {
   x0.parent = Some(this)
   x1.parent = Some(this)
-  val name: String = "OptionalExpression0"
+  val idx: Int = 0
   override def toString: String = {
     s"$x0 $x1"
   }
@@ -30,7 +30,7 @@ object OptionalExpression0 extends ASTInfo {
 case class OptionalExpression1(x0: CallExpression, x1: OptionalChain, parserParams: List[Boolean]) extends OptionalExpression {
   x0.parent = Some(this)
   x1.parent = Some(this)
-  val name: String = "OptionalExpression1"
+  val idx: Int = 1
   override def toString: String = {
     s"$x0 $x1"
   }
@@ -49,7 +49,7 @@ object OptionalExpression1 extends ASTInfo {
 case class OptionalExpression2(x0: OptionalExpression, x1: OptionalChain, parserParams: List[Boolean]) extends OptionalExpression {
   x0.parent = Some(this)
   x1.parent = Some(this)
-  val name: String = "OptionalExpression2"
+  val idx: Int = 2
   override def toString: String = {
     s"$x0 $x1"
   }

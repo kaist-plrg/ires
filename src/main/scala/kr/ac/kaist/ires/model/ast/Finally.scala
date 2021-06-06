@@ -10,7 +10,7 @@ trait Finally extends AST {
 
 case class Finally0(x1: Block, parserParams: List[Boolean]) extends Finally {
   x1.parent = Some(this)
-  val name: String = "Finally0"
+  val idx: Int = 0
   override def toString: String = {
     s"finally $x1"
   }

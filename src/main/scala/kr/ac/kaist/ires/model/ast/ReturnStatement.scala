@@ -9,7 +9,7 @@ trait ReturnStatement extends AST {
 }
 
 case class ReturnStatement0(parserParams: List[Boolean]) extends ReturnStatement {
-  val name: String = "ReturnStatement0"
+  val idx: Int = 0
   override def toString: String = {
     s"return ;"
   }
@@ -27,7 +27,7 @@ object ReturnStatement0 extends ASTInfo {
 
 case class ReturnStatement1(x2: Expression, parserParams: List[Boolean]) extends ReturnStatement {
   x2.parent = Some(this)
-  val name: String = "ReturnStatement1"
+  val idx: Int = 1
   override def toString: String = {
     s"return $x2 ;"
   }
