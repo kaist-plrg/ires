@@ -30,7 +30,6 @@
     "gulp-eslint": "^6.0.0",
     "gulp-mocha": "^8.0.0",
     "gulp-uglify": "^3.0.2",
-    "json-diff": "^0.5.4",
     "mocha": "^8.4.0"
   }
 }

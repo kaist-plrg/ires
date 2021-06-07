@@ -20,13 +20,13 @@ trait AST {
   def name: String = kind + idx
 
   // to JSON format
-  def toJson: JsValue = JsObject(
-    "kind" -> JsString(kind),
-    "index" -> JsNumber(idx),
-    "children" -> JsArray(fullList.map {
+  def toJson: JsValue = JsArray(
+    JsNumber(idx),
+    JsArray(fullList.map {
       case (_, ASTVal(ast)) => ast.toJson
       case _ => JsNull
     }: _*),
+    JsArray(parserParams.map(p => JsNumber(if (p) 1 else 0)): _*)
   )
 
   // get possible kinds
