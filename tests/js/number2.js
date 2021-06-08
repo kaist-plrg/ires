@@ -1,1 +1,1 @@
-var x = (64.0000).toString(32);
+var x = 64.0000.toString(32);
