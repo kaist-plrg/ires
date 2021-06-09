@@ -2,4 +2,5 @@ class Rectangle {
 a() { return 1; }
 }
 
-var x = (new Rectangle).a();
+var rec = new Rectangle;
+var x = rec.a();
