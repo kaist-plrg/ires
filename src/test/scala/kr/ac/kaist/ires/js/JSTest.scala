@@ -4,6 +4,7 @@ import kr.ac.kaist.ires.IRESTest
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.model.{ AST, Parser => JSParser, Script }
 import kr.ac.kaist.ires.util.Useful._
+import spray.json._
 
 trait JSTest extends IRESTest {
   val category: String = "js"
@@ -13,6 +14,8 @@ trait JSTest extends IRESTest {
     JSParser.parse(JSParser.Script(Nil), str).get
   def parseFile(filename: String): Script =
     JSParser.parse(JSParser.Script(Nil), fileReader(filename)).get
+  def esparseFile(filename: String): Script =
+    Script(executeCmd(s"bin/esparse $filename").parseJson)
 
   // tests for js parser
   def parseTest(ast: AST): Unit = {
