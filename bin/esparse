@@ -1,2 +1,2 @@
 #!/bin/sh
-node $IRES_HOME/lib/esparse/dist/index.js $@
+node --stack-size=100000 $IRES_HOME/lib/esparse/dist/index.js $@
