@@ -1,11 +1,19 @@
 package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
-import kr.ac.kaist.ires.error.UnexpectedSemantics
+import kr.ac.kaist.ires.error.InvalidAST
 import scala.collection.immutable.{ Set => SSet }
+import spray.json._
 
 trait AsyncGeneratorBody extends AST {
   val kind: String = "AsyncGeneratorBody"
+}
+object AsyncGeneratorBody extends ASTHelper {
+  def apply(v: JsValue): AsyncGeneratorBody = v match {
+    case JsSeq(JsInt(0), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
+      AsyncGeneratorBody0(FunctionBody(x0), params)
+    case _ => throw InvalidAST
+  }
 }
 
 case class AsyncGeneratorBody0(x0: FunctionBody, parserParams: List[Boolean]) extends AsyncGeneratorBody {

@@ -1,11 +1,31 @@
 package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
-import kr.ac.kaist.ires.error.UnexpectedSemantics
+import kr.ac.kaist.ires.error.InvalidAST
 import scala.collection.immutable.{ Set => SSet }
+import spray.json._
 
 trait CoverParenthesizedExpressionAndArrowParameterList extends AST {
   val kind: String = "CoverParenthesizedExpressionAndArrowParameterList"
+}
+object CoverParenthesizedExpressionAndArrowParameterList extends ASTHelper {
+  def apply(v: JsValue): CoverParenthesizedExpressionAndArrowParameterList = v match {
+    case JsSeq(JsInt(0), JsSeq(x1), JsBoolSeq(params), JsSpan(span)) =>
+      CoverParenthesizedExpressionAndArrowParameterList0(Expression(x1), params)
+    case JsSeq(JsInt(1), JsSeq(x1), JsBoolSeq(params), JsSpan(span)) =>
+      CoverParenthesizedExpressionAndArrowParameterList1(Expression(x1), params)
+    case JsSeq(JsInt(2), JsSeq(), JsBoolSeq(params), JsSpan(span)) =>
+      CoverParenthesizedExpressionAndArrowParameterList2(params)
+    case JsSeq(JsInt(3), JsSeq(x2), JsBoolSeq(params), JsSpan(span)) =>
+      CoverParenthesizedExpressionAndArrowParameterList3(BindingIdentifier(x2), params)
+    case JsSeq(JsInt(4), JsSeq(x2), JsBoolSeq(params), JsSpan(span)) =>
+      CoverParenthesizedExpressionAndArrowParameterList4(BindingPattern(x2), params)
+    case JsSeq(JsInt(5), JsSeq(x1, x4), JsBoolSeq(params), JsSpan(span)) =>
+      CoverParenthesizedExpressionAndArrowParameterList5(Expression(x1), BindingIdentifier(x4), params)
+    case JsSeq(JsInt(6), JsSeq(x1, x4), JsBoolSeq(params), JsSpan(span)) =>
+      CoverParenthesizedExpressionAndArrowParameterList6(Expression(x1), BindingPattern(x4), params)
+    case _ => throw InvalidAST
+  }
 }
 
 case class CoverParenthesizedExpressionAndArrowParameterList0(x1: Expression, parserParams: List[Boolean]) extends CoverParenthesizedExpressionAndArrowParameterList {

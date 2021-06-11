@@ -1,11 +1,21 @@
 package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
-import kr.ac.kaist.ires.error.UnexpectedSemantics
+import kr.ac.kaist.ires.error.InvalidAST
 import scala.collection.immutable.{ Set => SSet }
+import spray.json._
 
 trait TemplateMiddleList extends AST {
   val kind: String = "TemplateMiddleList"
+}
+object TemplateMiddleList extends ASTHelper {
+  def apply(v: JsValue): TemplateMiddleList = v match {
+    case JsSeq(JsInt(0), JsSeq(x0, x1), JsBoolSeq(params), JsSpan(span)) =>
+      TemplateMiddleList0(lex("TemplateMiddle", x0), Expression(x1), params)
+    case JsSeq(JsInt(1), JsSeq(x0, x1, x2), JsBoolSeq(params), JsSpan(span)) =>
+      TemplateMiddleList1(TemplateMiddleList(x0), lex("TemplateMiddle", x1), Expression(x2), params)
+    case _ => throw InvalidAST
+  }
 }
 
 case class TemplateMiddleList0(x0: Lexical, x1: Expression, parserParams: List[Boolean]) extends TemplateMiddleList {

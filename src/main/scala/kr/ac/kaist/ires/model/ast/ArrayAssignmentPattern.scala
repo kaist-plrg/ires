@@ -1,11 +1,23 @@
 package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
-import kr.ac.kaist.ires.error.UnexpectedSemantics
+import kr.ac.kaist.ires.error.InvalidAST
 import scala.collection.immutable.{ Set => SSet }
+import spray.json._
 
 trait ArrayAssignmentPattern extends AST {
   val kind: String = "ArrayAssignmentPattern"
+}
+object ArrayAssignmentPattern extends ASTHelper {
+  def apply(v: JsValue): ArrayAssignmentPattern = v match {
+    case JsSeq(JsInt(0), JsSeq(x1, x2), JsBoolSeq(params), JsSpan(span)) =>
+      ArrayAssignmentPattern0(opt(x1, Elision.apply), opt(x2, AssignmentRestElement.apply), params)
+    case JsSeq(JsInt(1), JsSeq(x1), JsBoolSeq(params), JsSpan(span)) =>
+      ArrayAssignmentPattern1(AssignmentElementList(x1), params)
+    case JsSeq(JsInt(2), JsSeq(x1, x3, x4), JsBoolSeq(params), JsSpan(span)) =>
+      ArrayAssignmentPattern2(AssignmentElementList(x1), opt(x3, Elision.apply), opt(x4, AssignmentRestElement.apply), params)
+    case _ => throw InvalidAST
+  }
 }
 
 case class ArrayAssignmentPattern0(x1: Option[Elision], x2: Option[AssignmentRestElement], parserParams: List[Boolean]) extends ArrayAssignmentPattern {

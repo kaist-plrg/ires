@@ -1,11 +1,21 @@
 package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
-import kr.ac.kaist.ires.error.UnexpectedSemantics
+import kr.ac.kaist.ires.error.InvalidAST
 import scala.collection.immutable.{ Set => SSet }
+import spray.json._
 
 trait ImportsList extends AST {
   val kind: String = "ImportsList"
+}
+object ImportsList extends ASTHelper {
+  def apply(v: JsValue): ImportsList = v match {
+    case JsSeq(JsInt(0), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
+      ImportsList0(ImportSpecifier(x0), params)
+    case JsSeq(JsInt(1), JsSeq(x0, x2), JsBoolSeq(params), JsSpan(span)) =>
+      ImportsList1(ImportsList(x0), ImportSpecifier(x2), params)
+    case _ => throw InvalidAST
+  }
 }
 
 case class ImportsList0(x0: ImportSpecifier, parserParams: List[Boolean]) extends ImportsList {

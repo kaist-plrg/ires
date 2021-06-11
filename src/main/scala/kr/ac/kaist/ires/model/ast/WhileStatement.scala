@@ -1,11 +1,19 @@
 package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
-import kr.ac.kaist.ires.error.UnexpectedSemantics
+import kr.ac.kaist.ires.error.InvalidAST
 import scala.collection.immutable.{ Set => SSet }
+import spray.json._
 
 trait WhileStatement extends AST {
   val kind: String = "WhileStatement"
+}
+object WhileStatement extends ASTHelper {
+  def apply(v: JsValue): WhileStatement = v match {
+    case JsSeq(JsInt(0), JsSeq(x2, x4), JsBoolSeq(params), JsSpan(span)) =>
+      WhileStatement0(Expression(x2), Statement(x4), params)
+    case _ => throw InvalidAST
+  }
 }
 
 case class WhileStatement0(x2: Expression, x4: Statement, parserParams: List[Boolean]) extends WhileStatement {

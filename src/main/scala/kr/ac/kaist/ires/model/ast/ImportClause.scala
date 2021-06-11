@@ -1,11 +1,27 @@
 package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
-import kr.ac.kaist.ires.error.UnexpectedSemantics
+import kr.ac.kaist.ires.error.InvalidAST
 import scala.collection.immutable.{ Set => SSet }
+import spray.json._
 
 trait ImportClause extends AST {
   val kind: String = "ImportClause"
+}
+object ImportClause extends ASTHelper {
+  def apply(v: JsValue): ImportClause = v match {
+    case JsSeq(JsInt(0), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
+      ImportClause0(ImportedDefaultBinding(x0), params)
+    case JsSeq(JsInt(1), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
+      ImportClause1(NameSpaceImport(x0), params)
+    case JsSeq(JsInt(2), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
+      ImportClause2(NamedImports(x0), params)
+    case JsSeq(JsInt(3), JsSeq(x0, x2), JsBoolSeq(params), JsSpan(span)) =>
+      ImportClause3(ImportedDefaultBinding(x0), NameSpaceImport(x2), params)
+    case JsSeq(JsInt(4), JsSeq(x0, x2), JsBoolSeq(params), JsSpan(span)) =>
+      ImportClause4(ImportedDefaultBinding(x0), NamedImports(x2), params)
+    case _ => throw InvalidAST
+  }
 }
 
 case class ImportClause0(x0: ImportedDefaultBinding, parserParams: List[Boolean]) extends ImportClause {

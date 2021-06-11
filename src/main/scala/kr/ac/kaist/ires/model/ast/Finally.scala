@@ -1,11 +1,19 @@
 package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
-import kr.ac.kaist.ires.error.UnexpectedSemantics
+import kr.ac.kaist.ires.error.InvalidAST
 import scala.collection.immutable.{ Set => SSet }
+import spray.json._
 
 trait Finally extends AST {
   val kind: String = "Finally"
+}
+object Finally extends ASTHelper {
+  def apply(v: JsValue): Finally = v match {
+    case JsSeq(JsInt(0), JsSeq(x1), JsBoolSeq(params), JsSpan(span)) =>
+      Finally0(Block(x1), params)
+    case _ => throw InvalidAST
+  }
 }
 
 case class Finally0(x1: Block, parserParams: List[Boolean]) extends Finally {

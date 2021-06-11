@@ -1,11 +1,31 @@
 package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
-import kr.ac.kaist.ires.error.UnexpectedSemantics
+import kr.ac.kaist.ires.error.InvalidAST
 import scala.collection.immutable.{ Set => SSet }
+import spray.json._
 
 trait CallExpression extends AST {
   val kind: String = "CallExpression"
+}
+object CallExpression extends ASTHelper {
+  def apply(v: JsValue): CallExpression = v match {
+    case JsSeq(JsInt(0), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
+      CallExpression0(CoverCallExpressionAndAsyncArrowHead(x0), params)
+    case JsSeq(JsInt(1), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
+      CallExpression1(SuperCall(x0), params)
+    case JsSeq(JsInt(2), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
+      CallExpression2(ImportCall(x0), params)
+    case JsSeq(JsInt(3), JsSeq(x0, x1), JsBoolSeq(params), JsSpan(span)) =>
+      CallExpression3(CallExpression(x0), Arguments(x1), params)
+    case JsSeq(JsInt(4), JsSeq(x0, x2), JsBoolSeq(params), JsSpan(span)) =>
+      CallExpression4(CallExpression(x0), Expression(x2), params)
+    case JsSeq(JsInt(5), JsSeq(x0, x2), JsBoolSeq(params), JsSpan(span)) =>
+      CallExpression5(CallExpression(x0), lex("IdentifierName", x2), params)
+    case JsSeq(JsInt(6), JsSeq(x0, x1), JsBoolSeq(params), JsSpan(span)) =>
+      CallExpression6(CallExpression(x0), TemplateLiteral(x1), params)
+    case _ => throw InvalidAST
+  }
 }
 
 case class CallExpression0(x0: CoverCallExpressionAndAsyncArrowHead, parserParams: List[Boolean]) extends CallExpression {

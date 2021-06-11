@@ -1,11 +1,23 @@
 package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
-import kr.ac.kaist.ires.error.UnexpectedSemantics
+import kr.ac.kaist.ires.error.InvalidAST
 import scala.collection.immutable.{ Set => SSet }
+import spray.json._
 
 trait ArrayBindingPattern extends AST {
   val kind: String = "ArrayBindingPattern"
+}
+object ArrayBindingPattern extends ASTHelper {
+  def apply(v: JsValue): ArrayBindingPattern = v match {
+    case JsSeq(JsInt(0), JsSeq(x1, x2), JsBoolSeq(params), JsSpan(span)) =>
+      ArrayBindingPattern0(opt(x1, Elision.apply), opt(x2, BindingRestElement.apply), params)
+    case JsSeq(JsInt(1), JsSeq(x1), JsBoolSeq(params), JsSpan(span)) =>
+      ArrayBindingPattern1(BindingElementList(x1), params)
+    case JsSeq(JsInt(2), JsSeq(x1, x3, x4), JsBoolSeq(params), JsSpan(span)) =>
+      ArrayBindingPattern2(BindingElementList(x1), opt(x3, Elision.apply), opt(x4, BindingRestElement.apply), params)
+    case _ => throw InvalidAST
+  }
 }
 
 case class ArrayBindingPattern0(x1: Option[Elision], x2: Option[BindingRestElement], parserParams: List[Boolean]) extends ArrayBindingPattern {

@@ -1,11 +1,25 @@
 package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
-import kr.ac.kaist.ires.error.UnexpectedSemantics
+import kr.ac.kaist.ires.error.InvalidAST
 import scala.collection.immutable.{ Set => SSet }
+import spray.json._
 
 trait IterationStatement extends AST {
   val kind: String = "IterationStatement"
+}
+object IterationStatement extends ASTHelper {
+  def apply(v: JsValue): IterationStatement = v match {
+    case JsSeq(JsInt(0), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
+      IterationStatement0(DoWhileStatement(x0), params)
+    case JsSeq(JsInt(1), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
+      IterationStatement1(WhileStatement(x0), params)
+    case JsSeq(JsInt(2), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
+      IterationStatement2(ForStatement(x0), params)
+    case JsSeq(JsInt(3), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
+      IterationStatement3(ForInOfStatement(x0), params)
+    case _ => throw InvalidAST
+  }
 }
 
 case class IterationStatement0(x0: DoWhileStatement, parserParams: List[Boolean]) extends IterationStatement {

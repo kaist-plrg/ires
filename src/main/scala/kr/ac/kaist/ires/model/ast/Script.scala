@@ -1,11 +1,19 @@
 package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
-import kr.ac.kaist.ires.error.UnexpectedSemantics
+import kr.ac.kaist.ires.error.InvalidAST
 import scala.collection.immutable.{ Set => SSet }
+import spray.json._
 
 trait Script extends AST {
   val kind: String = "Script"
+}
+object Script extends ASTHelper {
+  def apply(v: JsValue): Script = v match {
+    case JsSeq(JsInt(0), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
+      Script0(opt(x0, ScriptBody.apply), params)
+    case _ => throw InvalidAST
+  }
 }
 
 case class Script0(x0: Option[ScriptBody], parserParams: List[Boolean]) extends Script {

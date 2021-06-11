@@ -1,11 +1,23 @@
 package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
-import kr.ac.kaist.ires.error.UnexpectedSemantics
+import kr.ac.kaist.ires.error.InvalidAST
 import scala.collection.immutable.{ Set => SSet }
+import spray.json._
 
 trait ExportFromClause extends AST {
   val kind: String = "ExportFromClause"
+}
+object ExportFromClause extends ASTHelper {
+  def apply(v: JsValue): ExportFromClause = v match {
+    case JsSeq(JsInt(0), JsSeq(), JsBoolSeq(params), JsSpan(span)) =>
+      ExportFromClause0(params)
+    case JsSeq(JsInt(1), JsSeq(x2), JsBoolSeq(params), JsSpan(span)) =>
+      ExportFromClause1(lex("IdentifierName", x2), params)
+    case JsSeq(JsInt(2), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
+      ExportFromClause2(NamedExports(x0), params)
+    case _ => throw InvalidAST
+  }
 }
 
 case class ExportFromClause0(parserParams: List[Boolean]) extends ExportFromClause {

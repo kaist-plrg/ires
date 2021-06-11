@@ -1,11 +1,31 @@
 package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
-import kr.ac.kaist.ires.error.UnexpectedSemantics
+import kr.ac.kaist.ires.error.InvalidAST
 import scala.collection.immutable.{ Set => SSet }
+import spray.json._
 
 trait MemberExpression extends AST {
   val kind: String = "MemberExpression"
+}
+object MemberExpression extends ASTHelper {
+  def apply(v: JsValue): MemberExpression = v match {
+    case JsSeq(JsInt(0), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
+      MemberExpression0(PrimaryExpression(x0), params)
+    case JsSeq(JsInt(1), JsSeq(x0, x2), JsBoolSeq(params), JsSpan(span)) =>
+      MemberExpression1(MemberExpression(x0), Expression(x2), params)
+    case JsSeq(JsInt(2), JsSeq(x0, x2), JsBoolSeq(params), JsSpan(span)) =>
+      MemberExpression2(MemberExpression(x0), lex("IdentifierName", x2), params)
+    case JsSeq(JsInt(3), JsSeq(x0, x1), JsBoolSeq(params), JsSpan(span)) =>
+      MemberExpression3(MemberExpression(x0), TemplateLiteral(x1), params)
+    case JsSeq(JsInt(4), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
+      MemberExpression4(SuperProperty(x0), params)
+    case JsSeq(JsInt(5), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
+      MemberExpression5(MetaProperty(x0), params)
+    case JsSeq(JsInt(6), JsSeq(x1, x2), JsBoolSeq(params), JsSpan(span)) =>
+      MemberExpression6(MemberExpression(x1), Arguments(x2), params)
+    case _ => throw InvalidAST
+  }
 }
 
 case class MemberExpression0(x0: PrimaryExpression, parserParams: List[Boolean]) extends MemberExpression {

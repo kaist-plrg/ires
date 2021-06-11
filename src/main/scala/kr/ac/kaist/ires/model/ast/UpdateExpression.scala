@@ -1,11 +1,27 @@
 package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
-import kr.ac.kaist.ires.error.UnexpectedSemantics
+import kr.ac.kaist.ires.error.InvalidAST
 import scala.collection.immutable.{ Set => SSet }
+import spray.json._
 
 trait UpdateExpression extends AST {
   val kind: String = "UpdateExpression"
+}
+object UpdateExpression extends ASTHelper {
+  def apply(v: JsValue): UpdateExpression = v match {
+    case JsSeq(JsInt(0), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
+      UpdateExpression0(LeftHandSideExpression(x0), params)
+    case JsSeq(JsInt(1), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
+      UpdateExpression1(LeftHandSideExpression(x0), params)
+    case JsSeq(JsInt(2), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
+      UpdateExpression2(LeftHandSideExpression(x0), params)
+    case JsSeq(JsInt(3), JsSeq(x1), JsBoolSeq(params), JsSpan(span)) =>
+      UpdateExpression3(UnaryExpression(x1), params)
+    case JsSeq(JsInt(4), JsSeq(x1), JsBoolSeq(params), JsSpan(span)) =>
+      UpdateExpression4(UnaryExpression(x1), params)
+    case _ => throw InvalidAST
+  }
 }
 
 case class UpdateExpression0(x0: LeftHandSideExpression, parserParams: List[Boolean]) extends UpdateExpression {

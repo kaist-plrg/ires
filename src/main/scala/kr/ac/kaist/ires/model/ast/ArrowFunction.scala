@@ -1,11 +1,19 @@
 package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
-import kr.ac.kaist.ires.error.UnexpectedSemantics
+import kr.ac.kaist.ires.error.InvalidAST
 import scala.collection.immutable.{ Set => SSet }
+import spray.json._
 
 trait ArrowFunction extends AST {
   val kind: String = "ArrowFunction"
+}
+object ArrowFunction extends ASTHelper {
+  def apply(v: JsValue): ArrowFunction = v match {
+    case JsSeq(JsInt(0), JsSeq(x0, x3), JsBoolSeq(params), JsSpan(span)) =>
+      ArrowFunction0(ArrowParameters(x0), ConciseBody(x3), params)
+    case _ => throw InvalidAST
+  }
 }
 
 case class ArrowFunction0(x0: ArrowParameters, x3: ConciseBody, parserParams: List[Boolean]) extends ArrowFunction {

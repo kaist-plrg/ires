@@ -1,11 +1,21 @@
 package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
-import kr.ac.kaist.ires.error.UnexpectedSemantics
+import kr.ac.kaist.ires.error.InvalidAST
 import scala.collection.immutable.{ Set => SSet }
+import spray.json._
 
 trait Catch extends AST {
   val kind: String = "Catch"
+}
+object Catch extends ASTHelper {
+  def apply(v: JsValue): Catch = v match {
+    case JsSeq(JsInt(0), JsSeq(x2, x4), JsBoolSeq(params), JsSpan(span)) =>
+      Catch0(CatchParameter(x2), Block(x4), params)
+    case JsSeq(JsInt(1), JsSeq(x1), JsBoolSeq(params), JsSpan(span)) =>
+      Catch1(Block(x1), params)
+    case _ => throw InvalidAST
+  }
 }
 
 case class Catch0(x2: CatchParameter, x4: Block, parserParams: List[Boolean]) extends Catch {

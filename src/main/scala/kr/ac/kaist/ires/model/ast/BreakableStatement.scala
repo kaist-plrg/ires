@@ -1,11 +1,21 @@
 package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
-import kr.ac.kaist.ires.error.UnexpectedSemantics
+import kr.ac.kaist.ires.error.InvalidAST
 import scala.collection.immutable.{ Set => SSet }
+import spray.json._
 
 trait BreakableStatement extends AST {
   val kind: String = "BreakableStatement"
+}
+object BreakableStatement extends ASTHelper {
+  def apply(v: JsValue): BreakableStatement = v match {
+    case JsSeq(JsInt(0), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
+      BreakableStatement0(IterationStatement(x0), params)
+    case JsSeq(JsInt(1), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
+      BreakableStatement1(SwitchStatement(x0), params)
+    case _ => throw InvalidAST
+  }
 }
 
 case class BreakableStatement0(x0: IterationStatement, parserParams: List[Boolean]) extends BreakableStatement {

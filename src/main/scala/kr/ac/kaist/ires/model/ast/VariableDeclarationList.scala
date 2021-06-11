@@ -1,11 +1,21 @@
 package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
-import kr.ac.kaist.ires.error.UnexpectedSemantics
+import kr.ac.kaist.ires.error.InvalidAST
 import scala.collection.immutable.{ Set => SSet }
+import spray.json._
 
 trait VariableDeclarationList extends AST {
   val kind: String = "VariableDeclarationList"
+}
+object VariableDeclarationList extends ASTHelper {
+  def apply(v: JsValue): VariableDeclarationList = v match {
+    case JsSeq(JsInt(0), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
+      VariableDeclarationList0(VariableDeclaration(x0), params)
+    case JsSeq(JsInt(1), JsSeq(x0, x2), JsBoolSeq(params), JsSpan(span)) =>
+      VariableDeclarationList1(VariableDeclarationList(x0), VariableDeclaration(x2), params)
+    case _ => throw InvalidAST
+  }
 }
 
 case class VariableDeclarationList0(x0: VariableDeclaration, parserParams: List[Boolean]) extends VariableDeclarationList {

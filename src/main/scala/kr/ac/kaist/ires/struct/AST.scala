@@ -1,6 +1,8 @@
 package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
+import kr.ac.kaist.ires.error.InvalidAST
+import kr.ac.kaist.ires.util.{ Span, Pos }
 import spray.json._
 
 trait AST {
@@ -8,6 +10,7 @@ trait AST {
   val kind: String
   val idx: Int
   val k: Int
+  val span: Span = Span()
   val parserParams: List[Boolean]
   val info: ASTInfo
   val fullList: List[(String, Value)]
@@ -26,7 +29,8 @@ trait AST {
       case (_, ASTVal(ast)) => ast.toJson
       case _ => JsNull
     }: _*),
-    JsArray(parserParams.map(p => JsNumber(if (p) 1 else 0)): _*)
+    JsArray(parserParams.map(p => JsNumber(if (p) 1 else 0)): _*),
+    JsArray(JsNumber(-1), JsNumber(-1), JsNumber(-1), JsNumber(-1)),
   )
 
   // get possible kinds
@@ -107,6 +111,41 @@ trait AST {
     case None => (name.substring(7, name.length - 1), Absent) :: list
     case a: AST => (name, ASTVal(a)) :: list
     case _ => list
+  }
+}
+
+trait ASTHelper {
+  // unapply for JsValue
+  object JsSeq {
+    def unapplySeq(value: JsValue): Option[Seq[JsValue]] = value match {
+      case JsArray(vec) => Some(vec)
+      case _ => None
+    }
+  }
+  object JsInt {
+    def unapply(value: JsValue): Option[Int] = value match {
+      case JsNumber(x) => Some(x.toInt)
+      case _ => None
+    }
+  }
+  object JsBoolSeq {
+    def unapply(value: JsValue): Option[List[Boolean]] = value match {
+      case JsArray(ps) => Some(ps.map(_ == JsNumber(1)).toList)
+      case _ => None
+    }
+  }
+  object JsSpan {
+    def unapply(value: JsValue): Option[Span] = value match {
+      case JsSeq(JsInt(sl), JsInt(sc), JsInt(el), JsInt(ec)) =>
+        Some(Span(Pos(sl, sc), Pos(el, ec)))
+      case _ => None
+    }
+  }
+  def opt[T](x: JsValue, f: JsValue => T): Option[T] =
+    if (x == JsNull) None else Some(f(x))
+  def lex(kind: String, value: JsValue): Lexical = value match {
+    case JsString(str) => Lexical(kind, str)
+    case _ => throw InvalidAST
   }
 }
 

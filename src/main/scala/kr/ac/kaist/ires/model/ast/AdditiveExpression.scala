@@ -1,11 +1,23 @@
 package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
-import kr.ac.kaist.ires.error.UnexpectedSemantics
+import kr.ac.kaist.ires.error.InvalidAST
 import scala.collection.immutable.{ Set => SSet }
+import spray.json._
 
 trait AdditiveExpression extends AST {
   val kind: String = "AdditiveExpression"
+}
+object AdditiveExpression extends ASTHelper {
+  def apply(v: JsValue): AdditiveExpression = v match {
+    case JsSeq(JsInt(0), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
+      AdditiveExpression0(MultiplicativeExpression(x0), params)
+    case JsSeq(JsInt(1), JsSeq(x0, x2), JsBoolSeq(params), JsSpan(span)) =>
+      AdditiveExpression1(AdditiveExpression(x0), MultiplicativeExpression(x2), params)
+    case JsSeq(JsInt(2), JsSeq(x0, x2), JsBoolSeq(params), JsSpan(span)) =>
+      AdditiveExpression2(AdditiveExpression(x0), MultiplicativeExpression(x2), params)
+    case _ => throw InvalidAST
+  }
 }
 
 case class AdditiveExpression0(x0: MultiplicativeExpression, parserParams: List[Boolean]) extends AdditiveExpression {

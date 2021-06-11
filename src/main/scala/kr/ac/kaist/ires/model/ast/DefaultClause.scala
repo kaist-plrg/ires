@@ -1,11 +1,19 @@
 package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
-import kr.ac.kaist.ires.error.UnexpectedSemantics
+import kr.ac.kaist.ires.error.InvalidAST
 import scala.collection.immutable.{ Set => SSet }
+import spray.json._
 
 trait DefaultClause extends AST {
   val kind: String = "DefaultClause"
+}
+object DefaultClause extends ASTHelper {
+  def apply(v: JsValue): DefaultClause = v match {
+    case JsSeq(JsInt(0), JsSeq(x2), JsBoolSeq(params), JsSpan(span)) =>
+      DefaultClause0(opt(x2, StatementList.apply), params)
+    case _ => throw InvalidAST
+  }
 }
 
 case class DefaultClause0(x2: Option[StatementList], parserParams: List[Boolean]) extends DefaultClause {

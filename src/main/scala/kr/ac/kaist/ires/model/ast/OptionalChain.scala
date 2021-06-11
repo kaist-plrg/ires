@@ -1,11 +1,33 @@
 package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
-import kr.ac.kaist.ires.error.UnexpectedSemantics
+import kr.ac.kaist.ires.error.InvalidAST
 import scala.collection.immutable.{ Set => SSet }
+import spray.json._
 
 trait OptionalChain extends AST {
   val kind: String = "OptionalChain"
+}
+object OptionalChain extends ASTHelper {
+  def apply(v: JsValue): OptionalChain = v match {
+    case JsSeq(JsInt(0), JsSeq(x1), JsBoolSeq(params), JsSpan(span)) =>
+      OptionalChain0(Arguments(x1), params)
+    case JsSeq(JsInt(1), JsSeq(x2), JsBoolSeq(params), JsSpan(span)) =>
+      OptionalChain1(Expression(x2), params)
+    case JsSeq(JsInt(2), JsSeq(x1), JsBoolSeq(params), JsSpan(span)) =>
+      OptionalChain2(lex("IdentifierName", x1), params)
+    case JsSeq(JsInt(3), JsSeq(x1), JsBoolSeq(params), JsSpan(span)) =>
+      OptionalChain3(TemplateLiteral(x1), params)
+    case JsSeq(JsInt(4), JsSeq(x0, x1), JsBoolSeq(params), JsSpan(span)) =>
+      OptionalChain4(OptionalChain(x0), Arguments(x1), params)
+    case JsSeq(JsInt(5), JsSeq(x0, x2), JsBoolSeq(params), JsSpan(span)) =>
+      OptionalChain5(OptionalChain(x0), Expression(x2), params)
+    case JsSeq(JsInt(6), JsSeq(x0, x2), JsBoolSeq(params), JsSpan(span)) =>
+      OptionalChain6(OptionalChain(x0), lex("IdentifierName", x2), params)
+    case JsSeq(JsInt(7), JsSeq(x0, x1), JsBoolSeq(params), JsSpan(span)) =>
+      OptionalChain7(OptionalChain(x0), TemplateLiteral(x1), params)
+    case _ => throw InvalidAST
+  }
 }
 
 case class OptionalChain0(x1: Arguments, parserParams: List[Boolean]) extends OptionalChain {

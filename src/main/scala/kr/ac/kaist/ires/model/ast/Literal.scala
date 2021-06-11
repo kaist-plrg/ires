@@ -1,11 +1,25 @@
 package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
-import kr.ac.kaist.ires.error.UnexpectedSemantics
+import kr.ac.kaist.ires.error.InvalidAST
 import scala.collection.immutable.{ Set => SSet }
+import spray.json._
 
 trait Literal extends AST {
   val kind: String = "Literal"
+}
+object Literal extends ASTHelper {
+  def apply(v: JsValue): Literal = v match {
+    case JsSeq(JsInt(0), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
+      Literal0(lex("NullLiteral", x0), params)
+    case JsSeq(JsInt(1), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
+      Literal1(lex("BooleanLiteral", x0), params)
+    case JsSeq(JsInt(2), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
+      Literal2(lex("NumericLiteral", x0), params)
+    case JsSeq(JsInt(3), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
+      Literal3(lex("StringLiteral", x0), params)
+    case _ => throw InvalidAST
+  }
 }
 
 case class Literal0(x0: Lexical, parserParams: List[Boolean]) extends Literal {

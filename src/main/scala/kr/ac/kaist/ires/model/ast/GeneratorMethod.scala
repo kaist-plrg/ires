@@ -1,11 +1,19 @@
 package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
-import kr.ac.kaist.ires.error.UnexpectedSemantics
+import kr.ac.kaist.ires.error.InvalidAST
 import scala.collection.immutable.{ Set => SSet }
+import spray.json._
 
 trait GeneratorMethod extends AST {
   val kind: String = "GeneratorMethod"
+}
+object GeneratorMethod extends ASTHelper {
+  def apply(v: JsValue): GeneratorMethod = v match {
+    case JsSeq(JsInt(0), JsSeq(x1, x3, x6), JsBoolSeq(params), JsSpan(span)) =>
+      GeneratorMethod0(PropertyName(x1), UniqueFormalParameters(x3), GeneratorBody(x6), params)
+    case _ => throw InvalidAST
+  }
 }
 
 case class GeneratorMethod0(x1: PropertyName, x3: UniqueFormalParameters, x6: GeneratorBody, parserParams: List[Boolean]) extends GeneratorMethod {

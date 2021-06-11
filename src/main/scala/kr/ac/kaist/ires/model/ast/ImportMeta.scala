@@ -1,11 +1,19 @@
 package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
-import kr.ac.kaist.ires.error.UnexpectedSemantics
+import kr.ac.kaist.ires.error.InvalidAST
 import scala.collection.immutable.{ Set => SSet }
+import spray.json._
 
 trait ImportMeta extends AST {
   val kind: String = "ImportMeta"
+}
+object ImportMeta extends ASTHelper {
+  def apply(v: JsValue): ImportMeta = v match {
+    case JsSeq(JsInt(0), JsSeq(), JsBoolSeq(params), JsSpan(span)) =>
+      ImportMeta0(params)
+    case _ => throw InvalidAST
+  }
 }
 
 case class ImportMeta0(parserParams: List[Boolean]) extends ImportMeta {

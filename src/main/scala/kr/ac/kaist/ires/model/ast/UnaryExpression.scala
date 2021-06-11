@@ -1,11 +1,35 @@
 package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
-import kr.ac.kaist.ires.error.UnexpectedSemantics
+import kr.ac.kaist.ires.error.InvalidAST
 import scala.collection.immutable.{ Set => SSet }
+import spray.json._
 
 trait UnaryExpression extends AST {
   val kind: String = "UnaryExpression"
+}
+object UnaryExpression extends ASTHelper {
+  def apply(v: JsValue): UnaryExpression = v match {
+    case JsSeq(JsInt(0), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
+      UnaryExpression0(UpdateExpression(x0), params)
+    case JsSeq(JsInt(1), JsSeq(x1), JsBoolSeq(params), JsSpan(span)) =>
+      UnaryExpression1(UnaryExpression(x1), params)
+    case JsSeq(JsInt(2), JsSeq(x1), JsBoolSeq(params), JsSpan(span)) =>
+      UnaryExpression2(UnaryExpression(x1), params)
+    case JsSeq(JsInt(3), JsSeq(x1), JsBoolSeq(params), JsSpan(span)) =>
+      UnaryExpression3(UnaryExpression(x1), params)
+    case JsSeq(JsInt(4), JsSeq(x1), JsBoolSeq(params), JsSpan(span)) =>
+      UnaryExpression4(UnaryExpression(x1), params)
+    case JsSeq(JsInt(5), JsSeq(x1), JsBoolSeq(params), JsSpan(span)) =>
+      UnaryExpression5(UnaryExpression(x1), params)
+    case JsSeq(JsInt(6), JsSeq(x1), JsBoolSeq(params), JsSpan(span)) =>
+      UnaryExpression6(UnaryExpression(x1), params)
+    case JsSeq(JsInt(7), JsSeq(x1), JsBoolSeq(params), JsSpan(span)) =>
+      UnaryExpression7(UnaryExpression(x1), params)
+    case JsSeq(JsInt(8), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
+      UnaryExpression8(AwaitExpression(x0), params)
+    case _ => throw InvalidAST
+  }
 }
 
 case class UnaryExpression0(x0: UpdateExpression, parserParams: List[Boolean]) extends UnaryExpression {

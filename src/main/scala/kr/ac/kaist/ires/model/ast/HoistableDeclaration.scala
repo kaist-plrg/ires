@@ -1,11 +1,25 @@
 package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
-import kr.ac.kaist.ires.error.UnexpectedSemantics
+import kr.ac.kaist.ires.error.InvalidAST
 import scala.collection.immutable.{ Set => SSet }
+import spray.json._
 
 trait HoistableDeclaration extends AST {
   val kind: String = "HoistableDeclaration"
+}
+object HoistableDeclaration extends ASTHelper {
+  def apply(v: JsValue): HoistableDeclaration = v match {
+    case JsSeq(JsInt(0), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
+      HoistableDeclaration0(FunctionDeclaration(x0), params)
+    case JsSeq(JsInt(1), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
+      HoistableDeclaration1(GeneratorDeclaration(x0), params)
+    case JsSeq(JsInt(2), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
+      HoistableDeclaration2(AsyncFunctionDeclaration(x0), params)
+    case JsSeq(JsInt(3), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
+      HoistableDeclaration3(AsyncGeneratorDeclaration(x0), params)
+    case _ => throw InvalidAST
+  }
 }
 
 case class HoistableDeclaration0(x0: FunctionDeclaration, parserParams: List[Boolean]) extends HoistableDeclaration {

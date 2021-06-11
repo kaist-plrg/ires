@@ -1,11 +1,23 @@
 package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
-import kr.ac.kaist.ires.error.UnexpectedSemantics
+import kr.ac.kaist.ires.error.InvalidAST
 import scala.collection.immutable.{ Set => SSet }
+import spray.json._
 
 trait LiteralPropertyName extends AST {
   val kind: String = "LiteralPropertyName"
+}
+object LiteralPropertyName extends ASTHelper {
+  def apply(v: JsValue): LiteralPropertyName = v match {
+    case JsSeq(JsInt(0), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
+      LiteralPropertyName0(lex("IdentifierName", x0), params)
+    case JsSeq(JsInt(1), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
+      LiteralPropertyName1(lex("StringLiteral", x0), params)
+    case JsSeq(JsInt(2), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
+      LiteralPropertyName2(lex("NumericLiteral", x0), params)
+    case _ => throw InvalidAST
+  }
 }
 
 case class LiteralPropertyName0(x0: Lexical, parserParams: List[Boolean]) extends LiteralPropertyName {

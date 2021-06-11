@@ -1,11 +1,21 @@
 package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
-import kr.ac.kaist.ires.error.UnexpectedSemantics
+import kr.ac.kaist.ires.error.InvalidAST
 import scala.collection.immutable.{ Set => SSet }
+import spray.json._
 
 trait LogicalORExpression extends AST {
   val kind: String = "LogicalORExpression"
+}
+object LogicalORExpression extends ASTHelper {
+  def apply(v: JsValue): LogicalORExpression = v match {
+    case JsSeq(JsInt(0), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
+      LogicalORExpression0(LogicalANDExpression(x0), params)
+    case JsSeq(JsInt(1), JsSeq(x0, x2), JsBoolSeq(params), JsSpan(span)) =>
+      LogicalORExpression1(LogicalORExpression(x0), LogicalANDExpression(x2), params)
+    case _ => throw InvalidAST
+  }
 }
 
 case class LogicalORExpression0(x0: LogicalANDExpression, parserParams: List[Boolean]) extends LogicalORExpression {

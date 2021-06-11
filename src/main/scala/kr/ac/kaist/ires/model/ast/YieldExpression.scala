@@ -1,11 +1,23 @@
 package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
-import kr.ac.kaist.ires.error.UnexpectedSemantics
+import kr.ac.kaist.ires.error.InvalidAST
 import scala.collection.immutable.{ Set => SSet }
+import spray.json._
 
 trait YieldExpression extends AST {
   val kind: String = "YieldExpression"
+}
+object YieldExpression extends ASTHelper {
+  def apply(v: JsValue): YieldExpression = v match {
+    case JsSeq(JsInt(0), JsSeq(), JsBoolSeq(params), JsSpan(span)) =>
+      YieldExpression0(params)
+    case JsSeq(JsInt(1), JsSeq(x2), JsBoolSeq(params), JsSpan(span)) =>
+      YieldExpression1(AssignmentExpression(x2), params)
+    case JsSeq(JsInt(2), JsSeq(x3), JsBoolSeq(params), JsSpan(span)) =>
+      YieldExpression2(AssignmentExpression(x3), params)
+    case _ => throw InvalidAST
+  }
 }
 
 case class YieldExpression0(parserParams: List[Boolean]) extends YieldExpression {

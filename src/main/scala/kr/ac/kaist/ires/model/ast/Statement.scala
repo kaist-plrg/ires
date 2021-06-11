@@ -1,11 +1,45 @@
 package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
-import kr.ac.kaist.ires.error.UnexpectedSemantics
+import kr.ac.kaist.ires.error.InvalidAST
 import scala.collection.immutable.{ Set => SSet }
+import spray.json._
 
 trait Statement extends AST {
   val kind: String = "Statement"
+}
+object Statement extends ASTHelper {
+  def apply(v: JsValue): Statement = v match {
+    case JsSeq(JsInt(0), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
+      Statement0(BlockStatement(x0), params)
+    case JsSeq(JsInt(1), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
+      Statement1(VariableStatement(x0), params)
+    case JsSeq(JsInt(2), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
+      Statement2(EmptyStatement(x0), params)
+    case JsSeq(JsInt(3), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
+      Statement3(ExpressionStatement(x0), params)
+    case JsSeq(JsInt(4), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
+      Statement4(IfStatement(x0), params)
+    case JsSeq(JsInt(5), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
+      Statement5(BreakableStatement(x0), params)
+    case JsSeq(JsInt(6), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
+      Statement6(ContinueStatement(x0), params)
+    case JsSeq(JsInt(7), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
+      Statement7(BreakStatement(x0), params)
+    case JsSeq(JsInt(8), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
+      Statement8(ReturnStatement(x0), params)
+    case JsSeq(JsInt(9), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
+      Statement9(WithStatement(x0), params)
+    case JsSeq(JsInt(10), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
+      Statement10(LabelledStatement(x0), params)
+    case JsSeq(JsInt(11), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
+      Statement11(ThrowStatement(x0), params)
+    case JsSeq(JsInt(12), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
+      Statement12(TryStatement(x0), params)
+    case JsSeq(JsInt(13), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
+      Statement13(DebuggerStatement(x0), params)
+    case _ => throw InvalidAST
+  }
 }
 
 case class Statement0(x0: BlockStatement, parserParams: List[Boolean]) extends Statement {

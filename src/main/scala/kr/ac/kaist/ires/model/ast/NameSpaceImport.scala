@@ -1,11 +1,19 @@
 package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
-import kr.ac.kaist.ires.error.UnexpectedSemantics
+import kr.ac.kaist.ires.error.InvalidAST
 import scala.collection.immutable.{ Set => SSet }
+import spray.json._
 
 trait NameSpaceImport extends AST {
   val kind: String = "NameSpaceImport"
+}
+object NameSpaceImport extends ASTHelper {
+  def apply(v: JsValue): NameSpaceImport = v match {
+    case JsSeq(JsInt(0), JsSeq(x2), JsBoolSeq(params), JsSpan(span)) =>
+      NameSpaceImport0(ImportedBinding(x2), params)
+    case _ => throw InvalidAST
+  }
 }
 
 case class NameSpaceImport0(x2: ImportedBinding, parserParams: List[Boolean]) extends NameSpaceImport {

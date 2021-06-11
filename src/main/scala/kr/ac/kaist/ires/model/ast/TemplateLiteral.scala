@@ -1,11 +1,21 @@
 package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
-import kr.ac.kaist.ires.error.UnexpectedSemantics
+import kr.ac.kaist.ires.error.InvalidAST
 import scala.collection.immutable.{ Set => SSet }
+import spray.json._
 
 trait TemplateLiteral extends AST {
   val kind: String = "TemplateLiteral"
+}
+object TemplateLiteral extends ASTHelper {
+  def apply(v: JsValue): TemplateLiteral = v match {
+    case JsSeq(JsInt(0), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
+      TemplateLiteral0(lex("NoSubstitutionTemplate", x0), params)
+    case JsSeq(JsInt(1), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
+      TemplateLiteral1(SubstitutionTemplate(x0), params)
+    case _ => throw InvalidAST
+  }
 }
 
 case class TemplateLiteral0(x0: Lexical, parserParams: List[Boolean]) extends TemplateLiteral {

@@ -1,11 +1,43 @@
 package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
-import kr.ac.kaist.ires.error.UnexpectedSemantics
+import kr.ac.kaist.ires.error.InvalidAST
 import scala.collection.immutable.{ Set => SSet }
+import spray.json._
 
 trait PrimaryExpression extends AST {
   val kind: String = "PrimaryExpression"
+}
+object PrimaryExpression extends ASTHelper {
+  def apply(v: JsValue): PrimaryExpression = v match {
+    case JsSeq(JsInt(0), JsSeq(), JsBoolSeq(params), JsSpan(span)) =>
+      PrimaryExpression0(params)
+    case JsSeq(JsInt(1), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
+      PrimaryExpression1(IdentifierReference(x0), params)
+    case JsSeq(JsInt(2), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
+      PrimaryExpression2(Literal(x0), params)
+    case JsSeq(JsInt(3), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
+      PrimaryExpression3(ArrayLiteral(x0), params)
+    case JsSeq(JsInt(4), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
+      PrimaryExpression4(ObjectLiteral(x0), params)
+    case JsSeq(JsInt(5), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
+      PrimaryExpression5(FunctionExpression(x0), params)
+    case JsSeq(JsInt(6), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
+      PrimaryExpression6(ClassExpression(x0), params)
+    case JsSeq(JsInt(7), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
+      PrimaryExpression7(GeneratorExpression(x0), params)
+    case JsSeq(JsInt(8), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
+      PrimaryExpression8(AsyncFunctionExpression(x0), params)
+    case JsSeq(JsInt(9), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
+      PrimaryExpression9(AsyncGeneratorExpression(x0), params)
+    case JsSeq(JsInt(10), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
+      PrimaryExpression10(lex("RegularExpressionLiteral", x0), params)
+    case JsSeq(JsInt(11), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
+      PrimaryExpression11(TemplateLiteral(x0), params)
+    case JsSeq(JsInt(12), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
+      PrimaryExpression12(CoverParenthesizedExpressionAndArrowParameterList(x0), params)
+    case _ => throw InvalidAST
+  }
 }
 
 case class PrimaryExpression0(parserParams: List[Boolean]) extends PrimaryExpression {

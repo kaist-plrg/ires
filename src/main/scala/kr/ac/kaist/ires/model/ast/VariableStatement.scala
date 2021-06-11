@@ -1,11 +1,19 @@
 package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
-import kr.ac.kaist.ires.error.UnexpectedSemantics
+import kr.ac.kaist.ires.error.InvalidAST
 import scala.collection.immutable.{ Set => SSet }
+import spray.json._
 
 trait VariableStatement extends AST {
   val kind: String = "VariableStatement"
+}
+object VariableStatement extends ASTHelper {
+  def apply(v: JsValue): VariableStatement = v match {
+    case JsSeq(JsInt(0), JsSeq(x1), JsBoolSeq(params), JsSpan(span)) =>
+      VariableStatement0(VariableDeclarationList(x1), params)
+    case _ => throw InvalidAST
+  }
 }
 
 case class VariableStatement0(x1: VariableDeclarationList, parserParams: List[Boolean]) extends VariableStatement {

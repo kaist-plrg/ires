@@ -1,11 +1,21 @@
 package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
-import kr.ac.kaist.ires.error.UnexpectedSemantics
+import kr.ac.kaist.ires.error.InvalidAST
 import scala.collection.immutable.{ Set => SSet }
+import spray.json._
 
 trait ExponentiationExpression extends AST {
   val kind: String = "ExponentiationExpression"
+}
+object ExponentiationExpression extends ASTHelper {
+  def apply(v: JsValue): ExponentiationExpression = v match {
+    case JsSeq(JsInt(0), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
+      ExponentiationExpression0(UnaryExpression(x0), params)
+    case JsSeq(JsInt(1), JsSeq(x0, x2), JsBoolSeq(params), JsSpan(span)) =>
+      ExponentiationExpression1(UpdateExpression(x0), ExponentiationExpression(x2), params)
+    case _ => throw InvalidAST
+  }
 }
 
 case class ExponentiationExpression0(x0: UnaryExpression, parserParams: List[Boolean]) extends ExponentiationExpression {

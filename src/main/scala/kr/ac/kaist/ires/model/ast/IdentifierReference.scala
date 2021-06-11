@@ -1,11 +1,23 @@
 package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
-import kr.ac.kaist.ires.error.UnexpectedSemantics
+import kr.ac.kaist.ires.error.InvalidAST
 import scala.collection.immutable.{ Set => SSet }
+import spray.json._
 
 trait IdentifierReference extends AST {
   val kind: String = "IdentifierReference"
+}
+object IdentifierReference extends ASTHelper {
+  def apply(v: JsValue): IdentifierReference = v match {
+    case JsSeq(JsInt(0), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
+      IdentifierReference0(Identifier(x0), params)
+    case JsSeq(JsInt(1), JsSeq(), JsBoolSeq(params), JsSpan(span)) =>
+      IdentifierReference1(params)
+    case JsSeq(JsInt(2), JsSeq(), JsBoolSeq(params), JsSpan(span)) =>
+      IdentifierReference2(params)
+    case _ => throw InvalidAST
+  }
 }
 
 case class IdentifierReference0(x0: Identifier, parserParams: List[Boolean]) extends IdentifierReference {

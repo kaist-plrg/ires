@@ -1,11 +1,25 @@
 package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
-import kr.ac.kaist.ires.error.UnexpectedSemantics
+import kr.ac.kaist.ires.error.InvalidAST
 import scala.collection.immutable.{ Set => SSet }
+import spray.json._
 
 trait ShiftExpression extends AST {
   val kind: String = "ShiftExpression"
+}
+object ShiftExpression extends ASTHelper {
+  def apply(v: JsValue): ShiftExpression = v match {
+    case JsSeq(JsInt(0), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
+      ShiftExpression0(AdditiveExpression(x0), params)
+    case JsSeq(JsInt(1), JsSeq(x0, x2), JsBoolSeq(params), JsSpan(span)) =>
+      ShiftExpression1(ShiftExpression(x0), AdditiveExpression(x2), params)
+    case JsSeq(JsInt(2), JsSeq(x0, x2), JsBoolSeq(params), JsSpan(span)) =>
+      ShiftExpression2(ShiftExpression(x0), AdditiveExpression(x2), params)
+    case JsSeq(JsInt(3), JsSeq(x0, x2), JsBoolSeq(params), JsSpan(span)) =>
+      ShiftExpression3(ShiftExpression(x0), AdditiveExpression(x2), params)
+    case _ => throw InvalidAST
+  }
 }
 
 case class ShiftExpression0(x0: AdditiveExpression, parserParams: List[Boolean]) extends ShiftExpression {

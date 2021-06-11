@@ -1,11 +1,21 @@
 package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
-import kr.ac.kaist.ires.error.UnexpectedSemantics
+import kr.ac.kaist.ires.error.InvalidAST
 import scala.collection.immutable.{ Set => SSet }
+import spray.json._
 
 trait ConditionalExpression extends AST {
   val kind: String = "ConditionalExpression"
+}
+object ConditionalExpression extends ASTHelper {
+  def apply(v: JsValue): ConditionalExpression = v match {
+    case JsSeq(JsInt(0), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
+      ConditionalExpression0(ShortCircuitExpression(x0), params)
+    case JsSeq(JsInt(1), JsSeq(x0, x2, x4), JsBoolSeq(params), JsSpan(span)) =>
+      ConditionalExpression1(ShortCircuitExpression(x0), AssignmentExpression(x2), AssignmentExpression(x4), params)
+    case _ => throw InvalidAST
+  }
 }
 
 case class ConditionalExpression0(x0: ShortCircuitExpression, parserParams: List[Boolean]) extends ConditionalExpression {

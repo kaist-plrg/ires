@@ -1,11 +1,31 @@
 package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
-import kr.ac.kaist.ires.error.UnexpectedSemantics
+import kr.ac.kaist.ires.error.InvalidAST
 import scala.collection.immutable.{ Set => SSet }
+import spray.json._
 
 trait ExportDeclaration extends AST {
   val kind: String = "ExportDeclaration"
+}
+object ExportDeclaration extends ASTHelper {
+  def apply(v: JsValue): ExportDeclaration = v match {
+    case JsSeq(JsInt(0), JsSeq(x1, x2), JsBoolSeq(params), JsSpan(span)) =>
+      ExportDeclaration0(ExportFromClause(x1), FromClause(x2), params)
+    case JsSeq(JsInt(1), JsSeq(x1), JsBoolSeq(params), JsSpan(span)) =>
+      ExportDeclaration1(NamedExports(x1), params)
+    case JsSeq(JsInt(2), JsSeq(x1), JsBoolSeq(params), JsSpan(span)) =>
+      ExportDeclaration2(VariableStatement(x1), params)
+    case JsSeq(JsInt(3), JsSeq(x1), JsBoolSeq(params), JsSpan(span)) =>
+      ExportDeclaration3(Declaration(x1), params)
+    case JsSeq(JsInt(4), JsSeq(x2), JsBoolSeq(params), JsSpan(span)) =>
+      ExportDeclaration4(HoistableDeclaration(x2), params)
+    case JsSeq(JsInt(5), JsSeq(x2), JsBoolSeq(params), JsSpan(span)) =>
+      ExportDeclaration5(ClassDeclaration(x2), params)
+    case JsSeq(JsInt(6), JsSeq(x3), JsBoolSeq(params), JsSpan(span)) =>
+      ExportDeclaration6(AssignmentExpression(x3), params)
+    case _ => throw InvalidAST
+  }
 }
 
 case class ExportDeclaration0(x1: ExportFromClause, x2: FromClause, parserParams: List[Boolean]) extends ExportDeclaration {

@@ -1,11 +1,21 @@
 package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
-import kr.ac.kaist.ires.error.UnexpectedSemantics
+import kr.ac.kaist.ires.error.InvalidAST
 import scala.collection.immutable.{ Set => SSet }
+import spray.json._
 
 trait ContinueStatement extends AST {
   val kind: String = "ContinueStatement"
+}
+object ContinueStatement extends ASTHelper {
+  def apply(v: JsValue): ContinueStatement = v match {
+    case JsSeq(JsInt(0), JsSeq(), JsBoolSeq(params), JsSpan(span)) =>
+      ContinueStatement0(params)
+    case JsSeq(JsInt(1), JsSeq(x2), JsBoolSeq(params), JsSpan(span)) =>
+      ContinueStatement1(LabelIdentifier(x2), params)
+    case _ => throw InvalidAST
+  }
 }
 
 case class ContinueStatement0(parserParams: List[Boolean]) extends ContinueStatement {

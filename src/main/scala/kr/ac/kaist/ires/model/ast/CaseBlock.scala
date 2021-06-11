@@ -1,11 +1,21 @@
 package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
-import kr.ac.kaist.ires.error.UnexpectedSemantics
+import kr.ac.kaist.ires.error.InvalidAST
 import scala.collection.immutable.{ Set => SSet }
+import spray.json._
 
 trait CaseBlock extends AST {
   val kind: String = "CaseBlock"
+}
+object CaseBlock extends ASTHelper {
+  def apply(v: JsValue): CaseBlock = v match {
+    case JsSeq(JsInt(0), JsSeq(x1), JsBoolSeq(params), JsSpan(span)) =>
+      CaseBlock0(opt(x1, CaseClauses.apply), params)
+    case JsSeq(JsInt(1), JsSeq(x1, x2, x3), JsBoolSeq(params), JsSpan(span)) =>
+      CaseBlock1(opt(x1, CaseClauses.apply), DefaultClause(x2), opt(x3, CaseClauses.apply), params)
+    case _ => throw InvalidAST
+  }
 }
 
 case class CaseBlock0(x1: Option[CaseClauses], parserParams: List[Boolean]) extends CaseBlock {

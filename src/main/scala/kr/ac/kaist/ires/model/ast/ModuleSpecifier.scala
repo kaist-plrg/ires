@@ -1,11 +1,19 @@
 package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
-import kr.ac.kaist.ires.error.UnexpectedSemantics
+import kr.ac.kaist.ires.error.InvalidAST
 import scala.collection.immutable.{ Set => SSet }
+import spray.json._
 
 trait ModuleSpecifier extends AST {
   val kind: String = "ModuleSpecifier"
+}
+object ModuleSpecifier extends ASTHelper {
+  def apply(v: JsValue): ModuleSpecifier = v match {
+    case JsSeq(JsInt(0), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
+      ModuleSpecifier0(lex("StringLiteral", x0), params)
+    case _ => throw InvalidAST
+  }
 }
 
 case class ModuleSpecifier0(x0: Lexical, parserParams: List[Boolean]) extends ModuleSpecifier {

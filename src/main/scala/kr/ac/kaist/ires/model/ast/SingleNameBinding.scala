@@ -1,11 +1,19 @@
 package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
-import kr.ac.kaist.ires.error.UnexpectedSemantics
+import kr.ac.kaist.ires.error.InvalidAST
 import scala.collection.immutable.{ Set => SSet }
+import spray.json._
 
 trait SingleNameBinding extends AST {
   val kind: String = "SingleNameBinding"
+}
+object SingleNameBinding extends ASTHelper {
+  def apply(v: JsValue): SingleNameBinding = v match {
+    case JsSeq(JsInt(0), JsSeq(x0, x1), JsBoolSeq(params), JsSpan(span)) =>
+      SingleNameBinding0(BindingIdentifier(x0), opt(x1, Initializer.apply), params)
+    case _ => throw InvalidAST
+  }
 }
 
 case class SingleNameBinding0(x0: BindingIdentifier, x1: Option[Initializer], parserParams: List[Boolean]) extends SingleNameBinding {

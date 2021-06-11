@@ -1,11 +1,31 @@
 package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
-import kr.ac.kaist.ires.error.UnexpectedSemantics
+import kr.ac.kaist.ires.error.InvalidAST
 import scala.collection.immutable.{ Set => SSet }
+import spray.json._
 
 trait RelationalExpression extends AST {
   val kind: String = "RelationalExpression"
+}
+object RelationalExpression extends ASTHelper {
+  def apply(v: JsValue): RelationalExpression = v match {
+    case JsSeq(JsInt(0), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
+      RelationalExpression0(ShiftExpression(x0), params)
+    case JsSeq(JsInt(1), JsSeq(x0, x2), JsBoolSeq(params), JsSpan(span)) =>
+      RelationalExpression1(RelationalExpression(x0), ShiftExpression(x2), params)
+    case JsSeq(JsInt(2), JsSeq(x0, x2), JsBoolSeq(params), JsSpan(span)) =>
+      RelationalExpression2(RelationalExpression(x0), ShiftExpression(x2), params)
+    case JsSeq(JsInt(3), JsSeq(x0, x2), JsBoolSeq(params), JsSpan(span)) =>
+      RelationalExpression3(RelationalExpression(x0), ShiftExpression(x2), params)
+    case JsSeq(JsInt(4), JsSeq(x0, x2), JsBoolSeq(params), JsSpan(span)) =>
+      RelationalExpression4(RelationalExpression(x0), ShiftExpression(x2), params)
+    case JsSeq(JsInt(5), JsSeq(x0, x2), JsBoolSeq(params), JsSpan(span)) =>
+      RelationalExpression5(RelationalExpression(x0), ShiftExpression(x2), params)
+    case JsSeq(JsInt(6), JsSeq(x0, x2), JsBoolSeq(params), JsSpan(span)) =>
+      RelationalExpression6(RelationalExpression(x0), ShiftExpression(x2), params)
+    case _ => throw InvalidAST
+  }
 }
 
 case class RelationalExpression0(x0: ShiftExpression, parserParams: List[Boolean]) extends RelationalExpression {

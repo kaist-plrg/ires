@@ -1,11 +1,19 @@
 package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
-import kr.ac.kaist.ires.error.UnexpectedSemantics
+import kr.ac.kaist.ires.error.InvalidAST
 import scala.collection.immutable.{ Set => SSet }
+import spray.json._
 
 trait SwitchStatement extends AST {
   val kind: String = "SwitchStatement"
+}
+object SwitchStatement extends ASTHelper {
+  def apply(v: JsValue): SwitchStatement = v match {
+    case JsSeq(JsInt(0), JsSeq(x2, x4), JsBoolSeq(params), JsSpan(span)) =>
+      SwitchStatement0(Expression(x2), CaseBlock(x4), params)
+    case _ => throw InvalidAST
+  }
 }
 
 case class SwitchStatement0(x2: Expression, x4: CaseBlock, parserParams: List[Boolean]) extends SwitchStatement {

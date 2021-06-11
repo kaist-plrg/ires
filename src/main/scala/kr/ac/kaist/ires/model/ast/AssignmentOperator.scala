@@ -1,11 +1,41 @@
 package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
-import kr.ac.kaist.ires.error.UnexpectedSemantics
+import kr.ac.kaist.ires.error.InvalidAST
 import scala.collection.immutable.{ Set => SSet }
+import spray.json._
 
 trait AssignmentOperator extends AST {
   val kind: String = "AssignmentOperator"
+}
+object AssignmentOperator extends ASTHelper {
+  def apply(v: JsValue): AssignmentOperator = v match {
+    case JsSeq(JsInt(0), JsSeq(), JsBoolSeq(params), JsSpan(span)) =>
+      AssignmentOperator0(params)
+    case JsSeq(JsInt(1), JsSeq(), JsBoolSeq(params), JsSpan(span)) =>
+      AssignmentOperator1(params)
+    case JsSeq(JsInt(2), JsSeq(), JsBoolSeq(params), JsSpan(span)) =>
+      AssignmentOperator2(params)
+    case JsSeq(JsInt(3), JsSeq(), JsBoolSeq(params), JsSpan(span)) =>
+      AssignmentOperator3(params)
+    case JsSeq(JsInt(4), JsSeq(), JsBoolSeq(params), JsSpan(span)) =>
+      AssignmentOperator4(params)
+    case JsSeq(JsInt(5), JsSeq(), JsBoolSeq(params), JsSpan(span)) =>
+      AssignmentOperator5(params)
+    case JsSeq(JsInt(6), JsSeq(), JsBoolSeq(params), JsSpan(span)) =>
+      AssignmentOperator6(params)
+    case JsSeq(JsInt(7), JsSeq(), JsBoolSeq(params), JsSpan(span)) =>
+      AssignmentOperator7(params)
+    case JsSeq(JsInt(8), JsSeq(), JsBoolSeq(params), JsSpan(span)) =>
+      AssignmentOperator8(params)
+    case JsSeq(JsInt(9), JsSeq(), JsBoolSeq(params), JsSpan(span)) =>
+      AssignmentOperator9(params)
+    case JsSeq(JsInt(10), JsSeq(), JsBoolSeq(params), JsSpan(span)) =>
+      AssignmentOperator10(params)
+    case JsSeq(JsInt(11), JsSeq(), JsBoolSeq(params), JsSpan(span)) =>
+      AssignmentOperator11(params)
+    case _ => throw InvalidAST
+  }
 }
 
 case class AssignmentOperator0(parserParams: List[Boolean]) extends AssignmentOperator {

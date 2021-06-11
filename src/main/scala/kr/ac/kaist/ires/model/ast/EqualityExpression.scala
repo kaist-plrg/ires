@@ -1,11 +1,27 @@
 package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
-import kr.ac.kaist.ires.error.UnexpectedSemantics
+import kr.ac.kaist.ires.error.InvalidAST
 import scala.collection.immutable.{ Set => SSet }
+import spray.json._
 
 trait EqualityExpression extends AST {
   val kind: String = "EqualityExpression"
+}
+object EqualityExpression extends ASTHelper {
+  def apply(v: JsValue): EqualityExpression = v match {
+    case JsSeq(JsInt(0), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
+      EqualityExpression0(RelationalExpression(x0), params)
+    case JsSeq(JsInt(1), JsSeq(x0, x2), JsBoolSeq(params), JsSpan(span)) =>
+      EqualityExpression1(EqualityExpression(x0), RelationalExpression(x2), params)
+    case JsSeq(JsInt(2), JsSeq(x0, x2), JsBoolSeq(params), JsSpan(span)) =>
+      EqualityExpression2(EqualityExpression(x0), RelationalExpression(x2), params)
+    case JsSeq(JsInt(3), JsSeq(x0, x2), JsBoolSeq(params), JsSpan(span)) =>
+      EqualityExpression3(EqualityExpression(x0), RelationalExpression(x2), params)
+    case JsSeq(JsInt(4), JsSeq(x0, x2), JsBoolSeq(params), JsSpan(span)) =>
+      EqualityExpression4(EqualityExpression(x0), RelationalExpression(x2), params)
+    case _ => throw InvalidAST
+  }
 }
 
 case class EqualityExpression0(x0: RelationalExpression, parserParams: List[Boolean]) extends EqualityExpression {

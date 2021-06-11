@@ -1,11 +1,21 @@
 package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
-import kr.ac.kaist.ires.error.UnexpectedSemantics
+import kr.ac.kaist.ires.error.InvalidAST
 import scala.collection.immutable.{ Set => SSet }
+import spray.json._
 
 trait ConciseBody extends AST {
   val kind: String = "ConciseBody"
+}
+object ConciseBody extends ASTHelper {
+  def apply(v: JsValue): ConciseBody = v match {
+    case JsSeq(JsInt(0), JsSeq(x1), JsBoolSeq(params), JsSpan(span)) =>
+      ConciseBody0(ExpressionBody(x1), params)
+    case JsSeq(JsInt(1), JsSeq(x1), JsBoolSeq(params), JsSpan(span)) =>
+      ConciseBody1(FunctionBody(x1), params)
+    case _ => throw InvalidAST
+  }
 }
 
 case class ConciseBody0(x1: ExpressionBody, parserParams: List[Boolean]) extends ConciseBody {

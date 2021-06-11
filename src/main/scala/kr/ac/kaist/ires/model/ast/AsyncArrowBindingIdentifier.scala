@@ -1,11 +1,19 @@
 package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
-import kr.ac.kaist.ires.error.UnexpectedSemantics
+import kr.ac.kaist.ires.error.InvalidAST
 import scala.collection.immutable.{ Set => SSet }
+import spray.json._
 
 trait AsyncArrowBindingIdentifier extends AST {
   val kind: String = "AsyncArrowBindingIdentifier"
+}
+object AsyncArrowBindingIdentifier extends ASTHelper {
+  def apply(v: JsValue): AsyncArrowBindingIdentifier = v match {
+    case JsSeq(JsInt(0), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
+      AsyncArrowBindingIdentifier0(BindingIdentifier(x0), params)
+    case _ => throw InvalidAST
+  }
 }
 
 case class AsyncArrowBindingIdentifier0(x0: BindingIdentifier, parserParams: List[Boolean]) extends AsyncArrowBindingIdentifier {

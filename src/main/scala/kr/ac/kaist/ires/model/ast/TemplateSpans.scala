@@ -1,11 +1,21 @@
 package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
-import kr.ac.kaist.ires.error.UnexpectedSemantics
+import kr.ac.kaist.ires.error.InvalidAST
 import scala.collection.immutable.{ Set => SSet }
+import spray.json._
 
 trait TemplateSpans extends AST {
   val kind: String = "TemplateSpans"
+}
+object TemplateSpans extends ASTHelper {
+  def apply(v: JsValue): TemplateSpans = v match {
+    case JsSeq(JsInt(0), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
+      TemplateSpans0(lex("TemplateTail", x0), params)
+    case JsSeq(JsInt(1), JsSeq(x0, x1), JsBoolSeq(params), JsSpan(span)) =>
+      TemplateSpans1(TemplateMiddleList(x0), lex("TemplateTail", x1), params)
+    case _ => throw InvalidAST
+  }
 }
 
 case class TemplateSpans0(x0: Lexical, parserParams: List[Boolean]) extends TemplateSpans {

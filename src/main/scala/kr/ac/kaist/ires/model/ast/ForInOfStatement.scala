@@ -1,11 +1,35 @@
 package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
-import kr.ac.kaist.ires.error.UnexpectedSemantics
+import kr.ac.kaist.ires.error.InvalidAST
 import scala.collection.immutable.{ Set => SSet }
+import spray.json._
 
 trait ForInOfStatement extends AST {
   val kind: String = "ForInOfStatement"
+}
+object ForInOfStatement extends ASTHelper {
+  def apply(v: JsValue): ForInOfStatement = v match {
+    case JsSeq(JsInt(0), JsSeq(x3, x5, x7), JsBoolSeq(params), JsSpan(span)) =>
+      ForInOfStatement0(LeftHandSideExpression(x3), Expression(x5), Statement(x7), params)
+    case JsSeq(JsInt(1), JsSeq(x3, x5, x7), JsBoolSeq(params), JsSpan(span)) =>
+      ForInOfStatement1(ForBinding(x3), Expression(x5), Statement(x7), params)
+    case JsSeq(JsInt(2), JsSeq(x2, x4, x6), JsBoolSeq(params), JsSpan(span)) =>
+      ForInOfStatement2(ForDeclaration(x2), Expression(x4), Statement(x6), params)
+    case JsSeq(JsInt(3), JsSeq(x3, x5, x7), JsBoolSeq(params), JsSpan(span)) =>
+      ForInOfStatement3(LeftHandSideExpression(x3), AssignmentExpression(x5), Statement(x7), params)
+    case JsSeq(JsInt(4), JsSeq(x3, x5, x7), JsBoolSeq(params), JsSpan(span)) =>
+      ForInOfStatement4(ForBinding(x3), AssignmentExpression(x5), Statement(x7), params)
+    case JsSeq(JsInt(5), JsSeq(x2, x4, x6), JsBoolSeq(params), JsSpan(span)) =>
+      ForInOfStatement5(ForDeclaration(x2), AssignmentExpression(x4), Statement(x6), params)
+    case JsSeq(JsInt(6), JsSeq(x4, x6, x8), JsBoolSeq(params), JsSpan(span)) =>
+      ForInOfStatement6(LeftHandSideExpression(x4), AssignmentExpression(x6), Statement(x8), params)
+    case JsSeq(JsInt(7), JsSeq(x4, x6, x8), JsBoolSeq(params), JsSpan(span)) =>
+      ForInOfStatement7(ForBinding(x4), AssignmentExpression(x6), Statement(x8), params)
+    case JsSeq(JsInt(8), JsSeq(x3, x5, x7), JsBoolSeq(params), JsSpan(span)) =>
+      ForInOfStatement8(ForDeclaration(x3), AssignmentExpression(x5), Statement(x7), params)
+    case _ => throw InvalidAST
+  }
 }
 
 case class ForInOfStatement0(x3: LeftHandSideExpression, x5: Expression, x7: Statement, parserParams: List[Boolean]) extends ForInOfStatement {

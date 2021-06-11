@@ -1,11 +1,27 @@
 package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
-import kr.ac.kaist.ires.error.UnexpectedSemantics
+import kr.ac.kaist.ires.error.InvalidAST
 import scala.collection.immutable.{ Set => SSet }
+import spray.json._
 
 trait PropertyDefinition extends AST {
   val kind: String = "PropertyDefinition"
+}
+object PropertyDefinition extends ASTHelper {
+  def apply(v: JsValue): PropertyDefinition = v match {
+    case JsSeq(JsInt(0), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
+      PropertyDefinition0(IdentifierReference(x0), params)
+    case JsSeq(JsInt(1), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
+      PropertyDefinition1(CoverInitializedName(x0), params)
+    case JsSeq(JsInt(2), JsSeq(x0, x2), JsBoolSeq(params), JsSpan(span)) =>
+      PropertyDefinition2(PropertyName(x0), AssignmentExpression(x2), params)
+    case JsSeq(JsInt(3), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
+      PropertyDefinition3(MethodDefinition(x0), params)
+    case JsSeq(JsInt(4), JsSeq(x1), JsBoolSeq(params), JsSpan(span)) =>
+      PropertyDefinition4(AssignmentExpression(x1), params)
+    case _ => throw InvalidAST
+  }
 }
 
 case class PropertyDefinition0(x0: IdentifierReference, parserParams: List[Boolean]) extends PropertyDefinition {

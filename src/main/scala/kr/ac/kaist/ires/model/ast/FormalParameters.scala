@@ -1,11 +1,27 @@
 package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
-import kr.ac.kaist.ires.error.UnexpectedSemantics
+import kr.ac.kaist.ires.error.InvalidAST
 import scala.collection.immutable.{ Set => SSet }
+import spray.json._
 
 trait FormalParameters extends AST {
   val kind: String = "FormalParameters"
+}
+object FormalParameters extends ASTHelper {
+  def apply(v: JsValue): FormalParameters = v match {
+    case JsSeq(JsInt(0), JsSeq(), JsBoolSeq(params), JsSpan(span)) =>
+      FormalParameters0(params)
+    case JsSeq(JsInt(1), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
+      FormalParameters1(FunctionRestParameter(x0), params)
+    case JsSeq(JsInt(2), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
+      FormalParameters2(FormalParameterList(x0), params)
+    case JsSeq(JsInt(3), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
+      FormalParameters3(FormalParameterList(x0), params)
+    case JsSeq(JsInt(4), JsSeq(x0, x2), JsBoolSeq(params), JsSpan(span)) =>
+      FormalParameters4(FormalParameterList(x0), FunctionRestParameter(x2), params)
+    case _ => throw InvalidAST
+  }
 }
 
 case class FormalParameters0(parserParams: List[Boolean]) extends FormalParameters {

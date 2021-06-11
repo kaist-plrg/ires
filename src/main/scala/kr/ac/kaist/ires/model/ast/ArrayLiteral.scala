@@ -1,11 +1,23 @@
 package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
-import kr.ac.kaist.ires.error.UnexpectedSemantics
+import kr.ac.kaist.ires.error.InvalidAST
 import scala.collection.immutable.{ Set => SSet }
+import spray.json._
 
 trait ArrayLiteral extends AST {
   val kind: String = "ArrayLiteral"
+}
+object ArrayLiteral extends ASTHelper {
+  def apply(v: JsValue): ArrayLiteral = v match {
+    case JsSeq(JsInt(0), JsSeq(x1), JsBoolSeq(params), JsSpan(span)) =>
+      ArrayLiteral0(opt(x1, Elision.apply), params)
+    case JsSeq(JsInt(1), JsSeq(x1), JsBoolSeq(params), JsSpan(span)) =>
+      ArrayLiteral1(ElementList(x1), params)
+    case JsSeq(JsInt(2), JsSeq(x1, x3), JsBoolSeq(params), JsSpan(span)) =>
+      ArrayLiteral2(ElementList(x1), opt(x3, Elision.apply), params)
+    case _ => throw InvalidAST
+  }
 }
 
 case class ArrayLiteral0(x1: Option[Elision], parserParams: List[Boolean]) extends ArrayLiteral {

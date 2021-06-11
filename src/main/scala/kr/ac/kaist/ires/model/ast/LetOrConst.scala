@@ -1,11 +1,21 @@
 package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
-import kr.ac.kaist.ires.error.UnexpectedSemantics
+import kr.ac.kaist.ires.error.InvalidAST
 import scala.collection.immutable.{ Set => SSet }
+import spray.json._
 
 trait LetOrConst extends AST {
   val kind: String = "LetOrConst"
+}
+object LetOrConst extends ASTHelper {
+  def apply(v: JsValue): LetOrConst = v match {
+    case JsSeq(JsInt(0), JsSeq(), JsBoolSeq(params), JsSpan(span)) =>
+      LetOrConst0(params)
+    case JsSeq(JsInt(1), JsSeq(), JsBoolSeq(params), JsSpan(span)) =>
+      LetOrConst1(params)
+    case _ => throw InvalidAST
+  }
 }
 
 case class LetOrConst0(parserParams: List[Boolean]) extends LetOrConst {

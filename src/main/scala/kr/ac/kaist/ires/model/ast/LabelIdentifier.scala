@@ -1,11 +1,23 @@
 package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
-import kr.ac.kaist.ires.error.UnexpectedSemantics
+import kr.ac.kaist.ires.error.InvalidAST
 import scala.collection.immutable.{ Set => SSet }
+import spray.json._
 
 trait LabelIdentifier extends AST {
   val kind: String = "LabelIdentifier"
+}
+object LabelIdentifier extends ASTHelper {
+  def apply(v: JsValue): LabelIdentifier = v match {
+    case JsSeq(JsInt(0), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
+      LabelIdentifier0(Identifier(x0), params)
+    case JsSeq(JsInt(1), JsSeq(), JsBoolSeq(params), JsSpan(span)) =>
+      LabelIdentifier1(params)
+    case JsSeq(JsInt(2), JsSeq(), JsBoolSeq(params), JsSpan(span)) =>
+      LabelIdentifier2(params)
+    case _ => throw InvalidAST
+  }
 }
 
 case class LabelIdentifier0(x0: Identifier, parserParams: List[Boolean]) extends LabelIdentifier {

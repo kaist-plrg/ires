@@ -1,11 +1,25 @@
 package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
-import kr.ac.kaist.ires.error.UnexpectedSemantics
+import kr.ac.kaist.ires.error.InvalidAST
 import scala.collection.immutable.{ Set => SSet }
+import spray.json._
 
 trait ObjectAssignmentPattern extends AST {
   val kind: String = "ObjectAssignmentPattern"
+}
+object ObjectAssignmentPattern extends ASTHelper {
+  def apply(v: JsValue): ObjectAssignmentPattern = v match {
+    case JsSeq(JsInt(0), JsSeq(), JsBoolSeq(params), JsSpan(span)) =>
+      ObjectAssignmentPattern0(params)
+    case JsSeq(JsInt(1), JsSeq(x1), JsBoolSeq(params), JsSpan(span)) =>
+      ObjectAssignmentPattern1(AssignmentRestProperty(x1), params)
+    case JsSeq(JsInt(2), JsSeq(x1), JsBoolSeq(params), JsSpan(span)) =>
+      ObjectAssignmentPattern2(AssignmentPropertyList(x1), params)
+    case JsSeq(JsInt(3), JsSeq(x1, x3), JsBoolSeq(params), JsSpan(span)) =>
+      ObjectAssignmentPattern3(AssignmentPropertyList(x1), opt(x3, AssignmentRestProperty.apply), params)
+    case _ => throw InvalidAST
+  }
 }
 
 case class ObjectAssignmentPattern0(parserParams: List[Boolean]) extends ObjectAssignmentPattern {

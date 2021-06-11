@@ -1,11 +1,35 @@
 package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
-import kr.ac.kaist.ires.error.UnexpectedSemantics
+import kr.ac.kaist.ires.error.InvalidAST
 import scala.collection.immutable.{ Set => SSet }
+import spray.json._
 
 trait AssignmentExpression extends AST {
   val kind: String = "AssignmentExpression"
+}
+object AssignmentExpression extends ASTHelper {
+  def apply(v: JsValue): AssignmentExpression = v match {
+    case JsSeq(JsInt(0), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
+      AssignmentExpression0(ConditionalExpression(x0), params)
+    case JsSeq(JsInt(1), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
+      AssignmentExpression1(YieldExpression(x0), params)
+    case JsSeq(JsInt(2), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
+      AssignmentExpression2(ArrowFunction(x0), params)
+    case JsSeq(JsInt(3), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
+      AssignmentExpression3(AsyncArrowFunction(x0), params)
+    case JsSeq(JsInt(4), JsSeq(x0, x2), JsBoolSeq(params), JsSpan(span)) =>
+      AssignmentExpression4(LeftHandSideExpression(x0), AssignmentExpression(x2), params)
+    case JsSeq(JsInt(5), JsSeq(x0, x1, x2), JsBoolSeq(params), JsSpan(span)) =>
+      AssignmentExpression5(LeftHandSideExpression(x0), AssignmentOperator(x1), AssignmentExpression(x2), params)
+    case JsSeq(JsInt(6), JsSeq(x0, x2), JsBoolSeq(params), JsSpan(span)) =>
+      AssignmentExpression6(LeftHandSideExpression(x0), AssignmentExpression(x2), params)
+    case JsSeq(JsInt(7), JsSeq(x0, x2), JsBoolSeq(params), JsSpan(span)) =>
+      AssignmentExpression7(LeftHandSideExpression(x0), AssignmentExpression(x2), params)
+    case JsSeq(JsInt(8), JsSeq(x0, x2), JsBoolSeq(params), JsSpan(span)) =>
+      AssignmentExpression8(LeftHandSideExpression(x0), AssignmentExpression(x2), params)
+    case _ => throw InvalidAST
+  }
 }
 
 case class AssignmentExpression0(x0: ConditionalExpression, parserParams: List[Boolean]) extends AssignmentExpression {

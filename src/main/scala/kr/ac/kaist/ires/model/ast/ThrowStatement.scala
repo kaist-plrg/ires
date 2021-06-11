@@ -1,11 +1,19 @@
 package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
-import kr.ac.kaist.ires.error.UnexpectedSemantics
+import kr.ac.kaist.ires.error.InvalidAST
 import scala.collection.immutable.{ Set => SSet }
+import spray.json._
 
 trait ThrowStatement extends AST {
   val kind: String = "ThrowStatement"
+}
+object ThrowStatement extends ASTHelper {
+  def apply(v: JsValue): ThrowStatement = v match {
+    case JsSeq(JsInt(0), JsSeq(x2), JsBoolSeq(params), JsSpan(span)) =>
+      ThrowStatement0(Expression(x2), params)
+    case _ => throw InvalidAST
+  }
 }
 
 case class ThrowStatement0(x2: Expression, parserParams: List[Boolean]) extends ThrowStatement {

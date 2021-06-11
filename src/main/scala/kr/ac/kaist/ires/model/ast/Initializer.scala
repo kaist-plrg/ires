@@ -1,11 +1,19 @@
 package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
-import kr.ac.kaist.ires.error.UnexpectedSemantics
+import kr.ac.kaist.ires.error.InvalidAST
 import scala.collection.immutable.{ Set => SSet }
+import spray.json._
 
 trait Initializer extends AST {
   val kind: String = "Initializer"
+}
+object Initializer extends ASTHelper {
+  def apply(v: JsValue): Initializer = v match {
+    case JsSeq(JsInt(0), JsSeq(x1), JsBoolSeq(params), JsSpan(span)) =>
+      Initializer0(AssignmentExpression(x1), params)
+    case _ => throw InvalidAST
+  }
 }
 
 case class Initializer0(x1: AssignmentExpression, parserParams: List[Boolean]) extends Initializer {

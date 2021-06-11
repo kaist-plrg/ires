@@ -1,11 +1,29 @@
 package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
-import kr.ac.kaist.ires.error.UnexpectedSemantics
+import kr.ac.kaist.ires.error.InvalidAST
 import scala.collection.immutable.{ Set => SSet }
+import spray.json._
 
 trait MethodDefinition extends AST {
   val kind: String = "MethodDefinition"
+}
+object MethodDefinition extends ASTHelper {
+  def apply(v: JsValue): MethodDefinition = v match {
+    case JsSeq(JsInt(0), JsSeq(x0, x2, x5), JsBoolSeq(params), JsSpan(span)) =>
+      MethodDefinition0(PropertyName(x0), UniqueFormalParameters(x2), FunctionBody(x5), params)
+    case JsSeq(JsInt(1), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
+      MethodDefinition1(GeneratorMethod(x0), params)
+    case JsSeq(JsInt(2), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
+      MethodDefinition2(AsyncMethod(x0), params)
+    case JsSeq(JsInt(3), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
+      MethodDefinition3(AsyncGeneratorMethod(x0), params)
+    case JsSeq(JsInt(4), JsSeq(x1, x5), JsBoolSeq(params), JsSpan(span)) =>
+      MethodDefinition4(PropertyName(x1), FunctionBody(x5), params)
+    case JsSeq(JsInt(5), JsSeq(x1, x3, x6), JsBoolSeq(params), JsSpan(span)) =>
+      MethodDefinition5(PropertyName(x1), PropertySetParameterList(x3), FunctionBody(x6), params)
+    case _ => throw InvalidAST
+  }
 }
 
 case class MethodDefinition0(x0: PropertyName, x2: UniqueFormalParameters, x5: FunctionBody, parserParams: List[Boolean]) extends MethodDefinition {

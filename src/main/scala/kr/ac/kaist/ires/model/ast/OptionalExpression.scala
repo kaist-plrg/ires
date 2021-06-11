@@ -1,11 +1,23 @@
 package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
-import kr.ac.kaist.ires.error.UnexpectedSemantics
+import kr.ac.kaist.ires.error.InvalidAST
 import scala.collection.immutable.{ Set => SSet }
+import spray.json._
 
 trait OptionalExpression extends AST {
   val kind: String = "OptionalExpression"
+}
+object OptionalExpression extends ASTHelper {
+  def apply(v: JsValue): OptionalExpression = v match {
+    case JsSeq(JsInt(0), JsSeq(x0, x1), JsBoolSeq(params), JsSpan(span)) =>
+      OptionalExpression0(MemberExpression(x0), OptionalChain(x1), params)
+    case JsSeq(JsInt(1), JsSeq(x0, x1), JsBoolSeq(params), JsSpan(span)) =>
+      OptionalExpression1(CallExpression(x0), OptionalChain(x1), params)
+    case JsSeq(JsInt(2), JsSeq(x0, x1), JsBoolSeq(params), JsSpan(span)) =>
+      OptionalExpression2(OptionalExpression(x0), OptionalChain(x1), params)
+    case _ => throw InvalidAST
+  }
 }
 
 case class OptionalExpression0(x0: MemberExpression, x1: OptionalChain, parserParams: List[Boolean]) extends OptionalExpression {

@@ -1,11 +1,19 @@
 package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
-import kr.ac.kaist.ires.error.UnexpectedSemantics
+import kr.ac.kaist.ires.error.InvalidAST
 import scala.collection.immutable.{ Set => SSet }
+import spray.json._
 
 trait CoalesceExpression extends AST {
   val kind: String = "CoalesceExpression"
+}
+object CoalesceExpression extends ASTHelper {
+  def apply(v: JsValue): CoalesceExpression = v match {
+    case JsSeq(JsInt(0), JsSeq(x0, x2), JsBoolSeq(params), JsSpan(span)) =>
+      CoalesceExpression0(CoalesceExpressionHead(x0), BitwiseORExpression(x2), params)
+    case _ => throw InvalidAST
+  }
 }
 
 case class CoalesceExpression0(x0: CoalesceExpressionHead, x2: BitwiseORExpression, parserParams: List[Boolean]) extends CoalesceExpression {
