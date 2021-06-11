@@ -12,7 +12,7 @@ trait Identifier extends AST {
 object Identifier extends ASTHelper {
   def apply(v: JsValue): Identifier = v match {
     case JsSeq(JsInt(0), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
-      Identifier0(lex("IdentifierName", x0), params, span)
+      Identifier0(lex("(IdentifierName \\ (ReservedWord))", x0), params, span)
     case _ => throw InvalidAST
   }
 }
