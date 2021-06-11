@@ -2,6 +2,7 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.InvalidAST
+import kr.ac.kaist.ires.util.Span
 import scala.collection.immutable.{ Set => SSet }
 import spray.json._
 
@@ -11,14 +12,14 @@ trait ClassElementList extends AST {
 object ClassElementList extends ASTHelper {
   def apply(v: JsValue): ClassElementList = v match {
     case JsSeq(JsInt(0), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
-      ClassElementList0(ClassElement(x0), params)
+      ClassElementList0(ClassElement(x0), params, span)
     case JsSeq(JsInt(1), JsSeq(x0, x1), JsBoolSeq(params), JsSpan(span)) =>
-      ClassElementList1(ClassElementList(x0), ClassElement(x1), params)
+      ClassElementList1(ClassElementList(x0), ClassElement(x1), params, span)
     case _ => throw InvalidAST
   }
 }
 
-case class ClassElementList0(x0: ClassElement, parserParams: List[Boolean]) extends ClassElementList {
+case class ClassElementList0(x0: ClassElement, parserParams: List[Boolean], span: Span) extends ClassElementList {
   x0.parent = Some(this)
   val idx: Int = 0
   override def toString: String = {
@@ -37,7 +38,7 @@ object ClassElementList0 extends ASTInfo {
   )
 }
 
-case class ClassElementList1(x0: ClassElementList, x1: ClassElement, parserParams: List[Boolean]) extends ClassElementList {
+case class ClassElementList1(x0: ClassElementList, x1: ClassElement, parserParams: List[Boolean], span: Span) extends ClassElementList {
   x0.parent = Some(this)
   x1.parent = Some(this)
   val idx: Int = 1

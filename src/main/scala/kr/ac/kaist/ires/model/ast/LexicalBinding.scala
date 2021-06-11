@@ -2,6 +2,7 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.InvalidAST
+import kr.ac.kaist.ires.util.Span
 import scala.collection.immutable.{ Set => SSet }
 import spray.json._
 
@@ -11,14 +12,14 @@ trait LexicalBinding extends AST {
 object LexicalBinding extends ASTHelper {
   def apply(v: JsValue): LexicalBinding = v match {
     case JsSeq(JsInt(0), JsSeq(x0, x1), JsBoolSeq(params), JsSpan(span)) =>
-      LexicalBinding0(BindingIdentifier(x0), opt(x1, Initializer.apply), params)
+      LexicalBinding0(BindingIdentifier(x0), opt(x1, Initializer.apply), params, span)
     case JsSeq(JsInt(1), JsSeq(x0, x1), JsBoolSeq(params), JsSpan(span)) =>
-      LexicalBinding1(BindingPattern(x0), Initializer(x1), params)
+      LexicalBinding1(BindingPattern(x0), Initializer(x1), params, span)
     case _ => throw InvalidAST
   }
 }
 
-case class LexicalBinding0(x0: BindingIdentifier, x1: Option[Initializer], parserParams: List[Boolean]) extends LexicalBinding {
+case class LexicalBinding0(x0: BindingIdentifier, x1: Option[Initializer], parserParams: List[Boolean], span: Span) extends LexicalBinding {
   x0.parent = Some(this)
   x1.foreach((m) => m.parent = Some(this))
   val idx: Int = 0
@@ -39,7 +40,7 @@ object LexicalBinding0 extends ASTInfo {
   )
 }
 
-case class LexicalBinding1(x0: BindingPattern, x1: Initializer, parserParams: List[Boolean]) extends LexicalBinding {
+case class LexicalBinding1(x0: BindingPattern, x1: Initializer, parserParams: List[Boolean], span: Span) extends LexicalBinding {
   x0.parent = Some(this)
   x1.parent = Some(this)
   val idx: Int = 1

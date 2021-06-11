@@ -2,6 +2,7 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.InvalidAST
+import kr.ac.kaist.ires.util.Span
 import scala.collection.immutable.{ Set => SSet }
 import spray.json._
 
@@ -11,14 +12,14 @@ trait FormalParameterList extends AST {
 object FormalParameterList extends ASTHelper {
   def apply(v: JsValue): FormalParameterList = v match {
     case JsSeq(JsInt(0), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
-      FormalParameterList0(FormalParameter(x0), params)
+      FormalParameterList0(FormalParameter(x0), params, span)
     case JsSeq(JsInt(1), JsSeq(x0, x2), JsBoolSeq(params), JsSpan(span)) =>
-      FormalParameterList1(FormalParameterList(x0), FormalParameter(x2), params)
+      FormalParameterList1(FormalParameterList(x0), FormalParameter(x2), params, span)
     case _ => throw InvalidAST
   }
 }
 
-case class FormalParameterList0(x0: FormalParameter, parserParams: List[Boolean]) extends FormalParameterList {
+case class FormalParameterList0(x0: FormalParameter, parserParams: List[Boolean], span: Span) extends FormalParameterList {
   x0.parent = Some(this)
   val idx: Int = 0
   override def toString: String = {
@@ -35,7 +36,7 @@ object FormalParameterList0 extends ASTInfo {
   )
 }
 
-case class FormalParameterList1(x0: FormalParameterList, x2: FormalParameter, parserParams: List[Boolean]) extends FormalParameterList {
+case class FormalParameterList1(x0: FormalParameterList, x2: FormalParameter, parserParams: List[Boolean], span: Span) extends FormalParameterList {
   x0.parent = Some(this)
   x2.parent = Some(this)
   val idx: Int = 1

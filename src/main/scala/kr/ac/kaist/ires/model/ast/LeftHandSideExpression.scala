@@ -2,6 +2,7 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.InvalidAST
+import kr.ac.kaist.ires.util.Span
 import scala.collection.immutable.{ Set => SSet }
 import spray.json._
 
@@ -11,16 +12,16 @@ trait LeftHandSideExpression extends AST {
 object LeftHandSideExpression extends ASTHelper {
   def apply(v: JsValue): LeftHandSideExpression = v match {
     case JsSeq(JsInt(0), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
-      LeftHandSideExpression0(NewExpression(x0), params)
+      LeftHandSideExpression0(NewExpression(x0), params, span)
     case JsSeq(JsInt(1), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
-      LeftHandSideExpression1(CallExpression(x0), params)
+      LeftHandSideExpression1(CallExpression(x0), params, span)
     case JsSeq(JsInt(2), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
-      LeftHandSideExpression2(OptionalExpression(x0), params)
+      LeftHandSideExpression2(OptionalExpression(x0), params, span)
     case _ => throw InvalidAST
   }
 }
 
-case class LeftHandSideExpression0(x0: NewExpression, parserParams: List[Boolean]) extends LeftHandSideExpression {
+case class LeftHandSideExpression0(x0: NewExpression, parserParams: List[Boolean], span: Span) extends LeftHandSideExpression {
   x0.parent = Some(this)
   val idx: Int = 0
   override def toString: String = {
@@ -35,7 +36,7 @@ object LeftHandSideExpression0 extends ASTInfo {
   val semMap: Map[String, Algo] = Map()
 }
 
-case class LeftHandSideExpression1(x0: CallExpression, parserParams: List[Boolean]) extends LeftHandSideExpression {
+case class LeftHandSideExpression1(x0: CallExpression, parserParams: List[Boolean], span: Span) extends LeftHandSideExpression {
   x0.parent = Some(this)
   val idx: Int = 1
   override def toString: String = {
@@ -54,7 +55,7 @@ object LeftHandSideExpression1 extends ASTInfo {
   )
 }
 
-case class LeftHandSideExpression2(x0: OptionalExpression, parserParams: List[Boolean]) extends LeftHandSideExpression {
+case class LeftHandSideExpression2(x0: OptionalExpression, parserParams: List[Boolean], span: Span) extends LeftHandSideExpression {
   x0.parent = Some(this)
   val idx: Int = 2
   override def toString: String = {

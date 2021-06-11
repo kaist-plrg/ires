@@ -2,6 +2,7 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.InvalidAST
+import kr.ac.kaist.ires.util.Span
 import scala.collection.immutable.{ Set => SSet }
 import spray.json._
 
@@ -11,14 +12,14 @@ trait BreakableStatement extends AST {
 object BreakableStatement extends ASTHelper {
   def apply(v: JsValue): BreakableStatement = v match {
     case JsSeq(JsInt(0), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
-      BreakableStatement0(IterationStatement(x0), params)
+      BreakableStatement0(IterationStatement(x0), params, span)
     case JsSeq(JsInt(1), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
-      BreakableStatement1(SwitchStatement(x0), params)
+      BreakableStatement1(SwitchStatement(x0), params, span)
     case _ => throw InvalidAST
   }
 }
 
-case class BreakableStatement0(x0: IterationStatement, parserParams: List[Boolean]) extends BreakableStatement {
+case class BreakableStatement0(x0: IterationStatement, parserParams: List[Boolean], span: Span) extends BreakableStatement {
   x0.parent = Some(this)
   val idx: Int = 0
   override def toString: String = {
@@ -37,7 +38,7 @@ object BreakableStatement0 extends ASTInfo {
   )
 }
 
-case class BreakableStatement1(x0: SwitchStatement, parserParams: List[Boolean]) extends BreakableStatement {
+case class BreakableStatement1(x0: SwitchStatement, parserParams: List[Boolean], span: Span) extends BreakableStatement {
   x0.parent = Some(this)
   val idx: Int = 1
   override def toString: String = {

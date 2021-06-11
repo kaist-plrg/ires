@@ -2,6 +2,7 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.InvalidAST
+import kr.ac.kaist.ires.util.Span
 import scala.collection.immutable.{ Set => SSet }
 import spray.json._
 
@@ -11,12 +12,12 @@ trait CoverCallExpressionAndAsyncArrowHead extends AST {
 object CoverCallExpressionAndAsyncArrowHead extends ASTHelper {
   def apply(v: JsValue): CoverCallExpressionAndAsyncArrowHead = v match {
     case JsSeq(JsInt(0), JsSeq(x0, x1), JsBoolSeq(params), JsSpan(span)) =>
-      CoverCallExpressionAndAsyncArrowHead0(MemberExpression(x0), Arguments(x1), params)
+      CoverCallExpressionAndAsyncArrowHead0(MemberExpression(x0), Arguments(x1), params, span)
     case _ => throw InvalidAST
   }
 }
 
-case class CoverCallExpressionAndAsyncArrowHead0(x0: MemberExpression, x1: Arguments, parserParams: List[Boolean]) extends CoverCallExpressionAndAsyncArrowHead {
+case class CoverCallExpressionAndAsyncArrowHead0(x0: MemberExpression, x1: Arguments, parserParams: List[Boolean], span: Span) extends CoverCallExpressionAndAsyncArrowHead {
   x0.parent = Some(this)
   x1.parent = Some(this)
   val idx: Int = 0

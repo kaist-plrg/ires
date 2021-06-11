@@ -2,6 +2,7 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.InvalidAST
+import kr.ac.kaist.ires.util.Span
 import scala.collection.immutable.{ Set => SSet }
 import spray.json._
 
@@ -11,12 +12,12 @@ trait VariableStatement extends AST {
 object VariableStatement extends ASTHelper {
   def apply(v: JsValue): VariableStatement = v match {
     case JsSeq(JsInt(0), JsSeq(x1), JsBoolSeq(params), JsSpan(span)) =>
-      VariableStatement0(VariableDeclarationList(x1), params)
+      VariableStatement0(VariableDeclarationList(x1), params, span)
     case _ => throw InvalidAST
   }
 }
 
-case class VariableStatement0(x1: VariableDeclarationList, parserParams: List[Boolean]) extends VariableStatement {
+case class VariableStatement0(x1: VariableDeclarationList, parserParams: List[Boolean], span: Span) extends VariableStatement {
   x1.parent = Some(this)
   val idx: Int = 0
   override def toString: String = {

@@ -2,6 +2,7 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.InvalidAST
+import kr.ac.kaist.ires.util.Span
 import scala.collection.immutable.{ Set => SSet }
 import spray.json._
 
@@ -11,14 +12,14 @@ trait AsyncArrowFunction extends AST {
 object AsyncArrowFunction extends ASTHelper {
   def apply(v: JsValue): AsyncArrowFunction = v match {
     case JsSeq(JsInt(0), JsSeq(x2, x5), JsBoolSeq(params), JsSpan(span)) =>
-      AsyncArrowFunction0(AsyncArrowBindingIdentifier(x2), AsyncConciseBody(x5), params)
+      AsyncArrowFunction0(AsyncArrowBindingIdentifier(x2), AsyncConciseBody(x5), params, span)
     case JsSeq(JsInt(1), JsSeq(x0, x3), JsBoolSeq(params), JsSpan(span)) =>
-      AsyncArrowFunction1(CoverCallExpressionAndAsyncArrowHead(x0), AsyncConciseBody(x3), params)
+      AsyncArrowFunction1(CoverCallExpressionAndAsyncArrowHead(x0), AsyncConciseBody(x3), params, span)
     case _ => throw InvalidAST
   }
 }
 
-case class AsyncArrowFunction0(x2: AsyncArrowBindingIdentifier, x5: AsyncConciseBody, parserParams: List[Boolean]) extends AsyncArrowFunction {
+case class AsyncArrowFunction0(x2: AsyncArrowBindingIdentifier, x5: AsyncConciseBody, parserParams: List[Boolean], span: Span) extends AsyncArrowFunction {
   x2.parent = Some(this)
   x5.parent = Some(this)
   val idx: Int = 0
@@ -41,7 +42,7 @@ object AsyncArrowFunction0 extends ASTInfo {
   )
 }
 
-case class AsyncArrowFunction1(x0: CoverCallExpressionAndAsyncArrowHead, x3: AsyncConciseBody, parserParams: List[Boolean]) extends AsyncArrowFunction {
+case class AsyncArrowFunction1(x0: CoverCallExpressionAndAsyncArrowHead, x3: AsyncConciseBody, parserParams: List[Boolean], span: Span) extends AsyncArrowFunction {
   x0.parent = Some(this)
   x3.parent = Some(this)
   val idx: Int = 1

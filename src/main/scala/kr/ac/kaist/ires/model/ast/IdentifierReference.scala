@@ -2,6 +2,7 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.InvalidAST
+import kr.ac.kaist.ires.util.Span
 import scala.collection.immutable.{ Set => SSet }
 import spray.json._
 
@@ -11,16 +12,16 @@ trait IdentifierReference extends AST {
 object IdentifierReference extends ASTHelper {
   def apply(v: JsValue): IdentifierReference = v match {
     case JsSeq(JsInt(0), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
-      IdentifierReference0(Identifier(x0), params)
+      IdentifierReference0(Identifier(x0), params, span)
     case JsSeq(JsInt(1), JsSeq(), JsBoolSeq(params), JsSpan(span)) =>
-      IdentifierReference1(params)
+      IdentifierReference1(params, span)
     case JsSeq(JsInt(2), JsSeq(), JsBoolSeq(params), JsSpan(span)) =>
-      IdentifierReference2(params)
+      IdentifierReference2(params, span)
     case _ => throw InvalidAST
   }
 }
 
-case class IdentifierReference0(x0: Identifier, parserParams: List[Boolean]) extends IdentifierReference {
+case class IdentifierReference0(x0: Identifier, parserParams: List[Boolean], span: Span) extends IdentifierReference {
   x0.parent = Some(this)
   val idx: Int = 0
   override def toString: String = {
@@ -39,7 +40,7 @@ object IdentifierReference0 extends ASTInfo {
   )
 }
 
-case class IdentifierReference1(parserParams: List[Boolean]) extends IdentifierReference {
+case class IdentifierReference1(parserParams: List[Boolean], span: Span) extends IdentifierReference {
   val idx: Int = 1
   override def toString: String = {
     s"yield"
@@ -58,7 +59,7 @@ object IdentifierReference1 extends ASTInfo {
   )
 }
 
-case class IdentifierReference2(parserParams: List[Boolean]) extends IdentifierReference {
+case class IdentifierReference2(parserParams: List[Boolean], span: Span) extends IdentifierReference {
   val idx: Int = 2
   override def toString: String = {
     s"await"

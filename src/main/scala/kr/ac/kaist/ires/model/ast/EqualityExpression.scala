@@ -2,6 +2,7 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.InvalidAST
+import kr.ac.kaist.ires.util.Span
 import scala.collection.immutable.{ Set => SSet }
 import spray.json._
 
@@ -11,20 +12,20 @@ trait EqualityExpression extends AST {
 object EqualityExpression extends ASTHelper {
   def apply(v: JsValue): EqualityExpression = v match {
     case JsSeq(JsInt(0), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
-      EqualityExpression0(RelationalExpression(x0), params)
+      EqualityExpression0(RelationalExpression(x0), params, span)
     case JsSeq(JsInt(1), JsSeq(x0, x2), JsBoolSeq(params), JsSpan(span)) =>
-      EqualityExpression1(EqualityExpression(x0), RelationalExpression(x2), params)
+      EqualityExpression1(EqualityExpression(x0), RelationalExpression(x2), params, span)
     case JsSeq(JsInt(2), JsSeq(x0, x2), JsBoolSeq(params), JsSpan(span)) =>
-      EqualityExpression2(EqualityExpression(x0), RelationalExpression(x2), params)
+      EqualityExpression2(EqualityExpression(x0), RelationalExpression(x2), params, span)
     case JsSeq(JsInt(3), JsSeq(x0, x2), JsBoolSeq(params), JsSpan(span)) =>
-      EqualityExpression3(EqualityExpression(x0), RelationalExpression(x2), params)
+      EqualityExpression3(EqualityExpression(x0), RelationalExpression(x2), params, span)
     case JsSeq(JsInt(4), JsSeq(x0, x2), JsBoolSeq(params), JsSpan(span)) =>
-      EqualityExpression4(EqualityExpression(x0), RelationalExpression(x2), params)
+      EqualityExpression4(EqualityExpression(x0), RelationalExpression(x2), params, span)
     case _ => throw InvalidAST
   }
 }
 
-case class EqualityExpression0(x0: RelationalExpression, parserParams: List[Boolean]) extends EqualityExpression {
+case class EqualityExpression0(x0: RelationalExpression, parserParams: List[Boolean], span: Span) extends EqualityExpression {
   x0.parent = Some(this)
   val idx: Int = 0
   override def toString: String = {
@@ -39,7 +40,7 @@ object EqualityExpression0 extends ASTInfo {
   val semMap: Map[String, Algo] = Map()
 }
 
-case class EqualityExpression1(x0: EqualityExpression, x2: RelationalExpression, parserParams: List[Boolean]) extends EqualityExpression {
+case class EqualityExpression1(x0: EqualityExpression, x2: RelationalExpression, parserParams: List[Boolean], span: Span) extends EqualityExpression {
   x0.parent = Some(this)
   x2.parent = Some(this)
   val idx: Int = 1
@@ -60,7 +61,7 @@ object EqualityExpression1 extends ASTInfo {
   )
 }
 
-case class EqualityExpression2(x0: EqualityExpression, x2: RelationalExpression, parserParams: List[Boolean]) extends EqualityExpression {
+case class EqualityExpression2(x0: EqualityExpression, x2: RelationalExpression, parserParams: List[Boolean], span: Span) extends EqualityExpression {
   x0.parent = Some(this)
   x2.parent = Some(this)
   val idx: Int = 2
@@ -81,7 +82,7 @@ object EqualityExpression2 extends ASTInfo {
   )
 }
 
-case class EqualityExpression3(x0: EqualityExpression, x2: RelationalExpression, parserParams: List[Boolean]) extends EqualityExpression {
+case class EqualityExpression3(x0: EqualityExpression, x2: RelationalExpression, parserParams: List[Boolean], span: Span) extends EqualityExpression {
   x0.parent = Some(this)
   x2.parent = Some(this)
   val idx: Int = 3
@@ -102,7 +103,7 @@ object EqualityExpression3 extends ASTInfo {
   )
 }
 
-case class EqualityExpression4(x0: EqualityExpression, x2: RelationalExpression, parserParams: List[Boolean]) extends EqualityExpression {
+case class EqualityExpression4(x0: EqualityExpression, x2: RelationalExpression, parserParams: List[Boolean], span: Span) extends EqualityExpression {
   x0.parent = Some(this)
   x2.parent = Some(this)
   val idx: Int = 4

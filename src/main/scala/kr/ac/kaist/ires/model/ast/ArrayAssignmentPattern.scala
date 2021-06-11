@@ -2,6 +2,7 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.InvalidAST
+import kr.ac.kaist.ires.util.Span
 import scala.collection.immutable.{ Set => SSet }
 import spray.json._
 
@@ -11,16 +12,16 @@ trait ArrayAssignmentPattern extends AST {
 object ArrayAssignmentPattern extends ASTHelper {
   def apply(v: JsValue): ArrayAssignmentPattern = v match {
     case JsSeq(JsInt(0), JsSeq(x1, x2), JsBoolSeq(params), JsSpan(span)) =>
-      ArrayAssignmentPattern0(opt(x1, Elision.apply), opt(x2, AssignmentRestElement.apply), params)
+      ArrayAssignmentPattern0(opt(x1, Elision.apply), opt(x2, AssignmentRestElement.apply), params, span)
     case JsSeq(JsInt(1), JsSeq(x1), JsBoolSeq(params), JsSpan(span)) =>
-      ArrayAssignmentPattern1(AssignmentElementList(x1), params)
+      ArrayAssignmentPattern1(AssignmentElementList(x1), params, span)
     case JsSeq(JsInt(2), JsSeq(x1, x3, x4), JsBoolSeq(params), JsSpan(span)) =>
-      ArrayAssignmentPattern2(AssignmentElementList(x1), opt(x3, Elision.apply), opt(x4, AssignmentRestElement.apply), params)
+      ArrayAssignmentPattern2(AssignmentElementList(x1), opt(x3, Elision.apply), opt(x4, AssignmentRestElement.apply), params, span)
     case _ => throw InvalidAST
   }
 }
 
-case class ArrayAssignmentPattern0(x1: Option[Elision], x2: Option[AssignmentRestElement], parserParams: List[Boolean]) extends ArrayAssignmentPattern {
+case class ArrayAssignmentPattern0(x1: Option[Elision], x2: Option[AssignmentRestElement], parserParams: List[Boolean], span: Span) extends ArrayAssignmentPattern {
   x1.foreach((m) => m.parent = Some(this))
   x2.foreach((m) => m.parent = Some(this))
   val idx: Int = 0
@@ -40,7 +41,7 @@ object ArrayAssignmentPattern0 extends ASTInfo {
   )
 }
 
-case class ArrayAssignmentPattern1(x1: AssignmentElementList, parserParams: List[Boolean]) extends ArrayAssignmentPattern {
+case class ArrayAssignmentPattern1(x1: AssignmentElementList, parserParams: List[Boolean], span: Span) extends ArrayAssignmentPattern {
   x1.parent = Some(this)
   val idx: Int = 1
   override def toString: String = {
@@ -57,7 +58,7 @@ object ArrayAssignmentPattern1 extends ASTInfo {
   )
 }
 
-case class ArrayAssignmentPattern2(x1: AssignmentElementList, x3: Option[Elision], x4: Option[AssignmentRestElement], parserParams: List[Boolean]) extends ArrayAssignmentPattern {
+case class ArrayAssignmentPattern2(x1: AssignmentElementList, x3: Option[Elision], x4: Option[AssignmentRestElement], parserParams: List[Boolean], span: Span) extends ArrayAssignmentPattern {
   x1.parent = Some(this)
   x3.foreach((m) => m.parent = Some(this))
   x4.foreach((m) => m.parent = Some(this))

@@ -2,6 +2,7 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.InvalidAST
+import kr.ac.kaist.ires.util.Span
 import scala.collection.immutable.{ Set => SSet }
 import spray.json._
 
@@ -11,26 +12,26 @@ trait OptionalChain extends AST {
 object OptionalChain extends ASTHelper {
   def apply(v: JsValue): OptionalChain = v match {
     case JsSeq(JsInt(0), JsSeq(x1), JsBoolSeq(params), JsSpan(span)) =>
-      OptionalChain0(Arguments(x1), params)
+      OptionalChain0(Arguments(x1), params, span)
     case JsSeq(JsInt(1), JsSeq(x2), JsBoolSeq(params), JsSpan(span)) =>
-      OptionalChain1(Expression(x2), params)
+      OptionalChain1(Expression(x2), params, span)
     case JsSeq(JsInt(2), JsSeq(x1), JsBoolSeq(params), JsSpan(span)) =>
-      OptionalChain2(lex("IdentifierName", x1), params)
+      OptionalChain2(lex("IdentifierName", x1), params, span)
     case JsSeq(JsInt(3), JsSeq(x1), JsBoolSeq(params), JsSpan(span)) =>
-      OptionalChain3(TemplateLiteral(x1), params)
+      OptionalChain3(TemplateLiteral(x1), params, span)
     case JsSeq(JsInt(4), JsSeq(x0, x1), JsBoolSeq(params), JsSpan(span)) =>
-      OptionalChain4(OptionalChain(x0), Arguments(x1), params)
+      OptionalChain4(OptionalChain(x0), Arguments(x1), params, span)
     case JsSeq(JsInt(5), JsSeq(x0, x2), JsBoolSeq(params), JsSpan(span)) =>
-      OptionalChain5(OptionalChain(x0), Expression(x2), params)
+      OptionalChain5(OptionalChain(x0), Expression(x2), params, span)
     case JsSeq(JsInt(6), JsSeq(x0, x2), JsBoolSeq(params), JsSpan(span)) =>
-      OptionalChain6(OptionalChain(x0), lex("IdentifierName", x2), params)
+      OptionalChain6(OptionalChain(x0), lex("IdentifierName", x2), params, span)
     case JsSeq(JsInt(7), JsSeq(x0, x1), JsBoolSeq(params), JsSpan(span)) =>
-      OptionalChain7(OptionalChain(x0), TemplateLiteral(x1), params)
+      OptionalChain7(OptionalChain(x0), TemplateLiteral(x1), params, span)
     case _ => throw InvalidAST
   }
 }
 
-case class OptionalChain0(x1: Arguments, parserParams: List[Boolean]) extends OptionalChain {
+case class OptionalChain0(x1: Arguments, parserParams: List[Boolean], span: Span) extends OptionalChain {
   x1.parent = Some(this)
   val idx: Int = 0
   override def toString: String = {
@@ -48,7 +49,7 @@ object OptionalChain0 extends ASTInfo {
   )
 }
 
-case class OptionalChain1(x2: Expression, parserParams: List[Boolean]) extends OptionalChain {
+case class OptionalChain1(x2: Expression, parserParams: List[Boolean], span: Span) extends OptionalChain {
   x2.parent = Some(this)
   val idx: Int = 1
   override def toString: String = {
@@ -66,7 +67,7 @@ object OptionalChain1 extends ASTInfo {
   )
 }
 
-case class OptionalChain2(x1: Lexical, parserParams: List[Boolean]) extends OptionalChain {
+case class OptionalChain2(x1: Lexical, parserParams: List[Boolean], span: Span) extends OptionalChain {
   x1.parent = Some(this)
   val idx: Int = 2
   override def toString: String = {
@@ -85,7 +86,7 @@ object OptionalChain2 extends ASTInfo {
   )
 }
 
-case class OptionalChain3(x1: TemplateLiteral, parserParams: List[Boolean]) extends OptionalChain {
+case class OptionalChain3(x1: TemplateLiteral, parserParams: List[Boolean], span: Span) extends OptionalChain {
   x1.parent = Some(this)
   val idx: Int = 3
   override def toString: String = {
@@ -102,7 +103,7 @@ object OptionalChain3 extends ASTInfo {
   )
 }
 
-case class OptionalChain4(x0: OptionalChain, x1: Arguments, parserParams: List[Boolean]) extends OptionalChain {
+case class OptionalChain4(x0: OptionalChain, x1: Arguments, parserParams: List[Boolean], span: Span) extends OptionalChain {
   x0.parent = Some(this)
   x1.parent = Some(this)
   val idx: Int = 4
@@ -121,7 +122,7 @@ object OptionalChain4 extends ASTInfo {
   )
 }
 
-case class OptionalChain5(x0: OptionalChain, x2: Expression, parserParams: List[Boolean]) extends OptionalChain {
+case class OptionalChain5(x0: OptionalChain, x2: Expression, parserParams: List[Boolean], span: Span) extends OptionalChain {
   x0.parent = Some(this)
   x2.parent = Some(this)
   val idx: Int = 5
@@ -140,7 +141,7 @@ object OptionalChain5 extends ASTInfo {
   )
 }
 
-case class OptionalChain6(x0: OptionalChain, x2: Lexical, parserParams: List[Boolean]) extends OptionalChain {
+case class OptionalChain6(x0: OptionalChain, x2: Lexical, parserParams: List[Boolean], span: Span) extends OptionalChain {
   x0.parent = Some(this)
   x2.parent = Some(this)
   val idx: Int = 6
@@ -160,7 +161,7 @@ object OptionalChain6 extends ASTInfo {
   )
 }
 
-case class OptionalChain7(x0: OptionalChain, x1: TemplateLiteral, parserParams: List[Boolean]) extends OptionalChain {
+case class OptionalChain7(x0: OptionalChain, x1: TemplateLiteral, parserParams: List[Boolean], span: Span) extends OptionalChain {
   x0.parent = Some(this)
   x1.parent = Some(this)
   val idx: Int = 7

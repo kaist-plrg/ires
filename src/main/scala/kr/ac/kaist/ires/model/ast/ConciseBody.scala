@@ -2,6 +2,7 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.InvalidAST
+import kr.ac.kaist.ires.util.Span
 import scala.collection.immutable.{ Set => SSet }
 import spray.json._
 
@@ -11,14 +12,14 @@ trait ConciseBody extends AST {
 object ConciseBody extends ASTHelper {
   def apply(v: JsValue): ConciseBody = v match {
     case JsSeq(JsInt(0), JsSeq(x1), JsBoolSeq(params), JsSpan(span)) =>
-      ConciseBody0(ExpressionBody(x1), params)
+      ConciseBody0(ExpressionBody(x1), params, span)
     case JsSeq(JsInt(1), JsSeq(x1), JsBoolSeq(params), JsSpan(span)) =>
-      ConciseBody1(FunctionBody(x1), params)
+      ConciseBody1(FunctionBody(x1), params, span)
     case _ => throw InvalidAST
   }
 }
 
-case class ConciseBody0(x1: ExpressionBody, parserParams: List[Boolean]) extends ConciseBody {
+case class ConciseBody0(x1: ExpressionBody, parserParams: List[Boolean], span: Span) extends ConciseBody {
   x1.parent = Some(this)
   val idx: Int = 0
   override def toString: String = {
@@ -41,7 +42,7 @@ object ConciseBody0 extends ASTInfo {
   )
 }
 
-case class ConciseBody1(x1: FunctionBody, parserParams: List[Boolean]) extends ConciseBody {
+case class ConciseBody1(x1: FunctionBody, parserParams: List[Boolean], span: Span) extends ConciseBody {
   x1.parent = Some(this)
   val idx: Int = 1
   override def toString: String = {

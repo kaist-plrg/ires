@@ -2,6 +2,7 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.InvalidAST
+import kr.ac.kaist.ires.util.Span
 import scala.collection.immutable.{ Set => SSet }
 import spray.json._
 
@@ -11,14 +12,14 @@ trait GeneratorDeclaration extends AST {
 object GeneratorDeclaration extends ASTHelper {
   def apply(v: JsValue): GeneratorDeclaration = v match {
     case JsSeq(JsInt(0), JsSeq(x2, x4, x7), JsBoolSeq(params), JsSpan(span)) =>
-      GeneratorDeclaration0(BindingIdentifier(x2), FormalParameters(x4), GeneratorBody(x7), params)
+      GeneratorDeclaration0(BindingIdentifier(x2), FormalParameters(x4), GeneratorBody(x7), params, span)
     case JsSeq(JsInt(1), JsSeq(x3, x6), JsBoolSeq(params), JsSpan(span)) =>
-      GeneratorDeclaration1(FormalParameters(x3), GeneratorBody(x6), params)
+      GeneratorDeclaration1(FormalParameters(x3), GeneratorBody(x6), params, span)
     case _ => throw InvalidAST
   }
 }
 
-case class GeneratorDeclaration0(x2: BindingIdentifier, x4: FormalParameters, x7: GeneratorBody, parserParams: List[Boolean]) extends GeneratorDeclaration {
+case class GeneratorDeclaration0(x2: BindingIdentifier, x4: FormalParameters, x7: GeneratorBody, parserParams: List[Boolean], span: Span) extends GeneratorDeclaration {
   x2.parent = Some(this)
   x4.parent = Some(this)
   x7.parent = Some(this)
@@ -42,7 +43,7 @@ object GeneratorDeclaration0 extends ASTInfo {
   )
 }
 
-case class GeneratorDeclaration1(x3: FormalParameters, x6: GeneratorBody, parserParams: List[Boolean]) extends GeneratorDeclaration {
+case class GeneratorDeclaration1(x3: FormalParameters, x6: GeneratorBody, parserParams: List[Boolean], span: Span) extends GeneratorDeclaration {
   x3.parent = Some(this)
   x6.parent = Some(this)
   val idx: Int = 1

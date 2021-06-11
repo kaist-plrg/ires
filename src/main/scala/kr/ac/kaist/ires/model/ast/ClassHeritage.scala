@@ -2,6 +2,7 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.InvalidAST
+import kr.ac.kaist.ires.util.Span
 import scala.collection.immutable.{ Set => SSet }
 import spray.json._
 
@@ -11,12 +12,12 @@ trait ClassHeritage extends AST {
 object ClassHeritage extends ASTHelper {
   def apply(v: JsValue): ClassHeritage = v match {
     case JsSeq(JsInt(0), JsSeq(x1), JsBoolSeq(params), JsSpan(span)) =>
-      ClassHeritage0(LeftHandSideExpression(x1), params)
+      ClassHeritage0(LeftHandSideExpression(x1), params, span)
     case _ => throw InvalidAST
   }
 }
 
-case class ClassHeritage0(x1: LeftHandSideExpression, parserParams: List[Boolean]) extends ClassHeritage {
+case class ClassHeritage0(x1: LeftHandSideExpression, parserParams: List[Boolean], span: Span) extends ClassHeritage {
   x1.parent = Some(this)
   val idx: Int = 0
   override def toString: String = {

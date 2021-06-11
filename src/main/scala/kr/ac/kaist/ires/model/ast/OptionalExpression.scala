@@ -2,6 +2,7 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.InvalidAST
+import kr.ac.kaist.ires.util.Span
 import scala.collection.immutable.{ Set => SSet }
 import spray.json._
 
@@ -11,16 +12,16 @@ trait OptionalExpression extends AST {
 object OptionalExpression extends ASTHelper {
   def apply(v: JsValue): OptionalExpression = v match {
     case JsSeq(JsInt(0), JsSeq(x0, x1), JsBoolSeq(params), JsSpan(span)) =>
-      OptionalExpression0(MemberExpression(x0), OptionalChain(x1), params)
+      OptionalExpression0(MemberExpression(x0), OptionalChain(x1), params, span)
     case JsSeq(JsInt(1), JsSeq(x0, x1), JsBoolSeq(params), JsSpan(span)) =>
-      OptionalExpression1(CallExpression(x0), OptionalChain(x1), params)
+      OptionalExpression1(CallExpression(x0), OptionalChain(x1), params, span)
     case JsSeq(JsInt(2), JsSeq(x0, x1), JsBoolSeq(params), JsSpan(span)) =>
-      OptionalExpression2(OptionalExpression(x0), OptionalChain(x1), params)
+      OptionalExpression2(OptionalExpression(x0), OptionalChain(x1), params, span)
     case _ => throw InvalidAST
   }
 }
 
-case class OptionalExpression0(x0: MemberExpression, x1: OptionalChain, parserParams: List[Boolean]) extends OptionalExpression {
+case class OptionalExpression0(x0: MemberExpression, x1: OptionalChain, parserParams: List[Boolean], span: Span) extends OptionalExpression {
   x0.parent = Some(this)
   x1.parent = Some(this)
   val idx: Int = 0
@@ -39,7 +40,7 @@ object OptionalExpression0 extends ASTInfo {
   )
 }
 
-case class OptionalExpression1(x0: CallExpression, x1: OptionalChain, parserParams: List[Boolean]) extends OptionalExpression {
+case class OptionalExpression1(x0: CallExpression, x1: OptionalChain, parserParams: List[Boolean], span: Span) extends OptionalExpression {
   x0.parent = Some(this)
   x1.parent = Some(this)
   val idx: Int = 1
@@ -58,7 +59,7 @@ object OptionalExpression1 extends ASTInfo {
   )
 }
 
-case class OptionalExpression2(x0: OptionalExpression, x1: OptionalChain, parserParams: List[Boolean]) extends OptionalExpression {
+case class OptionalExpression2(x0: OptionalExpression, x1: OptionalChain, parserParams: List[Boolean], span: Span) extends OptionalExpression {
   x0.parent = Some(this)
   x1.parent = Some(this)
   val idx: Int = 2

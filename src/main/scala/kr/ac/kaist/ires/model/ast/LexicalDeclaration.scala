@@ -2,6 +2,7 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.InvalidAST
+import kr.ac.kaist.ires.util.Span
 import scala.collection.immutable.{ Set => SSet }
 import spray.json._
 
@@ -11,12 +12,12 @@ trait LexicalDeclaration extends AST {
 object LexicalDeclaration extends ASTHelper {
   def apply(v: JsValue): LexicalDeclaration = v match {
     case JsSeq(JsInt(0), JsSeq(x0, x1), JsBoolSeq(params), JsSpan(span)) =>
-      LexicalDeclaration0(LetOrConst(x0), BindingList(x1), params)
+      LexicalDeclaration0(LetOrConst(x0), BindingList(x1), params, span)
     case _ => throw InvalidAST
   }
 }
 
-case class LexicalDeclaration0(x0: LetOrConst, x1: BindingList, parserParams: List[Boolean]) extends LexicalDeclaration {
+case class LexicalDeclaration0(x0: LetOrConst, x1: BindingList, parserParams: List[Boolean], span: Span) extends LexicalDeclaration {
   x0.parent = Some(this)
   x1.parent = Some(this)
   val idx: Int = 0

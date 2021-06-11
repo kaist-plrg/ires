@@ -2,6 +2,7 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.InvalidAST
+import kr.ac.kaist.ires.util.Span
 import scala.collection.immutable.{ Set => SSet }
 import spray.json._
 
@@ -11,12 +12,12 @@ trait AsyncArrowBindingIdentifier extends AST {
 object AsyncArrowBindingIdentifier extends ASTHelper {
   def apply(v: JsValue): AsyncArrowBindingIdentifier = v match {
     case JsSeq(JsInt(0), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
-      AsyncArrowBindingIdentifier0(BindingIdentifier(x0), params)
+      AsyncArrowBindingIdentifier0(BindingIdentifier(x0), params, span)
     case _ => throw InvalidAST
   }
 }
 
-case class AsyncArrowBindingIdentifier0(x0: BindingIdentifier, parserParams: List[Boolean]) extends AsyncArrowBindingIdentifier {
+case class AsyncArrowBindingIdentifier0(x0: BindingIdentifier, parserParams: List[Boolean], span: Span) extends AsyncArrowBindingIdentifier {
   x0.parent = Some(this)
   val idx: Int = 0
   override def toString: String = {

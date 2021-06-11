@@ -2,6 +2,7 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.InvalidAST
+import kr.ac.kaist.ires.util.Span
 import scala.collection.immutable.{ Set => SSet }
 import spray.json._
 
@@ -11,12 +12,12 @@ trait SubstitutionTemplate extends AST {
 object SubstitutionTemplate extends ASTHelper {
   def apply(v: JsValue): SubstitutionTemplate = v match {
     case JsSeq(JsInt(0), JsSeq(x0, x1, x2), JsBoolSeq(params), JsSpan(span)) =>
-      SubstitutionTemplate0(lex("TemplateHead", x0), Expression(x1), TemplateSpans(x2), params)
+      SubstitutionTemplate0(lex("TemplateHead", x0), Expression(x1), TemplateSpans(x2), params, span)
     case _ => throw InvalidAST
   }
 }
 
-case class SubstitutionTemplate0(x0: Lexical, x1: Expression, x2: TemplateSpans, parserParams: List[Boolean]) extends SubstitutionTemplate {
+case class SubstitutionTemplate0(x0: Lexical, x1: Expression, x2: TemplateSpans, parserParams: List[Boolean], span: Span) extends SubstitutionTemplate {
   x0.parent = Some(this)
   x1.parent = Some(this)
   x2.parent = Some(this)

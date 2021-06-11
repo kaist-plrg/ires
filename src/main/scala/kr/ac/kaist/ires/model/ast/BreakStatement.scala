@@ -2,6 +2,7 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.InvalidAST
+import kr.ac.kaist.ires.util.Span
 import scala.collection.immutable.{ Set => SSet }
 import spray.json._
 
@@ -11,14 +12,14 @@ trait BreakStatement extends AST {
 object BreakStatement extends ASTHelper {
   def apply(v: JsValue): BreakStatement = v match {
     case JsSeq(JsInt(0), JsSeq(), JsBoolSeq(params), JsSpan(span)) =>
-      BreakStatement0(params)
+      BreakStatement0(params, span)
     case JsSeq(JsInt(1), JsSeq(x2), JsBoolSeq(params), JsSpan(span)) =>
-      BreakStatement1(LabelIdentifier(x2), params)
+      BreakStatement1(LabelIdentifier(x2), params, span)
     case _ => throw InvalidAST
   }
 }
 
-case class BreakStatement0(parserParams: List[Boolean]) extends BreakStatement {
+case class BreakStatement0(parserParams: List[Boolean], span: Span) extends BreakStatement {
   val idx: Int = 0
   override def toString: String = {
     s"break ;"
@@ -36,7 +37,7 @@ object BreakStatement0 extends ASTInfo {
   )
 }
 
-case class BreakStatement1(x2: LabelIdentifier, parserParams: List[Boolean]) extends BreakStatement {
+case class BreakStatement1(x2: LabelIdentifier, parserParams: List[Boolean], span: Span) extends BreakStatement {
   x2.parent = Some(this)
   val idx: Int = 1
   override def toString: String = {

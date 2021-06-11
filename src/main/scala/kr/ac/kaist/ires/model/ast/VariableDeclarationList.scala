@@ -2,6 +2,7 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.InvalidAST
+import kr.ac.kaist.ires.util.Span
 import scala.collection.immutable.{ Set => SSet }
 import spray.json._
 
@@ -11,14 +12,14 @@ trait VariableDeclarationList extends AST {
 object VariableDeclarationList extends ASTHelper {
   def apply(v: JsValue): VariableDeclarationList = v match {
     case JsSeq(JsInt(0), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
-      VariableDeclarationList0(VariableDeclaration(x0), params)
+      VariableDeclarationList0(VariableDeclaration(x0), params, span)
     case JsSeq(JsInt(1), JsSeq(x0, x2), JsBoolSeq(params), JsSpan(span)) =>
-      VariableDeclarationList1(VariableDeclarationList(x0), VariableDeclaration(x2), params)
+      VariableDeclarationList1(VariableDeclarationList(x0), VariableDeclaration(x2), params, span)
     case _ => throw InvalidAST
   }
 }
 
-case class VariableDeclarationList0(x0: VariableDeclaration, parserParams: List[Boolean]) extends VariableDeclarationList {
+case class VariableDeclarationList0(x0: VariableDeclaration, parserParams: List[Boolean], span: Span) extends VariableDeclarationList {
   x0.parent = Some(this)
   val idx: Int = 0
   override def toString: String = {
@@ -35,7 +36,7 @@ object VariableDeclarationList0 extends ASTInfo {
   )
 }
 
-case class VariableDeclarationList1(x0: VariableDeclarationList, x2: VariableDeclaration, parserParams: List[Boolean]) extends VariableDeclarationList {
+case class VariableDeclarationList1(x0: VariableDeclarationList, x2: VariableDeclaration, parserParams: List[Boolean], span: Span) extends VariableDeclarationList {
   x0.parent = Some(this)
   x2.parent = Some(this)
   val idx: Int = 1

@@ -2,6 +2,7 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.InvalidAST
+import kr.ac.kaist.ires.util.Span
 import scala.collection.immutable.{ Set => SSet }
 import spray.json._
 
@@ -11,18 +12,18 @@ trait ObjectAssignmentPattern extends AST {
 object ObjectAssignmentPattern extends ASTHelper {
   def apply(v: JsValue): ObjectAssignmentPattern = v match {
     case JsSeq(JsInt(0), JsSeq(), JsBoolSeq(params), JsSpan(span)) =>
-      ObjectAssignmentPattern0(params)
+      ObjectAssignmentPattern0(params, span)
     case JsSeq(JsInt(1), JsSeq(x1), JsBoolSeq(params), JsSpan(span)) =>
-      ObjectAssignmentPattern1(AssignmentRestProperty(x1), params)
+      ObjectAssignmentPattern1(AssignmentRestProperty(x1), params, span)
     case JsSeq(JsInt(2), JsSeq(x1), JsBoolSeq(params), JsSpan(span)) =>
-      ObjectAssignmentPattern2(AssignmentPropertyList(x1), params)
+      ObjectAssignmentPattern2(AssignmentPropertyList(x1), params, span)
     case JsSeq(JsInt(3), JsSeq(x1, x3), JsBoolSeq(params), JsSpan(span)) =>
-      ObjectAssignmentPattern3(AssignmentPropertyList(x1), opt(x3, AssignmentRestProperty.apply), params)
+      ObjectAssignmentPattern3(AssignmentPropertyList(x1), opt(x3, AssignmentRestProperty.apply), params, span)
     case _ => throw InvalidAST
   }
 }
 
-case class ObjectAssignmentPattern0(parserParams: List[Boolean]) extends ObjectAssignmentPattern {
+case class ObjectAssignmentPattern0(parserParams: List[Boolean], span: Span) extends ObjectAssignmentPattern {
   val idx: Int = 0
   override def toString: String = {
     s"{ }"
@@ -38,7 +39,7 @@ object ObjectAssignmentPattern0 extends ASTInfo {
   )
 }
 
-case class ObjectAssignmentPattern1(x1: AssignmentRestProperty, parserParams: List[Boolean]) extends ObjectAssignmentPattern {
+case class ObjectAssignmentPattern1(x1: AssignmentRestProperty, parserParams: List[Boolean], span: Span) extends ObjectAssignmentPattern {
   x1.parent = Some(this)
   val idx: Int = 1
   override def toString: String = {
@@ -55,7 +56,7 @@ object ObjectAssignmentPattern1 extends ASTInfo {
   )
 }
 
-case class ObjectAssignmentPattern2(x1: AssignmentPropertyList, parserParams: List[Boolean]) extends ObjectAssignmentPattern {
+case class ObjectAssignmentPattern2(x1: AssignmentPropertyList, parserParams: List[Boolean], span: Span) extends ObjectAssignmentPattern {
   x1.parent = Some(this)
   val idx: Int = 2
   override def toString: String = {
@@ -72,7 +73,7 @@ object ObjectAssignmentPattern2 extends ASTInfo {
   )
 }
 
-case class ObjectAssignmentPattern3(x1: AssignmentPropertyList, x3: Option[AssignmentRestProperty], parserParams: List[Boolean]) extends ObjectAssignmentPattern {
+case class ObjectAssignmentPattern3(x1: AssignmentPropertyList, x3: Option[AssignmentRestProperty], parserParams: List[Boolean], span: Span) extends ObjectAssignmentPattern {
   x1.parent = Some(this)
   x3.foreach((m) => m.parent = Some(this))
   val idx: Int = 3

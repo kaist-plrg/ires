@@ -2,6 +2,7 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.InvalidAST
+import kr.ac.kaist.ires.util.Span
 import scala.collection.immutable.{ Set => SSet }
 import spray.json._
 
@@ -11,14 +12,14 @@ trait CaseBlock extends AST {
 object CaseBlock extends ASTHelper {
   def apply(v: JsValue): CaseBlock = v match {
     case JsSeq(JsInt(0), JsSeq(x1), JsBoolSeq(params), JsSpan(span)) =>
-      CaseBlock0(opt(x1, CaseClauses.apply), params)
+      CaseBlock0(opt(x1, CaseClauses.apply), params, span)
     case JsSeq(JsInt(1), JsSeq(x1, x2, x3), JsBoolSeq(params), JsSpan(span)) =>
-      CaseBlock1(opt(x1, CaseClauses.apply), DefaultClause(x2), opt(x3, CaseClauses.apply), params)
+      CaseBlock1(opt(x1, CaseClauses.apply), DefaultClause(x2), opt(x3, CaseClauses.apply), params, span)
     case _ => throw InvalidAST
   }
 }
 
-case class CaseBlock0(x1: Option[CaseClauses], parserParams: List[Boolean]) extends CaseBlock {
+case class CaseBlock0(x1: Option[CaseClauses], parserParams: List[Boolean], span: Span) extends CaseBlock {
   x1.foreach((m) => m.parent = Some(this))
   val idx: Int = 0
   override def toString: String = {
@@ -44,7 +45,7 @@ object CaseBlock0 extends ASTInfo {
   )
 }
 
-case class CaseBlock1(x1: Option[CaseClauses], x2: DefaultClause, x3: Option[CaseClauses], parserParams: List[Boolean]) extends CaseBlock {
+case class CaseBlock1(x1: Option[CaseClauses], x2: DefaultClause, x3: Option[CaseClauses], parserParams: List[Boolean], span: Span) extends CaseBlock {
   x1.foreach((m) => m.parent = Some(this))
   x2.parent = Some(this)
   x3.foreach((m) => m.parent = Some(this))

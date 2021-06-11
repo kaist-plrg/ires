@@ -2,6 +2,7 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.InvalidAST
+import kr.ac.kaist.ires.util.Span
 import scala.collection.immutable.{ Set => SSet }
 import spray.json._
 
@@ -11,12 +12,12 @@ trait AssignmentRestElement extends AST {
 object AssignmentRestElement extends ASTHelper {
   def apply(v: JsValue): AssignmentRestElement = v match {
     case JsSeq(JsInt(0), JsSeq(x1), JsBoolSeq(params), JsSpan(span)) =>
-      AssignmentRestElement0(DestructuringAssignmentTarget(x1), params)
+      AssignmentRestElement0(DestructuringAssignmentTarget(x1), params, span)
     case _ => throw InvalidAST
   }
 }
 
-case class AssignmentRestElement0(x1: DestructuringAssignmentTarget, parserParams: List[Boolean]) extends AssignmentRestElement {
+case class AssignmentRestElement0(x1: DestructuringAssignmentTarget, parserParams: List[Boolean], span: Span) extends AssignmentRestElement {
   x1.parent = Some(this)
   val idx: Int = 0
   override def toString: String = {

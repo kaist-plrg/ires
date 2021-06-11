@@ -2,6 +2,7 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.InvalidAST
+import kr.ac.kaist.ires.util.Span
 import scala.collection.immutable.{ Set => SSet }
 import spray.json._
 
@@ -11,38 +12,38 @@ trait Statement extends AST {
 object Statement extends ASTHelper {
   def apply(v: JsValue): Statement = v match {
     case JsSeq(JsInt(0), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
-      Statement0(BlockStatement(x0), params)
+      Statement0(BlockStatement(x0), params, span)
     case JsSeq(JsInt(1), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
-      Statement1(VariableStatement(x0), params)
+      Statement1(VariableStatement(x0), params, span)
     case JsSeq(JsInt(2), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
-      Statement2(EmptyStatement(x0), params)
+      Statement2(EmptyStatement(x0), params, span)
     case JsSeq(JsInt(3), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
-      Statement3(ExpressionStatement(x0), params)
+      Statement3(ExpressionStatement(x0), params, span)
     case JsSeq(JsInt(4), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
-      Statement4(IfStatement(x0), params)
+      Statement4(IfStatement(x0), params, span)
     case JsSeq(JsInt(5), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
-      Statement5(BreakableStatement(x0), params)
+      Statement5(BreakableStatement(x0), params, span)
     case JsSeq(JsInt(6), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
-      Statement6(ContinueStatement(x0), params)
+      Statement6(ContinueStatement(x0), params, span)
     case JsSeq(JsInt(7), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
-      Statement7(BreakStatement(x0), params)
+      Statement7(BreakStatement(x0), params, span)
     case JsSeq(JsInt(8), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
-      Statement8(ReturnStatement(x0), params)
+      Statement8(ReturnStatement(x0), params, span)
     case JsSeq(JsInt(9), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
-      Statement9(WithStatement(x0), params)
+      Statement9(WithStatement(x0), params, span)
     case JsSeq(JsInt(10), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
-      Statement10(LabelledStatement(x0), params)
+      Statement10(LabelledStatement(x0), params, span)
     case JsSeq(JsInt(11), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
-      Statement11(ThrowStatement(x0), params)
+      Statement11(ThrowStatement(x0), params, span)
     case JsSeq(JsInt(12), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
-      Statement12(TryStatement(x0), params)
+      Statement12(TryStatement(x0), params, span)
     case JsSeq(JsInt(13), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
-      Statement13(DebuggerStatement(x0), params)
+      Statement13(DebuggerStatement(x0), params, span)
     case _ => throw InvalidAST
   }
 }
 
-case class Statement0(x0: BlockStatement, parserParams: List[Boolean]) extends Statement {
+case class Statement0(x0: BlockStatement, parserParams: List[Boolean], span: Span) extends Statement {
   x0.parent = Some(this)
   val idx: Int = 0
   override def toString: String = {
@@ -59,7 +60,7 @@ object Statement0 extends ASTInfo {
   )
 }
 
-case class Statement1(x0: VariableStatement, parserParams: List[Boolean]) extends Statement {
+case class Statement1(x0: VariableStatement, parserParams: List[Boolean], span: Span) extends Statement {
   x0.parent = Some(this)
   val idx: Int = 1
   override def toString: String = {
@@ -80,7 +81,7 @@ object Statement1 extends ASTInfo {
   )
 }
 
-case class Statement2(x0: EmptyStatement, parserParams: List[Boolean]) extends Statement {
+case class Statement2(x0: EmptyStatement, parserParams: List[Boolean], span: Span) extends Statement {
   x0.parent = Some(this)
   val idx: Int = 2
   override def toString: String = {
@@ -103,7 +104,7 @@ object Statement2 extends ASTInfo {
   )
 }
 
-case class Statement3(x0: ExpressionStatement, parserParams: List[Boolean]) extends Statement {
+case class Statement3(x0: ExpressionStatement, parserParams: List[Boolean], span: Span) extends Statement {
   x0.parent = Some(this)
   val idx: Int = 3
   override def toString: String = {
@@ -126,7 +127,7 @@ object Statement3 extends ASTInfo {
   )
 }
 
-case class Statement4(x0: IfStatement, parserParams: List[Boolean]) extends Statement {
+case class Statement4(x0: IfStatement, parserParams: List[Boolean], span: Span) extends Statement {
   x0.parent = Some(this)
   val idx: Int = 4
   override def toString: String = {
@@ -143,7 +144,7 @@ object Statement4 extends ASTInfo {
   )
 }
 
-case class Statement5(x0: BreakableStatement, parserParams: List[Boolean]) extends Statement {
+case class Statement5(x0: BreakableStatement, parserParams: List[Boolean], span: Span) extends Statement {
   x0.parent = Some(this)
   val idx: Int = 5
   override def toString: String = {
@@ -158,7 +159,7 @@ object Statement5 extends ASTInfo {
   val semMap: Map[String, Algo] = Map()
 }
 
-case class Statement6(x0: ContinueStatement, parserParams: List[Boolean]) extends Statement {
+case class Statement6(x0: ContinueStatement, parserParams: List[Boolean], span: Span) extends Statement {
   x0.parent = Some(this)
   val idx: Int = 6
   override def toString: String = {
@@ -180,7 +181,7 @@ object Statement6 extends ASTInfo {
   )
 }
 
-case class Statement7(x0: BreakStatement, parserParams: List[Boolean]) extends Statement {
+case class Statement7(x0: BreakStatement, parserParams: List[Boolean], span: Span) extends Statement {
   x0.parent = Some(this)
   val idx: Int = 7
   override def toString: String = {
@@ -202,7 +203,7 @@ object Statement7 extends ASTInfo {
   )
 }
 
-case class Statement8(x0: ReturnStatement, parserParams: List[Boolean]) extends Statement {
+case class Statement8(x0: ReturnStatement, parserParams: List[Boolean], span: Span) extends Statement {
   x0.parent = Some(this)
   val idx: Int = 8
   override def toString: String = {
@@ -224,7 +225,7 @@ object Statement8 extends ASTInfo {
   )
 }
 
-case class Statement9(x0: WithStatement, parserParams: List[Boolean]) extends Statement {
+case class Statement9(x0: WithStatement, parserParams: List[Boolean], span: Span) extends Statement {
   x0.parent = Some(this)
   val idx: Int = 9
   override def toString: String = {
@@ -241,7 +242,7 @@ object Statement9 extends ASTInfo {
   )
 }
 
-case class Statement10(x0: LabelledStatement, parserParams: List[Boolean]) extends Statement {
+case class Statement10(x0: LabelledStatement, parserParams: List[Boolean], span: Span) extends Statement {
   x0.parent = Some(this)
   val idx: Int = 10
   override def toString: String = {
@@ -256,7 +257,7 @@ object Statement10 extends ASTInfo {
   val semMap: Map[String, Algo] = Map()
 }
 
-case class Statement11(x0: ThrowStatement, parserParams: List[Boolean]) extends Statement {
+case class Statement11(x0: ThrowStatement, parserParams: List[Boolean], span: Span) extends Statement {
   x0.parent = Some(this)
   val idx: Int = 11
   override def toString: String = {
@@ -279,7 +280,7 @@ object Statement11 extends ASTInfo {
   )
 }
 
-case class Statement12(x0: TryStatement, parserParams: List[Boolean]) extends Statement {
+case class Statement12(x0: TryStatement, parserParams: List[Boolean], span: Span) extends Statement {
   x0.parent = Some(this)
   val idx: Int = 12
   override def toString: String = {
@@ -296,7 +297,7 @@ object Statement12 extends ASTInfo {
   )
 }
 
-case class Statement13(x0: DebuggerStatement, parserParams: List[Boolean]) extends Statement {
+case class Statement13(x0: DebuggerStatement, parserParams: List[Boolean], span: Span) extends Statement {
   x0.parent = Some(this)
   val idx: Int = 13
   override def toString: String = {

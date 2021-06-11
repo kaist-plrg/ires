@@ -2,6 +2,7 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.InvalidAST
+import kr.ac.kaist.ires.util.Span
 import scala.collection.immutable.{ Set => SSet }
 import spray.json._
 
@@ -11,12 +12,12 @@ trait ForDeclaration extends AST {
 object ForDeclaration extends ASTHelper {
   def apply(v: JsValue): ForDeclaration = v match {
     case JsSeq(JsInt(0), JsSeq(x0, x1), JsBoolSeq(params), JsSpan(span)) =>
-      ForDeclaration0(LetOrConst(x0), ForBinding(x1), params)
+      ForDeclaration0(LetOrConst(x0), ForBinding(x1), params, span)
     case _ => throw InvalidAST
   }
 }
 
-case class ForDeclaration0(x0: LetOrConst, x1: ForBinding, parserParams: List[Boolean]) extends ForDeclaration {
+case class ForDeclaration0(x0: LetOrConst, x1: ForBinding, parserParams: List[Boolean], span: Span) extends ForDeclaration {
   x0.parent = Some(this)
   x1.parent = Some(this)
   val idx: Int = 0

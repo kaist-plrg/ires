@@ -2,6 +2,7 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.InvalidAST
+import kr.ac.kaist.ires.util.Span
 import scala.collection.immutable.{ Set => SSet }
 import spray.json._
 
@@ -11,12 +12,12 @@ trait CoalesceExpression extends AST {
 object CoalesceExpression extends ASTHelper {
   def apply(v: JsValue): CoalesceExpression = v match {
     case JsSeq(JsInt(0), JsSeq(x0, x2), JsBoolSeq(params), JsSpan(span)) =>
-      CoalesceExpression0(CoalesceExpressionHead(x0), BitwiseORExpression(x2), params)
+      CoalesceExpression0(CoalesceExpressionHead(x0), BitwiseORExpression(x2), params, span)
     case _ => throw InvalidAST
   }
 }
 
-case class CoalesceExpression0(x0: CoalesceExpressionHead, x2: BitwiseORExpression, parserParams: List[Boolean]) extends CoalesceExpression {
+case class CoalesceExpression0(x0: CoalesceExpressionHead, x2: BitwiseORExpression, parserParams: List[Boolean], span: Span) extends CoalesceExpression {
   x0.parent = Some(this)
   x2.parent = Some(this)
   val idx: Int = 0

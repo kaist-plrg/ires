@@ -2,6 +2,7 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.InvalidAST
+import kr.ac.kaist.ires.util.Span
 import scala.collection.immutable.{ Set => SSet }
 import spray.json._
 
@@ -11,14 +12,14 @@ trait BindingRestElement extends AST {
 object BindingRestElement extends ASTHelper {
   def apply(v: JsValue): BindingRestElement = v match {
     case JsSeq(JsInt(0), JsSeq(x1), JsBoolSeq(params), JsSpan(span)) =>
-      BindingRestElement0(BindingIdentifier(x1), params)
+      BindingRestElement0(BindingIdentifier(x1), params, span)
     case JsSeq(JsInt(1), JsSeq(x1), JsBoolSeq(params), JsSpan(span)) =>
-      BindingRestElement1(BindingPattern(x1), params)
+      BindingRestElement1(BindingPattern(x1), params, span)
     case _ => throw InvalidAST
   }
 }
 
-case class BindingRestElement0(x1: BindingIdentifier, parserParams: List[Boolean]) extends BindingRestElement {
+case class BindingRestElement0(x1: BindingIdentifier, parserParams: List[Boolean], span: Span) extends BindingRestElement {
   x1.parent = Some(this)
   val idx: Int = 0
   override def toString: String = {
@@ -36,7 +37,7 @@ object BindingRestElement0 extends ASTInfo {
   )
 }
 
-case class BindingRestElement1(x1: BindingPattern, parserParams: List[Boolean]) extends BindingRestElement {
+case class BindingRestElement1(x1: BindingPattern, parserParams: List[Boolean], span: Span) extends BindingRestElement {
   x1.parent = Some(this)
   val idx: Int = 1
   override def toString: String = {

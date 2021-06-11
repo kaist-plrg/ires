@@ -2,6 +2,7 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.InvalidAST
+import kr.ac.kaist.ires.util.Span
 import scala.collection.immutable.{ Set => SSet }
 import spray.json._
 
@@ -11,24 +12,24 @@ trait MemberExpression extends AST {
 object MemberExpression extends ASTHelper {
   def apply(v: JsValue): MemberExpression = v match {
     case JsSeq(JsInt(0), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
-      MemberExpression0(PrimaryExpression(x0), params)
+      MemberExpression0(PrimaryExpression(x0), params, span)
     case JsSeq(JsInt(1), JsSeq(x0, x2), JsBoolSeq(params), JsSpan(span)) =>
-      MemberExpression1(MemberExpression(x0), Expression(x2), params)
+      MemberExpression1(MemberExpression(x0), Expression(x2), params, span)
     case JsSeq(JsInt(2), JsSeq(x0, x2), JsBoolSeq(params), JsSpan(span)) =>
-      MemberExpression2(MemberExpression(x0), lex("IdentifierName", x2), params)
+      MemberExpression2(MemberExpression(x0), lex("IdentifierName", x2), params, span)
     case JsSeq(JsInt(3), JsSeq(x0, x1), JsBoolSeq(params), JsSpan(span)) =>
-      MemberExpression3(MemberExpression(x0), TemplateLiteral(x1), params)
+      MemberExpression3(MemberExpression(x0), TemplateLiteral(x1), params, span)
     case JsSeq(JsInt(4), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
-      MemberExpression4(SuperProperty(x0), params)
+      MemberExpression4(SuperProperty(x0), params, span)
     case JsSeq(JsInt(5), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
-      MemberExpression5(MetaProperty(x0), params)
+      MemberExpression5(MetaProperty(x0), params, span)
     case JsSeq(JsInt(6), JsSeq(x1, x2), JsBoolSeq(params), JsSpan(span)) =>
-      MemberExpression6(MemberExpression(x1), Arguments(x2), params)
+      MemberExpression6(MemberExpression(x1), Arguments(x2), params, span)
     case _ => throw InvalidAST
   }
 }
 
-case class MemberExpression0(x0: PrimaryExpression, parserParams: List[Boolean]) extends MemberExpression {
+case class MemberExpression0(x0: PrimaryExpression, parserParams: List[Boolean], span: Span) extends MemberExpression {
   x0.parent = Some(this)
   val idx: Int = 0
   override def toString: String = {
@@ -45,7 +46,7 @@ object MemberExpression0 extends ASTInfo {
   )
 }
 
-case class MemberExpression1(x0: MemberExpression, x2: Expression, parserParams: List[Boolean]) extends MemberExpression {
+case class MemberExpression1(x0: MemberExpression, x2: Expression, parserParams: List[Boolean], span: Span) extends MemberExpression {
   x0.parent = Some(this)
   x2.parent = Some(this)
   val idx: Int = 1
@@ -68,7 +69,7 @@ object MemberExpression1 extends ASTInfo {
   )
 }
 
-case class MemberExpression2(x0: MemberExpression, x2: Lexical, parserParams: List[Boolean]) extends MemberExpression {
+case class MemberExpression2(x0: MemberExpression, x2: Lexical, parserParams: List[Boolean], span: Span) extends MemberExpression {
   x0.parent = Some(this)
   x2.parent = Some(this)
   val idx: Int = 2
@@ -92,7 +93,7 @@ object MemberExpression2 extends ASTInfo {
   )
 }
 
-case class MemberExpression3(x0: MemberExpression, x1: TemplateLiteral, parserParams: List[Boolean]) extends MemberExpression {
+case class MemberExpression3(x0: MemberExpression, x1: TemplateLiteral, parserParams: List[Boolean], span: Span) extends MemberExpression {
   x0.parent = Some(this)
   x1.parent = Some(this)
   val idx: Int = 3
@@ -115,7 +116,7 @@ object MemberExpression3 extends ASTInfo {
   )
 }
 
-case class MemberExpression4(x0: SuperProperty, parserParams: List[Boolean]) extends MemberExpression {
+case class MemberExpression4(x0: SuperProperty, parserParams: List[Boolean], span: Span) extends MemberExpression {
   x0.parent = Some(this)
   val idx: Int = 4
   override def toString: String = {
@@ -136,7 +137,7 @@ object MemberExpression4 extends ASTInfo {
   )
 }
 
-case class MemberExpression5(x0: MetaProperty, parserParams: List[Boolean]) extends MemberExpression {
+case class MemberExpression5(x0: MetaProperty, parserParams: List[Boolean], span: Span) extends MemberExpression {
   x0.parent = Some(this)
   val idx: Int = 5
   override def toString: String = {
@@ -156,7 +157,7 @@ object MemberExpression5 extends ASTInfo {
   )
 }
 
-case class MemberExpression6(x1: MemberExpression, x2: Arguments, parserParams: List[Boolean]) extends MemberExpression {
+case class MemberExpression6(x1: MemberExpression, x2: Arguments, parserParams: List[Boolean], span: Span) extends MemberExpression {
   x1.parent = Some(this)
   x2.parent = Some(this)
   val idx: Int = 6

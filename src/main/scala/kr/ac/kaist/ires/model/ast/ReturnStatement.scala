@@ -2,6 +2,7 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.InvalidAST
+import kr.ac.kaist.ires.util.Span
 import scala.collection.immutable.{ Set => SSet }
 import spray.json._
 
@@ -11,14 +12,14 @@ trait ReturnStatement extends AST {
 object ReturnStatement extends ASTHelper {
   def apply(v: JsValue): ReturnStatement = v match {
     case JsSeq(JsInt(0), JsSeq(), JsBoolSeq(params), JsSpan(span)) =>
-      ReturnStatement0(params)
+      ReturnStatement0(params, span)
     case JsSeq(JsInt(1), JsSeq(x2), JsBoolSeq(params), JsSpan(span)) =>
-      ReturnStatement1(Expression(x2), params)
+      ReturnStatement1(Expression(x2), params, span)
     case _ => throw InvalidAST
   }
 }
 
-case class ReturnStatement0(parserParams: List[Boolean]) extends ReturnStatement {
+case class ReturnStatement0(parserParams: List[Boolean], span: Span) extends ReturnStatement {
   val idx: Int = 0
   override def toString: String = {
     s"return ;"
@@ -35,7 +36,7 @@ object ReturnStatement0 extends ASTInfo {
   )
 }
 
-case class ReturnStatement1(x2: Expression, parserParams: List[Boolean]) extends ReturnStatement {
+case class ReturnStatement1(x2: Expression, parserParams: List[Boolean], span: Span) extends ReturnStatement {
   x2.parent = Some(this)
   val idx: Int = 1
   override def toString: String = {

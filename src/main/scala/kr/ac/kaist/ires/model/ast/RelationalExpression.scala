@@ -2,6 +2,7 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.InvalidAST
+import kr.ac.kaist.ires.util.Span
 import scala.collection.immutable.{ Set => SSet }
 import spray.json._
 
@@ -11,24 +12,24 @@ trait RelationalExpression extends AST {
 object RelationalExpression extends ASTHelper {
   def apply(v: JsValue): RelationalExpression = v match {
     case JsSeq(JsInt(0), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
-      RelationalExpression0(ShiftExpression(x0), params)
+      RelationalExpression0(ShiftExpression(x0), params, span)
     case JsSeq(JsInt(1), JsSeq(x0, x2), JsBoolSeq(params), JsSpan(span)) =>
-      RelationalExpression1(RelationalExpression(x0), ShiftExpression(x2), params)
+      RelationalExpression1(RelationalExpression(x0), ShiftExpression(x2), params, span)
     case JsSeq(JsInt(2), JsSeq(x0, x2), JsBoolSeq(params), JsSpan(span)) =>
-      RelationalExpression2(RelationalExpression(x0), ShiftExpression(x2), params)
+      RelationalExpression2(RelationalExpression(x0), ShiftExpression(x2), params, span)
     case JsSeq(JsInt(3), JsSeq(x0, x2), JsBoolSeq(params), JsSpan(span)) =>
-      RelationalExpression3(RelationalExpression(x0), ShiftExpression(x2), params)
+      RelationalExpression3(RelationalExpression(x0), ShiftExpression(x2), params, span)
     case JsSeq(JsInt(4), JsSeq(x0, x2), JsBoolSeq(params), JsSpan(span)) =>
-      RelationalExpression4(RelationalExpression(x0), ShiftExpression(x2), params)
+      RelationalExpression4(RelationalExpression(x0), ShiftExpression(x2), params, span)
     case JsSeq(JsInt(5), JsSeq(x0, x2), JsBoolSeq(params), JsSpan(span)) =>
-      RelationalExpression5(RelationalExpression(x0), ShiftExpression(x2), params)
+      RelationalExpression5(RelationalExpression(x0), ShiftExpression(x2), params, span)
     case JsSeq(JsInt(6), JsSeq(x0, x2), JsBoolSeq(params), JsSpan(span)) =>
-      RelationalExpression6(RelationalExpression(x0), ShiftExpression(x2), params)
+      RelationalExpression6(RelationalExpression(x0), ShiftExpression(x2), params, span)
     case _ => throw InvalidAST
   }
 }
 
-case class RelationalExpression0(x0: ShiftExpression, parserParams: List[Boolean]) extends RelationalExpression {
+case class RelationalExpression0(x0: ShiftExpression, parserParams: List[Boolean], span: Span) extends RelationalExpression {
   x0.parent = Some(this)
   val idx: Int = 0
   override def toString: String = {
@@ -43,7 +44,7 @@ object RelationalExpression0 extends ASTInfo {
   val semMap: Map[String, Algo] = Map()
 }
 
-case class RelationalExpression1(x0: RelationalExpression, x2: ShiftExpression, parserParams: List[Boolean]) extends RelationalExpression {
+case class RelationalExpression1(x0: RelationalExpression, x2: ShiftExpression, parserParams: List[Boolean], span: Span) extends RelationalExpression {
   x0.parent = Some(this)
   x2.parent = Some(this)
   val idx: Int = 1
@@ -64,7 +65,7 @@ object RelationalExpression1 extends ASTInfo {
   )
 }
 
-case class RelationalExpression2(x0: RelationalExpression, x2: ShiftExpression, parserParams: List[Boolean]) extends RelationalExpression {
+case class RelationalExpression2(x0: RelationalExpression, x2: ShiftExpression, parserParams: List[Boolean], span: Span) extends RelationalExpression {
   x0.parent = Some(this)
   x2.parent = Some(this)
   val idx: Int = 2
@@ -85,7 +86,7 @@ object RelationalExpression2 extends ASTInfo {
   )
 }
 
-case class RelationalExpression3(x0: RelationalExpression, x2: ShiftExpression, parserParams: List[Boolean]) extends RelationalExpression {
+case class RelationalExpression3(x0: RelationalExpression, x2: ShiftExpression, parserParams: List[Boolean], span: Span) extends RelationalExpression {
   x0.parent = Some(this)
   x2.parent = Some(this)
   val idx: Int = 3
@@ -106,7 +107,7 @@ object RelationalExpression3 extends ASTInfo {
   )
 }
 
-case class RelationalExpression4(x0: RelationalExpression, x2: ShiftExpression, parserParams: List[Boolean]) extends RelationalExpression {
+case class RelationalExpression4(x0: RelationalExpression, x2: ShiftExpression, parserParams: List[Boolean], span: Span) extends RelationalExpression {
   x0.parent = Some(this)
   x2.parent = Some(this)
   val idx: Int = 4
@@ -127,7 +128,7 @@ object RelationalExpression4 extends ASTInfo {
   )
 }
 
-case class RelationalExpression5(x0: RelationalExpression, x2: ShiftExpression, parserParams: List[Boolean]) extends RelationalExpression {
+case class RelationalExpression5(x0: RelationalExpression, x2: ShiftExpression, parserParams: List[Boolean], span: Span) extends RelationalExpression {
   x0.parent = Some(this)
   x2.parent = Some(this)
   val idx: Int = 5
@@ -148,7 +149,7 @@ object RelationalExpression5 extends ASTInfo {
   )
 }
 
-case class RelationalExpression6(x0: RelationalExpression, x2: ShiftExpression, parserParams: List[Boolean]) extends RelationalExpression {
+case class RelationalExpression6(x0: RelationalExpression, x2: ShiftExpression, parserParams: List[Boolean], span: Span) extends RelationalExpression {
   x0.parent = Some(this)
   x2.parent = Some(this)
   val idx: Int = 6

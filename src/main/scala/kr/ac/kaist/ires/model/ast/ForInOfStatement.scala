@@ -2,6 +2,7 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.InvalidAST
+import kr.ac.kaist.ires.util.Span
 import scala.collection.immutable.{ Set => SSet }
 import spray.json._
 
@@ -11,28 +12,28 @@ trait ForInOfStatement extends AST {
 object ForInOfStatement extends ASTHelper {
   def apply(v: JsValue): ForInOfStatement = v match {
     case JsSeq(JsInt(0), JsSeq(x3, x5, x7), JsBoolSeq(params), JsSpan(span)) =>
-      ForInOfStatement0(LeftHandSideExpression(x3), Expression(x5), Statement(x7), params)
+      ForInOfStatement0(LeftHandSideExpression(x3), Expression(x5), Statement(x7), params, span)
     case JsSeq(JsInt(1), JsSeq(x3, x5, x7), JsBoolSeq(params), JsSpan(span)) =>
-      ForInOfStatement1(ForBinding(x3), Expression(x5), Statement(x7), params)
+      ForInOfStatement1(ForBinding(x3), Expression(x5), Statement(x7), params, span)
     case JsSeq(JsInt(2), JsSeq(x2, x4, x6), JsBoolSeq(params), JsSpan(span)) =>
-      ForInOfStatement2(ForDeclaration(x2), Expression(x4), Statement(x6), params)
+      ForInOfStatement2(ForDeclaration(x2), Expression(x4), Statement(x6), params, span)
     case JsSeq(JsInt(3), JsSeq(x3, x5, x7), JsBoolSeq(params), JsSpan(span)) =>
-      ForInOfStatement3(LeftHandSideExpression(x3), AssignmentExpression(x5), Statement(x7), params)
+      ForInOfStatement3(LeftHandSideExpression(x3), AssignmentExpression(x5), Statement(x7), params, span)
     case JsSeq(JsInt(4), JsSeq(x3, x5, x7), JsBoolSeq(params), JsSpan(span)) =>
-      ForInOfStatement4(ForBinding(x3), AssignmentExpression(x5), Statement(x7), params)
+      ForInOfStatement4(ForBinding(x3), AssignmentExpression(x5), Statement(x7), params, span)
     case JsSeq(JsInt(5), JsSeq(x2, x4, x6), JsBoolSeq(params), JsSpan(span)) =>
-      ForInOfStatement5(ForDeclaration(x2), AssignmentExpression(x4), Statement(x6), params)
+      ForInOfStatement5(ForDeclaration(x2), AssignmentExpression(x4), Statement(x6), params, span)
     case JsSeq(JsInt(6), JsSeq(x4, x6, x8), JsBoolSeq(params), JsSpan(span)) =>
-      ForInOfStatement6(LeftHandSideExpression(x4), AssignmentExpression(x6), Statement(x8), params)
+      ForInOfStatement6(LeftHandSideExpression(x4), AssignmentExpression(x6), Statement(x8), params, span)
     case JsSeq(JsInt(7), JsSeq(x4, x6, x8), JsBoolSeq(params), JsSpan(span)) =>
-      ForInOfStatement7(ForBinding(x4), AssignmentExpression(x6), Statement(x8), params)
+      ForInOfStatement7(ForBinding(x4), AssignmentExpression(x6), Statement(x8), params, span)
     case JsSeq(JsInt(8), JsSeq(x3, x5, x7), JsBoolSeq(params), JsSpan(span)) =>
-      ForInOfStatement8(ForDeclaration(x3), AssignmentExpression(x5), Statement(x7), params)
+      ForInOfStatement8(ForDeclaration(x3), AssignmentExpression(x5), Statement(x7), params, span)
     case _ => throw InvalidAST
   }
 }
 
-case class ForInOfStatement0(x3: LeftHandSideExpression, x5: Expression, x7: Statement, parserParams: List[Boolean]) extends ForInOfStatement {
+case class ForInOfStatement0(x3: LeftHandSideExpression, x5: Expression, x7: Statement, parserParams: List[Boolean], span: Span) extends ForInOfStatement {
   x3.parent = Some(this)
   x5.parent = Some(this)
   x7.parent = Some(this)
@@ -58,7 +59,7 @@ object ForInOfStatement0 extends ASTInfo {
   )
 }
 
-case class ForInOfStatement1(x3: ForBinding, x5: Expression, x7: Statement, parserParams: List[Boolean]) extends ForInOfStatement {
+case class ForInOfStatement1(x3: ForBinding, x5: Expression, x7: Statement, parserParams: List[Boolean], span: Span) extends ForInOfStatement {
   x3.parent = Some(this)
   x5.parent = Some(this)
   x7.parent = Some(this)
@@ -84,7 +85,7 @@ object ForInOfStatement1 extends ASTInfo {
   )
 }
 
-case class ForInOfStatement2(x2: ForDeclaration, x4: Expression, x6: Statement, parserParams: List[Boolean]) extends ForInOfStatement {
+case class ForInOfStatement2(x2: ForDeclaration, x4: Expression, x6: Statement, parserParams: List[Boolean], span: Span) extends ForInOfStatement {
   x2.parent = Some(this)
   x4.parent = Some(this)
   x6.parent = Some(this)
@@ -111,7 +112,7 @@ object ForInOfStatement2 extends ASTInfo {
   )
 }
 
-case class ForInOfStatement3(x3: LeftHandSideExpression, x5: AssignmentExpression, x7: Statement, parserParams: List[Boolean]) extends ForInOfStatement {
+case class ForInOfStatement3(x3: LeftHandSideExpression, x5: AssignmentExpression, x7: Statement, parserParams: List[Boolean], span: Span) extends ForInOfStatement {
   x3.parent = Some(this)
   x5.parent = Some(this)
   x7.parent = Some(this)
@@ -137,7 +138,7 @@ object ForInOfStatement3 extends ASTInfo {
   )
 }
 
-case class ForInOfStatement4(x3: ForBinding, x5: AssignmentExpression, x7: Statement, parserParams: List[Boolean]) extends ForInOfStatement {
+case class ForInOfStatement4(x3: ForBinding, x5: AssignmentExpression, x7: Statement, parserParams: List[Boolean], span: Span) extends ForInOfStatement {
   x3.parent = Some(this)
   x5.parent = Some(this)
   x7.parent = Some(this)
@@ -163,7 +164,7 @@ object ForInOfStatement4 extends ASTInfo {
   )
 }
 
-case class ForInOfStatement5(x2: ForDeclaration, x4: AssignmentExpression, x6: Statement, parserParams: List[Boolean]) extends ForInOfStatement {
+case class ForInOfStatement5(x2: ForDeclaration, x4: AssignmentExpression, x6: Statement, parserParams: List[Boolean], span: Span) extends ForInOfStatement {
   x2.parent = Some(this)
   x4.parent = Some(this)
   x6.parent = Some(this)
@@ -190,7 +191,7 @@ object ForInOfStatement5 extends ASTInfo {
   )
 }
 
-case class ForInOfStatement6(x4: LeftHandSideExpression, x6: AssignmentExpression, x8: Statement, parserParams: List[Boolean]) extends ForInOfStatement {
+case class ForInOfStatement6(x4: LeftHandSideExpression, x6: AssignmentExpression, x8: Statement, parserParams: List[Boolean], span: Span) extends ForInOfStatement {
   x4.parent = Some(this)
   x6.parent = Some(this)
   x8.parent = Some(this)
@@ -216,7 +217,7 @@ object ForInOfStatement6 extends ASTInfo {
   )
 }
 
-case class ForInOfStatement7(x4: ForBinding, x6: AssignmentExpression, x8: Statement, parserParams: List[Boolean]) extends ForInOfStatement {
+case class ForInOfStatement7(x4: ForBinding, x6: AssignmentExpression, x8: Statement, parserParams: List[Boolean], span: Span) extends ForInOfStatement {
   x4.parent = Some(this)
   x6.parent = Some(this)
   x8.parent = Some(this)
@@ -242,7 +243,7 @@ object ForInOfStatement7 extends ASTInfo {
   )
 }
 
-case class ForInOfStatement8(x3: ForDeclaration, x5: AssignmentExpression, x7: Statement, parserParams: List[Boolean]) extends ForInOfStatement {
+case class ForInOfStatement8(x3: ForDeclaration, x5: AssignmentExpression, x7: Statement, parserParams: List[Boolean], span: Span) extends ForInOfStatement {
   x3.parent = Some(this)
   x5.parent = Some(this)
   x7.parent = Some(this)

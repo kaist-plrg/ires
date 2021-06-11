@@ -2,6 +2,7 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.InvalidAST
+import kr.ac.kaist.ires.util.Span
 import scala.collection.immutable.{ Set => SSet }
 import spray.json._
 
@@ -11,14 +12,14 @@ trait CoalesceExpressionHead extends AST {
 object CoalesceExpressionHead extends ASTHelper {
   def apply(v: JsValue): CoalesceExpressionHead = v match {
     case JsSeq(JsInt(0), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
-      CoalesceExpressionHead0(CoalesceExpression(x0), params)
+      CoalesceExpressionHead0(CoalesceExpression(x0), params, span)
     case JsSeq(JsInt(1), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
-      CoalesceExpressionHead1(BitwiseORExpression(x0), params)
+      CoalesceExpressionHead1(BitwiseORExpression(x0), params, span)
     case _ => throw InvalidAST
   }
 }
 
-case class CoalesceExpressionHead0(x0: CoalesceExpression, parserParams: List[Boolean]) extends CoalesceExpressionHead {
+case class CoalesceExpressionHead0(x0: CoalesceExpression, parserParams: List[Boolean], span: Span) extends CoalesceExpressionHead {
   x0.parent = Some(this)
   val idx: Int = 0
   override def toString: String = {
@@ -33,7 +34,7 @@ object CoalesceExpressionHead0 extends ASTInfo {
   val semMap: Map[String, Algo] = Map()
 }
 
-case class CoalesceExpressionHead1(x0: BitwiseORExpression, parserParams: List[Boolean]) extends CoalesceExpressionHead {
+case class CoalesceExpressionHead1(x0: BitwiseORExpression, parserParams: List[Boolean], span: Span) extends CoalesceExpressionHead {
   x0.parent = Some(this)
   val idx: Int = 1
   override def toString: String = {

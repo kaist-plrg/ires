@@ -2,6 +2,7 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.InvalidAST
+import kr.ac.kaist.ires.util.Span
 import scala.collection.immutable.{ Set => SSet }
 import spray.json._
 
@@ -11,18 +12,18 @@ trait HoistableDeclaration extends AST {
 object HoistableDeclaration extends ASTHelper {
   def apply(v: JsValue): HoistableDeclaration = v match {
     case JsSeq(JsInt(0), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
-      HoistableDeclaration0(FunctionDeclaration(x0), params)
+      HoistableDeclaration0(FunctionDeclaration(x0), params, span)
     case JsSeq(JsInt(1), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
-      HoistableDeclaration1(GeneratorDeclaration(x0), params)
+      HoistableDeclaration1(GeneratorDeclaration(x0), params, span)
     case JsSeq(JsInt(2), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
-      HoistableDeclaration2(AsyncFunctionDeclaration(x0), params)
+      HoistableDeclaration2(AsyncFunctionDeclaration(x0), params, span)
     case JsSeq(JsInt(3), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
-      HoistableDeclaration3(AsyncGeneratorDeclaration(x0), params)
+      HoistableDeclaration3(AsyncGeneratorDeclaration(x0), params, span)
     case _ => throw InvalidAST
   }
 }
 
-case class HoistableDeclaration0(x0: FunctionDeclaration, parserParams: List[Boolean]) extends HoistableDeclaration {
+case class HoistableDeclaration0(x0: FunctionDeclaration, parserParams: List[Boolean], span: Span) extends HoistableDeclaration {
   x0.parent = Some(this)
   val idx: Int = 0
   override def toString: String = {
@@ -40,7 +41,7 @@ object HoistableDeclaration0 extends ASTInfo {
   )
 }
 
-case class HoistableDeclaration1(x0: GeneratorDeclaration, parserParams: List[Boolean]) extends HoistableDeclaration {
+case class HoistableDeclaration1(x0: GeneratorDeclaration, parserParams: List[Boolean], span: Span) extends HoistableDeclaration {
   x0.parent = Some(this)
   val idx: Int = 1
   override def toString: String = {
@@ -58,7 +59,7 @@ object HoistableDeclaration1 extends ASTInfo {
   )
 }
 
-case class HoistableDeclaration2(x0: AsyncFunctionDeclaration, parserParams: List[Boolean]) extends HoistableDeclaration {
+case class HoistableDeclaration2(x0: AsyncFunctionDeclaration, parserParams: List[Boolean], span: Span) extends HoistableDeclaration {
   x0.parent = Some(this)
   val idx: Int = 2
   override def toString: String = {
@@ -76,7 +77,7 @@ object HoistableDeclaration2 extends ASTInfo {
   )
 }
 
-case class HoistableDeclaration3(x0: AsyncGeneratorDeclaration, parserParams: List[Boolean]) extends HoistableDeclaration {
+case class HoistableDeclaration3(x0: AsyncGeneratorDeclaration, parserParams: List[Boolean], span: Span) extends HoistableDeclaration {
   x0.parent = Some(this)
   val idx: Int = 3
   override def toString: String = {

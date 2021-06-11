@@ -2,6 +2,7 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.InvalidAST
+import kr.ac.kaist.ires.util.Span
 import scala.collection.immutable.{ Set => SSet }
 import spray.json._
 
@@ -11,16 +12,16 @@ trait ModuleItem extends AST {
 object ModuleItem extends ASTHelper {
   def apply(v: JsValue): ModuleItem = v match {
     case JsSeq(JsInt(0), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
-      ModuleItem0(ImportDeclaration(x0), params)
+      ModuleItem0(ImportDeclaration(x0), params, span)
     case JsSeq(JsInt(1), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
-      ModuleItem1(ExportDeclaration(x0), params)
+      ModuleItem1(ExportDeclaration(x0), params, span)
     case JsSeq(JsInt(2), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
-      ModuleItem2(StatementListItem(x0), params)
+      ModuleItem2(StatementListItem(x0), params, span)
     case _ => throw InvalidAST
   }
 }
 
-case class ModuleItem0(x0: ImportDeclaration, parserParams: List[Boolean]) extends ModuleItem {
+case class ModuleItem0(x0: ImportDeclaration, parserParams: List[Boolean], span: Span) extends ModuleItem {
   x0.parent = Some(this)
   val idx: Int = 0
   override def toString: String = {
@@ -48,7 +49,7 @@ object ModuleItem0 extends ASTInfo {
   )
 }
 
-case class ModuleItem1(x0: ExportDeclaration, parserParams: List[Boolean]) extends ModuleItem {
+case class ModuleItem1(x0: ExportDeclaration, parserParams: List[Boolean], span: Span) extends ModuleItem {
   x0.parent = Some(this)
   val idx: Int = 1
   override def toString: String = {
@@ -72,7 +73,7 @@ object ModuleItem1 extends ASTInfo {
   )
 }
 
-case class ModuleItem2(x0: StatementListItem, parserParams: List[Boolean]) extends ModuleItem {
+case class ModuleItem2(x0: StatementListItem, parserParams: List[Boolean], span: Span) extends ModuleItem {
   x0.parent = Some(this)
   val idx: Int = 2
   override def toString: String = {

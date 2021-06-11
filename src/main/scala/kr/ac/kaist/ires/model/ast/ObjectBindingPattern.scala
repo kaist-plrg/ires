@@ -2,6 +2,7 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.InvalidAST
+import kr.ac.kaist.ires.util.Span
 import scala.collection.immutable.{ Set => SSet }
 import spray.json._
 
@@ -11,18 +12,18 @@ trait ObjectBindingPattern extends AST {
 object ObjectBindingPattern extends ASTHelper {
   def apply(v: JsValue): ObjectBindingPattern = v match {
     case JsSeq(JsInt(0), JsSeq(), JsBoolSeq(params), JsSpan(span)) =>
-      ObjectBindingPattern0(params)
+      ObjectBindingPattern0(params, span)
     case JsSeq(JsInt(1), JsSeq(x1), JsBoolSeq(params), JsSpan(span)) =>
-      ObjectBindingPattern1(BindingRestProperty(x1), params)
+      ObjectBindingPattern1(BindingRestProperty(x1), params, span)
     case JsSeq(JsInt(2), JsSeq(x1), JsBoolSeq(params), JsSpan(span)) =>
-      ObjectBindingPattern2(BindingPropertyList(x1), params)
+      ObjectBindingPattern2(BindingPropertyList(x1), params, span)
     case JsSeq(JsInt(3), JsSeq(x1, x3), JsBoolSeq(params), JsSpan(span)) =>
-      ObjectBindingPattern3(BindingPropertyList(x1), opt(x3, BindingRestProperty.apply), params)
+      ObjectBindingPattern3(BindingPropertyList(x1), opt(x3, BindingRestProperty.apply), params, span)
     case _ => throw InvalidAST
   }
 }
 
-case class ObjectBindingPattern0(parserParams: List[Boolean]) extends ObjectBindingPattern {
+case class ObjectBindingPattern0(parserParams: List[Boolean], span: Span) extends ObjectBindingPattern {
   val idx: Int = 0
   override def toString: String = {
     s"{ }"
@@ -40,7 +41,7 @@ object ObjectBindingPattern0 extends ASTInfo {
   )
 }
 
-case class ObjectBindingPattern1(x1: BindingRestProperty, parserParams: List[Boolean]) extends ObjectBindingPattern {
+case class ObjectBindingPattern1(x1: BindingRestProperty, parserParams: List[Boolean], span: Span) extends ObjectBindingPattern {
   x1.parent = Some(this)
   val idx: Int = 1
   override def toString: String = {
@@ -58,7 +59,7 @@ object ObjectBindingPattern1 extends ASTInfo {
   )
 }
 
-case class ObjectBindingPattern2(x1: BindingPropertyList, parserParams: List[Boolean]) extends ObjectBindingPattern {
+case class ObjectBindingPattern2(x1: BindingPropertyList, parserParams: List[Boolean], span: Span) extends ObjectBindingPattern {
   x1.parent = Some(this)
   val idx: Int = 2
   override def toString: String = {
@@ -75,7 +76,7 @@ object ObjectBindingPattern2 extends ASTInfo {
   )
 }
 
-case class ObjectBindingPattern3(x1: BindingPropertyList, x3: Option[BindingRestProperty], parserParams: List[Boolean]) extends ObjectBindingPattern {
+case class ObjectBindingPattern3(x1: BindingPropertyList, x3: Option[BindingRestProperty], parserParams: List[Boolean], span: Span) extends ObjectBindingPattern {
   x1.parent = Some(this)
   x3.foreach((m) => m.parent = Some(this))
   val idx: Int = 3

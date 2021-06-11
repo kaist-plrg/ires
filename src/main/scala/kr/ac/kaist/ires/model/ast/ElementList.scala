@@ -2,6 +2,7 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.InvalidAST
+import kr.ac.kaist.ires.util.Span
 import scala.collection.immutable.{ Set => SSet }
 import spray.json._
 
@@ -11,18 +12,18 @@ trait ElementList extends AST {
 object ElementList extends ASTHelper {
   def apply(v: JsValue): ElementList = v match {
     case JsSeq(JsInt(0), JsSeq(x0, x1), JsBoolSeq(params), JsSpan(span)) =>
-      ElementList0(opt(x0, Elision.apply), AssignmentExpression(x1), params)
+      ElementList0(opt(x0, Elision.apply), AssignmentExpression(x1), params, span)
     case JsSeq(JsInt(1), JsSeq(x0, x1), JsBoolSeq(params), JsSpan(span)) =>
-      ElementList1(opt(x0, Elision.apply), SpreadElement(x1), params)
+      ElementList1(opt(x0, Elision.apply), SpreadElement(x1), params, span)
     case JsSeq(JsInt(2), JsSeq(x0, x2, x3), JsBoolSeq(params), JsSpan(span)) =>
-      ElementList2(ElementList(x0), opt(x2, Elision.apply), AssignmentExpression(x3), params)
+      ElementList2(ElementList(x0), opt(x2, Elision.apply), AssignmentExpression(x3), params, span)
     case JsSeq(JsInt(3), JsSeq(x0, x2, x3), JsBoolSeq(params), JsSpan(span)) =>
-      ElementList3(ElementList(x0), opt(x2, Elision.apply), SpreadElement(x3), params)
+      ElementList3(ElementList(x0), opt(x2, Elision.apply), SpreadElement(x3), params, span)
     case _ => throw InvalidAST
   }
 }
 
-case class ElementList0(x0: Option[Elision], x1: AssignmentExpression, parserParams: List[Boolean]) extends ElementList {
+case class ElementList0(x0: Option[Elision], x1: AssignmentExpression, parserParams: List[Boolean], span: Span) extends ElementList {
   x0.foreach((m) => m.parent = Some(this))
   x1.parent = Some(this)
   val idx: Int = 0
@@ -40,7 +41,7 @@ object ElementList0 extends ASTInfo {
   )
 }
 
-case class ElementList1(x0: Option[Elision], x1: SpreadElement, parserParams: List[Boolean]) extends ElementList {
+case class ElementList1(x0: Option[Elision], x1: SpreadElement, parserParams: List[Boolean], span: Span) extends ElementList {
   x0.foreach((m) => m.parent = Some(this))
   x1.parent = Some(this)
   val idx: Int = 1
@@ -58,7 +59,7 @@ object ElementList1 extends ASTInfo {
   )
 }
 
-case class ElementList2(x0: ElementList, x2: Option[Elision], x3: AssignmentExpression, parserParams: List[Boolean]) extends ElementList {
+case class ElementList2(x0: ElementList, x2: Option[Elision], x3: AssignmentExpression, parserParams: List[Boolean], span: Span) extends ElementList {
   x0.parent = Some(this)
   x2.foreach((m) => m.parent = Some(this))
   x3.parent = Some(this)
@@ -77,7 +78,7 @@ object ElementList2 extends ASTInfo {
   )
 }
 
-case class ElementList3(x0: ElementList, x2: Option[Elision], x3: SpreadElement, parserParams: List[Boolean]) extends ElementList {
+case class ElementList3(x0: ElementList, x2: Option[Elision], x3: SpreadElement, parserParams: List[Boolean], span: Span) extends ElementList {
   x0.parent = Some(this)
   x2.foreach((m) => m.parent = Some(this))
   x3.parent = Some(this)

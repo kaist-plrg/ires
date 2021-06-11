@@ -2,6 +2,7 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.InvalidAST
+import kr.ac.kaist.ires.util.Span
 import scala.collection.immutable.{ Set => SSet }
 import spray.json._
 
@@ -11,12 +12,12 @@ trait ComputedPropertyName extends AST {
 object ComputedPropertyName extends ASTHelper {
   def apply(v: JsValue): ComputedPropertyName = v match {
     case JsSeq(JsInt(0), JsSeq(x1), JsBoolSeq(params), JsSpan(span)) =>
-      ComputedPropertyName0(AssignmentExpression(x1), params)
+      ComputedPropertyName0(AssignmentExpression(x1), params, span)
     case _ => throw InvalidAST
   }
 }
 
-case class ComputedPropertyName0(x1: AssignmentExpression, parserParams: List[Boolean]) extends ComputedPropertyName {
+case class ComputedPropertyName0(x1: AssignmentExpression, parserParams: List[Boolean], span: Span) extends ComputedPropertyName {
   x1.parent = Some(this)
   val idx: Int = 0
   override def toString: String = {

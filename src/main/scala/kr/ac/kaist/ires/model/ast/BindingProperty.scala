@@ -2,6 +2,7 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.InvalidAST
+import kr.ac.kaist.ires.util.Span
 import scala.collection.immutable.{ Set => SSet }
 import spray.json._
 
@@ -11,14 +12,14 @@ trait BindingProperty extends AST {
 object BindingProperty extends ASTHelper {
   def apply(v: JsValue): BindingProperty = v match {
     case JsSeq(JsInt(0), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
-      BindingProperty0(SingleNameBinding(x0), params)
+      BindingProperty0(SingleNameBinding(x0), params, span)
     case JsSeq(JsInt(1), JsSeq(x0, x2), JsBoolSeq(params), JsSpan(span)) =>
-      BindingProperty1(PropertyName(x0), BindingElement(x2), params)
+      BindingProperty1(PropertyName(x0), BindingElement(x2), params, span)
     case _ => throw InvalidAST
   }
 }
 
-case class BindingProperty0(x0: SingleNameBinding, parserParams: List[Boolean]) extends BindingProperty {
+case class BindingProperty0(x0: SingleNameBinding, parserParams: List[Boolean], span: Span) extends BindingProperty {
   x0.parent = Some(this)
   val idx: Int = 0
   override def toString: String = {
@@ -35,7 +36,7 @@ object BindingProperty0 extends ASTInfo {
   )
 }
 
-case class BindingProperty1(x0: PropertyName, x2: BindingElement, parserParams: List[Boolean]) extends BindingProperty {
+case class BindingProperty1(x0: PropertyName, x2: BindingElement, parserParams: List[Boolean], span: Span) extends BindingProperty {
   x0.parent = Some(this)
   x2.parent = Some(this)
   val idx: Int = 1

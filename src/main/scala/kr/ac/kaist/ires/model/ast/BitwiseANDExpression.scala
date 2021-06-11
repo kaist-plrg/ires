@@ -2,6 +2,7 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.InvalidAST
+import kr.ac.kaist.ires.util.Span
 import scala.collection.immutable.{ Set => SSet }
 import spray.json._
 
@@ -11,14 +12,14 @@ trait BitwiseANDExpression extends AST {
 object BitwiseANDExpression extends ASTHelper {
   def apply(v: JsValue): BitwiseANDExpression = v match {
     case JsSeq(JsInt(0), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
-      BitwiseANDExpression0(EqualityExpression(x0), params)
+      BitwiseANDExpression0(EqualityExpression(x0), params, span)
     case JsSeq(JsInt(1), JsSeq(x0, x2), JsBoolSeq(params), JsSpan(span)) =>
-      BitwiseANDExpression1(BitwiseANDExpression(x0), EqualityExpression(x2), params)
+      BitwiseANDExpression1(BitwiseANDExpression(x0), EqualityExpression(x2), params, span)
     case _ => throw InvalidAST
   }
 }
 
-case class BitwiseANDExpression0(x0: EqualityExpression, parserParams: List[Boolean]) extends BitwiseANDExpression {
+case class BitwiseANDExpression0(x0: EqualityExpression, parserParams: List[Boolean], span: Span) extends BitwiseANDExpression {
   x0.parent = Some(this)
   val idx: Int = 0
   override def toString: String = {
@@ -33,7 +34,7 @@ object BitwiseANDExpression0 extends ASTInfo {
   val semMap: Map[String, Algo] = Map()
 }
 
-case class BitwiseANDExpression1(x0: BitwiseANDExpression, x2: EqualityExpression, parserParams: List[Boolean]) extends BitwiseANDExpression {
+case class BitwiseANDExpression1(x0: BitwiseANDExpression, x2: EqualityExpression, parserParams: List[Boolean], span: Span) extends BitwiseANDExpression {
   x0.parent = Some(this)
   x2.parent = Some(this)
   val idx: Int = 1

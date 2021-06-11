@@ -2,6 +2,7 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.InvalidAST
+import kr.ac.kaist.ires.util.Span
 import scala.collection.immutable.{ Set => SSet }
 import spray.json._
 
@@ -11,16 +12,16 @@ trait LiteralPropertyName extends AST {
 object LiteralPropertyName extends ASTHelper {
   def apply(v: JsValue): LiteralPropertyName = v match {
     case JsSeq(JsInt(0), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
-      LiteralPropertyName0(lex("IdentifierName", x0), params)
+      LiteralPropertyName0(lex("IdentifierName", x0), params, span)
     case JsSeq(JsInt(1), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
-      LiteralPropertyName1(lex("StringLiteral", x0), params)
+      LiteralPropertyName1(lex("StringLiteral", x0), params, span)
     case JsSeq(JsInt(2), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
-      LiteralPropertyName2(lex("NumericLiteral", x0), params)
+      LiteralPropertyName2(lex("NumericLiteral", x0), params, span)
     case _ => throw InvalidAST
   }
 }
 
-case class LiteralPropertyName0(x0: Lexical, parserParams: List[Boolean]) extends LiteralPropertyName {
+case class LiteralPropertyName0(x0: Lexical, parserParams: List[Boolean], span: Span) extends LiteralPropertyName {
   x0.parent = Some(this)
   val idx: Int = 0
   override def toString: String = {
@@ -39,7 +40,7 @@ object LiteralPropertyName0 extends ASTInfo {
   )
 }
 
-case class LiteralPropertyName1(x0: Lexical, parserParams: List[Boolean]) extends LiteralPropertyName {
+case class LiteralPropertyName1(x0: Lexical, parserParams: List[Boolean], span: Span) extends LiteralPropertyName {
   x0.parent = Some(this)
   val idx: Int = 1
   override def toString: String = {
@@ -57,7 +58,7 @@ object LiteralPropertyName1 extends ASTInfo {
   )
 }
 
-case class LiteralPropertyName2(x0: Lexical, parserParams: List[Boolean]) extends LiteralPropertyName {
+case class LiteralPropertyName2(x0: Lexical, parserParams: List[Boolean], span: Span) extends LiteralPropertyName {
   x0.parent = Some(this)
   val idx: Int = 2
   override def toString: String = {

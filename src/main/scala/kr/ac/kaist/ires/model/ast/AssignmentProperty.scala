@@ -2,6 +2,7 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.InvalidAST
+import kr.ac.kaist.ires.util.Span
 import scala.collection.immutable.{ Set => SSet }
 import spray.json._
 
@@ -11,14 +12,14 @@ trait AssignmentProperty extends AST {
 object AssignmentProperty extends ASTHelper {
   def apply(v: JsValue): AssignmentProperty = v match {
     case JsSeq(JsInt(0), JsSeq(x0, x1), JsBoolSeq(params), JsSpan(span)) =>
-      AssignmentProperty0(IdentifierReference(x0), opt(x1, Initializer.apply), params)
+      AssignmentProperty0(IdentifierReference(x0), opt(x1, Initializer.apply), params, span)
     case JsSeq(JsInt(1), JsSeq(x0, x2), JsBoolSeq(params), JsSpan(span)) =>
-      AssignmentProperty1(PropertyName(x0), AssignmentElement(x2), params)
+      AssignmentProperty1(PropertyName(x0), AssignmentElement(x2), params, span)
     case _ => throw InvalidAST
   }
 }
 
-case class AssignmentProperty0(x0: IdentifierReference, x1: Option[Initializer], parserParams: List[Boolean]) extends AssignmentProperty {
+case class AssignmentProperty0(x0: IdentifierReference, x1: Option[Initializer], parserParams: List[Boolean], span: Span) extends AssignmentProperty {
   x0.parent = Some(this)
   x1.foreach((m) => m.parent = Some(this))
   val idx: Int = 0
@@ -37,7 +38,7 @@ object AssignmentProperty0 extends ASTInfo {
   )
 }
 
-case class AssignmentProperty1(x0: PropertyName, x2: AssignmentElement, parserParams: List[Boolean]) extends AssignmentProperty {
+case class AssignmentProperty1(x0: PropertyName, x2: AssignmentElement, parserParams: List[Boolean], span: Span) extends AssignmentProperty {
   x0.parent = Some(this)
   x2.parent = Some(this)
   val idx: Int = 1

@@ -2,6 +2,7 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.InvalidAST
+import kr.ac.kaist.ires.util.Span
 import scala.collection.immutable.{ Set => SSet }
 import spray.json._
 
@@ -11,12 +12,12 @@ trait ArrowFormalParameters extends AST {
 object ArrowFormalParameters extends ASTHelper {
   def apply(v: JsValue): ArrowFormalParameters = v match {
     case JsSeq(JsInt(0), JsSeq(x1), JsBoolSeq(params), JsSpan(span)) =>
-      ArrowFormalParameters0(UniqueFormalParameters(x1), params)
+      ArrowFormalParameters0(UniqueFormalParameters(x1), params, span)
     case _ => throw InvalidAST
   }
 }
 
-case class ArrowFormalParameters0(x1: UniqueFormalParameters, parserParams: List[Boolean]) extends ArrowFormalParameters {
+case class ArrowFormalParameters0(x1: UniqueFormalParameters, parserParams: List[Boolean], span: Span) extends ArrowFormalParameters {
   x1.parent = Some(this)
   val idx: Int = 0
   override def toString: String = {

@@ -2,6 +2,7 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.InvalidAST
+import kr.ac.kaist.ires.util.Span
 import scala.collection.immutable.{ Set => SSet }
 import spray.json._
 
@@ -11,12 +12,12 @@ trait ImportedDefaultBinding extends AST {
 object ImportedDefaultBinding extends ASTHelper {
   def apply(v: JsValue): ImportedDefaultBinding = v match {
     case JsSeq(JsInt(0), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
-      ImportedDefaultBinding0(ImportedBinding(x0), params)
+      ImportedDefaultBinding0(ImportedBinding(x0), params, span)
     case _ => throw InvalidAST
   }
 }
 
-case class ImportedDefaultBinding0(x0: ImportedBinding, parserParams: List[Boolean]) extends ImportedDefaultBinding {
+case class ImportedDefaultBinding0(x0: ImportedBinding, parserParams: List[Boolean], span: Span) extends ImportedDefaultBinding {
   x0.parent = Some(this)
   val idx: Int = 0
   override def toString: String = {

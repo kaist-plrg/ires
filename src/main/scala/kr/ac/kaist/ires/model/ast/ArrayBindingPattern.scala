@@ -2,6 +2,7 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.InvalidAST
+import kr.ac.kaist.ires.util.Span
 import scala.collection.immutable.{ Set => SSet }
 import spray.json._
 
@@ -11,16 +12,16 @@ trait ArrayBindingPattern extends AST {
 object ArrayBindingPattern extends ASTHelper {
   def apply(v: JsValue): ArrayBindingPattern = v match {
     case JsSeq(JsInt(0), JsSeq(x1, x2), JsBoolSeq(params), JsSpan(span)) =>
-      ArrayBindingPattern0(opt(x1, Elision.apply), opt(x2, BindingRestElement.apply), params)
+      ArrayBindingPattern0(opt(x1, Elision.apply), opt(x2, BindingRestElement.apply), params, span)
     case JsSeq(JsInt(1), JsSeq(x1), JsBoolSeq(params), JsSpan(span)) =>
-      ArrayBindingPattern1(BindingElementList(x1), params)
+      ArrayBindingPattern1(BindingElementList(x1), params, span)
     case JsSeq(JsInt(2), JsSeq(x1, x3, x4), JsBoolSeq(params), JsSpan(span)) =>
-      ArrayBindingPattern2(BindingElementList(x1), opt(x3, Elision.apply), opt(x4, BindingRestElement.apply), params)
+      ArrayBindingPattern2(BindingElementList(x1), opt(x3, Elision.apply), opt(x4, BindingRestElement.apply), params, span)
     case _ => throw InvalidAST
   }
 }
 
-case class ArrayBindingPattern0(x1: Option[Elision], x2: Option[BindingRestElement], parserParams: List[Boolean]) extends ArrayBindingPattern {
+case class ArrayBindingPattern0(x1: Option[Elision], x2: Option[BindingRestElement], parserParams: List[Boolean], span: Span) extends ArrayBindingPattern {
   x1.foreach((m) => m.parent = Some(this))
   x2.foreach((m) => m.parent = Some(this))
   val idx: Int = 0
@@ -44,7 +45,7 @@ object ArrayBindingPattern0 extends ASTInfo {
   )
 }
 
-case class ArrayBindingPattern1(x1: BindingElementList, parserParams: List[Boolean]) extends ArrayBindingPattern {
+case class ArrayBindingPattern1(x1: BindingElementList, parserParams: List[Boolean], span: Span) extends ArrayBindingPattern {
   x1.parent = Some(this)
   val idx: Int = 1
   override def toString: String = {
@@ -59,7 +60,7 @@ object ArrayBindingPattern1 extends ASTInfo {
   val semMap: Map[String, Algo] = Map()
 }
 
-case class ArrayBindingPattern2(x1: BindingElementList, x3: Option[Elision], x4: Option[BindingRestElement], parserParams: List[Boolean]) extends ArrayBindingPattern {
+case class ArrayBindingPattern2(x1: BindingElementList, x3: Option[Elision], x4: Option[BindingRestElement], parserParams: List[Boolean], span: Span) extends ArrayBindingPattern {
   x1.parent = Some(this)
   x3.foreach((m) => m.parent = Some(this))
   x4.foreach((m) => m.parent = Some(this))

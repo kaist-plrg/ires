@@ -3,6 +3,7 @@ package kr.ac.kaist.ires.model
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error._
 import kr.ac.kaist.ires.util.Useful._
+import kr.ac.kaist.ires.util.Span
 import kr.ac.kaist.ires.parser.UnicodeRegex
 
 trait ModelHelper {
@@ -22,22 +23,33 @@ trait ModelHelper {
   // )
 
   def flattenStList(s: StatementList): List[StatementListItem] = s match {
-    case StatementList0(x0, _) => List(x0)
-    case StatementList1(x0, x1, _) => flattenStList(x0) :+ x1
+    case StatementList0(x0, _, _) => List(x0)
+    case StatementList1(x0, x1, _, _) => flattenStList(x0) :+ x1
   }
 
   def flattenStatement(s: Script) = s match {
-    case Script0(Some(ScriptBody0(stlist, _)), _) =>
+    case Script0(Some(ScriptBody0(stlist, _, _)), _, _) =>
       flattenStList(stlist)
     case _ => List()
   }
 
-  def mergeStatement(l: List[StatementListItem]): Script = Script0(l match {
-    case a :: rest => Some(ScriptBody0(rest.foldLeft[StatementList](StatementList0(a, List(false, false, false))) {
-      case (x, y) => StatementList1(x, y, List(false, false, false))
-    }, List(false, false, false)))
-    case Nil => None
-  }, List(false, false, false))
+  def mergeStatement(l: List[StatementListItem]): Script = {
+    val params = List(false, false, false)
+    val bodyOpt = l match {
+      case a :: rest => {
+        val init: StatementList = StatementList0(a, params, a.span)
+        val list = rest.foldLeft(init) {
+          case (x, y) =>
+            val span = Span(x.span.start, y.span.end)
+            StatementList1(x, y, params, span)
+        }
+        Some(ScriptBody0(list, params, list.span))
+      }
+      case Nil => None
+    }
+    val span = bodyOpt.fold(Span())(_.span)
+    Script0(bodyOpt, params, span)
+  }
 
   val SYMBOL_PREFIX = "GLOBAL.Symbol."
   def getPropStr(value: Value): String = value match {

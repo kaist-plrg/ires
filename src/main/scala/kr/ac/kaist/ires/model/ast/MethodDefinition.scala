@@ -2,6 +2,7 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.InvalidAST
+import kr.ac.kaist.ires.util.Span
 import scala.collection.immutable.{ Set => SSet }
 import spray.json._
 
@@ -11,22 +12,22 @@ trait MethodDefinition extends AST {
 object MethodDefinition extends ASTHelper {
   def apply(v: JsValue): MethodDefinition = v match {
     case JsSeq(JsInt(0), JsSeq(x0, x2, x5), JsBoolSeq(params), JsSpan(span)) =>
-      MethodDefinition0(PropertyName(x0), UniqueFormalParameters(x2), FunctionBody(x5), params)
+      MethodDefinition0(PropertyName(x0), UniqueFormalParameters(x2), FunctionBody(x5), params, span)
     case JsSeq(JsInt(1), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
-      MethodDefinition1(GeneratorMethod(x0), params)
+      MethodDefinition1(GeneratorMethod(x0), params, span)
     case JsSeq(JsInt(2), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
-      MethodDefinition2(AsyncMethod(x0), params)
+      MethodDefinition2(AsyncMethod(x0), params, span)
     case JsSeq(JsInt(3), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
-      MethodDefinition3(AsyncGeneratorMethod(x0), params)
+      MethodDefinition3(AsyncGeneratorMethod(x0), params, span)
     case JsSeq(JsInt(4), JsSeq(x1, x5), JsBoolSeq(params), JsSpan(span)) =>
-      MethodDefinition4(PropertyName(x1), FunctionBody(x5), params)
+      MethodDefinition4(PropertyName(x1), FunctionBody(x5), params, span)
     case JsSeq(JsInt(5), JsSeq(x1, x3, x6), JsBoolSeq(params), JsSpan(span)) =>
-      MethodDefinition5(PropertyName(x1), PropertySetParameterList(x3), FunctionBody(x6), params)
+      MethodDefinition5(PropertyName(x1), PropertySetParameterList(x3), FunctionBody(x6), params, span)
     case _ => throw InvalidAST
   }
 }
 
-case class MethodDefinition0(x0: PropertyName, x2: UniqueFormalParameters, x5: FunctionBody, parserParams: List[Boolean]) extends MethodDefinition {
+case class MethodDefinition0(x0: PropertyName, x2: UniqueFormalParameters, x5: FunctionBody, parserParams: List[Boolean], span: Span) extends MethodDefinition {
   x0.parent = Some(this)
   x2.parent = Some(this)
   x5.parent = Some(this)
@@ -52,7 +53,7 @@ object MethodDefinition0 extends ASTInfo {
   )
 }
 
-case class MethodDefinition1(x0: GeneratorMethod, parserParams: List[Boolean]) extends MethodDefinition {
+case class MethodDefinition1(x0: GeneratorMethod, parserParams: List[Boolean], span: Span) extends MethodDefinition {
   x0.parent = Some(this)
   val idx: Int = 1
   override def toString: String = {
@@ -69,7 +70,7 @@ object MethodDefinition1 extends ASTInfo {
   )
 }
 
-case class MethodDefinition2(x0: AsyncMethod, parserParams: List[Boolean]) extends MethodDefinition {
+case class MethodDefinition2(x0: AsyncMethod, parserParams: List[Boolean], span: Span) extends MethodDefinition {
   x0.parent = Some(this)
   val idx: Int = 2
   override def toString: String = {
@@ -86,7 +87,7 @@ object MethodDefinition2 extends ASTInfo {
   )
 }
 
-case class MethodDefinition3(x0: AsyncGeneratorMethod, parserParams: List[Boolean]) extends MethodDefinition {
+case class MethodDefinition3(x0: AsyncGeneratorMethod, parserParams: List[Boolean], span: Span) extends MethodDefinition {
   x0.parent = Some(this)
   val idx: Int = 3
   override def toString: String = {
@@ -103,7 +104,7 @@ object MethodDefinition3 extends ASTInfo {
   )
 }
 
-case class MethodDefinition4(x1: PropertyName, x5: FunctionBody, parserParams: List[Boolean]) extends MethodDefinition {
+case class MethodDefinition4(x1: PropertyName, x5: FunctionBody, parserParams: List[Boolean], span: Span) extends MethodDefinition {
   x1.parent = Some(this)
   x5.parent = Some(this)
   val idx: Int = 4
@@ -126,7 +127,7 @@ object MethodDefinition4 extends ASTInfo {
   )
 }
 
-case class MethodDefinition5(x1: PropertyName, x3: PropertySetParameterList, x6: FunctionBody, parserParams: List[Boolean]) extends MethodDefinition {
+case class MethodDefinition5(x1: PropertyName, x3: PropertySetParameterList, x6: FunctionBody, parserParams: List[Boolean], span: Span) extends MethodDefinition {
   x1.parent = Some(this)
   x3.parent = Some(this)
   x6.parent = Some(this)

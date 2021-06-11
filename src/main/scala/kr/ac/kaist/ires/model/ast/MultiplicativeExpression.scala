@@ -2,6 +2,7 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.InvalidAST
+import kr.ac.kaist.ires.util.Span
 import scala.collection.immutable.{ Set => SSet }
 import spray.json._
 
@@ -11,14 +12,14 @@ trait MultiplicativeExpression extends AST {
 object MultiplicativeExpression extends ASTHelper {
   def apply(v: JsValue): MultiplicativeExpression = v match {
     case JsSeq(JsInt(0), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
-      MultiplicativeExpression0(ExponentiationExpression(x0), params)
+      MultiplicativeExpression0(ExponentiationExpression(x0), params, span)
     case JsSeq(JsInt(1), JsSeq(x0, x1, x2), JsBoolSeq(params), JsSpan(span)) =>
-      MultiplicativeExpression1(MultiplicativeExpression(x0), MultiplicativeOperator(x1), ExponentiationExpression(x2), params)
+      MultiplicativeExpression1(MultiplicativeExpression(x0), MultiplicativeOperator(x1), ExponentiationExpression(x2), params, span)
     case _ => throw InvalidAST
   }
 }
 
-case class MultiplicativeExpression0(x0: ExponentiationExpression, parserParams: List[Boolean]) extends MultiplicativeExpression {
+case class MultiplicativeExpression0(x0: ExponentiationExpression, parserParams: List[Boolean], span: Span) extends MultiplicativeExpression {
   x0.parent = Some(this)
   val idx: Int = 0
   override def toString: String = {
@@ -33,7 +34,7 @@ object MultiplicativeExpression0 extends ASTInfo {
   val semMap: Map[String, Algo] = Map()
 }
 
-case class MultiplicativeExpression1(x0: MultiplicativeExpression, x1: MultiplicativeOperator, x2: ExponentiationExpression, parserParams: List[Boolean]) extends MultiplicativeExpression {
+case class MultiplicativeExpression1(x0: MultiplicativeExpression, x1: MultiplicativeOperator, x2: ExponentiationExpression, parserParams: List[Boolean], span: Span) extends MultiplicativeExpression {
   x0.parent = Some(this)
   x1.parent = Some(this)
   x2.parent = Some(this)

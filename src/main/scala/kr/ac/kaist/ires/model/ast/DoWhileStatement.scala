@@ -2,6 +2,7 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.InvalidAST
+import kr.ac.kaist.ires.util.Span
 import scala.collection.immutable.{ Set => SSet }
 import spray.json._
 
@@ -11,12 +12,12 @@ trait DoWhileStatement extends AST {
 object DoWhileStatement extends ASTHelper {
   def apply(v: JsValue): DoWhileStatement = v match {
     case JsSeq(JsInt(0), JsSeq(x1, x4), JsBoolSeq(params), JsSpan(span)) =>
-      DoWhileStatement0(Statement(x1), Expression(x4), params)
+      DoWhileStatement0(Statement(x1), Expression(x4), params, span)
     case _ => throw InvalidAST
   }
 }
 
-case class DoWhileStatement0(x1: Statement, x4: Expression, parserParams: List[Boolean]) extends DoWhileStatement {
+case class DoWhileStatement0(x1: Statement, x4: Expression, parserParams: List[Boolean], span: Span) extends DoWhileStatement {
   x1.parent = Some(this)
   x4.parent = Some(this)
   val idx: Int = 0

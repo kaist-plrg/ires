@@ -2,6 +2,7 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.InvalidAST
+import kr.ac.kaist.ires.util.Span
 import scala.collection.immutable.{ Set => SSet }
 import spray.json._
 
@@ -11,16 +12,16 @@ trait TryStatement extends AST {
 object TryStatement extends ASTHelper {
   def apply(v: JsValue): TryStatement = v match {
     case JsSeq(JsInt(0), JsSeq(x1, x2), JsBoolSeq(params), JsSpan(span)) =>
-      TryStatement0(Block(x1), Catch(x2), params)
+      TryStatement0(Block(x1), Catch(x2), params, span)
     case JsSeq(JsInt(1), JsSeq(x1, x2), JsBoolSeq(params), JsSpan(span)) =>
-      TryStatement1(Block(x1), Finally(x2), params)
+      TryStatement1(Block(x1), Finally(x2), params, span)
     case JsSeq(JsInt(2), JsSeq(x1, x2, x3), JsBoolSeq(params), JsSpan(span)) =>
-      TryStatement2(Block(x1), Catch(x2), Finally(x3), params)
+      TryStatement2(Block(x1), Catch(x2), Finally(x3), params, span)
     case _ => throw InvalidAST
   }
 }
 
-case class TryStatement0(x1: Block, x2: Catch, parserParams: List[Boolean]) extends TryStatement {
+case class TryStatement0(x1: Block, x2: Catch, parserParams: List[Boolean], span: Span) extends TryStatement {
   x1.parent = Some(this)
   x2.parent = Some(this)
   val idx: Int = 0
@@ -44,7 +45,7 @@ object TryStatement0 extends ASTInfo {
   )
 }
 
-case class TryStatement1(x1: Block, x2: Finally, parserParams: List[Boolean]) extends TryStatement {
+case class TryStatement1(x1: Block, x2: Finally, parserParams: List[Boolean], span: Span) extends TryStatement {
   x1.parent = Some(this)
   x2.parent = Some(this)
   val idx: Int = 1
@@ -68,7 +69,7 @@ object TryStatement1 extends ASTInfo {
   )
 }
 
-case class TryStatement2(x1: Block, x2: Catch, x3: Finally, parserParams: List[Boolean]) extends TryStatement {
+case class TryStatement2(x1: Block, x2: Catch, x3: Finally, parserParams: List[Boolean], span: Span) extends TryStatement {
   x1.parent = Some(this)
   x2.parent = Some(this)
   x3.parent = Some(this)

@@ -2,6 +2,7 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.InvalidAST
+import kr.ac.kaist.ires.util.Span
 import scala.collection.immutable.{ Set => SSet }
 import spray.json._
 
@@ -11,16 +12,16 @@ trait ForStatement extends AST {
 object ForStatement extends ASTHelper {
   def apply(v: JsValue): ForStatement = v match {
     case JsSeq(JsInt(0), JsSeq(x3, x5, x7, x9), JsBoolSeq(params), JsSpan(span)) =>
-      ForStatement0(opt(x3, Expression.apply), opt(x5, Expression.apply), opt(x7, Expression.apply), Statement(x9), params)
+      ForStatement0(opt(x3, Expression.apply), opt(x5, Expression.apply), opt(x7, Expression.apply), Statement(x9), params, span)
     case JsSeq(JsInt(1), JsSeq(x3, x5, x7, x9), JsBoolSeq(params), JsSpan(span)) =>
-      ForStatement1(VariableDeclarationList(x3), opt(x5, Expression.apply), opt(x7, Expression.apply), Statement(x9), params)
+      ForStatement1(VariableDeclarationList(x3), opt(x5, Expression.apply), opt(x7, Expression.apply), Statement(x9), params, span)
     case JsSeq(JsInt(2), JsSeq(x2, x3, x5, x7), JsBoolSeq(params), JsSpan(span)) =>
-      ForStatement2(LexicalDeclaration(x2), opt(x3, Expression.apply), opt(x5, Expression.apply), Statement(x7), params)
+      ForStatement2(LexicalDeclaration(x2), opt(x3, Expression.apply), opt(x5, Expression.apply), Statement(x7), params, span)
     case _ => throw InvalidAST
   }
 }
 
-case class ForStatement0(x3: Option[Expression], x5: Option[Expression], x7: Option[Expression], x9: Statement, parserParams: List[Boolean]) extends ForStatement {
+case class ForStatement0(x3: Option[Expression], x5: Option[Expression], x7: Option[Expression], x9: Statement, parserParams: List[Boolean], span: Span) extends ForStatement {
   x3.foreach((m) => m.parent = Some(this))
   x5.foreach((m) => m.parent = Some(this))
   x7.foreach((m) => m.parent = Some(this))
@@ -47,7 +48,7 @@ object ForStatement0 extends ASTInfo {
   )
 }
 
-case class ForStatement1(x3: VariableDeclarationList, x5: Option[Expression], x7: Option[Expression], x9: Statement, parserParams: List[Boolean]) extends ForStatement {
+case class ForStatement1(x3: VariableDeclarationList, x5: Option[Expression], x7: Option[Expression], x9: Statement, parserParams: List[Boolean], span: Span) extends ForStatement {
   x3.parent = Some(this)
   x5.foreach((m) => m.parent = Some(this))
   x7.foreach((m) => m.parent = Some(this))
@@ -74,7 +75,7 @@ object ForStatement1 extends ASTInfo {
   )
 }
 
-case class ForStatement2(x2: LexicalDeclaration, x3: Option[Expression], x5: Option[Expression], x7: Statement, parserParams: List[Boolean]) extends ForStatement {
+case class ForStatement2(x2: LexicalDeclaration, x3: Option[Expression], x5: Option[Expression], x7: Statement, parserParams: List[Boolean], span: Span) extends ForStatement {
   x2.parent = Some(this)
   x3.foreach((m) => m.parent = Some(this))
   x5.foreach((m) => m.parent = Some(this))

@@ -2,6 +2,7 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.InvalidAST
+import kr.ac.kaist.ires.util.Span
 import scala.collection.immutable.{ Set => SSet }
 import spray.json._
 
@@ -11,18 +12,18 @@ trait Literal extends AST {
 object Literal extends ASTHelper {
   def apply(v: JsValue): Literal = v match {
     case JsSeq(JsInt(0), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
-      Literal0(lex("NullLiteral", x0), params)
+      Literal0(lex("NullLiteral", x0), params, span)
     case JsSeq(JsInt(1), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
-      Literal1(lex("BooleanLiteral", x0), params)
+      Literal1(lex("BooleanLiteral", x0), params, span)
     case JsSeq(JsInt(2), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
-      Literal2(lex("NumericLiteral", x0), params)
+      Literal2(lex("NumericLiteral", x0), params, span)
     case JsSeq(JsInt(3), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
-      Literal3(lex("StringLiteral", x0), params)
+      Literal3(lex("StringLiteral", x0), params, span)
     case _ => throw InvalidAST
   }
 }
 
-case class Literal0(x0: Lexical, parserParams: List[Boolean]) extends Literal {
+case class Literal0(x0: Lexical, parserParams: List[Boolean], span: Span) extends Literal {
   x0.parent = Some(this)
   val idx: Int = 0
   override def toString: String = {
@@ -39,7 +40,7 @@ object Literal0 extends ASTInfo {
   )
 }
 
-case class Literal1(x0: Lexical, parserParams: List[Boolean]) extends Literal {
+case class Literal1(x0: Lexical, parserParams: List[Boolean], span: Span) extends Literal {
   x0.parent = Some(this)
   val idx: Int = 1
   override def toString: String = {
@@ -56,7 +57,7 @@ object Literal1 extends ASTInfo {
   )
 }
 
-case class Literal2(x0: Lexical, parserParams: List[Boolean]) extends Literal {
+case class Literal2(x0: Lexical, parserParams: List[Boolean], span: Span) extends Literal {
   x0.parent = Some(this)
   val idx: Int = 2
   override def toString: String = {
@@ -73,7 +74,7 @@ object Literal2 extends ASTInfo {
   )
 }
 
-case class Literal3(x0: Lexical, parserParams: List[Boolean]) extends Literal {
+case class Literal3(x0: Lexical, parserParams: List[Boolean], span: Span) extends Literal {
   x0.parent = Some(this)
   val idx: Int = 3
   override def toString: String = {

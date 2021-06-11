@@ -2,6 +2,7 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.InvalidAST
+import kr.ac.kaist.ires.util.Span
 import scala.collection.immutable.{ Set => SSet }
 import spray.json._
 
@@ -11,12 +12,12 @@ trait WhileStatement extends AST {
 object WhileStatement extends ASTHelper {
   def apply(v: JsValue): WhileStatement = v match {
     case JsSeq(JsInt(0), JsSeq(x2, x4), JsBoolSeq(params), JsSpan(span)) =>
-      WhileStatement0(Expression(x2), Statement(x4), params)
+      WhileStatement0(Expression(x2), Statement(x4), params, span)
     case _ => throw InvalidAST
   }
 }
 
-case class WhileStatement0(x2: Expression, x4: Statement, parserParams: List[Boolean]) extends WhileStatement {
+case class WhileStatement0(x2: Expression, x4: Statement, parserParams: List[Boolean], span: Span) extends WhileStatement {
   x2.parent = Some(this)
   x4.parent = Some(this)
   val idx: Int = 0

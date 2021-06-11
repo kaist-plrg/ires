@@ -2,6 +2,7 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.InvalidAST
+import kr.ac.kaist.ires.util.Span
 import scala.collection.immutable.{ Set => SSet }
 import spray.json._
 
@@ -11,14 +12,14 @@ trait ExportSpecifier extends AST {
 object ExportSpecifier extends ASTHelper {
   def apply(v: JsValue): ExportSpecifier = v match {
     case JsSeq(JsInt(0), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
-      ExportSpecifier0(lex("IdentifierName", x0), params)
+      ExportSpecifier0(lex("IdentifierName", x0), params, span)
     case JsSeq(JsInt(1), JsSeq(x0, x2), JsBoolSeq(params), JsSpan(span)) =>
-      ExportSpecifier1(lex("IdentifierName", x0), lex("IdentifierName", x2), params)
+      ExportSpecifier1(lex("IdentifierName", x0), lex("IdentifierName", x2), params, span)
     case _ => throw InvalidAST
   }
 }
 
-case class ExportSpecifier0(x0: Lexical, parserParams: List[Boolean]) extends ExportSpecifier {
+case class ExportSpecifier0(x0: Lexical, parserParams: List[Boolean], span: Span) extends ExportSpecifier {
   x0.parent = Some(this)
   val idx: Int = 0
   override def toString: String = {
@@ -38,7 +39,7 @@ object ExportSpecifier0 extends ASTInfo {
   )
 }
 
-case class ExportSpecifier1(x0: Lexical, x2: Lexical, parserParams: List[Boolean]) extends ExportSpecifier {
+case class ExportSpecifier1(x0: Lexical, x2: Lexical, parserParams: List[Boolean], span: Span) extends ExportSpecifier {
   x0.parent = Some(this)
   x2.parent = Some(this)
   val idx: Int = 1

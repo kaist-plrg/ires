@@ -2,6 +2,7 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.InvalidAST
+import kr.ac.kaist.ires.util.Span
 import scala.collection.immutable.{ Set => SSet }
 import spray.json._
 
@@ -11,14 +12,14 @@ trait TemplateLiteral extends AST {
 object TemplateLiteral extends ASTHelper {
   def apply(v: JsValue): TemplateLiteral = v match {
     case JsSeq(JsInt(0), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
-      TemplateLiteral0(lex("NoSubstitutionTemplate", x0), params)
+      TemplateLiteral0(lex("NoSubstitutionTemplate", x0), params, span)
     case JsSeq(JsInt(1), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
-      TemplateLiteral1(SubstitutionTemplate(x0), params)
+      TemplateLiteral1(SubstitutionTemplate(x0), params, span)
     case _ => throw InvalidAST
   }
 }
 
-case class TemplateLiteral0(x0: Lexical, parserParams: List[Boolean]) extends TemplateLiteral {
+case class TemplateLiteral0(x0: Lexical, parserParams: List[Boolean], span: Span) extends TemplateLiteral {
   x0.parent = Some(this)
   val idx: Int = 0
   override def toString: String = {
@@ -38,7 +39,7 @@ object TemplateLiteral0 extends ASTInfo {
   )
 }
 
-case class TemplateLiteral1(x0: SubstitutionTemplate, parserParams: List[Boolean]) extends TemplateLiteral {
+case class TemplateLiteral1(x0: SubstitutionTemplate, parserParams: List[Boolean], span: Span) extends TemplateLiteral {
   x0.parent = Some(this)
   val idx: Int = 1
   override def toString: String = {

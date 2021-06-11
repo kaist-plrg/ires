@@ -2,6 +2,7 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.InvalidAST
+import kr.ac.kaist.ires.util.Span
 import scala.collection.immutable.{ Set => SSet }
 import spray.json._
 
@@ -11,16 +12,16 @@ trait BindingIdentifier extends AST {
 object BindingIdentifier extends ASTHelper {
   def apply(v: JsValue): BindingIdentifier = v match {
     case JsSeq(JsInt(0), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
-      BindingIdentifier0(Identifier(x0), params)
+      BindingIdentifier0(Identifier(x0), params, span)
     case JsSeq(JsInt(1), JsSeq(), JsBoolSeq(params), JsSpan(span)) =>
-      BindingIdentifier1(params)
+      BindingIdentifier1(params, span)
     case JsSeq(JsInt(2), JsSeq(), JsBoolSeq(params), JsSpan(span)) =>
-      BindingIdentifier2(params)
+      BindingIdentifier2(params, span)
     case _ => throw InvalidAST
   }
 }
 
-case class BindingIdentifier0(x0: Identifier, parserParams: List[Boolean]) extends BindingIdentifier {
+case class BindingIdentifier0(x0: Identifier, parserParams: List[Boolean], span: Span) extends BindingIdentifier {
   x0.parent = Some(this)
   val idx: Int = 0
   override def toString: String = {
@@ -40,7 +41,7 @@ object BindingIdentifier0 extends ASTInfo {
   )
 }
 
-case class BindingIdentifier1(parserParams: List[Boolean]) extends BindingIdentifier {
+case class BindingIdentifier1(parserParams: List[Boolean], span: Span) extends BindingIdentifier {
   val idx: Int = 1
   override def toString: String = {
     s"yield"
@@ -60,7 +61,7 @@ object BindingIdentifier1 extends ASTInfo {
   )
 }
 
-case class BindingIdentifier2(parserParams: List[Boolean]) extends BindingIdentifier {
+case class BindingIdentifier2(parserParams: List[Boolean], span: Span) extends BindingIdentifier {
   val idx: Int = 2
   override def toString: String = {
     s"await"

@@ -2,6 +2,7 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.InvalidAST
+import kr.ac.kaist.ires.util.Span
 import scala.collection.immutable.{ Set => SSet }
 import spray.json._
 
@@ -11,14 +12,14 @@ trait FunctionDeclaration extends AST {
 object FunctionDeclaration extends ASTHelper {
   def apply(v: JsValue): FunctionDeclaration = v match {
     case JsSeq(JsInt(0), JsSeq(x1, x3, x6), JsBoolSeq(params), JsSpan(span)) =>
-      FunctionDeclaration0(BindingIdentifier(x1), FormalParameters(x3), FunctionBody(x6), params)
+      FunctionDeclaration0(BindingIdentifier(x1), FormalParameters(x3), FunctionBody(x6), params, span)
     case JsSeq(JsInt(1), JsSeq(x2, x5), JsBoolSeq(params), JsSpan(span)) =>
-      FunctionDeclaration1(FormalParameters(x2), FunctionBody(x5), params)
+      FunctionDeclaration1(FormalParameters(x2), FunctionBody(x5), params, span)
     case _ => throw InvalidAST
   }
 }
 
-case class FunctionDeclaration0(x1: BindingIdentifier, x3: FormalParameters, x6: FunctionBody, parserParams: List[Boolean]) extends FunctionDeclaration {
+case class FunctionDeclaration0(x1: BindingIdentifier, x3: FormalParameters, x6: FunctionBody, parserParams: List[Boolean], span: Span) extends FunctionDeclaration {
   x1.parent = Some(this)
   x3.parent = Some(this)
   x6.parent = Some(this)
@@ -43,7 +44,7 @@ object FunctionDeclaration0 extends ASTInfo {
   )
 }
 
-case class FunctionDeclaration1(x2: FormalParameters, x5: FunctionBody, parserParams: List[Boolean]) extends FunctionDeclaration {
+case class FunctionDeclaration1(x2: FormalParameters, x5: FunctionBody, parserParams: List[Boolean], span: Span) extends FunctionDeclaration {
   x2.parent = Some(this)
   x5.parent = Some(this)
   val idx: Int = 1

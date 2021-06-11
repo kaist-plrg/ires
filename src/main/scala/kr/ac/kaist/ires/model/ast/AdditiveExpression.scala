@@ -2,6 +2,7 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.InvalidAST
+import kr.ac.kaist.ires.util.Span
 import scala.collection.immutable.{ Set => SSet }
 import spray.json._
 
@@ -11,16 +12,16 @@ trait AdditiveExpression extends AST {
 object AdditiveExpression extends ASTHelper {
   def apply(v: JsValue): AdditiveExpression = v match {
     case JsSeq(JsInt(0), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
-      AdditiveExpression0(MultiplicativeExpression(x0), params)
+      AdditiveExpression0(MultiplicativeExpression(x0), params, span)
     case JsSeq(JsInt(1), JsSeq(x0, x2), JsBoolSeq(params), JsSpan(span)) =>
-      AdditiveExpression1(AdditiveExpression(x0), MultiplicativeExpression(x2), params)
+      AdditiveExpression1(AdditiveExpression(x0), MultiplicativeExpression(x2), params, span)
     case JsSeq(JsInt(2), JsSeq(x0, x2), JsBoolSeq(params), JsSpan(span)) =>
-      AdditiveExpression2(AdditiveExpression(x0), MultiplicativeExpression(x2), params)
+      AdditiveExpression2(AdditiveExpression(x0), MultiplicativeExpression(x2), params, span)
     case _ => throw InvalidAST
   }
 }
 
-case class AdditiveExpression0(x0: MultiplicativeExpression, parserParams: List[Boolean]) extends AdditiveExpression {
+case class AdditiveExpression0(x0: MultiplicativeExpression, parserParams: List[Boolean], span: Span) extends AdditiveExpression {
   x0.parent = Some(this)
   val idx: Int = 0
   override def toString: String = {
@@ -35,7 +36,7 @@ object AdditiveExpression0 extends ASTInfo {
   val semMap: Map[String, Algo] = Map()
 }
 
-case class AdditiveExpression1(x0: AdditiveExpression, x2: MultiplicativeExpression, parserParams: List[Boolean]) extends AdditiveExpression {
+case class AdditiveExpression1(x0: AdditiveExpression, x2: MultiplicativeExpression, parserParams: List[Boolean], span: Span) extends AdditiveExpression {
   x0.parent = Some(this)
   x2.parent = Some(this)
   val idx: Int = 1
@@ -56,7 +57,7 @@ object AdditiveExpression1 extends ASTInfo {
   )
 }
 
-case class AdditiveExpression2(x0: AdditiveExpression, x2: MultiplicativeExpression, parserParams: List[Boolean]) extends AdditiveExpression {
+case class AdditiveExpression2(x0: AdditiveExpression, x2: MultiplicativeExpression, parserParams: List[Boolean], span: Span) extends AdditiveExpression {
   x0.parent = Some(this)
   x2.parent = Some(this)
   val idx: Int = 2

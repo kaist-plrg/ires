@@ -2,6 +2,7 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.InvalidAST
+import kr.ac.kaist.ires.util.Span
 import scala.collection.immutable.{ Set => SSet }
 import spray.json._
 
@@ -11,24 +12,24 @@ trait CallExpression extends AST {
 object CallExpression extends ASTHelper {
   def apply(v: JsValue): CallExpression = v match {
     case JsSeq(JsInt(0), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
-      CallExpression0(CoverCallExpressionAndAsyncArrowHead(x0), params)
+      CallExpression0(CoverCallExpressionAndAsyncArrowHead(x0), params, span)
     case JsSeq(JsInt(1), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
-      CallExpression1(SuperCall(x0), params)
+      CallExpression1(SuperCall(x0), params, span)
     case JsSeq(JsInt(2), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
-      CallExpression2(ImportCall(x0), params)
+      CallExpression2(ImportCall(x0), params, span)
     case JsSeq(JsInt(3), JsSeq(x0, x1), JsBoolSeq(params), JsSpan(span)) =>
-      CallExpression3(CallExpression(x0), Arguments(x1), params)
+      CallExpression3(CallExpression(x0), Arguments(x1), params, span)
     case JsSeq(JsInt(4), JsSeq(x0, x2), JsBoolSeq(params), JsSpan(span)) =>
-      CallExpression4(CallExpression(x0), Expression(x2), params)
+      CallExpression4(CallExpression(x0), Expression(x2), params, span)
     case JsSeq(JsInt(5), JsSeq(x0, x2), JsBoolSeq(params), JsSpan(span)) =>
-      CallExpression5(CallExpression(x0), lex("IdentifierName", x2), params)
+      CallExpression5(CallExpression(x0), lex("IdentifierName", x2), params, span)
     case JsSeq(JsInt(6), JsSeq(x0, x1), JsBoolSeq(params), JsSpan(span)) =>
-      CallExpression6(CallExpression(x0), TemplateLiteral(x1), params)
+      CallExpression6(CallExpression(x0), TemplateLiteral(x1), params, span)
     case _ => throw InvalidAST
   }
 }
 
-case class CallExpression0(x0: CoverCallExpressionAndAsyncArrowHead, parserParams: List[Boolean]) extends CallExpression {
+case class CallExpression0(x0: CoverCallExpressionAndAsyncArrowHead, parserParams: List[Boolean], span: Span) extends CallExpression {
   x0.parent = Some(this)
   val idx: Int = 0
   override def toString: String = {
@@ -47,7 +48,7 @@ object CallExpression0 extends ASTInfo {
   )
 }
 
-case class CallExpression1(x0: SuperCall, parserParams: List[Boolean]) extends CallExpression {
+case class CallExpression1(x0: SuperCall, parserParams: List[Boolean], span: Span) extends CallExpression {
   x0.parent = Some(this)
   val idx: Int = 1
   override def toString: String = {
@@ -65,7 +66,7 @@ object CallExpression1 extends ASTInfo {
   )
 }
 
-case class CallExpression2(x0: ImportCall, parserParams: List[Boolean]) extends CallExpression {
+case class CallExpression2(x0: ImportCall, parserParams: List[Boolean], span: Span) extends CallExpression {
   x0.parent = Some(this)
   val idx: Int = 2
   override def toString: String = {
@@ -82,7 +83,7 @@ object CallExpression2 extends ASTInfo {
   )
 }
 
-case class CallExpression3(x0: CallExpression, x1: Arguments, parserParams: List[Boolean]) extends CallExpression {
+case class CallExpression3(x0: CallExpression, x1: Arguments, parserParams: List[Boolean], span: Span) extends CallExpression {
   x0.parent = Some(this)
   x1.parent = Some(this)
   val idx: Int = 3
@@ -102,7 +103,7 @@ object CallExpression3 extends ASTInfo {
   )
 }
 
-case class CallExpression4(x0: CallExpression, x2: Expression, parserParams: List[Boolean]) extends CallExpression {
+case class CallExpression4(x0: CallExpression, x2: Expression, parserParams: List[Boolean], span: Span) extends CallExpression {
   x0.parent = Some(this)
   x2.parent = Some(this)
   val idx: Int = 4
@@ -122,7 +123,7 @@ object CallExpression4 extends ASTInfo {
   )
 }
 
-case class CallExpression5(x0: CallExpression, x2: Lexical, parserParams: List[Boolean]) extends CallExpression {
+case class CallExpression5(x0: CallExpression, x2: Lexical, parserParams: List[Boolean], span: Span) extends CallExpression {
   x0.parent = Some(this)
   x2.parent = Some(this)
   val idx: Int = 5
@@ -143,7 +144,7 @@ object CallExpression5 extends ASTInfo {
   )
 }
 
-case class CallExpression6(x0: CallExpression, x1: TemplateLiteral, parserParams: List[Boolean]) extends CallExpression {
+case class CallExpression6(x0: CallExpression, x1: TemplateLiteral, parserParams: List[Boolean], span: Span) extends CallExpression {
   x0.parent = Some(this)
   x1.parent = Some(this)
   val idx: Int = 6

@@ -2,6 +2,7 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.InvalidAST
+import kr.ac.kaist.ires.util.Span
 import scala.collection.immutable.{ Set => SSet }
 import spray.json._
 
@@ -11,14 +12,14 @@ trait AsyncFunctionDeclaration extends AST {
 object AsyncFunctionDeclaration extends ASTHelper {
   def apply(v: JsValue): AsyncFunctionDeclaration = v match {
     case JsSeq(JsInt(0), JsSeq(x3, x5, x8), JsBoolSeq(params), JsSpan(span)) =>
-      AsyncFunctionDeclaration0(BindingIdentifier(x3), FormalParameters(x5), AsyncFunctionBody(x8), params)
+      AsyncFunctionDeclaration0(BindingIdentifier(x3), FormalParameters(x5), AsyncFunctionBody(x8), params, span)
     case JsSeq(JsInt(1), JsSeq(x4, x7), JsBoolSeq(params), JsSpan(span)) =>
-      AsyncFunctionDeclaration1(FormalParameters(x4), AsyncFunctionBody(x7), params)
+      AsyncFunctionDeclaration1(FormalParameters(x4), AsyncFunctionBody(x7), params, span)
     case _ => throw InvalidAST
   }
 }
 
-case class AsyncFunctionDeclaration0(x3: BindingIdentifier, x5: FormalParameters, x8: AsyncFunctionBody, parserParams: List[Boolean]) extends AsyncFunctionDeclaration {
+case class AsyncFunctionDeclaration0(x3: BindingIdentifier, x5: FormalParameters, x8: AsyncFunctionBody, parserParams: List[Boolean], span: Span) extends AsyncFunctionDeclaration {
   x3.parent = Some(this)
   x5.parent = Some(this)
   x8.parent = Some(this)
@@ -43,7 +44,7 @@ object AsyncFunctionDeclaration0 extends ASTInfo {
   )
 }
 
-case class AsyncFunctionDeclaration1(x4: FormalParameters, x7: AsyncFunctionBody, parserParams: List[Boolean]) extends AsyncFunctionDeclaration {
+case class AsyncFunctionDeclaration1(x4: FormalParameters, x7: AsyncFunctionBody, parserParams: List[Boolean], span: Span) extends AsyncFunctionDeclaration {
   x4.parent = Some(this)
   x7.parent = Some(this)
   val idx: Int = 1

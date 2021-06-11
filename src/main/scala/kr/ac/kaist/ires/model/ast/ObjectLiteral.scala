@@ -2,6 +2,7 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.InvalidAST
+import kr.ac.kaist.ires.util.Span
 import scala.collection.immutable.{ Set => SSet }
 import spray.json._
 
@@ -11,16 +12,16 @@ trait ObjectLiteral extends AST {
 object ObjectLiteral extends ASTHelper {
   def apply(v: JsValue): ObjectLiteral = v match {
     case JsSeq(JsInt(0), JsSeq(), JsBoolSeq(params), JsSpan(span)) =>
-      ObjectLiteral0(params)
+      ObjectLiteral0(params, span)
     case JsSeq(JsInt(1), JsSeq(x1), JsBoolSeq(params), JsSpan(span)) =>
-      ObjectLiteral1(PropertyDefinitionList(x1), params)
+      ObjectLiteral1(PropertyDefinitionList(x1), params, span)
     case JsSeq(JsInt(2), JsSeq(x1), JsBoolSeq(params), JsSpan(span)) =>
-      ObjectLiteral2(PropertyDefinitionList(x1), params)
+      ObjectLiteral2(PropertyDefinitionList(x1), params, span)
     case _ => throw InvalidAST
   }
 }
 
-case class ObjectLiteral0(parserParams: List[Boolean]) extends ObjectLiteral {
+case class ObjectLiteral0(parserParams: List[Boolean], span: Span) extends ObjectLiteral {
   val idx: Int = 0
   override def toString: String = {
     s"{ }"
@@ -36,7 +37,7 @@ object ObjectLiteral0 extends ASTInfo {
   )
 }
 
-case class ObjectLiteral1(x1: PropertyDefinitionList, parserParams: List[Boolean]) extends ObjectLiteral {
+case class ObjectLiteral1(x1: PropertyDefinitionList, parserParams: List[Boolean], span: Span) extends ObjectLiteral {
   x1.parent = Some(this)
   val idx: Int = 1
   override def toString: String = {
@@ -53,7 +54,7 @@ object ObjectLiteral1 extends ASTInfo {
   )
 }
 
-case class ObjectLiteral2(x1: PropertyDefinitionList, parserParams: List[Boolean]) extends ObjectLiteral {
+case class ObjectLiteral2(x1: PropertyDefinitionList, parserParams: List[Boolean], span: Span) extends ObjectLiteral {
   x1.parent = Some(this)
   val idx: Int = 2
   override def toString: String = {

@@ -2,6 +2,7 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.InvalidAST
+import kr.ac.kaist.ires.util.Span
 import scala.collection.immutable.{ Set => SSet }
 import spray.json._
 
@@ -11,12 +12,12 @@ trait AsyncGeneratorExpression extends AST {
 object AsyncGeneratorExpression extends ASTHelper {
   def apply(v: JsValue): AsyncGeneratorExpression = v match {
     case JsSeq(JsInt(0), JsSeq(x4, x6, x9), JsBoolSeq(params), JsSpan(span)) =>
-      AsyncGeneratorExpression0(opt(x4, BindingIdentifier.apply), FormalParameters(x6), AsyncGeneratorBody(x9), params)
+      AsyncGeneratorExpression0(opt(x4, BindingIdentifier.apply), FormalParameters(x6), AsyncGeneratorBody(x9), params, span)
     case _ => throw InvalidAST
   }
 }
 
-case class AsyncGeneratorExpression0(x4: Option[BindingIdentifier], x6: FormalParameters, x9: AsyncGeneratorBody, parserParams: List[Boolean]) extends AsyncGeneratorExpression {
+case class AsyncGeneratorExpression0(x4: Option[BindingIdentifier], x6: FormalParameters, x9: AsyncGeneratorBody, parserParams: List[Boolean], span: Span) extends AsyncGeneratorExpression {
   x4.foreach((m) => m.parent = Some(this))
   x6.parent = Some(this)
   x9.parent = Some(this)

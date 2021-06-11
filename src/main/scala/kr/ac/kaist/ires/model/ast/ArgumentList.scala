@@ -2,6 +2,7 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.InvalidAST
+import kr.ac.kaist.ires.util.Span
 import scala.collection.immutable.{ Set => SSet }
 import spray.json._
 
@@ -11,18 +12,18 @@ trait ArgumentList extends AST {
 object ArgumentList extends ASTHelper {
   def apply(v: JsValue): ArgumentList = v match {
     case JsSeq(JsInt(0), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
-      ArgumentList0(AssignmentExpression(x0), params)
+      ArgumentList0(AssignmentExpression(x0), params, span)
     case JsSeq(JsInt(1), JsSeq(x1), JsBoolSeq(params), JsSpan(span)) =>
-      ArgumentList1(AssignmentExpression(x1), params)
+      ArgumentList1(AssignmentExpression(x1), params, span)
     case JsSeq(JsInt(2), JsSeq(x0, x2), JsBoolSeq(params), JsSpan(span)) =>
-      ArgumentList2(ArgumentList(x0), AssignmentExpression(x2), params)
+      ArgumentList2(ArgumentList(x0), AssignmentExpression(x2), params, span)
     case JsSeq(JsInt(3), JsSeq(x0, x3), JsBoolSeq(params), JsSpan(span)) =>
-      ArgumentList3(ArgumentList(x0), AssignmentExpression(x3), params)
+      ArgumentList3(ArgumentList(x0), AssignmentExpression(x3), params, span)
     case _ => throw InvalidAST
   }
 }
 
-case class ArgumentList0(x0: AssignmentExpression, parserParams: List[Boolean]) extends ArgumentList {
+case class ArgumentList0(x0: AssignmentExpression, parserParams: List[Boolean], span: Span) extends ArgumentList {
   x0.parent = Some(this)
   val idx: Int = 0
   override def toString: String = {
@@ -39,7 +40,7 @@ object ArgumentList0 extends ASTInfo {
   )
 }
 
-case class ArgumentList1(x1: AssignmentExpression, parserParams: List[Boolean]) extends ArgumentList {
+case class ArgumentList1(x1: AssignmentExpression, parserParams: List[Boolean], span: Span) extends ArgumentList {
   x1.parent = Some(this)
   val idx: Int = 1
   override def toString: String = {
@@ -56,7 +57,7 @@ object ArgumentList1 extends ASTInfo {
   )
 }
 
-case class ArgumentList2(x0: ArgumentList, x2: AssignmentExpression, parserParams: List[Boolean]) extends ArgumentList {
+case class ArgumentList2(x0: ArgumentList, x2: AssignmentExpression, parserParams: List[Boolean], span: Span) extends ArgumentList {
   x0.parent = Some(this)
   x2.parent = Some(this)
   val idx: Int = 2
@@ -74,7 +75,7 @@ object ArgumentList2 extends ASTInfo {
   )
 }
 
-case class ArgumentList3(x0: ArgumentList, x3: AssignmentExpression, parserParams: List[Boolean]) extends ArgumentList {
+case class ArgumentList3(x0: ArgumentList, x3: AssignmentExpression, parserParams: List[Boolean], span: Span) extends ArgumentList {
   x0.parent = Some(this)
   x3.parent = Some(this)
   val idx: Int = 3

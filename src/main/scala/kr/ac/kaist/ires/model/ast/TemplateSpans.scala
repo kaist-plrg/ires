@@ -2,6 +2,7 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.InvalidAST
+import kr.ac.kaist.ires.util.Span
 import scala.collection.immutable.{ Set => SSet }
 import spray.json._
 
@@ -11,14 +12,14 @@ trait TemplateSpans extends AST {
 object TemplateSpans extends ASTHelper {
   def apply(v: JsValue): TemplateSpans = v match {
     case JsSeq(JsInt(0), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
-      TemplateSpans0(lex("TemplateTail", x0), params)
+      TemplateSpans0(lex("TemplateTail", x0), params, span)
     case JsSeq(JsInt(1), JsSeq(x0, x1), JsBoolSeq(params), JsSpan(span)) =>
-      TemplateSpans1(TemplateMiddleList(x0), lex("TemplateTail", x1), params)
+      TemplateSpans1(TemplateMiddleList(x0), lex("TemplateTail", x1), params, span)
     case _ => throw InvalidAST
   }
 }
 
-case class TemplateSpans0(x0: Lexical, parserParams: List[Boolean]) extends TemplateSpans {
+case class TemplateSpans0(x0: Lexical, parserParams: List[Boolean], span: Span) extends TemplateSpans {
   x0.parent = Some(this)
   val idx: Int = 0
   override def toString: String = {
@@ -38,7 +39,7 @@ object TemplateSpans0 extends ASTInfo {
   )
 }
 
-case class TemplateSpans1(x0: TemplateMiddleList, x1: Lexical, parserParams: List[Boolean]) extends TemplateSpans {
+case class TemplateSpans1(x0: TemplateMiddleList, x1: Lexical, parserParams: List[Boolean], span: Span) extends TemplateSpans {
   x0.parent = Some(this)
   x1.parent = Some(this)
   val idx: Int = 1

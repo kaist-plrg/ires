@@ -2,6 +2,7 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.InvalidAST
+import kr.ac.kaist.ires.util.Span
 import scala.collection.immutable.{ Set => SSet }
 import spray.json._
 
@@ -11,14 +12,14 @@ trait Elision extends AST {
 object Elision extends ASTHelper {
   def apply(v: JsValue): Elision = v match {
     case JsSeq(JsInt(0), JsSeq(), JsBoolSeq(params), JsSpan(span)) =>
-      Elision0(params)
+      Elision0(params, span)
     case JsSeq(JsInt(1), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
-      Elision1(Elision(x0), params)
+      Elision1(Elision(x0), params, span)
     case _ => throw InvalidAST
   }
 }
 
-case class Elision0(parserParams: List[Boolean]) extends Elision {
+case class Elision0(parserParams: List[Boolean], span: Span) extends Elision {
   val idx: Int = 0
   override def toString: String = {
     s","
@@ -35,7 +36,7 @@ object Elision0 extends ASTInfo {
   )
 }
 
-case class Elision1(x0: Elision, parserParams: List[Boolean]) extends Elision {
+case class Elision1(x0: Elision, parserParams: List[Boolean], span: Span) extends Elision {
   x0.parent = Some(this)
   val idx: Int = 1
   override def toString: String = {

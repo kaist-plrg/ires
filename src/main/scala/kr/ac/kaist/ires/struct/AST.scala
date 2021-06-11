@@ -10,7 +10,7 @@ trait AST {
   val kind: String
   val idx: Int
   val k: Int
-  val span: Span = Span()
+  val span: Span
   val parserParams: List[Boolean]
   val info: ASTInfo
   val fullList: List[(String, Value)]
@@ -159,6 +159,7 @@ case class Lexical(kind: String, str: String) extends AST {
   val k: Int = 0
   val parserParams: List[Boolean] = Nil
   val info: ASTInfo = LexicalInfo
+  val span: Span = Span()
   val fullList: List[(String, Value)] = Nil
 
   // name

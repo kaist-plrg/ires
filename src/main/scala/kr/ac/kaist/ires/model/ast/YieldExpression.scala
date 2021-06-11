@@ -2,6 +2,7 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.InvalidAST
+import kr.ac.kaist.ires.util.Span
 import scala.collection.immutable.{ Set => SSet }
 import spray.json._
 
@@ -11,16 +12,16 @@ trait YieldExpression extends AST {
 object YieldExpression extends ASTHelper {
   def apply(v: JsValue): YieldExpression = v match {
     case JsSeq(JsInt(0), JsSeq(), JsBoolSeq(params), JsSpan(span)) =>
-      YieldExpression0(params)
+      YieldExpression0(params, span)
     case JsSeq(JsInt(1), JsSeq(x2), JsBoolSeq(params), JsSpan(span)) =>
-      YieldExpression1(AssignmentExpression(x2), params)
+      YieldExpression1(AssignmentExpression(x2), params, span)
     case JsSeq(JsInt(2), JsSeq(x3), JsBoolSeq(params), JsSpan(span)) =>
-      YieldExpression2(AssignmentExpression(x3), params)
+      YieldExpression2(AssignmentExpression(x3), params, span)
     case _ => throw InvalidAST
   }
 }
 
-case class YieldExpression0(parserParams: List[Boolean]) extends YieldExpression {
+case class YieldExpression0(parserParams: List[Boolean], span: Span) extends YieldExpression {
   val idx: Int = 0
   override def toString: String = {
     s"yield"
@@ -36,7 +37,7 @@ object YieldExpression0 extends ASTInfo {
   )
 }
 
-case class YieldExpression1(x2: AssignmentExpression, parserParams: List[Boolean]) extends YieldExpression {
+case class YieldExpression1(x2: AssignmentExpression, parserParams: List[Boolean], span: Span) extends YieldExpression {
   x2.parent = Some(this)
   val idx: Int = 1
   override def toString: String = {
@@ -53,7 +54,7 @@ object YieldExpression1 extends ASTInfo {
   )
 }
 
-case class YieldExpression2(x3: AssignmentExpression, parserParams: List[Boolean]) extends YieldExpression {
+case class YieldExpression2(x3: AssignmentExpression, parserParams: List[Boolean], span: Span) extends YieldExpression {
   x3.parent = Some(this)
   val idx: Int = 2
   override def toString: String = {

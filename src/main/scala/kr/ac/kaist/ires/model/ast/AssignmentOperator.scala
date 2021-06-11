@@ -2,6 +2,7 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.InvalidAST
+import kr.ac.kaist.ires.util.Span
 import scala.collection.immutable.{ Set => SSet }
 import spray.json._
 
@@ -11,34 +12,34 @@ trait AssignmentOperator extends AST {
 object AssignmentOperator extends ASTHelper {
   def apply(v: JsValue): AssignmentOperator = v match {
     case JsSeq(JsInt(0), JsSeq(), JsBoolSeq(params), JsSpan(span)) =>
-      AssignmentOperator0(params)
+      AssignmentOperator0(params, span)
     case JsSeq(JsInt(1), JsSeq(), JsBoolSeq(params), JsSpan(span)) =>
-      AssignmentOperator1(params)
+      AssignmentOperator1(params, span)
     case JsSeq(JsInt(2), JsSeq(), JsBoolSeq(params), JsSpan(span)) =>
-      AssignmentOperator2(params)
+      AssignmentOperator2(params, span)
     case JsSeq(JsInt(3), JsSeq(), JsBoolSeq(params), JsSpan(span)) =>
-      AssignmentOperator3(params)
+      AssignmentOperator3(params, span)
     case JsSeq(JsInt(4), JsSeq(), JsBoolSeq(params), JsSpan(span)) =>
-      AssignmentOperator4(params)
+      AssignmentOperator4(params, span)
     case JsSeq(JsInt(5), JsSeq(), JsBoolSeq(params), JsSpan(span)) =>
-      AssignmentOperator5(params)
+      AssignmentOperator5(params, span)
     case JsSeq(JsInt(6), JsSeq(), JsBoolSeq(params), JsSpan(span)) =>
-      AssignmentOperator6(params)
+      AssignmentOperator6(params, span)
     case JsSeq(JsInt(7), JsSeq(), JsBoolSeq(params), JsSpan(span)) =>
-      AssignmentOperator7(params)
+      AssignmentOperator7(params, span)
     case JsSeq(JsInt(8), JsSeq(), JsBoolSeq(params), JsSpan(span)) =>
-      AssignmentOperator8(params)
+      AssignmentOperator8(params, span)
     case JsSeq(JsInt(9), JsSeq(), JsBoolSeq(params), JsSpan(span)) =>
-      AssignmentOperator9(params)
+      AssignmentOperator9(params, span)
     case JsSeq(JsInt(10), JsSeq(), JsBoolSeq(params), JsSpan(span)) =>
-      AssignmentOperator10(params)
+      AssignmentOperator10(params, span)
     case JsSeq(JsInt(11), JsSeq(), JsBoolSeq(params), JsSpan(span)) =>
-      AssignmentOperator11(params)
+      AssignmentOperator11(params, span)
     case _ => throw InvalidAST
   }
 }
 
-case class AssignmentOperator0(parserParams: List[Boolean]) extends AssignmentOperator {
+case class AssignmentOperator0(parserParams: List[Boolean], span: Span) extends AssignmentOperator {
   val idx: Int = 0
   override def toString: String = {
     s"*="
@@ -52,7 +53,7 @@ object AssignmentOperator0 extends ASTInfo {
   val semMap: Map[String, Algo] = Map()
 }
 
-case class AssignmentOperator1(parserParams: List[Boolean]) extends AssignmentOperator {
+case class AssignmentOperator1(parserParams: List[Boolean], span: Span) extends AssignmentOperator {
   val idx: Int = 1
   override def toString: String = {
     s"/="
@@ -66,7 +67,7 @@ object AssignmentOperator1 extends ASTInfo {
   val semMap: Map[String, Algo] = Map()
 }
 
-case class AssignmentOperator2(parserParams: List[Boolean]) extends AssignmentOperator {
+case class AssignmentOperator2(parserParams: List[Boolean], span: Span) extends AssignmentOperator {
   val idx: Int = 2
   override def toString: String = {
     s"%="
@@ -80,7 +81,7 @@ object AssignmentOperator2 extends ASTInfo {
   val semMap: Map[String, Algo] = Map()
 }
 
-case class AssignmentOperator3(parserParams: List[Boolean]) extends AssignmentOperator {
+case class AssignmentOperator3(parserParams: List[Boolean], span: Span) extends AssignmentOperator {
   val idx: Int = 3
   override def toString: String = {
     s"+="
@@ -94,7 +95,7 @@ object AssignmentOperator3 extends ASTInfo {
   val semMap: Map[String, Algo] = Map()
 }
 
-case class AssignmentOperator4(parserParams: List[Boolean]) extends AssignmentOperator {
+case class AssignmentOperator4(parserParams: List[Boolean], span: Span) extends AssignmentOperator {
   val idx: Int = 4
   override def toString: String = {
     s"-="
@@ -108,7 +109,7 @@ object AssignmentOperator4 extends ASTInfo {
   val semMap: Map[String, Algo] = Map()
 }
 
-case class AssignmentOperator5(parserParams: List[Boolean]) extends AssignmentOperator {
+case class AssignmentOperator5(parserParams: List[Boolean], span: Span) extends AssignmentOperator {
   val idx: Int = 5
   override def toString: String = {
     s"<<="
@@ -122,7 +123,7 @@ object AssignmentOperator5 extends ASTInfo {
   val semMap: Map[String, Algo] = Map()
 }
 
-case class AssignmentOperator6(parserParams: List[Boolean]) extends AssignmentOperator {
+case class AssignmentOperator6(parserParams: List[Boolean], span: Span) extends AssignmentOperator {
   val idx: Int = 6
   override def toString: String = {
     s">>="
@@ -136,7 +137,7 @@ object AssignmentOperator6 extends ASTInfo {
   val semMap: Map[String, Algo] = Map()
 }
 
-case class AssignmentOperator7(parserParams: List[Boolean]) extends AssignmentOperator {
+case class AssignmentOperator7(parserParams: List[Boolean], span: Span) extends AssignmentOperator {
   val idx: Int = 7
   override def toString: String = {
     s">>>="
@@ -150,7 +151,7 @@ object AssignmentOperator7 extends ASTInfo {
   val semMap: Map[String, Algo] = Map()
 }
 
-case class AssignmentOperator8(parserParams: List[Boolean]) extends AssignmentOperator {
+case class AssignmentOperator8(parserParams: List[Boolean], span: Span) extends AssignmentOperator {
   val idx: Int = 8
   override def toString: String = {
     s"&="
@@ -164,7 +165,7 @@ object AssignmentOperator8 extends ASTInfo {
   val semMap: Map[String, Algo] = Map()
 }
 
-case class AssignmentOperator9(parserParams: List[Boolean]) extends AssignmentOperator {
+case class AssignmentOperator9(parserParams: List[Boolean], span: Span) extends AssignmentOperator {
   val idx: Int = 9
   override def toString: String = {
     s"^="
@@ -178,7 +179,7 @@ object AssignmentOperator9 extends ASTInfo {
   val semMap: Map[String, Algo] = Map()
 }
 
-case class AssignmentOperator10(parserParams: List[Boolean]) extends AssignmentOperator {
+case class AssignmentOperator10(parserParams: List[Boolean], span: Span) extends AssignmentOperator {
   val idx: Int = 10
   override def toString: String = {
     s"|="
@@ -192,7 +193,7 @@ object AssignmentOperator10 extends ASTInfo {
   val semMap: Map[String, Algo] = Map()
 }
 
-case class AssignmentOperator11(parserParams: List[Boolean]) extends AssignmentOperator {
+case class AssignmentOperator11(parserParams: List[Boolean], span: Span) extends AssignmentOperator {
   val idx: Int = 11
   override def toString: String = {
     s"**="

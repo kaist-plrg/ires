@@ -2,6 +2,7 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.InvalidAST
+import kr.ac.kaist.ires.util.Span
 import scala.collection.immutable.{ Set => SSet }
 import spray.json._
 
@@ -11,14 +12,14 @@ trait TemplateMiddleList extends AST {
 object TemplateMiddleList extends ASTHelper {
   def apply(v: JsValue): TemplateMiddleList = v match {
     case JsSeq(JsInt(0), JsSeq(x0, x1), JsBoolSeq(params), JsSpan(span)) =>
-      TemplateMiddleList0(lex("TemplateMiddle", x0), Expression(x1), params)
+      TemplateMiddleList0(lex("TemplateMiddle", x0), Expression(x1), params, span)
     case JsSeq(JsInt(1), JsSeq(x0, x1, x2), JsBoolSeq(params), JsSpan(span)) =>
-      TemplateMiddleList1(TemplateMiddleList(x0), lex("TemplateMiddle", x1), Expression(x2), params)
+      TemplateMiddleList1(TemplateMiddleList(x0), lex("TemplateMiddle", x1), Expression(x2), params, span)
     case _ => throw InvalidAST
   }
 }
 
-case class TemplateMiddleList0(x0: Lexical, x1: Expression, parserParams: List[Boolean]) extends TemplateMiddleList {
+case class TemplateMiddleList0(x0: Lexical, x1: Expression, parserParams: List[Boolean], span: Span) extends TemplateMiddleList {
   x0.parent = Some(this)
   x1.parent = Some(this)
   val idx: Int = 0
@@ -39,7 +40,7 @@ object TemplateMiddleList0 extends ASTInfo {
   )
 }
 
-case class TemplateMiddleList1(x0: TemplateMiddleList, x1: Lexical, x2: Expression, parserParams: List[Boolean]) extends TemplateMiddleList {
+case class TemplateMiddleList1(x0: TemplateMiddleList, x1: Lexical, x2: Expression, parserParams: List[Boolean], span: Span) extends TemplateMiddleList {
   x0.parent = Some(this)
   x1.parent = Some(this)
   x2.parent = Some(this)

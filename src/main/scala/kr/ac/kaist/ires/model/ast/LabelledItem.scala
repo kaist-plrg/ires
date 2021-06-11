@@ -2,6 +2,7 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.InvalidAST
+import kr.ac.kaist.ires.util.Span
 import scala.collection.immutable.{ Set => SSet }
 import spray.json._
 
@@ -11,14 +12,14 @@ trait LabelledItem extends AST {
 object LabelledItem extends ASTHelper {
   def apply(v: JsValue): LabelledItem = v match {
     case JsSeq(JsInt(0), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
-      LabelledItem0(Statement(x0), params)
+      LabelledItem0(Statement(x0), params, span)
     case JsSeq(JsInt(1), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
-      LabelledItem1(FunctionDeclaration(x0), params)
+      LabelledItem1(FunctionDeclaration(x0), params, span)
     case _ => throw InvalidAST
   }
 }
 
-case class LabelledItem0(x0: Statement, parserParams: List[Boolean]) extends LabelledItem {
+case class LabelledItem0(x0: Statement, parserParams: List[Boolean], span: Span) extends LabelledItem {
   x0.parent = Some(this)
   val idx: Int = 0
   override def toString: String = {
@@ -38,7 +39,7 @@ object LabelledItem0 extends ASTInfo {
   )
 }
 
-case class LabelledItem1(x0: FunctionDeclaration, parserParams: List[Boolean]) extends LabelledItem {
+case class LabelledItem1(x0: FunctionDeclaration, parserParams: List[Boolean], span: Span) extends LabelledItem {
   x0.parent = Some(this)
   val idx: Int = 1
   override def toString: String = {

@@ -2,6 +2,7 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.InvalidAST
+import kr.ac.kaist.ires.util.Span
 import scala.collection.immutable.{ Set => SSet }
 import spray.json._
 
@@ -11,14 +12,14 @@ trait NewExpression extends AST {
 object NewExpression extends ASTHelper {
   def apply(v: JsValue): NewExpression = v match {
     case JsSeq(JsInt(0), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
-      NewExpression0(MemberExpression(x0), params)
+      NewExpression0(MemberExpression(x0), params, span)
     case JsSeq(JsInt(1), JsSeq(x1), JsBoolSeq(params), JsSpan(span)) =>
-      NewExpression1(NewExpression(x1), params)
+      NewExpression1(NewExpression(x1), params, span)
     case _ => throw InvalidAST
   }
 }
 
-case class NewExpression0(x0: MemberExpression, parserParams: List[Boolean]) extends NewExpression {
+case class NewExpression0(x0: MemberExpression, parserParams: List[Boolean], span: Span) extends NewExpression {
   x0.parent = Some(this)
   val idx: Int = 0
   override def toString: String = {
@@ -33,7 +34,7 @@ object NewExpression0 extends ASTInfo {
   val semMap: Map[String, Algo] = Map()
 }
 
-case class NewExpression1(x1: NewExpression, parserParams: List[Boolean]) extends NewExpression {
+case class NewExpression1(x1: NewExpression, parserParams: List[Boolean], span: Span) extends NewExpression {
   x1.parent = Some(this)
   val idx: Int = 1
   override def toString: String = {

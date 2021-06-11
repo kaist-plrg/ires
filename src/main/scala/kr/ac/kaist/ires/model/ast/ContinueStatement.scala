@@ -2,6 +2,7 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.InvalidAST
+import kr.ac.kaist.ires.util.Span
 import scala.collection.immutable.{ Set => SSet }
 import spray.json._
 
@@ -11,14 +12,14 @@ trait ContinueStatement extends AST {
 object ContinueStatement extends ASTHelper {
   def apply(v: JsValue): ContinueStatement = v match {
     case JsSeq(JsInt(0), JsSeq(), JsBoolSeq(params), JsSpan(span)) =>
-      ContinueStatement0(params)
+      ContinueStatement0(params, span)
     case JsSeq(JsInt(1), JsSeq(x2), JsBoolSeq(params), JsSpan(span)) =>
-      ContinueStatement1(LabelIdentifier(x2), params)
+      ContinueStatement1(LabelIdentifier(x2), params, span)
     case _ => throw InvalidAST
   }
 }
 
-case class ContinueStatement0(parserParams: List[Boolean]) extends ContinueStatement {
+case class ContinueStatement0(parserParams: List[Boolean], span: Span) extends ContinueStatement {
   val idx: Int = 0
   override def toString: String = {
     s"continue ;"
@@ -36,7 +37,7 @@ object ContinueStatement0 extends ASTInfo {
   )
 }
 
-case class ContinueStatement1(x2: LabelIdentifier, parserParams: List[Boolean]) extends ContinueStatement {
+case class ContinueStatement1(x2: LabelIdentifier, parserParams: List[Boolean], span: Span) extends ContinueStatement {
   x2.parent = Some(this)
   val idx: Int = 1
   override def toString: String = {

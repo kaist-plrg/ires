@@ -2,6 +2,7 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.InvalidAST
+import kr.ac.kaist.ires.util.Span
 import scala.collection.immutable.{ Set => SSet }
 import spray.json._
 
@@ -11,14 +12,14 @@ trait BindingElementList extends AST {
 object BindingElementList extends ASTHelper {
   def apply(v: JsValue): BindingElementList = v match {
     case JsSeq(JsInt(0), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
-      BindingElementList0(BindingElisionElement(x0), params)
+      BindingElementList0(BindingElisionElement(x0), params, span)
     case JsSeq(JsInt(1), JsSeq(x0, x2), JsBoolSeq(params), JsSpan(span)) =>
-      BindingElementList1(BindingElementList(x0), BindingElisionElement(x2), params)
+      BindingElementList1(BindingElementList(x0), BindingElisionElement(x2), params, span)
     case _ => throw InvalidAST
   }
 }
 
-case class BindingElementList0(x0: BindingElisionElement, parserParams: List[Boolean]) extends BindingElementList {
+case class BindingElementList0(x0: BindingElisionElement, parserParams: List[Boolean], span: Span) extends BindingElementList {
   x0.parent = Some(this)
   val idx: Int = 0
   override def toString: String = {
@@ -33,7 +34,7 @@ object BindingElementList0 extends ASTInfo {
   val semMap: Map[String, Algo] = Map()
 }
 
-case class BindingElementList1(x0: BindingElementList, x2: BindingElisionElement, parserParams: List[Boolean]) extends BindingElementList {
+case class BindingElementList1(x0: BindingElementList, x2: BindingElisionElement, parserParams: List[Boolean], span: Span) extends BindingElementList {
   x0.parent = Some(this)
   x2.parent = Some(this)
   val idx: Int = 1

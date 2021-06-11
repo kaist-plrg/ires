@@ -2,6 +2,7 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.InvalidAST
+import kr.ac.kaist.ires.util.Span
 import scala.collection.immutable.{ Set => SSet }
 import spray.json._
 
@@ -11,18 +12,18 @@ trait IterationStatement extends AST {
 object IterationStatement extends ASTHelper {
   def apply(v: JsValue): IterationStatement = v match {
     case JsSeq(JsInt(0), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
-      IterationStatement0(DoWhileStatement(x0), params)
+      IterationStatement0(DoWhileStatement(x0), params, span)
     case JsSeq(JsInt(1), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
-      IterationStatement1(WhileStatement(x0), params)
+      IterationStatement1(WhileStatement(x0), params, span)
     case JsSeq(JsInt(2), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
-      IterationStatement2(ForStatement(x0), params)
+      IterationStatement2(ForStatement(x0), params, span)
     case JsSeq(JsInt(3), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
-      IterationStatement3(ForInOfStatement(x0), params)
+      IterationStatement3(ForInOfStatement(x0), params, span)
     case _ => throw InvalidAST
   }
 }
 
-case class IterationStatement0(x0: DoWhileStatement, parserParams: List[Boolean]) extends IterationStatement {
+case class IterationStatement0(x0: DoWhileStatement, parserParams: List[Boolean], span: Span) extends IterationStatement {
   x0.parent = Some(this)
   val idx: Int = 0
   override def toString: String = {
@@ -39,7 +40,7 @@ object IterationStatement0 extends ASTInfo {
   )
 }
 
-case class IterationStatement1(x0: WhileStatement, parserParams: List[Boolean]) extends IterationStatement {
+case class IterationStatement1(x0: WhileStatement, parserParams: List[Boolean], span: Span) extends IterationStatement {
   x0.parent = Some(this)
   val idx: Int = 1
   override def toString: String = {
@@ -56,7 +57,7 @@ object IterationStatement1 extends ASTInfo {
   )
 }
 
-case class IterationStatement2(x0: ForStatement, parserParams: List[Boolean]) extends IterationStatement {
+case class IterationStatement2(x0: ForStatement, parserParams: List[Boolean], span: Span) extends IterationStatement {
   x0.parent = Some(this)
   val idx: Int = 2
   override def toString: String = {
@@ -73,7 +74,7 @@ object IterationStatement2 extends ASTInfo {
   )
 }
 
-case class IterationStatement3(x0: ForInOfStatement, parserParams: List[Boolean]) extends IterationStatement {
+case class IterationStatement3(x0: ForInOfStatement, parserParams: List[Boolean], span: Span) extends IterationStatement {
   x0.parent = Some(this)
   val idx: Int = 3
   override def toString: String = {

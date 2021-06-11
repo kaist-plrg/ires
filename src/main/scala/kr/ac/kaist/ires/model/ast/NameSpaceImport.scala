@@ -2,6 +2,7 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.InvalidAST
+import kr.ac.kaist.ires.util.Span
 import scala.collection.immutable.{ Set => SSet }
 import spray.json._
 
@@ -11,12 +12,12 @@ trait NameSpaceImport extends AST {
 object NameSpaceImport extends ASTHelper {
   def apply(v: JsValue): NameSpaceImport = v match {
     case JsSeq(JsInt(0), JsSeq(x2), JsBoolSeq(params), JsSpan(span)) =>
-      NameSpaceImport0(ImportedBinding(x2), params)
+      NameSpaceImport0(ImportedBinding(x2), params, span)
     case _ => throw InvalidAST
   }
 }
 
-case class NameSpaceImport0(x2: ImportedBinding, parserParams: List[Boolean]) extends NameSpaceImport {
+case class NameSpaceImport0(x2: ImportedBinding, parserParams: List[Boolean], span: Span) extends NameSpaceImport {
   x2.parent = Some(this)
   val idx: Int = 0
   override def toString: String = {

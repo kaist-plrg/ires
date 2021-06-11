@@ -2,6 +2,7 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.InvalidAST
+import kr.ac.kaist.ires.util.Span
 import scala.collection.immutable.{ Set => SSet }
 import spray.json._
 
@@ -11,16 +12,16 @@ trait Declaration extends AST {
 object Declaration extends ASTHelper {
   def apply(v: JsValue): Declaration = v match {
     case JsSeq(JsInt(0), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
-      Declaration0(HoistableDeclaration(x0), params)
+      Declaration0(HoistableDeclaration(x0), params, span)
     case JsSeq(JsInt(1), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
-      Declaration1(ClassDeclaration(x0), params)
+      Declaration1(ClassDeclaration(x0), params, span)
     case JsSeq(JsInt(2), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
-      Declaration2(LexicalDeclaration(x0), params)
+      Declaration2(LexicalDeclaration(x0), params, span)
     case _ => throw InvalidAST
   }
 }
 
-case class Declaration0(x0: HoistableDeclaration, parserParams: List[Boolean]) extends Declaration {
+case class Declaration0(x0: HoistableDeclaration, parserParams: List[Boolean], span: Span) extends Declaration {
   x0.parent = Some(this)
   val idx: Int = 0
   override def toString: String = {
@@ -35,7 +36,7 @@ object Declaration0 extends ASTInfo {
   val semMap: Map[String, Algo] = Map()
 }
 
-case class Declaration1(x0: ClassDeclaration, parserParams: List[Boolean]) extends Declaration {
+case class Declaration1(x0: ClassDeclaration, parserParams: List[Boolean], span: Span) extends Declaration {
   x0.parent = Some(this)
   val idx: Int = 1
   override def toString: String = {
@@ -52,7 +53,7 @@ object Declaration1 extends ASTInfo {
   )
 }
 
-case class Declaration2(x0: LexicalDeclaration, parserParams: List[Boolean]) extends Declaration {
+case class Declaration2(x0: LexicalDeclaration, parserParams: List[Boolean], span: Span) extends Declaration {
   x0.parent = Some(this)
   val idx: Int = 2
   override def toString: String = {

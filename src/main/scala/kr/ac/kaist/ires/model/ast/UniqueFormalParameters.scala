@@ -2,6 +2,7 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.InvalidAST
+import kr.ac.kaist.ires.util.Span
 import scala.collection.immutable.{ Set => SSet }
 import spray.json._
 
@@ -11,12 +12,12 @@ trait UniqueFormalParameters extends AST {
 object UniqueFormalParameters extends ASTHelper {
   def apply(v: JsValue): UniqueFormalParameters = v match {
     case JsSeq(JsInt(0), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
-      UniqueFormalParameters0(FormalParameters(x0), params)
+      UniqueFormalParameters0(FormalParameters(x0), params, span)
     case _ => throw InvalidAST
   }
 }
 
-case class UniqueFormalParameters0(x0: FormalParameters, parserParams: List[Boolean]) extends UniqueFormalParameters {
+case class UniqueFormalParameters0(x0: FormalParameters, parserParams: List[Boolean], span: Span) extends UniqueFormalParameters {
   x0.parent = Some(this)
   val idx: Int = 0
   override def toString: String = {

@@ -2,6 +2,7 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.InvalidAST
+import kr.ac.kaist.ires.util.Span
 import scala.collection.immutable.{ Set => SSet }
 import spray.json._
 
@@ -11,16 +12,16 @@ trait NamedImports extends AST {
 object NamedImports extends ASTHelper {
   def apply(v: JsValue): NamedImports = v match {
     case JsSeq(JsInt(0), JsSeq(), JsBoolSeq(params), JsSpan(span)) =>
-      NamedImports0(params)
+      NamedImports0(params, span)
     case JsSeq(JsInt(1), JsSeq(x1), JsBoolSeq(params), JsSpan(span)) =>
-      NamedImports1(ImportsList(x1), params)
+      NamedImports1(ImportsList(x1), params, span)
     case JsSeq(JsInt(2), JsSeq(x1), JsBoolSeq(params), JsSpan(span)) =>
-      NamedImports2(ImportsList(x1), params)
+      NamedImports2(ImportsList(x1), params, span)
     case _ => throw InvalidAST
   }
 }
 
-case class NamedImports0(parserParams: List[Boolean]) extends NamedImports {
+case class NamedImports0(parserParams: List[Boolean], span: Span) extends NamedImports {
   val idx: Int = 0
   override def toString: String = {
     s"{ }"
@@ -37,7 +38,7 @@ object NamedImports0 extends ASTInfo {
   )
 }
 
-case class NamedImports1(x1: ImportsList, parserParams: List[Boolean]) extends NamedImports {
+case class NamedImports1(x1: ImportsList, parserParams: List[Boolean], span: Span) extends NamedImports {
   x1.parent = Some(this)
   val idx: Int = 1
   override def toString: String = {
@@ -52,7 +53,7 @@ object NamedImports1 extends ASTInfo {
   val semMap: Map[String, Algo] = Map()
 }
 
-case class NamedImports2(x1: ImportsList, parserParams: List[Boolean]) extends NamedImports {
+case class NamedImports2(x1: ImportsList, parserParams: List[Boolean], span: Span) extends NamedImports {
   x1.parent = Some(this)
   val idx: Int = 2
   override def toString: String = {

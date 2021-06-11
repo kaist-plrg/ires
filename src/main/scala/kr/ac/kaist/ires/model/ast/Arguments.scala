@@ -2,6 +2,7 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.InvalidAST
+import kr.ac.kaist.ires.util.Span
 import scala.collection.immutable.{ Set => SSet }
 import spray.json._
 
@@ -11,16 +12,16 @@ trait Arguments extends AST {
 object Arguments extends ASTHelper {
   def apply(v: JsValue): Arguments = v match {
     case JsSeq(JsInt(0), JsSeq(), JsBoolSeq(params), JsSpan(span)) =>
-      Arguments0(params)
+      Arguments0(params, span)
     case JsSeq(JsInt(1), JsSeq(x1), JsBoolSeq(params), JsSpan(span)) =>
-      Arguments1(ArgumentList(x1), params)
+      Arguments1(ArgumentList(x1), params, span)
     case JsSeq(JsInt(2), JsSeq(x1), JsBoolSeq(params), JsSpan(span)) =>
-      Arguments2(ArgumentList(x1), params)
+      Arguments2(ArgumentList(x1), params, span)
     case _ => throw InvalidAST
   }
 }
 
-case class Arguments0(parserParams: List[Boolean]) extends Arguments {
+case class Arguments0(parserParams: List[Boolean], span: Span) extends Arguments {
   val idx: Int = 0
   override def toString: String = {
     s"( )"
@@ -36,7 +37,7 @@ object Arguments0 extends ASTInfo {
   )
 }
 
-case class Arguments1(x1: ArgumentList, parserParams: List[Boolean]) extends Arguments {
+case class Arguments1(x1: ArgumentList, parserParams: List[Boolean], span: Span) extends Arguments {
   x1.parent = Some(this)
   val idx: Int = 1
   override def toString: String = {
@@ -51,7 +52,7 @@ object Arguments1 extends ASTInfo {
   val semMap: Map[String, Algo] = Map()
 }
 
-case class Arguments2(x1: ArgumentList, parserParams: List[Boolean]) extends Arguments {
+case class Arguments2(x1: ArgumentList, parserParams: List[Boolean], span: Span) extends Arguments {
   x1.parent = Some(this)
   val idx: Int = 2
   override def toString: String = {

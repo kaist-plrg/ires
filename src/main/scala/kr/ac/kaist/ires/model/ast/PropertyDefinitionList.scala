@@ -2,6 +2,7 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.InvalidAST
+import kr.ac.kaist.ires.util.Span
 import scala.collection.immutable.{ Set => SSet }
 import spray.json._
 
@@ -11,14 +12,14 @@ trait PropertyDefinitionList extends AST {
 object PropertyDefinitionList extends ASTHelper {
   def apply(v: JsValue): PropertyDefinitionList = v match {
     case JsSeq(JsInt(0), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
-      PropertyDefinitionList0(PropertyDefinition(x0), params)
+      PropertyDefinitionList0(PropertyDefinition(x0), params, span)
     case JsSeq(JsInt(1), JsSeq(x0, x2), JsBoolSeq(params), JsSpan(span)) =>
-      PropertyDefinitionList1(PropertyDefinitionList(x0), PropertyDefinition(x2), params)
+      PropertyDefinitionList1(PropertyDefinitionList(x0), PropertyDefinition(x2), params, span)
     case _ => throw InvalidAST
   }
 }
 
-case class PropertyDefinitionList0(x0: PropertyDefinition, parserParams: List[Boolean]) extends PropertyDefinitionList {
+case class PropertyDefinitionList0(x0: PropertyDefinition, parserParams: List[Boolean], span: Span) extends PropertyDefinitionList {
   x0.parent = Some(this)
   val idx: Int = 0
   override def toString: String = {
@@ -35,7 +36,7 @@ object PropertyDefinitionList0 extends ASTInfo {
   )
 }
 
-case class PropertyDefinitionList1(x0: PropertyDefinitionList, x2: PropertyDefinition, parserParams: List[Boolean]) extends PropertyDefinitionList {
+case class PropertyDefinitionList1(x0: PropertyDefinitionList, x2: PropertyDefinition, parserParams: List[Boolean], span: Span) extends PropertyDefinitionList {
   x0.parent = Some(this)
   x2.parent = Some(this)
   val idx: Int = 1

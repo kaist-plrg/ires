@@ -2,6 +2,7 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.InvalidAST
+import kr.ac.kaist.ires.util.Span
 import scala.collection.immutable.{ Set => SSet }
 import spray.json._
 
@@ -11,14 +12,14 @@ trait AssignmentElementList extends AST {
 object AssignmentElementList extends ASTHelper {
   def apply(v: JsValue): AssignmentElementList = v match {
     case JsSeq(JsInt(0), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
-      AssignmentElementList0(AssignmentElisionElement(x0), params)
+      AssignmentElementList0(AssignmentElisionElement(x0), params, span)
     case JsSeq(JsInt(1), JsSeq(x0, x2), JsBoolSeq(params), JsSpan(span)) =>
-      AssignmentElementList1(AssignmentElementList(x0), AssignmentElisionElement(x2), params)
+      AssignmentElementList1(AssignmentElementList(x0), AssignmentElisionElement(x2), params, span)
     case _ => throw InvalidAST
   }
 }
 
-case class AssignmentElementList0(x0: AssignmentElisionElement, parserParams: List[Boolean]) extends AssignmentElementList {
+case class AssignmentElementList0(x0: AssignmentElisionElement, parserParams: List[Boolean], span: Span) extends AssignmentElementList {
   x0.parent = Some(this)
   val idx: Int = 0
   override def toString: String = {
@@ -35,7 +36,7 @@ object AssignmentElementList0 extends ASTInfo {
   )
 }
 
-case class AssignmentElementList1(x0: AssignmentElementList, x2: AssignmentElisionElement, parserParams: List[Boolean]) extends AssignmentElementList {
+case class AssignmentElementList1(x0: AssignmentElementList, x2: AssignmentElisionElement, parserParams: List[Boolean], span: Span) extends AssignmentElementList {
   x0.parent = Some(this)
   x2.parent = Some(this)
   val idx: Int = 1

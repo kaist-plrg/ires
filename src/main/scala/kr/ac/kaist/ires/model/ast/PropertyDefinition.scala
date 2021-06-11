@@ -2,6 +2,7 @@ package kr.ac.kaist.ires.model
 
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.InvalidAST
+import kr.ac.kaist.ires.util.Span
 import scala.collection.immutable.{ Set => SSet }
 import spray.json._
 
@@ -11,20 +12,20 @@ trait PropertyDefinition extends AST {
 object PropertyDefinition extends ASTHelper {
   def apply(v: JsValue): PropertyDefinition = v match {
     case JsSeq(JsInt(0), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
-      PropertyDefinition0(IdentifierReference(x0), params)
+      PropertyDefinition0(IdentifierReference(x0), params, span)
     case JsSeq(JsInt(1), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
-      PropertyDefinition1(CoverInitializedName(x0), params)
+      PropertyDefinition1(CoverInitializedName(x0), params, span)
     case JsSeq(JsInt(2), JsSeq(x0, x2), JsBoolSeq(params), JsSpan(span)) =>
-      PropertyDefinition2(PropertyName(x0), AssignmentExpression(x2), params)
+      PropertyDefinition2(PropertyName(x0), AssignmentExpression(x2), params, span)
     case JsSeq(JsInt(3), JsSeq(x0), JsBoolSeq(params), JsSpan(span)) =>
-      PropertyDefinition3(MethodDefinition(x0), params)
+      PropertyDefinition3(MethodDefinition(x0), params, span)
     case JsSeq(JsInt(4), JsSeq(x1), JsBoolSeq(params), JsSpan(span)) =>
-      PropertyDefinition4(AssignmentExpression(x1), params)
+      PropertyDefinition4(AssignmentExpression(x1), params, span)
     case _ => throw InvalidAST
   }
 }
 
-case class PropertyDefinition0(x0: IdentifierReference, parserParams: List[Boolean]) extends PropertyDefinition {
+case class PropertyDefinition0(x0: IdentifierReference, parserParams: List[Boolean], span: Span) extends PropertyDefinition {
   x0.parent = Some(this)
   val idx: Int = 0
   override def toString: String = {
@@ -42,7 +43,7 @@ object PropertyDefinition0 extends ASTInfo {
   )
 }
 
-case class PropertyDefinition1(x0: CoverInitializedName, parserParams: List[Boolean]) extends PropertyDefinition {
+case class PropertyDefinition1(x0: CoverInitializedName, parserParams: List[Boolean], span: Span) extends PropertyDefinition {
   x0.parent = Some(this)
   val idx: Int = 1
   override def toString: String = {
@@ -59,7 +60,7 @@ object PropertyDefinition1 extends ASTInfo {
   )
 }
 
-case class PropertyDefinition2(x0: PropertyName, x2: AssignmentExpression, parserParams: List[Boolean]) extends PropertyDefinition {
+case class PropertyDefinition2(x0: PropertyName, x2: AssignmentExpression, parserParams: List[Boolean], span: Span) extends PropertyDefinition {
   x0.parent = Some(this)
   x2.parent = Some(this)
   val idx: Int = 2
@@ -78,7 +79,7 @@ object PropertyDefinition2 extends ASTInfo {
   )
 }
 
-case class PropertyDefinition3(x0: MethodDefinition, parserParams: List[Boolean]) extends PropertyDefinition {
+case class PropertyDefinition3(x0: MethodDefinition, parserParams: List[Boolean], span: Span) extends PropertyDefinition {
   x0.parent = Some(this)
   val idx: Int = 3
   override def toString: String = {
@@ -96,7 +97,7 @@ object PropertyDefinition3 extends ASTInfo {
   )
 }
 
-case class PropertyDefinition4(x1: AssignmentExpression, parserParams: List[Boolean]) extends PropertyDefinition {
+case class PropertyDefinition4(x1: AssignmentExpression, parserParams: List[Boolean], span: Span) extends PropertyDefinition {
   x1.parent = Some(this)
   val idx: Int = 4
   override def toString: String = {
