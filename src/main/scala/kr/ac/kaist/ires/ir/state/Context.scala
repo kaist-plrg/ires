@@ -1,15 +1,12 @@
 package kr.ac.kaist.ires.ir
 
+import scala.collection.mutable.{ Map => MMap }
+
 case class Context(
-  retId: Id = Id("__retId__"),
-  name: String = "<top-level>",
-  insts: List[Inst] = Nil,
-  locals: Map[Id, Value] = Map()
+  val retId: Id = Id("__RETURN__"),
+  val name: String = "__TOP_LEVEL__",
+  var insts: List[Inst] = Nil,
+  val locals: MMap[Id, Value] = MMap()
 ) extends IRNode {
-
-  // initialize local variables
-  def define(id: Id, value: Value): Context = copy(locals = locals + (id -> value))
-
-  def deleted(id: Id): Context = copy(locals = locals - id)
-
+  // def deleted(id: Id): Context = copy(locals = locals - id)
 }

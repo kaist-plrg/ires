@@ -1,9 +1,20 @@
 package kr.ac.kaist.ires.ir
 
 import kr.ac.kaist.ires.model.AST
+import scala.collection.mutable.{ Map => MMap }
 
 // IR Values
-sealed trait Value extends IRNode
+sealed trait Value extends IRNode {
+  // escape completions
+  def escaped(st: State): Value = ???
+  // pair match {
+  //   case (addr: Addr, s: State) => s.get(addr) match {
+  //     case Some(IRMap(Ty("Completion"), m, _)) => (m(Str("Value"))._1, s)
+  //     case _ => pair
+  //   }
+  //   case _ => pair
+  // }
+}
 
 // IR Addresses
 sealed trait Addr extends Value
@@ -23,8 +34,9 @@ case class Num(double: Double) extends Const {
   }
 }
 case class ASTVal(ast: AST) extends Value
-case class ASTMethod(func: Func, env: Map[Id, Value]) extends Value
+case class ASTMethod(func: Func, env: MMap[Id, Value]) extends Value
 case class INum(long: Long) extends Const
+case class BigINum(b: BigInt) extends Const
 case class Str(str: String) extends Const
 case class Bool(bool: Boolean) extends Const
 case object Undef extends Const

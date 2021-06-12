@@ -17,8 +17,7 @@ case object Load extends PhaseObj[Script, LoadConfig, State] {
     config: LoadConfig
   ): State = Model.getInitState(
     program = Parser.parseProgram("""{
-      app __x0__ = (RunJobs)
-      return __x0__
+      app __RESULT__ = (RunJobs)
     }"""),
     globals = Map(
       Id("script") -> ASTVal(script),

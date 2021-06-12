@@ -1,5 +1,7 @@
 package kr.ac.kaist.ires.ir
 
+import scala.collection.mutable.{ Map => MMap }
+
 // Walker for IR Language
 trait Walker {
   // all cases
@@ -37,10 +39,10 @@ trait Walker {
 
   // maps
   def walkMap[K, V](
-    map: Map[K, V],
+    map: MMap[K, V],
     kWalk: K => K,
     vWalk: V => V
-  ): Map[K, V] = map.map { case (k, v) => kWalk(k) -> vWalk(v) }
+  ): MMap[K, V] = map.map { case (k, v) => kWalk(k) -> vWalk(v) }
 
   ////////////////////////////////////////////////////////////////////////////////
   // Syntax
@@ -68,7 +70,6 @@ trait Walker {
       case IAccess(id, bexpr, expr, args) =>
         IAccess(walk(id), walk(bexpr), walk(expr), walkList[Expr](args, walk))
       case IWithCont(id, params, body) => IWithCont(walk(id), walkList[Id](params, walk), walk(body))
-      case ISetType(expr, ty) => ISetType(walk(expr), walk(ty))
     }
     newInst.line = inst.line
     newInst
@@ -142,10 +143,7 @@ trait Walker {
   )
 
   // heaps
-  def walk(heap: Heap): Heap = Heap(
-    walkMap[Addr, Obj](heap.map, walk, walk),
-    heap.size
-  )
+  def walk(heap: Heap): Heap = Heap(walkMap[Addr, Obj](heap.map, walk, walk))
 
   // objects
   def walk(obj: Obj): Obj = obj match {
@@ -167,7 +165,7 @@ trait Walker {
     case ASTMethod(func, locals) => ASTMethod(walk(func), walkMap[Id, Value](locals, walk, walk))
     case func: Func => walk(func)
     case cont: Cont => walk(cont)
-    case Num(_) | INum(_) | Str(_) | Bool(_) | Undef | Null | Absent => value
+    case Num(_) | INum(_) | BigINum(_) | Str(_) | Bool(_) | Undef | Null | Absent => value
   }
 
   // addresses

@@ -1,5 +1,7 @@
 package kr.ac.kaist.ires.ir
 
+import scala.collection.mutable.{ Map => MMap }
+
 // Walker for IR Language
 trait UnitWalker {
   // all cases
@@ -38,7 +40,7 @@ trait UnitWalker {
 
   // maps
   def walkMap[K, V](
-    map: Map[K, V],
+    map: MMap[K, V],
     kWalk: K => Unit,
     vWalk: V => Unit
   ): Unit = map.foreach { case (k, v) => kWalk(k); vWalk(v) }
@@ -83,8 +85,6 @@ trait UnitWalker {
       walk(id); walk(bexpr); walk(expr); walkList[Expr](args, walk)
     case IWithCont(id, params, body) =>
       walk(id); walkList[Id](params, walk); walk(body)
-    case ISetType(expr, ty) =>
-      walk(expr); walk(ty)
   }
 
   // expressions
@@ -201,7 +201,7 @@ trait UnitWalker {
       walk(func); walkMap[Id, Value](locals, walk, walk)
     case func: Func => walk(func)
     case cont: Cont => walk(cont)
-    case Num(_) | INum(_) | Str(_) | Bool(_) | Undef | Null | Absent =>
+    case Num(_) | INum(_) | BigINum(_) | Str(_) | Bool(_) | Undef | Null | Absent =>
   }
 
   // addresses

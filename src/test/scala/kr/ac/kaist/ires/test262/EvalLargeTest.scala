@@ -28,22 +28,23 @@ class EvalLargeTest extends Test262Test {
   }
 
   // tests for js evaluation
-  def evalJSTest(st: State): Unit = {
-    st.context.locals.get(st.context.retId) match {
-      case Some(addr: Addr) => st.heap(addr, Str("Type")) match {
-        case (addr: Addr) =>
-          assert(addr == st.globals.getOrElse(Id("CONST_normal"), Absent))
-          st.heap(NamedAddr("REALM"), Str("printStr")) match {
-            case Str(v) if (v contains "AsyncTestFailure") =>
-              fail(s"print test failure: $v")
-            case _ => ()
-          }
-        case v => fail(s"invalid completion type: $v")
-      }
-      case Some(v) => fail(s"return not an address: $v")
-      case None => fail("no return value")
-    }
-  }
+  def evalJSTest(st: State): Unit = ???
+  // {
+  //   st.context.locals.get(st.context.retId) match {
+  //     case Some(addr: Addr) => st.heap(addr, Str("Type")) match {
+  //       case (addr: Addr) =>
+  //         assert(addr == st.globals.getOrElse(Id("CONST_normal"), Absent))
+  //         st.heap(NamedAddr("REALM"), Str("printStr")) match {
+  //           case Str(v) if (v contains "AsyncTestFailure") =>
+  //             fail(s"print test failure: $v")
+  //           case _ => ()
+  //         }
+  //       case v => fail(s"invalid completion type: $v")
+  //     }
+  //     case Some(v) => fail(s"return not an address: $v")
+  //     case None => fail("no return value")
+  //   }
+  // }
 
   // TODO registration
   // val dir = new File(test262Dir)

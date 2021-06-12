@@ -9,6 +9,18 @@ package object ir {
     else left == right
   }
 
+  // modulo operation
+  def modulo(l: Double, r: Double): Double = {
+    l % r
+  }
+
+  // unsigned modulo operation
+  def unsigned_modulo(l: Double, r: Double): Double = {
+    val m = l % r
+    if (m * r < 0.0) m + r
+    else m
+  }
+
   // negative zero check
   def isNegZero(double: Double): Boolean = (1 / double).isNegInfinity
 
