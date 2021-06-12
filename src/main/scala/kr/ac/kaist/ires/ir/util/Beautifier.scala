@@ -440,7 +440,7 @@ class Beautifier(
 //
 //     // states
 //     override def walk(st: State): Unit = oneDepth({
-//       val State(context, ctxStack, globals, heap) = st
+//       val State(context, ctxtStack, globals, heap) = st
 //       walk(indent); walk("Context: "); walk(context.name)
 //       walk(indent); walk("Instructions: ");
 //       if (detail) {
@@ -511,7 +511,7 @@ class Beautifier(
 //
 //     // continuation
 //     override def walk(cont: Cont): Unit = cont match {
-//       case Cont(params, body, context, ctxStack) =>
+//       case Cont(params, body, context, ctxtStack) =>
 //         walk("\""); walk(context.name); walk("("); walkListSep[Id](params, ", ", walk)
 //         walk(") [=>] "); walk(body)
 //     }

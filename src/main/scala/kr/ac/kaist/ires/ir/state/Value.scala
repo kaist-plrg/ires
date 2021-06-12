@@ -13,7 +13,7 @@ case class DynamicAddr(long: Long) extends Addr
 // IR Functions
 case class Func(name: String, params: List[Id], varparam: Option[Id], body: Inst) extends Value
 
-case class Cont(params: List[Id], body: Inst, context: Context, ctxStack: List[Context]) extends Value
+case class Cont(params: List[Id], body: Inst, context: Context, ctxtStack: List[Context]) extends Value
 // IR Constants
 sealed trait Const extends Value
 case class Num(double: Double) extends Const {

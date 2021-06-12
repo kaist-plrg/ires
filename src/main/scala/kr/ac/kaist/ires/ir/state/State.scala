@@ -5,7 +5,7 @@ import kr.ac.kaist.ires.util.Useful._
 // IR States
 case class State(
   context: Context = Context(),
-  ctxStack: List[Context] = List(),
+  ctxtStack: List[Context] = List(),
   globals: Map[Id, Value] = Map(),
   heap: Heap = Heap()
 ) extends IRNode {

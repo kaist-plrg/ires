@@ -59,10 +59,10 @@ object REPL {
           st = interp(inst)(st.copy(context = st.context.copy(insts = rest)))
           fixpoint
         case Nil =>
-          st.ctxStack match {
+          st.ctxtStack match {
             case Nil => ()
-            case ctx :: rest =>
-              st = st.copy(context = ctx.copy(locals = ctx.locals + (ctx.retId -> Absent)), ctxStack = rest)
+            case ctxt :: rest =>
+              st = st.copy(context = ctxt.copy(locals = ctxt.locals + (ctxt.retId -> Absent)), ctxtStack = rest)
               fixpoint
           }
       }

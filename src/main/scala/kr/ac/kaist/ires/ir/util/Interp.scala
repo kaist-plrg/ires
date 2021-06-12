@@ -22,9 +22,9 @@ case class Interp(timeLimit: Option[Long] = Some(TIMEOUT)) {
   // perform transition until instructions are empty
   @tailrec
   final def fixpoint(st: State): State = st.context.insts match {
-    case Nil => st.ctxStack match {
+    case Nil => st.ctxtStack match {
       case Nil => st
-      case ctx :: rest => fixpoint(st.copy(context = ctx.copy(locals = ctx.locals + (ctx.retId -> Absent)), ctxStack = rest))
+      case ctxt :: rest => fixpoint(st.copy(context = ctxt.copy(locals = ctxt.locals + (ctxt.retId -> Absent)), ctxtStack = rest))
     }
     case inst :: rest =>
       fixpoint(interp(inst)(st.copy(context = st.context.copy(insts = rest))))
@@ -72,9 +72,9 @@ case class Interp(timeLimit: Option[Long] = Some(TIMEOUT)) {
   //       }
   //     case IReturn(expr) =>
   //       val (value, s0) = interp(expr)(st)
-  //       s0.ctxStack match {
+  //       s0.ctxtStack match {
   //         case Nil => s0.copy(context = s0.context.copy(locals = s0.context.locals + (s0.context.retId -> value), insts = Nil))
-  //         case ctx :: rest => s0.copy(context = ctx.copy(locals = ctx.locals + (ctx.retId -> value)), ctxStack = rest)
+  //         case ctxt :: rest => s0.copy(context = ctxt.copy(locals = ctxt.locals + (ctxt.retId -> value)), ctxtStack = rest)
   //       }
   //     case IIf(cond, thenInst, elseInst) =>
   //       val (v, s0) = escapeCompletion(interp(cond)(st))
@@ -138,9 +138,9 @@ case class Interp(timeLimit: Option[Long] = Some(TIMEOUT)) {
   //             (locals0 + (param -> av), s0)
   //           }).getOrElse((locals0, s1))
 
-  //           val updatedCtx = s2.context.copy(retId = id)
-  //           val newCtx = Context(name = fname, insts = List(body), locals = locals1)
-  //           s2.copy(context = newCtx, ctxStack = updatedCtx :: s2.ctxStack)
+  //           val updatedCtxt = s2.context.copy(retId = id)
+  //           val newCtxt = Context(name = fname, insts = List(body), locals = locals1)
+  //           s2.copy(context = newCtxt, ctxtStack = updatedCtxt :: s2.ctxtStack)
   //         case ASTMethod(Func(fname, params, _, body), baseLocals) =>
   //           val (locals, s1, _) = params.foldLeft(baseLocals, s0, args) {
   //             case ((map, st, arg :: rest), param) =>
@@ -149,10 +149,10 @@ case class Interp(timeLimit: Option[Long] = Some(TIMEOUT)) {
   //             case (triple, _) => triple
   //           }
 
-  //           val updatedCtx = s1.context.copy(retId = id)
-  //           val newCtx = Context(name = fname, insts = List(body), locals = locals)
-  //           s1.copy(context = newCtx, ctxStack = updatedCtx :: s1.ctxStack)
-  //         case Cont(params, body, context, ctxStack) =>
+  //           val updatedCtxt = s1.context.copy(retId = id)
+  //           val newCtxt = Context(name = fname, insts = List(body), locals = locals)
+  //           s1.copy(context = newCtxt, ctxtStack = updatedCtxt :: s1.ctxtStack)
+  //         case Cont(params, body, context, ctxtStack) =>
   //           val (locals0, s1, restArg) = params.foldLeft(Map[Id, Value](), s0, args) {
   //             case ((map, st, arg :: rest), param) =>
   //               val (av, s0) = interp(arg)(st)
@@ -160,8 +160,8 @@ case class Interp(timeLimit: Option[Long] = Some(TIMEOUT)) {
   //             case (triple, _) => triple
   //           }
 
-  //           val updatedCtx = context.copy(insts = List(body), locals = context.locals ++ locals0)
-  //           s1.copy(context = updatedCtx, ctxStack = ctxStack)
+  //           val updatedCtxt = context.copy(insts = List(body), locals = context.locals ++ locals0)
+  //           s1.copy(context = updatedCtxt, ctxtStack = ctxtStack)
 
   //         case v => error(s"not a function: $v")
   //       }
@@ -211,9 +211,9 @@ case class Interp(timeLimit: Option[Long] = Some(TIMEOUT)) {
   //                   }
   //                   rest match {
   //                     case Nil =>
-  //                       val updatedCtx = s2.context.copy(retId = id)
-  //                       val newCtx = Context(name = fname, insts = List(body), locals = locals)
-  //                       s2.copy(context = newCtx, ctxStack = updatedCtx :: s2.ctxStack)
+  //                       val updatedCtxt = s2.context.copy(retId = id)
+  //                       val newCtxt = Context(name = fname, insts = List(body), locals = locals)
+  //                       s2.copy(context = newCtxt, ctxtStack = updatedCtxt :: s2.ctxtStack)
   //                     case _ =>
   //                       s2.define(id, ASTMethod(Func(fname, rest, varparam, body), locals))
   //                   }
@@ -232,7 +232,7 @@ case class Interp(timeLimit: Option[Long] = Some(TIMEOUT)) {
   //         case v => error(s"not an address: $v")
   //       }
   //     case IWithCont(id, params, body) => {
-  //       val s0 = st.define(id, Cont(params, ISeq(st.context.insts), st.context, st.ctxStack))
+  //       val s0 = st.define(id, Cont(params, ISeq(st.context.insts), st.context, st.ctxtStack))
   //       s0.copy(context = s0.context.copy(insts = List(body)))
   //     }
   //   }
@@ -282,7 +282,7 @@ case class Interp(timeLimit: Option[Long] = Some(TIMEOUT)) {
   //     val (refV, s0) = interp(ref)(st)
   //     interp(refV)(s0)
   //   case ECont(params, body) =>
-  //     (Cont(params, body, st.context, st.ctxStack), st)
+  //     (Cont(params, body, st.context, st.ctxtStack), st)
   //   case EUOp(uop, expr) =>
   //     val (v, s0) = escapeCompletion(interp(expr)(st))
   //     (interp(uop)(v), s0)

@@ -18,7 +18,7 @@ trait UnitWalker {
     case obj: Obj => walk(obj)
     case v: Value => walk(v)
     case refV: RefValue => walk(refV)
-    case ctx: Context => walk(ctx)
+    case ctxt: Context => walk(ctxt)
   }
 
   // strings
@@ -162,16 +162,16 @@ trait UnitWalker {
   // states
   def walk(st: State): Unit = {
     walk(st.context)
-    walkList[Context](st.ctxStack, walk)
+    walkList[Context](st.ctxtStack, walk)
     walkMap[Id, Value](st.globals, walk, walk)
     walk(st.heap)
   }
 
-  def walk(ctx: Context): Unit = {
-    walk(ctx.retId)
-    walk(ctx.name)
-    walkList[Inst](ctx.insts, walk)
-    walkMap[Id, Value](ctx.locals, walk, walk)
+  def walk(ctxt: Context): Unit = {
+    walk(ctxt.retId)
+    walk(ctxt.name)
+    walkList[Inst](ctxt.insts, walk)
+    walkMap[Id, Value](ctxt.locals, walk, walk)
   }
 
   // heaps
@@ -216,11 +216,11 @@ trait UnitWalker {
 
   // continuation
   def walk(cont: Cont): Unit = cont match {
-    case Cont(params, body, context, ctxStack) =>
+    case Cont(params, body, context, ctxtStack) =>
       walkList[Id](params, walk)
       walk(body)
       walk(context)
-      walkList[Context](ctxStack, walk)
+      walkList[Context](ctxtStack, walk)
   }
 
   // AST values
