@@ -28,6 +28,11 @@ package object ires {
   // Current directory root
   val CUR_DIR = System.getProperty("user.dir")
 
+  // Resource directory root
+  val RESOURCE_DIR = s"$BASE_DIR/src/main/resources"
+  val ID_START_JSON = s"$RESOURCE_DIR/ID_Start.json"
+  val ID_CONTINUE_JSON = s"$RESOURCE_DIR/ID_Continue.json"
+
   // timeout
   val TIMEOUT = 10
 
