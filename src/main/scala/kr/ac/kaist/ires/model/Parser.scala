@@ -1325,7 +1325,7 @@ object Parser extends ESParsers {
   lazy val DoWhileStatement: ESParser[DoWhileStatement] = memo(args => {
     val List(pYield, pAwait, pReturn) = getArgsN("DoWhileStatement", args, 3)
     log((
-      log((((((MATCH <~ t("do")) ~ Statement(List(pYield, pAwait, pReturn)) <~ t("while")) <~ t("(")) ~ Expression(List(true, pYield, pAwait)) <~ t(")")) <~ t(";")) ^^ { case _ ~ x0 ~ x1 => DoWhileStatement0(x0, x1, args, Span()) })("DoWhileStatement0")
+      log((((((MATCH <~ t("do")) ~ Statement(List(pYield, pAwait, pReturn)) <~ t("while")) <~ t("(")) ~ Expression(List(true, pYield, pAwait)) <~ doWhileCloseT) <~ t(";")) ^^ { case _ ~ x0 ~ x1 => DoWhileStatement0(x0, x1, args, Span()) })("DoWhileStatement0")
     ))("DoWhileStatement")
   })
   lazy val WhileStatement: ESParser[WhileStatement] = memo(args => {
