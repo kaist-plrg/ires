@@ -9,15 +9,13 @@ class EvalSmallTest extends IRTest {
 
   // registration
   def init: Unit = for (file <- walkTree(IR_DIR)) {
-    // TODO
-    // val filename = file.getName
-    // if (irFilter(filename)) check(filename, {
-    //   val name = file.toString
-    //   val program = Parser.fileToProgram(name)
-    //   val initSt = State(program)
-    //   val interp = Interp()
-    //   interp(initSt)
-    // })
+    val filename = file.getName
+    if (irFilter(filename)) check(filename, {
+      val name = file.toString
+      val program = Parser.fileToProgram(name)
+      val st = State(program)
+      Interp(st)
+    })
   }
   init
 }

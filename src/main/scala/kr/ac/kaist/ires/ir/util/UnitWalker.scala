@@ -26,6 +26,9 @@ trait UnitWalker {
   // strings
   def walk(str: String): Unit = {}
 
+  // booleans
+  def walk(bool: Boolean): Unit = {}
+
   // options
   def walkOpt[T](
     opt: Option[T],
@@ -117,8 +120,8 @@ trait UnitWalker {
       walk(base); walk(name)
     case EGetSyntax(base) =>
       walk(base)
-    case EParseSyntax(code, rule, flags) =>
-      walk(code); walk(rule); walk(flags)
+    case EParseSyntax(code, rule, parserParams) =>
+      walk(code); walk(rule); walk(parserParams)
     case EConvert(expr, cop, list) =>
       walk(expr); walk(cop); walkList[Expr](list, walk)
     case EContains(list, elem) =>

@@ -25,6 +25,9 @@ trait Walker {
   // strings
   def walk(str: String): String = str
 
+  // booleans
+  def walk(bool: Boolean): Boolean = bool
+
   // options
   def walkOpt[T](
     opt: Option[T],
@@ -94,8 +97,10 @@ trait Walker {
     case EIsInstanceOf(base, name) => EIsInstanceOf(walk(base), walk(name))
     case EGetElems(base, name) => EGetElems(walk(base), walk(name))
     case EGetSyntax(base) => EGetSyntax(walk(base))
-    case EParseSyntax(code, rule, flags) => EParseSyntax(walk(code), walk(rule), walk(flags))
-    case EConvert(expr, cop, list) => EConvert(walk(expr), walk(cop), walkList[Expr](list, walk))
+    case EParseSyntax(code, rule, parserParams) =>
+      EParseSyntax(walk(code), walk(rule), walk(parserParams))
+    case EConvert(expr, cop, list) =>
+      EConvert(walk(expr), walk(cop), walkList[Expr](list, walk))
     case EContains(list, elem) => EContains(walk(list), walk(elem))
     case EReturnIfAbrupt(expr, check) => EReturnIfAbrupt(walk(expr), check)
     case ECopy(obj) => ECopy(walk(obj))

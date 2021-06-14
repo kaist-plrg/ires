@@ -22,6 +22,9 @@ case class Interp(
   // iteration period for check
   private val CHECK_PERIOD = 10000
 
+  // start
+  fixpoint
+
   // perform transition until instructions are empty
   // @tailrec
   final def fixpoint: Unit = st.context.insts match {
@@ -62,7 +65,41 @@ case class Interp(
         case Bool(false) =>
         case v => error(s"not a boolean: ${v.beautified}")
       }
-      case IApp(id, fexpr, args) => ???
+      case IApp(id, fexpr, args) => interp(fexpr) match {
+        // case Func(fname, params, varparam, body) =>
+        //   val (locals0, s1, restArg) = params.foldLeft(Map[Id, Value](), s0, args) {
+        //     case ((map, st, arg :: rest), param) =>
+        //       val (av, s0) = interp(arg)(st)
+        //       (map + (param -> av), s0, rest)
+        //     case (triple, _) => triple
+        //   }
+        //   val (locals1, s2) = varparam.map((param) => {
+        //     val (av, s0) = interp(EList(restArg))(s1)
+        //     (locals0 + (param -> av), s0)
+        //   }).getOrElse((locals0, s1))
+
+        //   val updatedCtxt = s2.context.copy(retId = id)
+        //   val newCtxt = Context(name = fname, insts = List(body), locals = locals1)
+        //   s2.copy(context = newCtxt, ctxtStack = updatedCtxt :: s2.ctxtStack)
+        // case ASTMethod(Func(fname, params, _, body), baseLocals) =>
+        //   val (locals, s1, _) = params.foldLeft(baseLocals, s0, args) {
+        //     case ((map, st, arg :: rest), param) =>
+        //       val (av, s0) = interp(arg)(st)
+        //       (map + (param -> av), s0, rest)
+        //     case (triple, _) => triple
+        //   }
+
+        //   val updatedCtxt = s1.context.copy(retId = id)
+        //   val newCtxt = Context(name = fname, insts = List(body), locals = locals)
+        //   s1.copy(context = newCtxt, ctxtStack = updatedCtxt :: s1.ctxtStack)
+        case Cont(params, body, context, ctxtStack) => {
+          st.context = context
+          st.context.insts = List(body)
+          st.context.locals ++= params zip args.map(interp)
+          st.ctxtStack = ctxtStack
+        }
+        case v => error(s"not a function: $v")
+      }
       case IAccess(id, bexpr, expr, args) => ???
       case IExpr(expr) => interp(expr)
       case ILet(id, expr) => st.context.locals += id -> interp(expr)
@@ -86,73 +123,22 @@ case class Interp(
       case IThrow(name) => ???
       case IAssert(expr) => interp(expr).escaped(st) match {
         case Bool(true) =>
-        case v => error(s"assertion failure: ${v.toString}")
+        case v => error(s"assertion failure: ${expr.beautified}")
       }
       case IPrint(expr) => interp(expr) match {
         case (addr: Addr) => println(st.getString(addr))
         case v => println(v.beautified)
       }
-      case IWithCont(id, params, bodyInst) => ???
+      case IWithCont(id, params, bodyInst) => {
+        val State(context, ctxtStack, _, _) = st
+        context.locals += id -> Cont(params, ISeq(context.insts), context, ctxtStack)
+        st.context = context.copied
+        st.context.insts = List(bodyInst)
+      }
       case ISeq(insts) => st.context.insts = insts ++ st.context.insts
     }
+    if (instCount % 100000 == 0) GC.gc(st)
   }
-  //   if (DEBUG) inst match {
-  //     case ISeq(_) =>
-  //     case _ => println(s"${st.context.name}: ${inst.beautified}")
-  //   }
-  //   val res = inst match {
-  //     case IExpr(expr) =>
-  //       val (_, s0) = interp(expr)(st)
-  //       s0
-  //     case ILet(id, expr) =>
-  //       val (value, s0) = interp(expr)(st)
-  //       s0.define(id, value)
-  //     case IAssign(ref, expr) =>
-  //       val (refV, s0) = interp(ref)(st)
-  //       val (value, s1) = interp(expr)(s0)
-  //       s1.updated(refV, value)
-  //     case IApp(id, fexpr, args) =>
-  //       val (fv, s0) = interp(fexpr)(st)
-  //       fv match {
-  //         case Func(fname, params, varparam, body) =>
-  //           val (locals0, s1, restArg) = params.foldLeft(Map[Id, Value](), s0, args) {
-  //             case ((map, st, arg :: rest), param) =>
-  //               val (av, s0) = interp(arg)(st)
-  //               (map + (param -> av), s0, rest)
-  //             case (triple, _) => triple
-  //           }
-  //           val (locals1, s2) = varparam.map((param) => {
-  //             val (av, s0) = interp(EList(restArg))(s1)
-  //             (locals0 + (param -> av), s0)
-  //           }).getOrElse((locals0, s1))
-
-  //           val updatedCtxt = s2.context.copy(retId = id)
-  //           val newCtxt = Context(name = fname, insts = List(body), locals = locals1)
-  //           s2.copy(context = newCtxt, ctxtStack = updatedCtxt :: s2.ctxtStack)
-  //         case ASTMethod(Func(fname, params, _, body), baseLocals) =>
-  //           val (locals, s1, _) = params.foldLeft(baseLocals, s0, args) {
-  //             case ((map, st, arg :: rest), param) =>
-  //               val (av, s0) = interp(arg)(st)
-  //               (map + (param -> av), s0, rest)
-  //             case (triple, _) => triple
-  //           }
-
-  //           val updatedCtxt = s1.context.copy(retId = id)
-  //           val newCtxt = Context(name = fname, insts = List(body), locals = locals)
-  //           s1.copy(context = newCtxt, ctxtStack = updatedCtxt :: s1.ctxtStack)
-  //         case Cont(params, body, context, ctxtStack) =>
-  //           val (locals0, s1, restArg) = params.foldLeft(Map[Id, Value](), s0, args) {
-  //             case ((map, st, arg :: rest), param) =>
-  //               val (av, s0) = interp(arg)(st)
-  //               (map + (param -> av), s0, rest)
-  //             case (triple, _) => triple
-  //           }
-
-  //           val updatedCtxt = context.copy(insts = List(body), locals = context.locals ++ locals0)
-  //           s1.copy(context = updatedCtxt, ctxtStack = ctxtStack)
-
-  //         case v => error(s"not a function: $v")
-  //       }
   //     case IAccess(id, bexpr, expr) =>
   //       val (base, s1) = interp(bexpr)(st)
   //       val (p, s2) = escapeCompletion(interp(expr)(s1))
@@ -219,13 +205,7 @@ case class Interp(
   //         }
   //         case v => error(s"not an address: $v")
   //       }
-  //     case IWithCont(id, params, body) => {
-  //       val s0 = st.define(id, Cont(params, ISeq(st.context.insts), st.context, st.ctxtStack))
-  //       s0.copy(context = s0.context.copy(insts = List(body)))
-  //     }
   //   }
-  //   if (instCount % 100000 == 0) GC.gc(res)
-  //   else res
   // }
 
   // expresssions
@@ -257,7 +237,7 @@ case class Interp(
       case v => error(s"not an address: ${v.beautified}")
     }
     case ERef(ref) => st(interp(ref))
-    case ECont(params, body) => ???
+    case ECont(params, body) => Cont(params, body, st.context.copied, st.ctxtStack)
     case EUOp(uop, expr) => {
       val x = interp(expr).escaped(st)
       interp(uop, x)
@@ -296,142 +276,103 @@ case class Interp(
       }
       case _ => false
     })
-    case EIsInstanceOf(base, name) => ???
-    case EGetElems(base, name) => ???
-    case EGetSyntax(base) => ???
-    case EParseSyntax(code, rule, flags) => ???
-    case EConvert(source, target, flags) => ???
-    case EContains(list, elem) => ???
+    case EIsInstanceOf(base, name) => interp(base).escaped(st) match {
+      case ASTVal(ast) => Bool(ast.name == name || ast.getKinds.contains(name))
+      case Str(str) => Bool(str == name)
+      case v => error(s"not an AST or a String value: ${v.beautified}")
+    }
+    case EGetElems(base, name) => interp(base).escaped(st) match {
+      case ASTVal(ast) => st.allocList(ast.getElems(name).map(ASTVal(_)))
+      case v => error(s"not an AST value: ${v.beautified}")
+    }
+    case EGetSyntax(base) => interp(base).escaped(st) match {
+      case ASTVal(ast) => Str(ast.toString)
+      case v => error(s"not an AST value: ${v.beautified}")
+    }
+    case EParseSyntax(code, rule, parserParams) => {
+      val v = interp(code).escaped(st)
+      val p = interp(rule).escaped(st) match {
+        case Str(str) => ESParser.rules.getOrElse(str, error(s"not exist parse rule: $rule"))
+        case v => error(s"not a string: $v")
+      }
+      v match {
+        case ASTVal(ast) => ASTVal(Model.checkSupported(timeout(
+          ESParser.parse(p(ast.parserParams), ast.toString).get,
+          timeLimit
+        )))
+        case Str(str) =>
+          val ps = interp(parserParams).escaped(st) match {
+            case addr: Addr => st(addr) match {
+              case IRList(vs) => vs.toList.map(_ match {
+                case Bool(b) => b
+                case v => error(s"non-boolean parser parameter: ${v.beautified}")
+              })
+              case obj => error(s"not a list: ${obj.beautified}")
+            }
+            case v => error(s"not an address: ${v.beautified}")
+          }
+          ASTVal(Model.checkSupported(timeout(
+            ESParser.parse(p(ps), str).get,
+            timeLimit
+          )))
+        case v => error(s"not an AST value or a string: $v")
+      }
+    }
+    case EConvert(source, target, flags) => interp(source).escaped(st) match {
+      case Str(s) => target match {
+        case CStrToNum => Num(ESValueParser.str2num(s))
+        case _ => error(s"not convertable option: Str to ${target.beautified}")
+      }
+      case INum(n) => {
+        val radix = flags match {
+          case e :: rest => interp(e).escaped(st) match {
+            case INum(n) => n.toInt
+            case Num(n) => n.toInt
+            case _ => error("radix is not int")
+          }
+          case _ => 10
+        }
+        target match {
+          case CNumToStr => Str(Helper.toStringHelper(n, radix))
+          case CNumToInt => INum(n)
+          case _ => error(s"not convertable option: INum to $target")
+        }
+      }
+      case Num(n) => {
+        val radix = flags match {
+          case e :: rest => interp(e).escaped(st) match {
+            case INum(n) => n.toInt
+            case Num(n) => n.toInt
+            case _ => error("radix is not int")
+          }
+          case _ => 10
+        }
+        target match {
+          case CNumToStr => Str(Helper.toStringHelper(n, radix))
+          case CNumToInt => INum((math.signum(n) * math.floor(math.abs(n))).toLong)
+          case _ => error(s"not convertable option: INum to $target")
+        }
+      }
+      case v => error(s"not an convertable value: ${v.beautified}")
+    }
+    case EContains(list, elem) => interp(list).escaped(st) match {
+      case addr: Addr => st(addr) match {
+        case IRList(vs) => Bool(vs contains interp(elem).escaped(st))
+        case obj => error(s"not a list: ${obj.beautified}")
+      }
+      case v => error(s"not an address: ${v.beautified}")
+    }
     case EReturnIfAbrupt(expr, check) => ???
-    case ECopy(obj) => ???
-    case EKeys(mobj) => ???
-    case ENotSupported(msg) => ???
+    case ECopy(obj) => interp(obj).escaped(st) match {
+      case addr: Addr => st.copyObj(addr)
+      case v => error(s"not an address: ${v.beautified}")
+    }
+    case EKeys(mobj) => interp(mobj).escaped(st) match {
+      case addr: Addr => st.keys(addr)
+      case v => error(s"not an address: ${v.beautified}")
+    }
+    case ENotSupported(msg) => throw NotSupported(msg)
   }
-  // st => expr match {
-  //   case ECont(params, body) =>
-  //     (Cont(params, body, st.context, st.ctxtStack), st)
-  //   case EIsInstanceOf(base, kind) => escapeCompletion(interp(base)(st)) match {
-  //     case (ASTVal(ast), s0) => (Bool(ast.name == kind || ast.getKinds.contains(kind)), s0)
-  //     case (Str(str), s0) => (Bool(str == kind), s0)
-  //     case (v, _) => error(s"not an AST value: $v")
-  //   }
-  //   case EGetElems(base, kind) => escapeCompletion(interp(base)(st)) match {
-  //     case (ASTVal(ast), s0) => s0.allocList(ast.getElems(kind).map(ASTVal(_)))
-  //     case (v, _) => error(s"not an AST value: $v")
-  //   }
-  //   case EGetSyntax(base) => escapeCompletion(interp(base)(st)) match {
-  //     case (ASTVal(ast), s0) => (Str(ast.toString), s0)
-  //     case (v, s0) => error(s"not an AST value: $v")
-  //   }
-  //   case EParseSyntax(code, rule, flags) =>
-  //     val (v, s0) = escapeCompletion(interp(code)(st))
-  //     val (p, s1) = escapeCompletion(interp(rule)(st)) match {
-  //       case (Str(str), st) => (ESParser.rules.getOrElse(str, error(s"not exist parse rule: $rule")), st)
-  //       case (v, _) => error(s"not a string: $v")
-  //     }
-  //     v match {
-  //       case ASTVal(ast) =>
-  //         val newVal = try {
-  //           ASTVal(Await.result(Future(
-  //             ESParser.parse(p(ast.parserParams), ast.toString).get
-  //           ), timeLimit.map(_.seconds).getOrElse(Duration.Inf)))
-  //         } catch {
-  //           case e: TimeoutException => error("parser timeout")
-  //           case e: Throwable => Absent
-  //         }
-  //         newVal match {
-  //           case ASTVal(s) => Model.checkSupported(s)
-  //           case _ => ()
-  //         }
-  //         (newVal, s1)
-  //       case Str(str) =>
-  //         val (s2, parserParams) = flags.foldLeft(s1, List[Boolean]()) {
-  //           case ((st, ps), param) =>
-  //             val (av, s1) = interp(param)(st)
-  //             av match {
-  //               case Bool(v) => (s1, ps :+ v)
-  //               case _ => error(s"parserParams should be boolean")
-  //             }
-  //         }
-  //         val newVal = try {
-  //           ASTVal(Await.result(Future(
-  //             ESParser.parse(p(parserParams), str).get
-  //           ), timeLimit.map(_.seconds).getOrElse(Duration.Inf)))
-  //         } catch {
-  //           case e: TimeoutException => error("parser timeout")
-  //           case e: Throwable => Absent
-  //         }
-  //         newVal match {
-  //           case ASTVal(s) => Model.checkSupported(s)
-  //           case _ => ()
-  //         }
-  //         (newVal, s2)
-  //       case v => error(s"not an AST value or a string: $v")
-  //     }
-  //   case EConvert(expr, cop, l) => escapeCompletion(interp(expr)(st)) match {
-  //     case (Str(s), s0) => {
-  //       (cop match {
-  //         case CStrToNum => Num(ESValueParser.str2num(s))
-  //         case _ => error(s"not convertable option: Str to $cop")
-  //       }, s0)
-  //     }
-  //     case (INum(n), s0) => {
-  //       val (radix, s1) = l match {
-  //         case e :: rest => escapeCompletion(interp(e)(s0)) match {
-  //           case (INum(n), s1) => (n.toInt, s1)
-  //           case (Num(n), s1) => (n.toInt, s1)
-  //           case _ => error("radix is not int")
-  //         }
-  //         case _ => (10, s0)
-  //       }
-  //       (cop match {
-  //         case CNumToStr => Str(Helper.toStringHelper(n, radix))
-  //         case CNumToInt => INum(n)
-  //         case _ => error(s"not convertable option: Num to $cop")
-  //       }, s1)
-  //     }
-  //     case (Num(n), s0) => {
-  //       val (radix, s1) = l match {
-  //         case e :: rest => escapeCompletion(interp(e)(s0)) match {
-  //           case (INum(n), s1) => (n.toInt, s1)
-  //           case (Num(n), s1) => (n.toInt, s1)
-  //           case _ => error("radix is not int")
-  //         }
-  //         case _ => (10, s0)
-  //       }
-  //       (cop match {
-  //         case CNumToStr => Str(Helper.toStringHelper(n, radix))
-  //         case CNumToInt => INum((math.signum(n) * math.floor(math.abs(n))).toLong)
-  //         case _ => error(s"not convertable option: Num to $cop")
-  //       }, s1)
-  //     }
-  //     case (v, s0) => error(s"not an convertable value: $v")
-  //   }
-  //   case EContains(list, elem) =>
-  //     val (l, s0) = escapeCompletion(interp(list)(st))
-  //     l match {
-  //       case (addr: Addr) => s0.heap(addr) match {
-  //         case IRList(vs) =>
-  //           val (v, s1) = escapeCompletion(interp(elem)(st))
-  //           (Bool(vs contains v), s1)
-  //         case obj => error(s"not a list: $obj")
-  //       }
-  //       case v => error(s"not an address: $v")
-  //     }
-  //   case ECopy(expr) =>
-  //     val (v, s0) = escapeCompletion(interp(expr)(st))
-  //     v match {
-  //       case (addr: Addr) => s0.copyObj(addr)
-  //       case v => error(s"not an address: $v")
-  //     }
-  //   case EKeys(expr) =>
-  //     val (v, s0) = escapeCompletion(interp(expr)(st))
-  //     v match {
-  //       case (addr: Addr) => s0.keys(addr)
-  //       case v => error(s"not an address: $v")
-  //     }
-  //   case ENotSupported(msg) => throw NotSupported(msg)
-  // }
 
   // references
   def interp(ref: Ref): RefValue = ref match {
@@ -500,7 +441,7 @@ case class Interp(
     case (OPlus, INum(l), INum(r)) => INum(l + r)
     case (OSub, INum(l), INum(r)) => INum(l - r)
     case (OMul, INum(l), INum(r)) => INum(l * r)
-    case (ODiv, INum(l), INum(r)) => INum(l / r)
+    case (ODiv, INum(l), INum(r)) => Num(l / r)
     case (OUMod, INum(l), INum(r)) => INum(unsigned_modulo(l, r).toLong)
     case (OMod, INum(l), INum(r)) => INum(modulo(l, r).toLong)
     case (OLt, INum(l), INum(r)) => Bool(l < r)
@@ -509,7 +450,7 @@ case class Interp(
     case (OBXOr, INum(l), INum(r)) => INum(l ^ r)
     case (OLShift, INum(l), INum(r)) => INum((l.toInt << r.toInt).toLong)
     case (OSRShift, INum(l), INum(r)) => INum((l.toInt >> r.toInt).toLong)
-    case (OURShift, INum(l), INum(r)) => INum((l.toLong >>> r.toInt).toLong & 0xffffffffL)
+    case (OURShift, INum(l), INum(r)) => INum(((l.toInt >>> r.toInt) & 0xffffffff).toLong)
 
     // logical operations
     case (OAnd, Bool(l), Bool(r)) => Bool(l && r)

@@ -1,8 +1,9 @@
 package kr.ac.kaist.ires.ir
 
-// Garbage Collector
+// TODO Garbage Collector
 object GC {
-  // def gc(st: State): State = {
+  def gc(st: State): Unit = {}
+  // {
   //   var addrSet: Set[Addr] = Set()
   //   val walker = new UnitWalker {
   //     override def walk(addr: Addr): Unit = addrSet += addr

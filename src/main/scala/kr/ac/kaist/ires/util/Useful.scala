@@ -244,9 +244,9 @@ object Useful {
     try { f; None } catch { case e: Throwable => Some(e) }
 
   // set timeout
-  def timeout[T](f: => T, limit: Option[Int]): T =
+  def timeout[T](f: => T, limit: Option[Long]): T =
     timeout(f, limit.fold[Duration](Duration.Inf)(_.seconds))
-  def timeout[T](f: => T, limit: Int): T = timeout(f, limit.seconds)
+  def timeout[T](f: => T, limit: Long): T = timeout(f, limit.seconds)
   def timeout[T](f: => T, duration: Duration): T =
     Await.result(Future(f), duration)
 

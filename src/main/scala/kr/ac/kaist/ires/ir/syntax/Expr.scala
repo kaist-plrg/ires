@@ -32,7 +32,7 @@ case class EIsCompletion(expr: Expr) extends Expr
 case class EIsInstanceOf(base: Expr, name: String) extends Expr with AllocExpr
 case class EGetElems(base: Expr, name: String) extends Expr
 case class EGetSyntax(base: Expr) extends Expr
-case class EParseSyntax(code: Expr, rule: Expr, flags: Expr) extends Expr
+case class EParseSyntax(code: Expr, rule: Expr, parserParams: Expr) extends Expr
 case class EConvert(source: Expr, target: COp, flags: List[Expr]) extends Expr
 case class EContains(list: Expr, elem: Expr) extends Expr
 case class EReturnIfAbrupt(expr: Expr, check: Boolean) extends Expr

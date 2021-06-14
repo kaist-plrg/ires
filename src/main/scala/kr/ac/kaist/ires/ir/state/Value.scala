@@ -6,14 +6,13 @@ import scala.collection.mutable.{ Map => MMap }
 // IR Values
 sealed trait Value extends IRNode {
   // escape completions
-  def escaped(st: State): Value = ???
-  // pair match {
-  //   case (addr: Addr, s: State) => s.get(addr) match {
-  //     case Some(IRMap(Ty("Completion"), m, _)) => (m(Str("Value"))._1, s)
-  //     case _ => pair
-  //   }
-  //   case _ => pair
-  // }
+  def escaped(st: State): Value = this match {
+    case (addr: Addr) => st(addr) match {
+      case m @ IRMap(Ty("Completion"), _, _) => m(Str("Value"))
+      case _ => this
+    }
+    case _ => this
+  }
 }
 
 // IR Addresses

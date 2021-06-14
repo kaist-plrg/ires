@@ -126,11 +126,11 @@ trait ModelHelper {
   // }
 
   private val notSupportedSyntaxPrefixList = List("RegularExpression")
-  def checkSupported(ast: AST): Unit = ast.exists {
-    case name => notSupportedSyntaxPrefixList.exists {
-      case pre =>
-        if (name.startsWith(pre)) throw NotSupported(pre)
-        else false
-    }
+  def checkSupported(ast: AST): AST = {
+    ast.exists(name => notSupportedSyntaxPrefixList.exists(pre => {
+      if (name.startsWith(pre)) throw NotSupported(pre)
+      false
+    }))
+    ast
   }
 }

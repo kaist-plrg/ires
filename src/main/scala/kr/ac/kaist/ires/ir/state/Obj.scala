@@ -7,74 +7,97 @@ import scala.collection.mutable.{ Map => MMap }
 sealed trait Obj extends IRNode {
   // types
   def ty: Ty
+
+  // copy of object
+  def copy: Obj
 }
 
 // IR symbols
 case class IRSymbol(desc: Value) extends Obj {
   val ty: Ty = Ty("Symbol")
 
-  // // getters
-  // def apply(key: Value): Value = key match {
-  //   case Str("Description") => desc
-  //   case v => error(s"an invalid symbol field access: $v")
-  // }
+  // getters
+  def apply(key: Value): Value = key match {
+    case Str("Description") => desc
+    case v => error(s"an invalid symbol field access: $v")
+  }
+
+  // copy of object
+  def copy: IRSymbol = IRSymbol(desc)
 }
 
 // IR maps
-case class IRMap(ty: Ty, props: MMap[Value, (Value, Long)], size: Long = 0L) extends Obj {
-  // // getters
-  // def apply(prop: Value): Value = props.get(prop).map(_._1).getOrElse(Absent)
+case class IRMap(
+  ty: Ty,
+  props: MMap[Value, (Value, Long)] = MMap(),
+  var size: Long = 0L
+) extends Obj {
+  // get pairs
+  def pairs: Map[Value, Value] = props.foldLeft(Map[Value, Value]()) {
+    case (m, (k, (v, _))) => m + (k -> v)
+  }
 
-  // // setters
-  // def updated(prop: Value, value: Value): IRMap = copy(props = props + (prop -> (value, props.get(prop).map(_._2).getOrElse(size))), size = size + 1L)
+  // getters
+  def apply(prop: Value): Value = props.get(prop).fold[Value](Absent)(_._1)
 
-  // // deletes
-  // def deleted(prop: Value): IRMap = copy(props = props - prop)
-}
+  // setters
+  def update(prop: Value, value: Value): Unit = {
+    props += prop -> (value, props.get(prop).fold(size)(_._2))
+    size += 1
+  }
 
-// Unordered IR map helper
-object IRUMap {
-  // def apply(ty: Ty, props: Map[Value, Value]): IRMap = {
-  //   val (nm, size) = props.foldLeft((MMap[Value, (Value, Long)](), 0L)) {
-  //     case ((m, l), (k, v)) => (m + (k -> (v, l)), l + 1)
-  //   }
-  //   IRMap(ty, nm, size)
-  // }
+  // deletes
+  def delete(prop: Value): Unit = props -= prop
+
+  // copy of object
+  def copy: IRMap = {
+    val newProps = MMap[Value, (Value, Long)]()
+    newProps ++= props
+    IRMap(ty, newProps, size)
+  }
 }
 
 // IR lists
-case class IRList(values: Vector[Value]) extends Obj {
+case class IRList(var values: Vector[Value]) extends Obj {
   // types
   def ty: Ty = Ty("List")
 
-  // // getters
-  // def apply(key: Value): Value = key match {
-  //   case INum(long) =>
-  //     val idx = long.toInt
-  //     if (0 <= idx && idx < values.length) values(idx)
-  //     else Absent
-  //   case Str("length") => INum(values.length)
-  //   case v => error(s"not an integer key: $v")
-  // }
+  // getters
+  def apply(key: Value): Value = key match {
+    case INum(long) =>
+      val idx = long.toInt
+      if (0 <= idx && idx < values.length) values(idx)
+      else Absent
+    case Str("length") => INum(values.length)
+    case v => error(s"invalid key: $v")
+  }
 
-  // // appends
-  // def append(value: Value): IRList = IRList(values :+ value)
+  // appends
+  def append(value: Value): Unit = values :+= value
 
-  // // prepends
-  // def prepend(value: Value): IRList = IRList(value +: values)
+  // prepends
+  def prepend(value: Value): Unit = values +:= value
 
-  // // pops
-  // def pop(idx: Value): (Value, IRList) = idx match {
-  //   case INum(long) =>
-  //     val k = long.toInt
-  //     if (k < 0 || k >= values.length) error(s"Out of range: $k of $this")
-  //     (values(k), IRList(values.slice(0, k) ++ values.slice(k + 1, values.length)))
-  //   case v =>
-  //     error(s"not an integer index: $v of $this")
-  // }
+  // pops
+  def pop(idx: Value): Value = idx match {
+    case INum(long) => {
+      val k = long.toInt
+      if (k < 0 || k >= values.length) error(s"Out of range: $k of $this")
+      val v = values(k)
+      values = values.slice(0, k) ++ values.slice(k + 1, values.length)
+      v
+    }
+    case v => error(s"not an integer index: $this[$v]")
+  }
+
+  // copy of object
+  def copy: IRList = IRList(values)
 }
 
 // IR not supported objects
 case class IRNotSupported(tyname: String, desc: String) extends Obj {
   val ty: Ty = Ty(tyname)
+
+  // copy of object
+  def copy: IRNotSupported = IRNotSupported(tyname, desc)
 }
