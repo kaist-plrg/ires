@@ -4,7 +4,9 @@
   "description": "generate code points for unicode properties (ID_Start, ID_Continue)",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "gulp compress",
+    "start": "node src/index.js"
   },
   "keywords": [
     "unicode"
