@@ -31,16 +31,14 @@ trait JSTest extends IRESTest {
   }
 
   // tests for js interpreter
-  def evalTest(st: State): Unit = ???
-  // st.context.locals.get(st.context.retId) match {
-  //   case Some(addr: Addr) => st.heap(addr, Str("Type")) match {
-  //     case (addr: Addr) =>
-  //       assert(addr == st.globals.getOrElse(Id("CONST_normal"), Absent))
-  //     case v => fail(s"invalid completion type: $v")
-  //   }
-  //   case Some(v) => fail(s"return not an address: $v")
-  //   case None => fail("no return value")
-  // }
+  def evalTest(st: State): Unit = st.retVal match {
+    case addr: Addr => st(addr, Str("Type")) match {
+      case (addr: Addr) => assert(addr == st(Id("CONST_normal")))
+      case v => fail(s"invalid completion type: ${v.beautified}")
+    }
+    case Absent => fail("no return value")
+    case v => fail(s"return not an address: ${v.beautified}")
+  }
 
   // conversion extension from .js to .ir
   val js2ir = changeExt("js", "ir")
