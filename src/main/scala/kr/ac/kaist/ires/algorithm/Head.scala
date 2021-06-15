@@ -1,6 +1,7 @@
-package kr.ac.kaist.ires.model
+package kr.ac.kaist.ires.algorithm
 
 import kr.ac.kaist.ires.ir
+import kr.ac.kaist.ires.grammar._
 import kr.ac.kaist.ires.util.Useful._
 import kr.ac.kaist.ires.util.{ InfNum, PInf }
 import scala.util.matching.Regex._

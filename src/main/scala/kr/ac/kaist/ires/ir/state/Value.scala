@@ -1,6 +1,6 @@
 package kr.ac.kaist.ires.ir
 
-import kr.ac.kaist.ires.model.AST
+import kr.ac.kaist.ires.ast._
 import scala.collection.mutable.{ Map => MMap }
 
 // IR Values

@@ -1,9 +1,11 @@
 package kr.ac.kaist.ires.model
 
+import kr.ac.kaist.ires.algorithm._
+import kr.ac.kaist.ires.ModelTrait
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.util.Useful._
 
-object Model extends ModelHelper {
+object Model extends ModelTrait {
   lazy val consts: List[String] = List(
     "uninitialized",
     "derived",

@@ -1,6 +1,6 @@
 package kr.ac.kaist.ires.parser
 
-import kr.ac.kaist.ires.model.AST
+import kr.ac.kaist.ires.ast._
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error._
 import kr.ac.kaist.ires.util.Useful._

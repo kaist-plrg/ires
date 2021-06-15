@@ -1,4 +1,4 @@
-package kr.ac.kaist.ires.model
+package kr.ac.kaist.ires.grammar
 
 // ECMAScript grammar left-hand-sides
 case class Lhs(

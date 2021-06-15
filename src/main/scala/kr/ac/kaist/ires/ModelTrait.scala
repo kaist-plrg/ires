@@ -1,39 +1,76 @@
-package kr.ac.kaist.ires.model
+package kr.ac.kaist.ires
 
+import kr.ac.kaist.ires.ast._
+import kr.ac.kaist.ires.algorithm._
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error._
+import kr.ac.kaist.ires.model._
 import kr.ac.kaist.ires.util.Useful._
 import kr.ac.kaist.ires.util.Span
 import kr.ac.kaist.ires.parser.UnicodeRegex
+import scala.collection.mutable.{ Map => MMap }
 
-trait ModelHelper {
-  def getInitState(
+trait ModelTrait {
+  // initial state
+  def initState(
     program: Program,
     globals: Map[Id, Value] = Map()
-  ): State = initState.copy(
-    context = initState.context.copy(insts = program.insts),
-    globals = initState.globals ++ globals
+  ): State = State(
+    context = Context(insts = program.insts),
+    ctxtStack = Nil,
+    globals = initGlobal(globals),
+    heap = initHeap
   )
 
-  private val initState: State = ???
-  // State(
-  //   context = Context(),
-  //   globals = initGlobal,
-  //   heap = initHeap
-  // )
-
-  def flattenStList(s: StatementList): List[StatementListItem] = s match {
-    case StatementList0(x0, _, _) => List(x0)
-    case StatementList1(x0, x1, _, _) => flattenStList(x0) :+ x1
+  // initial global variables
+  def initGlobal(init: Map[Id, Value]): MMap[Id, Value] = {
+    val map = MMap.from(init)
+    consts.map(CONST_PREFIX + _).foreach {
+      case c => map += Id(c) -> NamedAddr(c)
+    }
+    ???
+    map
   }
 
-  def flattenStatement(s: Script) = s match {
+  // initial heap
+  def initHeap: Heap = {
+    val map = MMap[Addr, Obj]()
+    consts.map(CONST_PREFIX + _).foreach {
+      case c => map += NamedAddr(c) -> IRSymbol(Str(c))
+    }
+    ???
+    Heap(map)
+  }
+
+  // constant names
+  val CONST_PREFIX = "CONST_"
+  val consts: List[String]
+
+  // intrinsic names
+  val intrinsics: List[String]
+
+  // symbol names
+  val symbols: List[String]
+
+  // algorithm map
+  val algos: Map[String, Algo]
+
+  // flatten statements
+  def flattenStmtList(
+    s: StatementList,
+    list: List[StatementListItem] = Nil
+  ): List[StatementListItem] = s match {
+    case StatementList0(x0, _, _) => x0 :: list
+    case StatementList1(x0, x1, _, _) => flattenStmtList(x0, x1 :: list)
+  }
+  def flattenStmt(s: Script): List[StatementListItem] = s match {
     case Script0(Some(ScriptBody0(stlist, _, _)), _, _) =>
-      flattenStList(stlist)
-    case _ => List()
+      flattenStmtList(stlist)
+    case _ => Nil
   }
 
-  def mergeStatement(l: List[StatementListItem]): Script = {
+  // merge statements to script
+  def mergeStmt(l: List[StatementListItem]): Script = {
     val params = List(false, false, false)
     val bodyOpt = l match {
       case a :: rest => {
@@ -51,16 +88,15 @@ trait ModelHelper {
     Script0(bodyOpt, params, span)
   }
 
-  val SYMBOL_PREFIX = "GLOBAL.Symbol."
-  def getPropStr(value: Value): String = value match {
-    case Str(str) => s".$str"
-    case _ => s"[${value.beautified}]"
-  }
+  // def getPropStr(value: Value): String = value match {
+  //   case Str(str) => s".$str"
+  //   case _ => s"[${value.beautified}]"
+  // }
 
-  def addBuiltin(
-    map: Map[Addr, Obj],
-    builtinMethods: List[(String, Int, Func)]
-  ): Map[Addr, Obj] = ???
+  // def addBuiltin(
+  //   map: Map[Addr, Obj],
+  //   builtinMethods: List[(String, Int, Func)]
+  // ): Map[Addr, Obj] = ???
   // builtinMethods.foldLeft(map) {
   //   case (m, (givenName, length, func)) =>
   //     val base = removedExt(givenName)

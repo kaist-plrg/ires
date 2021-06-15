@@ -1,8 +1,10 @@
 package kr.ac.kaist.ires.js
 
 import kr.ac.kaist.ires.IRESTest
+import kr.ac.kaist.ires.ast._
 import kr.ac.kaist.ires.ir._
-import kr.ac.kaist.ires.model.{ AST, Parser => JSParser, Script }
+import kr.ac.kaist.ires.phase._
+import kr.ac.kaist.ires.model.{ Parser => JSParser, Script }
 import kr.ac.kaist.ires.util.Useful._
 import spray.json._
 
@@ -16,6 +18,11 @@ trait JSTest extends IRESTest {
     JSParser.parse(JSParser.Script(Nil), fileReader(filename)).get
   def esparseFile(filename: String): Script =
     Script(executeCmd(s"bin/esparse $filename").parseJson)
+
+  // eval js codes
+  def eval(str: String): State = Interp(Load(parse(str)))
+  def evalFile(filename: String): State =
+    Interp(Load(parseFile(filename), filename), filename)
 
   // tests for js parser
   def parseTest(ast: AST): Unit = {

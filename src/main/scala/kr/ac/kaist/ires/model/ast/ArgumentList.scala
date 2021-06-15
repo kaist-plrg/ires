@@ -1,5 +1,7 @@
 package kr.ac.kaist.ires.model
 
+import kr.ac.kaist.ires.ast._
+import kr.ac.kaist.ires.algorithm._
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.error.InvalidAST
 import kr.ac.kaist.ires.util.Span

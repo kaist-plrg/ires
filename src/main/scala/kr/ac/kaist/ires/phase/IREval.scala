@@ -17,7 +17,6 @@ case object IREval extends PhaseObj[State, IREvalConfig, State] {
   ): State = {
     val filename = getFirstFilename(iresConfig, "eval-ir")
     Interp(st, filename, config.timeout)
-    st
   }
 
   def defaultConfig: IREvalConfig = IREvalConfig()

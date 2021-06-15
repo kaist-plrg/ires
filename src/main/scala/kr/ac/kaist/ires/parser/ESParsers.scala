@@ -1,7 +1,8 @@
 package kr.ac.kaist.ires.parser
 
-import kr.ac.kaist.ires.error.{ WrongNumberOfParserParams, TooManySemicolonInsertion }
-import kr.ac.kaist.ires.model.{ AST, Lexical, Script }
+import kr.ac.kaist.ires.ast._
+import kr.ac.kaist.ires.error._
+import kr.ac.kaist.ires.model.Script
 import kr.ac.kaist.ires.util.Useful._
 import kr.ac.kaist.ires.{ DEBUG, LINE_SEP }
 import scala.collection.mutable

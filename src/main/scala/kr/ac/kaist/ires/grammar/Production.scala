@@ -1,4 +1,4 @@
-package kr.ac.kaist.ires.model
+package kr.ac.kaist.ires.grammar
 
 import kr.ac.kaist.ires.LINE_SEP
 import kr.ac.kaist.ires.util.Useful._

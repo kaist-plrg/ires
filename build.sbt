@@ -79,7 +79,7 @@ lazy val ires = (project in file("."))
     // js
     jsTest := (testOnly in Test).toTask(" *.js.*Test").value,
     jsParseTest := (testOnly in Test).toTask(" *.js.Parse*Test").value,
-    // TODO jsEvalTest := (testOnly in Test).toTask(" *.js.Eval*Test").value,
+    jsEvalTest := (testOnly in Test).toTask(" *.js.Eval*Test").value,
     // test262
     test262ParseTest := (testOnly in Test).toTask(" *.test262.Parse*Test").value,
     test262ESParseTest := (testOnly in Test).toTask(" *.test262.ESParse*Test").value

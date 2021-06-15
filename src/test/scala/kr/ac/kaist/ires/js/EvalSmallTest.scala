@@ -1,6 +1,8 @@
 package kr.ac.kaist.ires.js
 
 import kr.ac.kaist.ires.JS_DIR
+import kr.ac.kaist.ires.ir._
+import kr.ac.kaist.ires.phase._
 import kr.ac.kaist.ires.util.Useful._
 
 class EvalSmallTest extends JSTest {
@@ -8,29 +10,20 @@ class EvalSmallTest extends JSTest {
 
   // registration
   def init: Unit = for (file <- walkTree(JS_DIR)) {
-    // TODO
-    // val filename = file.getName
-    // if (jsFilter(filename)) {
-    //   lazy val name = removedExt(filename)
-    //   lazy val jsName = file.toString
-    //   lazy val jsConfig = aseConfig.copy(fileNames = List(jsName))
+    val filename = file.getName
+    // TODO if (jsFilter(filename)) check(filename, {
+    //   val name = removedExt(filename)
+    //   val jsName = file.toString
 
-    //   lazy val ast = Parse((), jsConfig)
-    //   check("JSParse", name, parseJSTest(ast))
+    //   val ast = parseFile(jsName)
+    //   val st = Load(ast, jsName)
+    //   Interp(st, jsName)
 
-    //   lazy val st = IREval(Load(ast, jsConfig), jsConfig)
-    //   check("JSEval", name, evalJSTest(st))
-
-    //   lazy val irName = js2ir(jsName)
-    //   lazy val irConfig = aseConfig.copy(fileNames = List(irName))
-
-    //   lazy val pgm = IRParse((), irConfig)
-    //   lazy val irSt = IREval(st.copy(context = st.context.copy(insts = pgm.insts)), irConfig)
-    //   check("JSCheck", name, {
-    //     parseIRTest(pgm)
-    //     evalIRTest(irSt)
-    //   })
-    // }
+    //   val irName = js2ir(jsName)
+    //   val program = Parser.fileToProgram(name)
+    //   st.context.insts = program.insts
+    //   Interp(st, irName)
+    // })
   }
   init
 }

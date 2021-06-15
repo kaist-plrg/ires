@@ -15,13 +15,20 @@ case object Load extends PhaseObj[Script, LoadConfig, State] {
     script: Script,
     iresConfig: IRESConfig,
     config: LoadConfig
-  ): State = Model.getInitState(
+  ): State = this(script, getFirstFilename(iresConfig, "load"))
+
+  def apply(script: Script): State = this(script, "unknown")
+
+  def apply(
+    script: Script,
+    filename: String
+  ): State = Model.initState(
     program = Parser.parseProgram("""{
       app __RESULT__ = (RunJobs)
     }"""),
     globals = Map(
-      Id("script") -> ASTVal(script),
-      Id("__filename__") -> Str(getFirstFilename(iresConfig, "load")),
+      Id("__SCRIPT__") -> ASTVal(script),
+      Id("__FILENAME__") -> Str(filename),
     )
   )
 

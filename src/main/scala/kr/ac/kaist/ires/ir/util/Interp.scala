@@ -1,13 +1,14 @@
 package kr.ac.kaist.ires.ir
 
 import kr.ac.kaist.ires.{ DEBUG, TIMEOUT }
+import kr.ac.kaist.ires.ast.Lexical
 import kr.ac.kaist.ires.error.NotSupported
 import kr.ac.kaist.ires.util.Useful._
-import kr.ac.kaist.ires.model.{ Parser => ESParser, Model, Lexical }
+import kr.ac.kaist.ires.model.{ Parser => ESParser, Model }
 import kr.ac.kaist.ires.parser.ESValueParser
 
 // IR Interpreter
-case class Interp(
+private class Interp(
   st: State,
   filename: String = "unknown",
   timeLimit: Option[Long] = Some(TIMEOUT)
@@ -17,10 +18,10 @@ case class Interp(
 
   // the number of instructions
   def getInstCount: Int = instCount
-  private var instCount: Int = 0
+  var instCount: Int = 0
 
   // iteration period for check
-  private val CHECK_PERIOD = 10000
+  val CHECK_PERIOD = 10000
 
   // start
   fixpoint
@@ -483,5 +484,15 @@ case class Interp(
         interp(bop, l, r)
       }
     }
+  }
+}
+object Interp {
+  def apply(
+    st: State,
+    filename: String = "unknown",
+    timeLimit: Option[Long] = Some(TIMEOUT)
+  ): State = {
+    new Interp(st, filename, timeLimit)
+    st
   }
 }

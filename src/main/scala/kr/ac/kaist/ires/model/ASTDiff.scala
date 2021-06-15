@@ -1,5 +1,6 @@
 package kr.ac.kaist.ires.model
 
+import kr.ac.kaist.ires.ast._
 import kr.ac.kaist.ires.util.Useful.error
 import kr.ac.kaist.ires.util.Span
 

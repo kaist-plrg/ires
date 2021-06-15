@@ -1,5 +1,7 @@
 package kr.ac.kaist.ires.model
 
+import kr.ac.kaist.ires.ast._
+
 object ASTWalker {
   def job(ast: AST): Unit = {}
   def walk[T](opt: Option[T], w: T => Unit): Unit = opt.map(w)
