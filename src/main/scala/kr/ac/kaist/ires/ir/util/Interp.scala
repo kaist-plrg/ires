@@ -85,7 +85,45 @@ private class Interp(
         }
         case v => error(s"not a function: ${fexpr.beautified} -> ${v.beautified}")
       }
-      case IAccess(id, bexpr, expr, args) => ???
+      case IAccess(id, bexpr, expr, args) => {
+        val base = interp(bexpr)
+        val prop = interp(expr).escaped(st)
+        val vOpt = (base, prop) match {
+          case (addr: Addr, p @ Str("Value")) if isCompletion(addr) => Some(st(addr, p))
+          case (ASTVal(Lexical(kind, str)), Str(name)) => Some((kind, name) match {
+            case ("(IdentifierName \\ (ReservedWord))" | "IdentifierName", "StringValue") => Str(ESValueParser.parseIdentifier(str))
+            case ("NumericLiteral", "MV") => Num(ESValueParser.parseNumber(str))
+            case ("StringLiteral", "SV" | "StringValue") => Str(ESValueParser.parseString(str))
+            case ("NoSubstitutionTemplate", "TV") => Str(ESValueParser.parseTVNoSubstitutionTemplate(str))
+            case ("TemplateHead", "TV") => Str(ESValueParser.parseTVTemplateHead(str))
+            case ("TemplateMiddle", "TV") => Str(ESValueParser.parseTVTemplateMiddle(str))
+            case ("TemplateTail", "TV") => Str(ESValueParser.parseTVTemplateTail(str))
+            case ("NoSubstitutionTemplate", "TRV") => Str(ESValueParser.parseTRVNoSubstitutionTemplate(str))
+            case ("TemplateHead", "TRV") => Str(ESValueParser.parseTRVTemplateHead(str))
+            case ("TemplateMiddle", "TRV") => Str(ESValueParser.parseTRVTemplateMiddle(str))
+            case ("TemplateTail", "TRV") => Str(ESValueParser.parseTRVTemplateTail(str))
+            case (_, "Contains") => Bool(false)
+            case _ => error(s"invalid Lexical access: $kind.$name")
+          })
+          case (ASTVal(ast), Str("parent")) => Some(ast.parent.map(ASTVal).getOrElse(Absent))
+          case (ASTVal(ast), Str(name)) => ast.semantics(name) match {
+            case Some((Algo(head, body), asts)) => {
+              val vs = asts ++ args.map(interp)
+              val locals = getLocals(head.params, vs)
+              val context = Context(id, head.name, List(body), locals)
+              st.ctxtStack ::= st.context
+              st.context = context
+              None
+            }
+            case None => Some(ast.subs(name).getOrElse {
+              error(s"unexpected semantics: ${ast.name}.$name")
+            })
+          }
+          case (Str(str), _) => Some(st(str, prop))
+          case v => error(s"invalid access: ${inst.beautified}")
+        }
+        vOpt.map(st.context.locals += id -> _)
+      }
       case IExpr(expr) => interp(expr)
       case ILet(id, expr) => st.context.locals += id -> interp(expr)
       case IAssign(ref, expr) => st.update(interp(ref), interp(expr))
@@ -124,74 +162,6 @@ private class Interp(
     }
     if (instCount % 100000 == 0) GC.gc(st)
   }
-  //     case IAccess(id, bexpr, expr) =>
-  //       val (base, s1) = interp(bexpr)(st)
-  //       val (p, s2) = escapeCompletion(interp(expr)(s1))
-  //       (base, p) match {
-  //         case (addr: Addr, p) => s2.get(addr) match {
-  //           case Some(IRMap(Ty("Completion"), m, _)) if !m.contains(p) => m(Str("Value"))._1 match {
-  //             case a: Addr => s2.define(id, s2.heap(a, p))
-  //             case Str(s) => p match {
-  //               case Str("length") => s2.define(id, INum(s.length))
-  //               case INum(k) => s2.define(id, Str(s(k.toInt).toString))
-  //               case Num(k) => s2.define(id, Str(s(k.toInt).toString))
-  //               case v => error(s"wrong access of string reference: $s.$p")
-  //             }
-  //             case _ => error(s"Completion does not have value: $bexpr[$expr]")
-  //           }
-  //           case _ => s2.define(id, s2.heap(addr, p))
-  //         }
-  //         case (ASTVal(Lexical(kind, str)), Str(name)) => s2.define(id, (kind, name) match {
-  //           case ("(IdentifierName \\ (ReservedWord))" | "IdentifierName", "StringValue") => Str(ESValueParser.parseIdentifier(str))
-  //           case ("NumericLiteral", "MV") => Num(ESValueParser.parseNumber(str))
-  //           case ("StringLiteral", "SV" | "StringValue") => Str(ESValueParser.parseString(str))
-  //           case ("NoSubstitutionTemplate", "TV") => Str(ESValueParser.parseTVNoSubstitutionTemplate(str))
-  //           case ("TemplateHead", "TV") => Str(ESValueParser.parseTVTemplateHead(str))
-  //           case ("TemplateMiddle", "TV") => Str(ESValueParser.parseTVTemplateMiddle(str))
-  //           case ("TemplateTail", "TV") => Str(ESValueParser.parseTVTemplateTail(str))
-  //           case ("NoSubstitutionTemplate", "TRV") => Str(ESValueParser.parseTRVNoSubstitutionTemplate(str))
-  //           case ("TemplateHead", "TRV") => Str(ESValueParser.parseTRVTemplateHead(str))
-  //           case ("TemplateMiddle", "TRV") => Str(ESValueParser.parseTRVTemplateMiddle(str))
-  //           case ("TemplateTail", "TRV") => Str(ESValueParser.parseTRVTemplateTail(str))
-  //           case (_, "Contains") => Func("", Nil, None, IReturn(EBool(false)))
-  //           case _ => throw new Error(s"$kind, $str, $name")
-  //         })
-  //         case (astV: ASTVal, Str(name)) =>
-  //           val ASTVal(ast) = astV
-  //           name match {
-  //             case "parent" => s2.define(id, ast.parent.map(ASTVal(_)).getOrElse(Absent))
-  //             case name =>
-  //               ast.semantics(name) match {
-  //                 case Some((Func(fname, params, varparam, body), lst)) =>
-  //                   val (locals, rest) = lst.foldLeft(Map[Id, Value](), params) {
-  //                     case ((map, param :: rest), arg) =>
-  //                       (map + (param -> arg), rest)
-  //                     case (pair, _) => pair
-  //                   }
-  //                   rest match {
-  //                     case Nil =>
-  //                       val updatedCtxt = s2.context.copy(retId = id)
-  //                       val newCtxt = Context(name = fname, insts = List(body), locals = locals)
-  //                       s2.copy(context = newCtxt, ctxtStack = updatedCtxt :: s2.ctxtStack)
-  //                     case _ =>
-  //                       s2.define(id, ASTMethod(Func(fname, rest, varparam, body), locals))
-  //                   }
-  //                 case None => ast.subs(name) match {
-  //                   case Some(v) => s2.define(id, v)
-  //                   case None => error(s"Unexpected semantics: ${ast.name}.$name")
-  //                 }
-  //               }
-  //           }
-  //         case (Str(str), p) => p match {
-  //           case Str("length") => s2.define(id, INum(str.length))
-  //           case INum(k) => s2.define(id, Str(str(k.toInt).toString))
-  //           case Num(k) => s2.define(id, Str(str(k.toInt).toString))
-  //           case v => error(s"wrong access of string reference: $str.$p")
-  //         }
-  //         case v => error(s"not an address: $v")
-  //       }
-  //   }
-  // }
 
   // expresssions
   def interp(expr: Expr): Value = expr match {
@@ -254,13 +224,7 @@ private class Interp(
       case ASTVal(_) => "AST"
       case ASTMethod(_, _) => "ASTMethod"
     })
-    case EIsCompletion(expr) => Bool(interp(expr) match {
-      case addr: Addr => st(addr) match {
-        case IRMap(Ty("Completion"), _, _) => true
-        case _ => false
-      }
-      case _ => false
-    })
+    case EIsCompletion(expr) => Bool(isCompletion(interp(expr)))
     case EIsInstanceOf(base, name) => interp(base).escaped(st) match {
       case ASTVal(ast) => Bool(ast.name == name || ast.getKinds.contains(name))
       case Str(str) => Bool(str == name)
@@ -517,6 +481,16 @@ private class Interp(
     aux(params, args)
     map
   }
+
+  // check completion record
+  def isCompletion(value: Value): Boolean = value match {
+    case addr: Addr => st(addr) match {
+      case IRMap(Ty("Completion"), _, _) => true
+      case _ => false
+    }
+    case _ => false
+  }
+
   // // handle parameters
   // def getEntryState(
   //   call: Call,

@@ -1366,6 +1366,7 @@ object Model extends ModelTrait {
     "IntegerIndexedObjectCreate" -> `AL::IntegerIndexedObjectCreate`,
     "InternalizeJSONProperty" -> `AL::InternalizeJSONProperty`,
     "Invoke" -> `AL::Invoke`,
+    "IsAbruptCompletion" -> `AL::IsAbruptCompletion`,
     "IsAccessorDescriptor" -> `AL::IsAccessorDescriptor`,
     "IsAnonymousFunctionDefinition" -> `AL::IsAnonymousFunctionDefinition`,
     "IsArray" -> `AL::IsArray`,

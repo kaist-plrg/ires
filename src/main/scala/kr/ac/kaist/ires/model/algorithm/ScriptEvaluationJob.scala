@@ -11,10 +11,13 @@ object `AL::ScriptEvaluationJob` extends Algo {
   val ids = List()
   val rawBody = parseInst("""{
   |  let realm = REALM
-  |  app s = (ParseScript sourceText realm hostDefined)
-  |  app __x1__ = (ScriptEvaluation s)
-  |  [? __x1__]
-  |  return __x1__
+  |  app script = (ParseScript sourceText realm hostDefined)
+  |  let body = script.ScriptBody
+  |  if (! (= body absent)) {
+  |    app __x1__ = (ScriptEvaluation script.ScriptBody)
+  |    [? __x1__]
+  |  } else {}
+  |  return undefined
   |}""".stripMargin)
   val code = scala.Array[String]()
 }

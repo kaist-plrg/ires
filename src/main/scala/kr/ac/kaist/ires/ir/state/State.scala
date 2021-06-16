@@ -21,16 +21,17 @@ case class State(
   def apply(refV: RefValue): Value = refV match {
     case RefValueId(x) => this(x)
     case RefValueProp(addr, value) => this(addr, value)
-    case RefValueString(str, value) => value match {
-      case Str("length") => INum(str.length)
-      case INum(k) => Str(str(k.toInt).toString)
-      case Num(k) => Str(str(k.toInt).toString)
-      case v => error(s"wrong access of string reference: ${refV.beautified}")
-    }
+    case RefValueString(str, value) => this(str, value)
   }
   def apply(x: Id): Value =
     locals.getOrElse(x, globals.getOrElse(x, error(s"unknown variable: ${x.name}")))
   def apply(addr: Addr, key: Value): Value = heap(addr, key)
+  def apply(str: String, key: Value): Value = key match {
+    case Str("length") => INum(str.length)
+    case INum(k) => Str(str(k.toInt).toString)
+    case Num(k) => Str(str(k.toInt).toString)
+    case v => error(s"wrong access of string reference: $str.${key.beautified}")
+  }
   def apply(addr: Addr): Obj = heap(addr)
 
   // setters

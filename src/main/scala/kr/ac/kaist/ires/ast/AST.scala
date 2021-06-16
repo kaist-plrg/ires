@@ -57,41 +57,18 @@ trait AST {
   }
 
   // get semantics
-  def semantics(fname: String): Option[(Func, List[Value])] = ???
-  // {
-  //   (info.semMap.get(fname + k.toString) match {
-  //     case Some(f) => Some((f, ASTVal(this) :: list.map(_._2)))
-  //     case None => info.semMap.get(fname + info.maxK.toString).map((f) => (f, ASTVal(this) :: fullList.map(_._2)))
-  //   }) match {
-  //     case Some(f) => Some(f)
-  //     // `Contains` static semantics
-  //     case None => if (fname == "Contains") Some((Func(
-  //       name + fname,
-  //       Id("this") :: (list.map { case (x, _) => Id(x) } :+ Id("symbol")),
-  //       None,
-  //       list.foldLeft[Inst](IReturn(EBool(false))) {
-  //         case (base, (kind, value)) => IIf(
-  //           EBOp(OEq, ERef(RefId(Id("symbol"))), EStr(kind)),
-  //           IReturn(EBool(true)),
-  //           ISeq(List(
-  //             IAccess(Id("res"), ERef(RefId(Id(kind))), EStr("Contains")),
-  //             IApp(Id("res"), ERef(RefId(Id("res"))), List(ERef(RefId(Id("symbol"))))),
-  //             IIf(
-  //               ERef(RefId(Id("res"))),
-  //               IReturn(EBool(true)),
-  //               base
-  //             )
-  //           ))
-  //         )
-  //       }
-  //     ), ASTVal(this) :: list.map(_._2)))
-  //     else (list match {
-  //       // case None => (list match {
-  //       case List((_, ASTVal(x))) => x.semantics(fname)
-  //       case _ => None
-  //     })
-  //   }
-  // }
+  def semantics(fname: String): Option[(Algo, List[Value])] = {
+    info.semMap.get(fname + k.toString) match {
+      case Some(f) => Some((f, ASTVal(this) :: list.map(_._2)))
+      case None => info.semMap.get(fname + info.maxK.toString) match {
+        case Some(f) => Some((f, ASTVal(this) :: fullList.map(_._2)))
+        case None => list match {
+          case List((_, ASTVal(x))) => x.semantics(fname)
+          case _ => None
+        }
+      }
+    }
+  }
 
   // existence check
   def exists(kindFilter: String => Boolean): Boolean = kindFilter(kind) || list.exists {
