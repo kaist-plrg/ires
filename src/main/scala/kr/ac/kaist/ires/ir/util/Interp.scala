@@ -54,8 +54,7 @@ private class Interp(
       val duration = (System.currentTimeMillis - startTime) / 1000
       if (duration > limit) error("TIMEOUT")
     })
-    // if (DEBUG) inst match {
-    inst match {
+    if (DEBUG) inst match {
       case ISeq(_) =>
       case _ => println(s"${st.context.name}: ${inst.beautified}")
     }
