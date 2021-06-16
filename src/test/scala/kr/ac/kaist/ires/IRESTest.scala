@@ -58,7 +58,7 @@ abstract class IRESTest extends FunSuite with BeforeAndAfterAll {
   )
 
   // tag name
-  val category: String
+  def category: String
   lazy val tag: String = s"$category.$this"
 
   // check backward-compatibility after all tests

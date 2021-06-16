@@ -29,33 +29,41 @@ case class State(
     }
   }
   def apply(x: Id): Value =
-    locals.getOrElse(x, globals.getOrElse(x, Absent))
+    locals.getOrElse(x, globals.getOrElse(x, error(s"unknown variable: ${x.name}")))
   def apply(addr: Addr, key: Value): Value = heap(addr, key)
   def apply(addr: Addr): Obj = heap(addr)
 
   // setters
-  def update(refV: RefValue, value: Value): Unit = refV match {
-    case RefValueId(x) => update(x, value)
-    case RefValueProp(addr, key) => update(addr, key, value)
+  def update(refV: RefValue, value: Value): this.type = refV match {
+    case RefValueId(x) =>
+      update(x, value); this
+    case RefValueProp(addr, key) =>
+      update(addr, key, value); this
     case _ => error(s"illegal reference update: ${refV.beautified} = ${value.beautified}")
   }
-  def update(x: Id, value: Value): Unit =
+  def update(x: Id, value: Value): this.type = {
     if (locals contains x) locals += x -> value
     else if (globals contains x) globals += x -> value
     else error(s"illegal variable update: ${x.beautified} = ${value.beautified}")
-  def update(addr: Addr, key: Value, value: Value): Unit =
-    heap.update(addr, key, value)
+    this
+  }
+  def update(addr: Addr, key: Value, value: Value): this.type =
+    { heap.update(addr, key, value); this }
 
   // delete a key from a map
-  def delete(refV: RefValue): Unit = refV match {
-    case RefValueId(x) => context.locals -= x;
-    case RefValueProp(addr, prop) => heap.delete(addr, prop)
+  def delete(refV: RefValue): this.type = refV match {
+    case RefValueId(x) =>
+      context.locals -= x; this
+    case RefValueProp(addr, prop) =>
+      heap.delete(addr, prop); this
     case _ => error(s"illegal reference delete: delete ${refV.beautified}")
   }
 
   // object operators
-  def append(addr: Addr, value: Value): Unit = heap.append(addr, value)
-  def prepend(addr: Addr, value: Value): Unit = heap.prepend(addr, value)
+  def append(addr: Addr, value: Value): this.type =
+    { heap.append(addr, value); this }
+  def prepend(addr: Addr, value: Value): this.type =
+    { heap.prepend(addr, value); this }
   def pop(addr: Addr, idx: Value): Value = heap.pop(addr, idx)
   def copyObj(addr: Addr): Addr = heap.copyObj(addr)
   def keys(addr: Addr): Addr = heap.keys(addr)
@@ -64,11 +72,10 @@ case class State(
   def allocSymbol(desc: Value): Addr = heap.allocSymbol(desc)
 
   // get string for a given address
-  def getString(addr: Addr): String = ???
-  // {
-  //   addr.beautified
-  //   st.heap(addr).beautified
-  // }
+  def getString(value: Value): String = value match {
+    case addr: Addr => addr.beautified + " -> " + heap(addr).beautified
+    case _ => value.beautified
+  }
 }
 object State {
   def apply(program: Program): State = State(

@@ -1,11 +1,14 @@
 package kr.ac.kaist.ires.ir
 
 import kr.ac.kaist.ires.{ DEBUG, TIMEOUT }
+import kr.ac.kaist.ires.algorithm._
 import kr.ac.kaist.ires.ast.Lexical
 import kr.ac.kaist.ires.error.NotSupported
 import kr.ac.kaist.ires.util.Useful._
 import kr.ac.kaist.ires.model.{ Parser => ESParser, Model }
 import kr.ac.kaist.ires.parser.ESValueParser
+import scala.collection.mutable.{ Map => MMap }
+import scala.annotation.tailrec
 
 // IR Interpreter
 private class Interp(
@@ -27,7 +30,7 @@ private class Interp(
   fixpoint
 
   // perform transition until instructions are empty
-  // @tailrec
+  @tailrec
   final def fixpoint: Unit = st.context.insts match {
     case Nil => st.ctxtStack match {
       case Nil =>
@@ -51,7 +54,8 @@ private class Interp(
       val duration = (System.currentTimeMillis - startTime) / 1000
       if (duration > limit) error("TIMEOUT")
     })
-    if (DEBUG) inst match {
+    // if (DEBUG) inst match {
+    inst match {
       case ISeq(_) =>
       case _ => println(s"${st.context.name}: ${inst.beautified}")
     }
@@ -67,39 +71,20 @@ private class Interp(
         case v => error(s"not a boolean: ${v.beautified}")
       }
       case IApp(id, fexpr, args) => interp(fexpr) match {
-        // case Func(fname, params, varparam, body) =>
-        //   val (locals0, s1, restArg) = params.foldLeft(Map[Id, Value](), s0, args) {
-        //     case ((map, st, arg :: rest), param) =>
-        //       val (av, s0) = interp(arg)(st)
-        //       (map + (param -> av), s0, rest)
-        //     case (triple, _) => triple
-        //   }
-        //   val (locals1, s2) = varparam.map((param) => {
-        //     val (av, s0) = interp(EList(restArg))(s1)
-        //     (locals0 + (param -> av), s0)
-        //   }).getOrElse((locals0, s1))
-
-        //   val updatedCtxt = s2.context.copy(retId = id)
-        //   val newCtxt = Context(name = fname, insts = List(body), locals = locals1)
-        //   s2.copy(context = newCtxt, ctxtStack = updatedCtxt :: s2.ctxtStack)
-        // case ASTMethod(Func(fname, params, _, body), baseLocals) =>
-        //   val (locals, s1, _) = params.foldLeft(baseLocals, s0, args) {
-        //     case ((map, st, arg :: rest), param) =>
-        //       val (av, s0) = interp(arg)(st)
-        //       (map + (param -> av), s0, rest)
-        //     case (triple, _) => triple
-        //   }
-
-        //   val updatedCtxt = s1.context.copy(retId = id)
-        //   val newCtxt = Context(name = fname, insts = List(body), locals = locals)
-        //   s1.copy(context = newCtxt, ctxtStack = updatedCtxt :: s1.ctxtStack)
+        case Func(Algo(head, body)) => {
+          val vs = args.map(interp)
+          val locals = getLocals(head.params, vs)
+          val context = Context(id, head.name, List(body), locals)
+          st.ctxtStack ::= st.context
+          st.context = context
+        }
         case Cont(params, body, context, ctxtStack) => {
           st.context = context
           st.context.insts = List(body)
           st.context.locals ++= params zip args.map(interp)
           st.ctxtStack = ctxtStack
         }
-        case v => error(s"not a function: $v")
+        case v => error(s"not a function: ${fexpr.beautified} -> ${v.beautified}")
       }
       case IAccess(id, bexpr, expr, args) => ???
       case IExpr(expr) => interp(expr)
@@ -117,7 +102,7 @@ private class Interp(
       case IReturn(expr) => st.ctxtStack match {
         case Nil => error(s"no remaining calling contexts")
         case ctxt :: rest =>
-          ctxt.locals += ctxt.retId -> interp(expr)
+          ctxt.locals += st.context.retId -> interp(expr)
           st.context = ctxt
           st.ctxtStack = rest
       }
@@ -265,7 +250,7 @@ private class Interp(
       case Undef => "Undefined"
       case Null => "Null"
       case Absent => "Absent"
-      case Func(_, _, _, _) => "Function"
+      case Func(_) => "Function"
       case Cont(_, _, _, _) => "Continuation"
       case ASTVal(_) => "AST"
       case ASTMethod(_, _) => "ASTMethod"
@@ -280,7 +265,11 @@ private class Interp(
     case EIsInstanceOf(base, name) => interp(base).escaped(st) match {
       case ASTVal(ast) => Bool(ast.name == name || ast.getKinds.contains(name))
       case Str(str) => Bool(str == name)
-      case v => error(s"not an AST or a String value: ${v.beautified}")
+      case addr: Addr => st(addr) match {
+        case IRMap(Ty(tyname), _, _) => Bool(tyname == name)
+        case _ => Bool(false)
+      }
+      case v => error(s"invalid value for is-instance-of operator: ${v.beautified}")
     }
     case EGetElems(base, name) => interp(base).escaped(st) match {
       case ASTVal(ast) => st.allocList(ast.getElems(name).map(ASTVal(_)))
@@ -363,7 +352,13 @@ private class Interp(
       }
       case v => error(s"not an address: ${v.beautified}")
     }
-    case EReturnIfAbrupt(expr, check) => ???
+    case EReturnIfAbrupt(rexpr @ ERef(ref), check) => {
+      val refV = interp(ref)
+      val value = returnIfAbrupt(st(refV), check)
+      st.update(refV, value)
+      value
+    }
+    case EReturnIfAbrupt(expr, check) => returnIfAbrupt(interp(expr), check)
     case ECopy(obj) => interp(obj).escaped(st) match {
       case addr: Addr => st.copyObj(addr)
       case v => error(s"not an address: ${v.beautified}")
@@ -373,6 +368,21 @@ private class Interp(
       case v => error(s"not an address: ${v.beautified}")
     }
     case ENotSupported(msg) => throw NotSupported(msg)
+  }
+
+  // return if abrupt completion
+  def returnIfAbrupt(value: Value, check: Boolean): Value = value match {
+    case addr: Addr => st(addr) match {
+      case obj @ IRMap(Ty("Completion"), _, _) => obj(Str("Type")) match {
+        case NamedAddr("CONST_normal") => obj(Str("Value"))
+        case _ => {
+          if (check) ??? // TODO do return
+          else error("unchecked abrupt completion")
+        }
+      }
+      case _ => value
+    }
+    case _ => value
   }
 
   // references
@@ -485,6 +495,59 @@ private class Interp(
       }
     }
   }
+
+  // get initial local variables
+  def getLocals(params: List[Param], args: List[Value]): MMap[Id, Value] = {
+    val map = MMap[Id, Value]()
+    @tailrec
+    def aux(ps: List[Param], as: List[Value]): Unit = (ps, as) match {
+      case (Nil, Nil) =>
+      case (Param(name, kind) :: pl, Nil) =>
+        import Param.Kind._
+        kind match {
+          case Normal => error(s"remaining parameter: $name")
+          case _ => map += Id(name) -> Absent
+        }
+      case (Nil, args) =>
+        val argsStr = args.map(_.beautified).mkString("[", ", ", "]")
+        error(s"remaining arguments: $argsStr")
+      case (param :: pl, arg :: al) =>
+        map += Id(param.name) -> arg
+        aux(pl, al)
+    }
+    aux(params, args)
+    map
+  }
+  // // handle parameters
+  // def getEntryState(
+  //   call: Call,
+  //   params: List[Param],
+  //   args: List[Type]
+  // ): AbsState = {
+  //   var st = AbsState.Empty
+  //   import Param.Kind._
+  //   @tailrec
+  //   def aux(ps: List[Param], as: List[Type]): Unit = (ps, as) match {
+  //     case (Param(_, Normal) :: pl, Absent :: al) =>
+  //       st = AbsState.Bot
+  //     case (param :: pl, arg :: al) =>
+  //       st = st.define(param.name, arg.abs, param = true)
+  //       aux(pl, al)
+  //     case (Param(name, kind) :: tl, Nil) =>
+  //       if (kind == Normal) {
+  //         Stat.doCheck(alarm(s"remaining parameter: $name"))
+  //         st = AbsState.Bot
+  //       } else st = st.define(name, Absent.abs, param = true)
+  //       aux(tl, Nil)
+  //     case (Nil, Nil) =>
+  //     case (Nil, args) =>
+  //       Stat.doCheck(alarm(s"remaining arguments: ${args.mkString(", ")}"))
+  //     case _ =>
+  //       warning(s"consider variadic: (${params.mkString(", ")}) and (${args.mkString(", ")}) @ $call")
+  //   }
+  //   aux(params, args)
+  //   st
+  // }
 }
 object Interp {
   def apply(

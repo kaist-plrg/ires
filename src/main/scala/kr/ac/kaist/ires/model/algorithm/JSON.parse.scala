@@ -18,20 +18,18 @@ object `AL::JSON.parse` extends Algo {
   |  0:let jsonString = [? __x0__]
   |  1:??? "Parse ! StringToCodePoints ( id:{jsonString} ) as a JSON text as specified in ECMA - 404 . Throw a value:{SyntaxError} exception if it is not a valid JSON text as defined in that specification ."
   |  2:let scriptString = (+ (+ "(" jsonString) ");")
-  |  3:app __x1__ = (StringToCodePoints scriptString)
-  |  3:app __x2__ = (ParseText [! __x1__] Script)
-  |  3:let script = __x2__
+  |  3:let script = SCRIPT
   |  5:??? "Let id:{completion} be the result of evaluating id:{script} . The extended PropertyDefinitionEvaluation semantics defined in link:{unhandled: sec-__proto__-property-names-in-object-initializers} must not be used during the evaluation ."
   |  6:let unfiltered = completion.Value
-  |  13:app __x3__ = (IsCallable reviver)
-  |  13:if (= __x3__ true) {
-  |    9:app __x4__ = (OrdinaryObjectCreate INTRINSIC_Object_prototype)
-  |    9:let root = [! __x4__]
+  |  13:app __x1__ = (IsCallable reviver)
+  |  13:if (= __x1__ true) {
+  |    9:app __x2__ = (OrdinaryObjectCreate INTRINSIC_Object_prototype)
+  |    9:let root = [! __x2__]
   |    10:let rootName = ""
-  |    11:app __x5__ = (CreateDataPropertyOrThrow root rootName unfiltered)
-  |    11:[! __x5__]
-  |    12:app __x6__ = (InternalizeJSONProperty root rootName reviver)
-  |    12:return [? __x6__]
+  |    11:app __x3__ = (CreateDataPropertyOrThrow root rootName unfiltered)
+  |    11:[! __x3__]
+  |    12:app __x4__ = (InternalizeJSONProperty root rootName reviver)
+  |    12:return [? __x4__]
   |  } else return unfiltered
   |}""".stripMargin)
   val code = scala.Array[String](

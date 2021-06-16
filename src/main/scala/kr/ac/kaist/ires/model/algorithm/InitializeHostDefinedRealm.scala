@@ -21,13 +21,12 @@ object `AL::InitializeHostDefinedRealm` extends Algo {
   |  4:newContext.ScriptOrModule = null
   |  5:append newContext -> EXECUTION_STACK
   |  5:CONTEXT = EXECUTION_STACK[(- EXECUTION_STACK.length 1i)]
-  |  6:??? "If the host requires use of an exotic object to serve as id:{realm} ' s global object , let id:{global} be such an object created in a host - defined manner . Otherwise , let id:{global} be value:{undefined} , indicating that an ordinary object should be created as the global object ."
-  |  7:??? "If the host requires that the code:{this} binding in id:{realm} ' s global scope return an object other than the global object , let id:{thisValue} be such an object created in a host - defined manner . Otherwise , let id:{thisValue} be value:{undefined} , indicating that id:{realm} ' s global code:{this} binding should be the global object ."
+  |  6:let global = undefined
+  |  7:let thisValue = undefined
   |  8:app __x1__ = (SetRealmGlobalObject realm global thisValue)
   |  8:__x1__
   |  9:app __x2__ = (SetDefaultGlobalBindings realm)
   |  9:let globalObj = [? __x2__]
-  |  10:??? "Create any host - defined global object properties on id:{globalObj} ."
   |  11:return CONST_empty
   |}""".stripMargin)
   val code = scala.Array[String](

@@ -1,5 +1,6 @@
 package kr.ac.kaist.ires.ir
 
+import kr.ac.kaist.ires.algorithm._
 import kr.ac.kaist.ires.ast._
 import scala.collection.mutable.{ Map => MMap }
 
@@ -21,9 +22,11 @@ case class NamedAddr(name: String) extends Addr
 case class DynamicAddr(long: Long) extends Addr
 
 // IR Functions
-case class Func(name: String, params: List[Id], varparam: Option[Id], body: Inst) extends Value
+case class Func(algo: Algo) extends Value
 
+// IR Continuations
 case class Cont(params: List[Id], body: Inst, context: Context, ctxtStack: List[Context]) extends Value
+
 // IR Constants
 sealed trait Const extends Value
 case class Num(double: Double) extends Const {

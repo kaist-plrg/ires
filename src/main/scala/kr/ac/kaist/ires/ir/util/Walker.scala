@@ -1,5 +1,6 @@
 package kr.ac.kaist.ires.ir
 
+import kr.ac.kaist.ires.algorithm._
 import scala.collection.mutable.{ Map => MMap }
 
 // Walker for IR Language
@@ -153,9 +154,10 @@ trait Walker {
   // objects
   def walk(obj: Obj): Obj = obj match {
     case IRSymbol(desc) => IRSymbol(walk(desc))
-    case IRMap(ty, props, _) => IRMap(
+    case IRMap(ty, props, size) => IRMap(
       walk(ty),
-      walkMap[Value, (Value, Long)](props, walk, (x) => (walk(x._1), x._2))
+      walkMap[Value, (Value, Long)](props, walk, (x) => (walk(x._1), x._2)),
+      size
     )
     case IRList(values) => IRList(
       walkList[Value](values.toList, walk).toVector
@@ -178,10 +180,13 @@ trait Walker {
 
   // function
   def walk(func: Func): Func = func match {
-    case Func(name, params, varparam, body) =>
-      Func(walk(name), walkList[Id](params, walk), walkOpt[Id](varparam, walk), walk(body))
+    case Func(algo) => Func(walk(algo))
   }
 
+  // algorithm
+  def walk(algo: Algo): Algo = algo
+
+  // continuation
   def walk(cont: Cont): Cont = cont match {
     case Cont(params, body, context, ctxtStack) =>
       Cont(walkList[Id](params, walk), walk(body), walk(context), walkList[Context](ctxtStack, walk))

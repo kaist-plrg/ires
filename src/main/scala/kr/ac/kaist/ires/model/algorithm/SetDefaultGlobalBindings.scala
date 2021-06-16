@@ -15,7 +15,15 @@ object `AL::SetDefaultGlobalBindings` extends Algo {
   )
   val rawBody = parseInst("""{
   |  0:let global = realmRec.GlobalObject
-  |  1:??? "For each property of the Global Object specified in clause link:{unhandled: sec-global-object} , do in:{} out:{}"
+  |  1:let __keys__ = (map-keys GLOBAL.SubMap)
+  |  1:let __i__ = 0i
+  |  1:while (< __i__ __keys__.length) {
+  |    let name = __keys__[__i__]
+  |    let desc = GLOBAL.SubMap[name]
+  |    global.SubMap[name] = GLOBAL.SubMap[name]
+  |    __i__ = (+ __i__ 1i)
+  |  }
+  |  1:global.SubMap.globalThis.Value = global
   |  5:return global
   |}""".stripMargin)
   val code = scala.Array[String](

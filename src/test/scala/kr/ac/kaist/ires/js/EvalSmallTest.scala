@@ -11,19 +11,17 @@ class EvalSmallTest extends JSTest {
   // registration
   def init: Unit = for (file <- walkTree(JS_DIR)) {
     val filename = file.getName
-    // TODO if (jsFilter(filename)) check(filename, {
-    //   val name = removedExt(filename)
-    //   val jsName = file.toString
+    if (jsFilter(filename)) check(filename, {
+      val name = removedExt(filename)
 
-    //   val ast = parseFile(jsName)
-    //   val st = Load(ast, jsName)
-    //   Interp(st, jsName)
+      val jsName = file.toString
+      val st = evalFile(jsName)
 
-    //   val irName = js2ir(jsName)
-    //   val program = Parser.fileToProgram(name)
-    //   st.context.insts = program.insts
-    //   Interp(st, irName)
-    // })
+      val irName = js2ir(jsName)
+      val program = irParseFile(name)
+      st.context.insts = program.insts
+      Interp(st, irName)
+    })
   }
   init
 }

@@ -14,7 +14,7 @@ object `AL::ResolveBinding` extends Algo {
     "sec-executable-code-and-execution-contexts",
   )
   val rawBody = parseInst("""{
-  |  0:if (|| (= env absent) (= env undefined)) env = CONTEXT.LexicalEnvironment else 2:{}
+  |  0:if (|| (= env absent) (= env undefined)) env = CONTEXT.LexicalEnvironment else 0:{}
   |  2:assert (is-instance-of env EnvironmentRecord)
   |  3:if true let strict = true else let strict = false
   |  4:app __x0__ = (GetIdentifierReference env name strict)

@@ -288,10 +288,8 @@ class Beautifier(
 
   // functions
   implicit lazy val FuncApp: App[Func] = (app, func) => {
-    val Func(name, params, varparam, body) = func
-    implicit val l = ListApp[String]("(", ", ", ")")
-    val ps = params.map(_.name) ++ varparam.map(_ => "...")
-    app >> "`" >> name >> "` " >> ps >> " => " >> body
+    val name = func.algo.name
+    app >> "λ(" >> name >> ")"
   }
 
   // continuations

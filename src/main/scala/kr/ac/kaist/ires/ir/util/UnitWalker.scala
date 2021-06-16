@@ -1,5 +1,6 @@
 package kr.ac.kaist.ires.ir
 
+import kr.ac.kaist.ires.algorithm._
 import scala.collection.mutable.{ Map => MMap }
 
 // Walker for IR Language
@@ -212,10 +213,11 @@ trait UnitWalker {
 
   // function
   def walk(func: Func): Unit = func match {
-    case Func(name, params, varparam, body) =>
-      walk(name); walkList[Id](params, walk)
-      walkOpt[Id](varparam, walk); walk(body)
+    case Func(algo) => walk(algo)
   }
+
+  // algorithm
+  def walk(algo: Algo): Unit = {}
 
   // continuation
   def walk(cont: Cont): Unit = cont match {

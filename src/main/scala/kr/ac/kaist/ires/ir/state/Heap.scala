@@ -1,8 +1,7 @@
 package kr.ac.kaist.ires.ir
 
-import kr.ac.kaist.ires.util.Useful._
 import kr.ac.kaist.ires.error.NotSupported
-// XXX import kr.ac.kaist.ires.model.Model.tyMap
+import kr.ac.kaist.ires.util.Useful._
 import scala.collection.mutable.{ Map => MMap }
 
 // IR Heaps
@@ -21,26 +20,30 @@ case class Heap(
   }
 
   // setters
-  def update(addr: Addr, prop: Value, value: Value): Unit = this(addr) match {
-    case (m: IRMap) => m.update(prop, value)
+  def update(addr: Addr, prop: Value, value: Value): this.type = this(addr) match {
+    case (m: IRMap) =>
+      m.update(prop, value); this
     case v => error(s"not a map: $v")
   }
 
   // delete
-  def delete(addr: Addr, prop: Value): Unit = this(addr) match {
-    case (m: IRMap) => m.delete(prop)
+  def delete(addr: Addr, prop: Value): this.type = this(addr) match {
+    case (m: IRMap) =>
+      m.delete(prop); this
     case v => error(s"not a map: $v")
   }
 
   // appends
-  def append(addr: Addr, value: Value): Unit = this(addr) match {
-    case (l: IRList) => l.append(value)
+  def append(addr: Addr, value: Value): this.type = this(addr) match {
+    case (l: IRList) =>
+      l.append(value); this
     case v => error(s"not a list: $v")
   }
 
   // prepends
-  def prepend(addr: Addr, value: Value): Unit = this(addr) match {
-    case (l: IRList) => l.prepend(value)
+  def prepend(addr: Addr, value: Value): this.type = this(addr) match {
+    case (l: IRList) =>
+      l.prepend(value); this
     case v => error(s"not a list: $v")
   }
 
@@ -67,9 +70,7 @@ case class Heap(
     m: Map[Value, Value] = Map()
   ): Addr = {
     val irMap = IRMap(ty)
-    // XXX val newM = tyMap.getOrElse(ty.name, Map()) ++ m
-    val newM = m
-    for ((k, v) <- newM) irMap.update(k, v)
+    for ((k, v) <- m) irMap.update(k, v)
     alloc(irMap)
   }
 

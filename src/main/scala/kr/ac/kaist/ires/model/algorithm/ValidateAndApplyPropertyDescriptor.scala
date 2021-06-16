@@ -32,7 +32,7 @@ object `AL::ValidateAndApplyPropertyDescriptor` extends Algo {
   |    }
   |    9:return true
   |  } else 15:{}
-  |  10:??? "If every field in id:{Desc} is absent , return value:{true} ."
+  |  10:if (&& (= absent Desc.Value) (&& (= absent Desc.Writable) (&& (= absent Desc.Get) (&& (= absent Desc.Set) (&& (= absent Desc.Enumerable) (= absent Desc.Configurable)))))) return true else {}
   |  11:if (= current.Configurable false) {
   |    12:if (= Desc.Configurable true) return false else 15:{}
   |    13:let __x4__ = true
@@ -89,7 +89,15 @@ object `AL::ValidateAndApplyPropertyDescriptor` extends Algo {
   |      }
   |    }
   |  }
-  |  33:if (! (= O undefined)) ??? "For each field of id:{Desc} that is present , set the corresponding attribute of the property named id:{P} of object id:{O} to the value of the field ." else 15:{}
+  |  33:if (! (= O undefined)) {
+  |    34:let __keys__ = (map-keys Desc)
+  |    34:let __i__ = 0i
+  |    34:while (< __i__ __keys__.length) {
+  |      let __key__ = __keys__[__i__]
+  |      O.SubMap[P][__key__] = Desc[__key__]
+  |      __i__ = (+ __i__ 1i)
+  |    }
+  |  } else 15:{}
   |  35:return true
   |}""".stripMargin)
   val code = scala.Array[String](

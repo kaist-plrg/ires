@@ -14,8 +14,7 @@ object `AL::ParseScript` extends Algo {
     "sec-ecmascript-language-scripts-and-modules",
   )
   val rawBody = parseInst("""{
-  |  1:app __x0__ = (ParseText sourceText Script)
-  |  1:let body = __x0__
+  |  1:let body = SCRIPT
   |  3:return (new ScriptRecord("Realm" -> realm, "Environment" -> undefined, "ECMAScriptCode" -> body, "HostDefined" -> hostDefined))
   |}""".stripMargin)
   val code = scala.Array[String](

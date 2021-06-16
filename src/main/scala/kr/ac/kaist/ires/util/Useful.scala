@@ -173,7 +173,7 @@ object Useful {
   }
 
   // throw a simple error
-  def error(msg: String): Nothing = throw new IRESError(msg)
+  def error(msg: String): Nothing = throw new IRESError("[ERROR] " + msg)
 
   // get duration time
   def time[T](f: => T): (Long, T) = {

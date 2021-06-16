@@ -12,8 +12,7 @@ class EvalSmallTest extends IRTest {
     val filename = file.getName
     if (irFilter(filename)) check(filename, {
       val irName = file.toString
-      val program = Parser.fileToProgram(irName)
-      Interp(State(program), irName)
+      irEvalFile(irName)
     })
   }
   init

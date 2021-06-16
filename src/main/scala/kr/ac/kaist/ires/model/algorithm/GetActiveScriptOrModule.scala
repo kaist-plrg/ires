@@ -14,7 +14,7 @@ object `AL::GetActiveScriptOrModule` extends Algo {
     "sec-executable-code-and-execution-contexts",
   )
   val rawBody = parseInst("""{
-  |  0:if (= EXECUTION_STACK.length 0i) return null else 2:{}
+  |  0:if (= EXECUTION_STACK.length 0i) return null else 0:{}
   |  1:let ec = EXECUTION_STACK[(- EXECUTION_STACK.length 1i)]
   |  2:return ec.ScriptOrModule
   |}""".stripMargin)

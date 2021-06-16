@@ -18,9 +18,9 @@ object `AL::SetRealmGlobalObject` extends Algo {
   |    1:let intrinsics = realmRec.Intrinsics
   |    2:app __x0__ = (OrdinaryObjectCreate intrinsics.INTRINSIC_Object_prototype)
   |    2:globalObj = [! __x0__]
-  |  } else 2:{}
+  |  } else 0:{}
   |  3:assert (= (typeof globalObj) Object)
-  |  4:if (= thisValue undefined) thisValue = globalObj else 2:{}
+  |  4:if (= thisValue undefined) thisValue = globalObj else 0:{}
   |  5:realmRec.GlobalObject = globalObj
   |  6:app __x1__ = (NewGlobalEnvironment globalObj thisValue)
   |  6:let newGlobalEnv = __x1__

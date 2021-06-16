@@ -14,7 +14,7 @@ object `AL::CreateRealm` extends Algo {
     "sec-executable-code-and-execution-contexts",
   )
   val rawBody = parseInst("""{
-  |  0:let realmRec = (new RealmRecord("SubMap" -> (new SubMap())))
+  |  0:let realmRec = REALM
   |  1:app __x0__ = (CreateIntrinsics realmRec)
   |  1:__x0__
   |  2:realmRec.GlobalObject = undefined

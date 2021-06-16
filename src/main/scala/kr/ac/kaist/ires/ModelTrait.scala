@@ -14,36 +14,80 @@ trait ModelTrait {
   // initial state
   def initState(
     program: Program,
-    globals: Map[Id, Value] = Map()
+    script: Script,
+    filename: String
   ): State = State(
     context = Context(insts = program.insts),
     ctxtStack = Nil,
-    globals = initGlobal(globals),
+    globals = initGlobal(script, filename),
     heap = initHeap
   )
 
+  // special names
+  val AGENT = "AGENT"
+  val CONTEXT = "CONTEXT"
+  val EXECUTION_STACK = "EXECUTION_STACK"
+  val FILENAME = "FILENAME"
+  val GLOBAL = "GLOBAL"
+  val INTRINSICS = "INTRINSICS"
+  val JOB_QUEUE = "JOB_QUEUE"
+  val REALM = "REALM"
+  val RESULT = "RESULT"
+  val RETURN = "RETURN"
+  val SCRIPT = "SCRIPT"
+  val HOST_DEFINED = "HOST_DEFINED"
+  val SYMBOL_REGISTRY = "SYMBOL_REGISTRY"
+  val TOP_LEVEL = "TOP_LEVEL"
+  val TYPED_ARRAY_INFO = "TYPED_ARRAY_INFO"
+
+  // prefixes
+  val CONST_PREFIX = "CONST_"
+  val INTRINSIC_PREFIX = "INTRINSIC_"
+  val SYMBOL_PREFIX = "SYMBOL_"
+
   // initial global variables
-  def initGlobal(init: Map[Id, Value]): MMap[Id, Value] = {
-    val map = MMap.from(init)
-    consts.map(CONST_PREFIX + _).foreach {
-      case c => map += Id(c) -> NamedAddr(c)
+  def initGlobal(
+    script: Script,
+    filename: String
+  ): MMap[Id, Value] = {
+    val map = MMap[Id, Value](
+      Id(SCRIPT) -> ASTVal(script),
+      Id(FILENAME) -> Str(filename),
+    )
+    for (c <- consts) {
+      map += Id(CONST_PREFIX + c) -> NamedAddr(CONST_PREFIX + c)
     }
-    ???
+    for (i <- intrinsics) {
+      map += Id(INTRINSIC_PREFIX + i) -> NamedAddr(i.replaceAll("_", "."))
+    }
+    for (s <- symbols) {
+      map += Id(SYMBOL_PREFIX + s) -> NamedAddr(s"$GLOBAL.Symbol.$s")
+    }
+    for ((x, algo) <- algos if algo.isNormal) {
+      map += Id(x) -> Func(algo)
+    }
+    for ((name, value) <- BaseModel.globals) {
+      map += Id(name) -> value
+    }
     map
   }
 
   // initial heap
   def initHeap: Heap = {
     val map = MMap[Addr, Obj]()
-    consts.map(CONST_PREFIX + _).foreach {
-      case c => map += NamedAddr(c) -> IRSymbol(Str(c))
+    for (c <- consts) {
+      map += NamedAddr(CONST_PREFIX + c) -> IRSymbol(Str(CONST_PREFIX + c))
     }
-    ???
+    for (s <- symbols) {
+      map += NamedAddr(s"$GLOBAL.Symbol.$s") -> IRSymbol(Str("Symbol." + s))
+    }
+    for ((addr, obj) <- BaseModel.heap) {
+      map += addr -> obj
+    }
     Heap(map)
   }
 
   // constant names
-  val CONST_PREFIX = "CONST_"
   val consts: List[String]
 
   // intrinsic names

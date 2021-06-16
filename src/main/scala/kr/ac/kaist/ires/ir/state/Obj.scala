@@ -1,5 +1,6 @@
 package kr.ac.kaist.ires.ir
 
+import kr.ac.kaist.ires.BaseModel.tyMap
 import kr.ac.kaist.ires.util.Useful._
 import scala.collection.mutable.{ Map => MMap }
 
@@ -29,8 +30,8 @@ case class IRSymbol(desc: Value) extends Obj {
 // IR maps
 case class IRMap(
   ty: Ty,
-  props: MMap[Value, (Value, Long)] = MMap(),
-  var size: Long = 0L
+  props: MMap[Value, (Value, Long)],
+  var size: Long
 ) extends Obj {
   // get pairs
   def pairs: Map[Value, Value] = props.foldLeft(Map[Value, Value]()) {
@@ -41,13 +42,18 @@ case class IRMap(
   def apply(prop: Value): Value = props.get(prop).fold[Value](Absent)(_._1)
 
   // setters
-  def update(prop: Value, value: Value): Unit = {
-    props += prop -> (value, props.get(prop).fold(size)(_._2))
-    size += 1
+  def update(prop: Value, value: Value): this.type = {
+    val id = props
+      .get(prop)
+      .map { case (_, v) => v }
+      .getOrElse({ size += 1; size })
+    props += prop -> (value, id)
+    this
   }
 
   // deletes
-  def delete(prop: Value): Unit = props -= prop
+  def delete(prop: Value): this.type =
+    { props -= prop; this }
 
   // copy of object
   def copy: IRMap = {
@@ -56,9 +62,22 @@ case class IRMap(
     IRMap(ty, newProps, size)
   }
 }
+object IRMap {
+  def apply(tyname: String)(pairs: Iterable[(Value, Value)]): IRMap = {
+    val irMap = IRMap(Ty(tyname))
+    for ((prop, value) <- pairs) irMap.update(prop, value)
+    irMap
+  }
+  def apply(ty: Ty): IRMap = {
+    val irMap = IRMap(ty, MMap(), 0L)
+    val pairs = tyMap.getOrElse(ty.name, Map())
+    for ((prop, value) <- pairs) irMap.update(prop, value)
+    irMap
+  }
+}
 
 // IR lists
-case class IRList(var values: Vector[Value]) extends Obj {
+case class IRList(var values: Vector[Value] = Vector()) extends Obj {
   // types
   def ty: Ty = Ty("List")
 
@@ -73,10 +92,12 @@ case class IRList(var values: Vector[Value]) extends Obj {
   }
 
   // appends
-  def append(value: Value): Unit = values :+= value
+  def append(value: Value): this.type =
+    { values :+= value; this }
 
   // prepends
-  def prepend(value: Value): Unit = values +:= value
+  def prepend(value: Value): this.type =
+    { values +:= value; this }
 
   // pops
   def pop(idx: Value): Value = idx match {

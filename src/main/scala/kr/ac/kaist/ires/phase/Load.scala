@@ -2,6 +2,7 @@ package kr.ac.kaist.ires.phase
 
 import kr.ac.kaist.ires.{ LINE_SEP, IRESConfig }
 import kr.ac.kaist.ires.model.{ Parser => JSParser, _ }
+import kr.ac.kaist.ires.model.Model.RESULT
 import kr.ac.kaist.ires.ir._
 import kr.ac.kaist.ires.util.Useful._
 import scala.io.Source
@@ -23,13 +24,11 @@ case object Load extends PhaseObj[Script, LoadConfig, State] {
     script: Script,
     filename: String
   ): State = Model.initState(
-    program = Parser.parseProgram("""{
-      app __RESULT__ = (RunJobs)
+    program = Parser.parseProgram(s"""{
+      app $RESULT = (RunJobs)
     }"""),
-    globals = Map(
-      Id("__SCRIPT__") -> ASTVal(script),
-      Id("__FILENAME__") -> Str(filename),
-    )
+    script = script,
+    filename = filename
   )
 
   def defaultConfig: LoadConfig = LoadConfig()

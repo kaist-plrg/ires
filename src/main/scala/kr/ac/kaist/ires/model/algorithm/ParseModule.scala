@@ -16,28 +16,27 @@ object `AL::ParseModule` extends Algo {
     "sec-ecmascript-language-scripts-and-modules",
   )
   val rawBody = parseInst("""{
-  |  1:app __x0__ = (ParseText sourceText Module)
-  |  1:let body = __x0__
-  |  3:access __x1__ = (body "ModuleRequests")
-  |  3:let requestedModules = __x1__
-  |  4:access __x2__ = (body "ImportEntries")
-  |  4:let importEntries = __x2__
-  |  5:app __x3__ = (ImportedLocalNames importEntries)
-  |  5:let importedBoundNames = __x3__
+  |  1:let body = SCRIPT
+  |  3:access __x0__ = (body "ModuleRequests")
+  |  3:let requestedModules = __x0__
+  |  4:access __x1__ = (body "ImportEntries")
+  |  4:let importEntries = __x1__
+  |  5:app __x2__ = (ImportedLocalNames importEntries)
+  |  5:let importedBoundNames = __x2__
   |  6:let indirectExportEntries = (new [])
   |  7:let localExportEntries = (new [])
   |  8:let starExportEntries = (new [])
-  |  9:access __x4__ = (body "ExportEntries")
-  |  9:let exportEntries = __x4__
-  |  10:let __x5__ = exportEntries
-  |  10:let __x6__ = 0i
-  |  10:while (< __x6__ __x5__.length) {
-  |    let ee = __x5__[__x6__]
+  |  9:access __x3__ = (body "ExportEntries")
+  |  9:let exportEntries = __x3__
+  |  10:let __x4__ = exportEntries
+  |  10:let __x5__ = 0i
+  |  10:while (< __x5__ __x4__.length) {
+  |    let ee = __x4__[__x5__]
   |    24:if (= ee.ModuleRequest null) if (! (contains importedBoundNames ee.LocalName)) append ee -> localExportEntries else {
   |      15:??? "Let id:{ie} be the element of id:{importEntries} whose [ [ LocalName ] ] is the same as id:{ee} . [ [ LocalName ] ] ."
   |      19:if (= ie.ImportName "*") append ee -> localExportEntries else append (new ExportEntryRecord("ModuleRequest" -> ie.ModuleRequest, "ImportName" -> ie.ImportName, "LocalName" -> null, "ExportName" -> ee.ExportName)) -> indirectExportEntries
   |    } else if (&& (= ee.ImportName "*") (= ee.ExportName null)) append ee -> starExportEntries else append ee -> indirectExportEntries
-  |    __x6__ = (+ __x6__ 1i)
+  |    __x5__ = (+ __x5__ 1i)
   |  }
   |  26:return (new SourceTextModuleRecord("Realm" -> realm, "Environment" -> undefined, "Namespace" -> undefined, "Status" -> CONST_unlinked, "EvaluationError" -> undefined, "HostDefined" -> hostDefined, "ECMAScriptCode" -> body, "Context" -> CONST_empty, "ImportMeta" -> CONST_empty, "RequestedModules" -> requestedModules, "ImportEntries" -> importEntries, "LocalExportEntries" -> localExportEntries, "IndirectExportEntries" -> indirectExportEntries, "StarExportEntries" -> starExportEntries, "DFSIndex" -> undefined, "DFSAncestorIndex" -> undefined))
   |}""".stripMargin)

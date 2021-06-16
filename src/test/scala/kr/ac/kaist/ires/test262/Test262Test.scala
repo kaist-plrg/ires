@@ -4,5 +4,5 @@ import kr.ac.kaist.ires._
 import kr.ac.kaist.ires.js.JSTest
 
 trait Test262Test extends JSTest {
-  override val category: String = "test262"
+  override def category: String = "test262"
 }

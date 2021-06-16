@@ -16,6 +16,8 @@ object `AL::CreateIntrinsics` extends Algo {
   val rawBody = parseInst("""{
   |  0:let intrinsics = (new Record("SubMap" -> (new SubMap())))
   |  1:realmRec.Intrinsics = intrinsics
+  |  2:realmRec.Intrinsics = INTRINSICS
+  |  2:intrinsics = INTRINSICS
   |  3:app __x0__ = (AddRestrictedFunctionProperties intrinsics.INTRINSIC_Function_prototype realmRec)
   |  3:__x0__
   |  4:return intrinsics
