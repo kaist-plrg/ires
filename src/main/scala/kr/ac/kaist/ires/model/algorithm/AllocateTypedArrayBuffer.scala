@@ -18,7 +18,7 @@ object `AL::AllocateTypedArrayBuffer` extends Algo {
   val rawBody = parseInst("""{
   |  1:assert (= O.ViewedArrayBuffer undefined)
   |  2:let constructorName = O.TypedArrayName
-  |  3:??? "Let id:{elementSize} be the Element Size value specified in link:{unhandled: table-the-typedarray-constructors} for id:{constructorName} ."
+  |  3:??? "Let id:{elementSize} be the Element Size value specified in link:{table-the-typedarray-constructors} for id:{constructorName} ."
   |  4:let byteLength = (* elementSize length)
   |  5:app __x0__ = (AllocateArrayBuffer INTRINSIC_ArrayBuffer byteLength)
   |  5:let data = [? __x0__]

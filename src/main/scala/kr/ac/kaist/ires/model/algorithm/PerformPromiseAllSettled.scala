@@ -48,8 +48,8 @@ object `AL::PerformPromiseAllSettled` extends Algo {
   |    19:append undefined -> values
   |    20:app __x8__ = (Call promiseResolve constructor (new [nextValue]))
   |    20:let nextPromise = [? __x8__]
-  |    21:??? "Let id:{stepsFulfilled} be the algorithm steps defined in link:{unhandled: sec-promise.allsettled-resolve-element-functions} ."
-  |    22:??? "Let id:{lengthFulfilled} be the number of non - optional parameters of the function definition in link:{unhandled: sec-promise.allsettled-resolve-element-functions} ."
+  |    21:??? "Let id:{stepsFulfilled} be the algorithm steps defined in link:{sec-promise.allsettled-resolve-element-functions} ."
+  |    22:??? "Let id:{lengthFulfilled} be the number of non - optional parameters of the function definition in link:{sec-promise.allsettled-resolve-element-functions} ."
   |    23:app __x9__ = (CreateBuiltinFunction stepsFulfilled lengthFulfilled "" (new ["AlreadyCalled", "Index", "Values", "Capability", "RemainingElements"]))
   |    23:let onFulfilled = [! __x9__]
   |    24:let alreadyCalled = (new Record("Value" -> false))
@@ -58,8 +58,8 @@ object `AL::PerformPromiseAllSettled` extends Algo {
   |    27:onFulfilled.Values = values
   |    28:onFulfilled.Capability = resultCapability
   |    29:onFulfilled.RemainingElements = remainingElementsCount
-  |    30:??? "Let id:{stepsRejected} be the algorithm steps defined in link:{unhandled: sec-promise.allsettled-reject-element-functions} ."
-  |    31:??? "Let id:{lengthRejected} be the number of non - optional parameters of the function definition in link:{unhandled: sec-promise.allsettled-reject-element-functions} ."
+  |    30:??? "Let id:{stepsRejected} be the algorithm steps defined in link:{sec-promise.allsettled-reject-element-functions} ."
+  |    31:??? "Let id:{lengthRejected} be the number of non - optional parameters of the function definition in link:{sec-promise.allsettled-reject-element-functions} ."
   |    32:app __x10__ = (CreateBuiltinFunction stepsRejected lengthRejected "" (new ["AlreadyCalled", "Index", "Values", "Capability", "RemainingElements"]))
   |    32:let onRejected = [! __x10__]
   |    33:onRejected.AlreadyCalled = alreadyCalled

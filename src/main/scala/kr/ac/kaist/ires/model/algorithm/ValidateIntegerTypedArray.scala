@@ -19,7 +19,7 @@ object `AL::ValidateIntegerTypedArray` extends Algo {
   |  1:app __x0__ = (ValidateTypedArray typedArray)
   |  1:let buffer = [? __x0__]
   |  2:let typeName = typedArray.TypedArrayName
-  |  3:??? "Let id:{type} be the Element Type value in link:{unhandled: table-the-typedarray-constructors} for id:{typeName} ."
+  |  3:??? "Let id:{type} be the Element Type value in link:{table-the-typedarray-constructors} for id:{typeName} ."
   |  6:if (= waitable true) if (! (|| (= typeName "Int32Array") (= typeName "BigInt64Array"))) throw TypeError else 0:{} else {
   |    7:let __x1__ = true
   |    7:app __x2__ = (IsUnclampedIntegerElementType type)

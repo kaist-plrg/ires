@@ -18,7 +18,7 @@ object `AL::GLOBAL.parseFloat` extends Algo {
   |  0:let inputString = [? __x0__]
   |  1:app __x1__ = (TrimString inputString CONST_start)
   |  1:let trimmedString = [! __x1__]
-  |  2:??? "If neither id:{trimmedString} nor any prefix of id:{trimmedString} satisfies the syntax of a nt:{StrDecimalLiteral} ( see link:{unhandled: sec-tonumber-applied-to-the-string-type} ) , return value:{NaN} ."
+  |  2:??? "If neither id:{trimmedString} nor any prefix of id:{trimmedString} satisfies the syntax of a nt:{StrDecimalLiteral} ( see link:{sec-tonumber-applied-to-the-string-type} ) , return value:{NaN} ."
   |  3:??? "Let id:{numberString} be the longest prefix of id:{trimmedString} , which might be id:{trimmedString} itself , that satisfies the syntax of a nt:{StrDecimalLiteral} ."
   |  4:access __x2__ = (numberString "MV")
   |  4:let mathFloat = __x2__

@@ -18,11 +18,11 @@ object `AL::CreateMappedArgumentsObject` extends Algo {
   |  1:let len = argumentsList.length
   |  2:app __x0__ = (MakeBasicObject (new ["Prototype", "Extensible", "ParameterMap"]))
   |  2:let obj = [! __x0__]
-  |  3:obj.GetOwnProperty = ArgumentsExoticObjectDOTGetOwnProperty
-  |  4:obj.DefineOwnProperty = ArgumentsExoticObjectDOTDefineOwnProperty
-  |  5:obj.Get = ArgumentsExoticObjectDOTGet
-  |  6:obj.Set = ArgumentsExoticObjectDOTSet
-  |  7:obj.Delete = ArgumentsExoticObjectDOTDelete
+  |  3:obj.GetOwnProperty = ALGORITHM["ArgumentsExoticObject.GetOwnProperty"]
+  |  4:obj.DefineOwnProperty = ALGORITHM["ArgumentsExoticObject.DefineOwnProperty"]
+  |  5:obj.Get = ALGORITHM["ArgumentsExoticObject.Get"]
+  |  6:obj.Set = ALGORITHM["ArgumentsExoticObject.Set"]
+  |  7:obj.Delete = ALGORITHM["ArgumentsExoticObject.Delete"]
   |  8:obj.Prototype = INTRINSIC_Object_prototype
   |  9:app __x1__ = (OrdinaryObjectCreate null)
   |  9:let map = [! __x1__]

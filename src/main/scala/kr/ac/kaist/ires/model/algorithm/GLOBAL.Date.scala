@@ -29,7 +29,7 @@ object `AL::GLOBAL.Date` extends Algo {
   |    } else {
   |      11:app __x2__ = (ToPrimitive value)
   |      11:let v = [? __x2__]
-  |      15:if (= (typeof v) String) ??? "Let id:{tv} be the result of parsing id:{v} as a date , in exactly the same manner as for the code:{parse} method ( link:{unhandled: sec-date.parse} ) ." else {
+  |      15:if (= (typeof v) String) ??? "Let id:{tv} be the result of parsing id:{v} as a date , in exactly the same manner as for the code:{parse} method ( link:{sec-date.parse} ) ." else {
   |        16:app __x3__ = (ToNumber v)
   |        16:let tv = [? __x3__]
   |      }

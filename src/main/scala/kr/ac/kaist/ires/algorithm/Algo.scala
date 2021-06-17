@@ -17,7 +17,7 @@ trait Algo {
     case (head: SyntaxDirectedHead) if !head.rhsNames.contains(head.lhsName) =>
       val prefix = Parser.parseInsts(s"let ${head.lhsName} = this")
       prepend(prefix, rawBody)
-    case (head: MethodHead) if head.isLetThisStep(code.head.trim) =>
+    case (head: MethodHead) if head.isLetThisStep(code) =>
       popFront(rawBody)
     case (builtin: BuiltinHead) =>
       import Param.Kind._

@@ -24,7 +24,7 @@ object `AL::OrdinarySetPrototypeOf` extends Algo {
   |  6:let done = false
   |  7:while (= done false) if (= p null) done = true else {
   |    app __x1__ = (SameValue p O)
-  |    if (= __x1__ true) return false else if (! (= p.GetPrototypeOf OrdinaryObjectDOTGetPrototypeOf)) done = true else p = p.Prototype
+  |    if (= __x1__ true) return false else if (! (= p.GetPrototypeOf ALGORITHM["OrdinaryObject.GetPrototypeOf"])) done = true else p = p.Prototype
   |  }
   |  13:O.Prototype = V
   |  14:return true

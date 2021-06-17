@@ -17,8 +17,8 @@ object `AL::GLOBAL.Proxy.revocable` extends Algo {
   val rawBody = parseInst("""{
   |  0:app __x0__ = (ProxyCreate target handler)
   |  0:let p = [? __x0__]
-  |  1:let steps = GLOBALDOTProxyRevocationFunctions
-  |  2:??? "Let id:{length} be the number of non - optional parameters of the function definition in GLOBALDOTProxyRevocationFunctions ."
+  |  1:??? "Let id:{steps} be the algorithm steps defined in link:{sec-proxy-revocation-functions} ."
+  |  2:??? "Let id:{length} be the number of non - optional parameters of the function definition in link:{sec-proxy-revocation-functions} ."
   |  3:app __x1__ = (CreateBuiltinFunction steps length "" (new ["RevocableProxy"]))
   |  3:let revoker = [! __x1__]
   |  4:revoker.RevocableProxy = p

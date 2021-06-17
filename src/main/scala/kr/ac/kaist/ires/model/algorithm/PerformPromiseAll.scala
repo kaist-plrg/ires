@@ -48,8 +48,8 @@ object `AL::PerformPromiseAll` extends Algo {
   |    19:append undefined -> values
   |    20:app __x8__ = (Call promiseResolve constructor (new [nextValue]))
   |    20:let nextPromise = [? __x8__]
-  |    21:??? "Let id:{steps} be the algorithm steps defined in link:{unhandled: sec-promise.all-resolve-element-functions} ."
-  |    22:??? "Let id:{length} be the number of non - optional parameters of the function definition in link:{unhandled: sec-promise.all-resolve-element-functions} ."
+  |    21:??? "Let id:{steps} be the algorithm steps defined in link:{sec-promise.all-resolve-element-functions} ."
+  |    22:??? "Let id:{length} be the number of non - optional parameters of the function definition in link:{sec-promise.all-resolve-element-functions} ."
   |    23:app __x9__ = (CreateBuiltinFunction steps length "" (new ["AlreadyCalled", "Index", "Values", "Capability", "RemainingElements"]))
   |    23:let onFulfilled = [! __x9__]
   |    24:onFulfilled.AlreadyCalled = false

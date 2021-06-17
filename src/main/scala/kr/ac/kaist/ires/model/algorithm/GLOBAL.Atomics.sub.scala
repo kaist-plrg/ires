@@ -14,7 +14,7 @@ object `AL::GLOBAL.Atomics.sub` extends Algo {
     "sec-structured-data",
   )
   val rawBody = parseInst("""{
-  |  0:??? "Let id:{type} be the Element Type value in link:{unhandled: table-the-typedarray-constructors} for id:{typedArray} . [ [ TypedArrayName ] ] ."
+  |  0:??? "Let id:{type} be the Element Type value in link:{table-the-typedarray-constructors} for id:{typedArray} . [ [ TypedArrayName ] ] ."
   |  1:let isLittleEndian = AGENT.LittleEndian
   |  2:??? "Let id:{subtract} be a new read - modify - write modification function with parameters ( id:{xBytes} , id:{yBytes} ) that captures id:{type} and id:{isLittleEndian} and performs the following steps atomically when called : in:{} out:{}"
   |  10:app __x0__ = (AtomicReadModifyWrite typedArray index value subtract)

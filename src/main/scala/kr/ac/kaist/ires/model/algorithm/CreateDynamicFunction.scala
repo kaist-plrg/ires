@@ -59,7 +59,7 @@ object `AL::CreateDynamicFunction` extends Algo {
   |  }
   |  38:app __x3__ = (ToString bodyArg)
   |  38:let bodyString = (+ (+ "\n" [? __x3__]) "\n")
-  |  39:??? "Let id:{prefix} be the prefix associated with id:{kind} in link:{unhandled: table-dynamic-function-sourcetext-prefixes} ."
+  |  39:??? "Let id:{prefix} be the prefix associated with id:{kind} in link:{table-dynamic-function-sourcetext-prefixes} ."
   |  40:let sourceString = (+ (+ (+ (+ (+ (+ prefix "anonymous(") P) "\n") ") {") bodyString) "}")
   |  41:app __x4__ = (StringToCodePoints sourceString)
   |  41:let sourceText = [! __x4__]

@@ -26,7 +26,7 @@ object `AL::GLOBAL.Number.prototype.toString` extends Algo {
   |    app __x2__ = (ToString x)
   |    return [! __x2__]
   |  } else 2:{}
-  |  5:??? "Return the String representation of this Number value using the radix specified by id:{radixMV} . Letters code:{a} - code:{z} are used for digits with values 10 through 35 . The precise algorithm is implementation - defined , however the algorithm should be a generalization of that specified in NumberCOLONCOLONtoString ."
+  |  5:return (convert x num2str radixMV)
   |}""".stripMargin)
   val code = scala.Array[String](
     """          1. Let _x_ be ? thisNumberValue(*this* value).""",

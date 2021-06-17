@@ -18,10 +18,10 @@ object `AL::CodePointAt` extends Algo {
   |  1:assert (&& (! (< position 0i)) (< position size))
   |  2:let first = string[position]
   |  3:??? "Let id:{cp} be the code point whose numeric value is that of id:{first} ."
-  |  4:??? "If id:{first} is not a link:{unhandled: leading-surrogate} or link:{unhandled: trailing-surrogate} , then in:{} out:{}"
-  |  6:??? "If id:{first} is a link:{unhandled: trailing-surrogate} or id:{position} + 1 = id:{size} , then in:{} out:{}"
+  |  4:??? "If id:{first} is not a link:{leading-surrogate} or link:{trailing-surrogate} , then in:{} out:{}"
+  |  6:??? "If id:{first} is a link:{trailing-surrogate} or id:{position} + 1 = id:{size} , then in:{} out:{}"
   |  8:let second = string[(+ position 1i)]
-  |  9:??? "If id:{second} is not a link:{unhandled: trailing-surrogate} , then in:{} out:{}"
+  |  9:??? "If id:{second} is not a link:{trailing-surrogate} , then in:{} out:{}"
   |  11:app __x0__ = (UTF16SurrogatePairToCodePoint first second)
   |  11:cp = [! __x0__]
   |  12:return (new Record("CodePoint" -> cp, "CodeUnitCount" -> 2i, "IsUnpairedSurrogate" -> false))

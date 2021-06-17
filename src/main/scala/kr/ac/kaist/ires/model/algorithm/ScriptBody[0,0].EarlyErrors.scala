@@ -14,8 +14,8 @@ object `AL::ScriptBody[0,0].EarlyErrors` extends Algo {
     "sec-ecmascript-language-scripts-and-modules",
   )
   val rawBody = parseInst("""{
-  |  0:??? "It is a Syntax Error if nt:{StatementList} Contains code:{super} unless the source code containing code:{super} is eval code that is being processed by a direct eval . Additional early error rules for code:{super} within direct eval are defined in PerformEval ."
-  |  1:??? "It is a Syntax Error if nt:{StatementList} Contains nt:{NewTarget} unless the source code containing nt:{NewTarget} is eval code that is being processed by a direct eval . Additional early error rules for nt:{NewTarget} in direct eval are defined in PerformEval ."
+  |  0:??? "It is a Syntax Error if nt:{StatementList} Contains code:{super} unless the source code containing code:{super} is eval code that is being processed by a direct eval . Additional early error rules for code:{super} within direct eval are defined in link:{sec-performeval} ."
+  |  1:??? "It is a Syntax Error if nt:{StatementList} Contains nt:{NewTarget} unless the source code containing nt:{NewTarget} is eval code that is being processed by a direct eval . Additional early error rules for nt:{NewTarget} in direct eval are defined in link:{sec-performeval} ."
   |  2:access __x0__ = (StatementList "ContainsDuplicateLabels" (new []))
   |  2:if (= __x0__ true) throw SyntaxError else 2:{}
   |  3:access __x1__ = (StatementList "ContainsUndefinedBreakTarget" (new []))

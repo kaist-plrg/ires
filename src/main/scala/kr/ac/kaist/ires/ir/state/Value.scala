@@ -7,12 +7,6 @@ import scala.collection.mutable.{ Map => MMap }
 
 // IR Values
 sealed trait Value extends IRNode {
-  // completion type
-  type CompletionType = CompletionType.Value
-  object CompletionType extends Enumeration {
-    val Normal, Break, Continue, Return, Throw, NoCompl = Value
-  }
-
   // escape completion
   def escaped(st: State): Value = this match {
     case addr: Addr => completionType(st) match {
@@ -26,6 +20,13 @@ sealed trait Value extends IRNode {
   // check completion
   def isCompletion(st: State): Boolean = completionType(st) match {
     case CompletionType.NoCompl => false
+    case _ => true
+  }
+
+  // check abrupt completion
+  def isAbruptCompletion(st: State): Boolean = completionType(st) match {
+    case CompletionType.NoCompl => false
+    case CompletionType.Normal => false
     case _ => true
   }
 
@@ -46,7 +47,10 @@ sealed trait Value extends IRNode {
   }
 
   // wrap completion
-  def wrapCompletion(st: State): Value = completionType(st) match {
+  def wrapCompletion(
+    st: State,
+    ty: CompletionType = CompletionType.Normal
+  ): Value = completionType(st) match {
     case CompletionType.NoCompl => st.allocMap(Ty("Completion"), Map(
       Str("Value") -> this,
       Str("Type") -> NamedAddr("CONST_normal"),

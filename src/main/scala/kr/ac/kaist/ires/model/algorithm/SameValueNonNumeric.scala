@@ -18,7 +18,7 @@ object `AL::SameValueNonNumeric` extends Algo {
   |  1:assert (= (typeof x) (typeof y))
   |  2:if (= (typeof x) Undefined) return true else 0:{}
   |  3:if (= (typeof x) Null) return true else 0:{}
-  |  4:if (= (typeof x) String) ??? "If id:{x} and id:{y} are exactly the same sequence of code units ( same length and same code units at corresponding indices ) , return value:{true} ; otherwise , return value:{false} ." else 0:{}
+  |  4:if (= (typeof x) String) return (= x y) else 0:{}
   |  6:if (= (typeof x) Boolean) if (|| (&& (= x true) (= y true)) (&& (= x false) (= y false))) return true else return false else 0:{}
   |  8:if (= (typeof x) Symbol) if (= x y) return true else return false else 0:{}
   |  10:if (= x y) return true else return false

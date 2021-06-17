@@ -18,7 +18,7 @@ object `AL::GetValueFromBuffer` extends Algo {
   |  0:app __x0__ = (IsDetachedBuffer arrayBuffer)
   |  0:assert (= __x0__ false)
   |  2:let block = arrayBuffer.ArrayBufferData
-  |  3:??? "Let id:{elementSize} be the Element Size value specified in link:{unhandled: table-the-typedarray-constructors} for Element Type id:{type} ."
+  |  3:??? "Let id:{elementSize} be the Element Size value specified in link:{table-the-typedarray-constructors} for Element Type id:{type} ."
   |  4:app __x1__ = (IsSharedArrayBuffer arrayBuffer)
   |  4:if (= __x1__ true) {
   |    5:let execution = AGENT.CandidateExecution

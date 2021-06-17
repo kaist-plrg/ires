@@ -21,7 +21,7 @@ object `AL::ValidateAtomicAccess` extends Algo {
   |  3:assert (! (< accessIndex 0i))
   |  4:if (! (< accessIndex length)) throw RangeError else 0:{}
   |  5:let arrayTypeName = typedArray.TypedArrayName
-  |  6:??? "Let id:{elementSize} be the Element Size value specified in link:{unhandled: table-the-typedarray-constructors} for id:{arrayTypeName} ."
+  |  6:??? "Let id:{elementSize} be the Element Size value specified in link:{table-the-typedarray-constructors} for id:{arrayTypeName} ."
   |  7:let offset = typedArray.ByteOffset
   |  8:return (+ (* accessIndex elementSize) offset)
   |}""".stripMargin)

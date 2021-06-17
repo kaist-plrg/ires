@@ -15,7 +15,7 @@ object `AL::RawBytesToNumeric` extends Algo {
     "sec-structured-data",
   )
   val rawBody = parseInst("""{
-  |  0:??? "Let id:{elementSize} be the Element Size value specified in link:{unhandled: table-the-typedarray-constructors} for Element Type id:{type} ."
+  |  0:??? "Let id:{elementSize} be the Element Size value specified in link:{table-the-typedarray-constructors} for Element Type id:{type} ."
   |  1:??? "If id:{isLittleEndian} is value:{false} , reverse the order of the elements of id:{rawBytes} ."
   |  2:if (= type CONST_Float32) {
   |    3:??? "Let id:{value} be the byte elements of id:{rawBytes} concatenated and interpreted as a little - endian bit string encoding of an IEEE 754 - 2019 binary32 value ."

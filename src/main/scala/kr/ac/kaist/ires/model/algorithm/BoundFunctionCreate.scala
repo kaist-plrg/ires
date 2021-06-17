@@ -22,9 +22,9 @@ object `AL::BoundFunctionCreate` extends Algo {
   |  3:app __x1__ = (MakeBasicObject internalSlotsList)
   |  3:let obj = [! __x1__]
   |  4:obj.Prototype = proto
-  |  5:obj.Call = BoundFunctionExoticObjectDOTCall
+  |  5:obj.Call = ALGORITHM["BoundFunctionExoticObject.Call"]
   |  6:app __x2__ = (IsConstructor targetFunction)
-  |  6:if (= __x2__ true) obj.Construct = BoundFunctionExoticObjectDOTConstruct else 0:{}
+  |  6:if (= __x2__ true) obj.Construct = ALGORITHM["BoundFunctionExoticObject.Construct"] else 0:{}
   |  8:obj.BoundTargetFunction = targetFunction
   |  9:obj.BoundThis = boundThis
   |  10:obj.BoundArguments = boundArgs

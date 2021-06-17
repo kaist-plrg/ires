@@ -39,8 +39,8 @@ object `AL::AsyncFromSyncIteratorContinuation` extends Algo {
   |    return promiseCapability.Promise
   |  } else 7:{}
   |  5:valueWrapper
-  |  6:??? "Let id:{steps} be the algorithm steps defined in link:{unhandled: sec-async-from-sync-iterator-value-unwrap-functions} ."
-  |  7:??? "Let id:{length} be the number of non - optional parameters of the function definition in link:{unhandled: sec-async-from-sync-iterator-value-unwrap-functions} ."
+  |  6:??? "Let id:{steps} be the algorithm steps defined in link:{sec-async-from-sync-iterator-value-unwrap-functions} ."
+  |  7:??? "Let id:{length} be the number of non - optional parameters of the function definition in link:{sec-async-from-sync-iterator-value-unwrap-functions} ."
   |  8:app __x6__ = (CreateBuiltinFunction steps length "" (new ["Done"]))
   |  8:let onFulfilled = [! __x6__]
   |  9:onFulfilled.Done = done

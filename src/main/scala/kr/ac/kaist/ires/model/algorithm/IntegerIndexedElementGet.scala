@@ -19,7 +19,7 @@ object `AL::IntegerIndexedElementGet` extends Algo {
   |  1:if (= [! __x0__] false) return undefined else 0:{}
   |  2:let offset = O.ByteOffset
   |  3:let arrayTypeName = O.TypedArrayName
-  |  4:??? "Let id:{elementSize} be the Element Size value specified in link:{unhandled: table-the-typedarray-constructors} for id:{arrayTypeName} ."
+  |  4:??? "Let id:{elementSize} be the Element Size value specified in link:{table-the-typedarray-constructors} for id:{arrayTypeName} ."
   |  5:let indexedPosition = (+ (* index elementSize) offset)
   |  6:let elementType = CONST_Int8
   |  7:app __x1__ = (GetValueFromBuffer O.ViewedArrayBuffer indexedPosition elementType true CONST_Unordered)

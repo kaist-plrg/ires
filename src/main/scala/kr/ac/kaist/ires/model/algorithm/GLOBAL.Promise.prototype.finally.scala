@@ -26,14 +26,14 @@ object `AL::GLOBAL.Promise.prototype.finally` extends Algo {
   |    5:let thenFinally = onFinally
   |    6:let catchFinally = onFinally
   |  } else {
-  |    8:let stepsThenFinally = ThenFinallyFunctions
-  |    9:??? "Let id:{lengthThenFinally} be the number of non - optional parameters of the function definition in ThenFinallyFunctions ."
+  |    8:??? "Let id:{stepsThenFinally} be the algorithm steps defined in link:{sec-thenfinallyfunctions} ."
+  |    9:??? "Let id:{lengthThenFinally} be the number of non - optional parameters of the function definition in link:{sec-thenfinallyfunctions} ."
   |    10:app __x3__ = (CreateBuiltinFunction stepsThenFinally lengthThenFinally "" (new ["Constructor", "OnFinally"]))
   |    10:let thenFinally = [! __x3__]
   |    11:thenFinally.Constructor = C
   |    12:thenFinally.OnFinally = onFinally
-  |    13:let stepsCatchFinally = CatchFinallyFunctions
-  |    14:??? "Let id:{lengthCatchFinally} be the number of non - optional parameters of the function definition in CatchFinallyFunctions ."
+  |    13:??? "Let id:{stepsCatchFinally} be the algorithm steps defined in link:{sec-catchfinallyfunctions} ."
+  |    14:??? "Let id:{lengthCatchFinally} be the number of non - optional parameters of the function definition in link:{sec-catchfinallyfunctions} ."
   |    15:app __x4__ = (CreateBuiltinFunction stepsCatchFinally lengthCatchFinally "" (new ["Constructor", "OnFinally"]))
   |    15:let catchFinally = [! __x4__]
   |    16:catchFinally.Constructor = C

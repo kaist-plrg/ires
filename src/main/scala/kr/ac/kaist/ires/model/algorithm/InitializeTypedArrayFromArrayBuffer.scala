@@ -17,7 +17,7 @@ object `AL::InitializeTypedArrayFromArrayBuffer` extends Algo {
   )
   val rawBody = parseInst("""{
   |  2:let constructorName = O.TypedArrayName
-  |  3:??? "Let id:{elementSize} be the Element Size value specified in link:{unhandled: table-the-typedarray-constructors} for id:{constructorName} ."
+  |  3:??? "Let id:{elementSize} be the Element Size value specified in link:{table-the-typedarray-constructors} for id:{constructorName} ."
   |  4:app __x0__ = (ToIndex byteOffset)
   |  4:let offset = [? __x0__]
   |  5:if (! (== (%% offset elementSize) 0i)) throw RangeError else 1:{}

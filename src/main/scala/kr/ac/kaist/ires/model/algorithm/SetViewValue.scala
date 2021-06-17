@@ -35,7 +35,7 @@ object `AL::SetViewValue` extends Algo {
   |  7:if (= __x6__ true) throw TypeError else 0:{}
   |  8:let viewOffset = view.ByteOffset
   |  9:let viewSize = view.ByteLength
-  |  10:??? "Let id:{elementSize} be the Element Size value specified in link:{unhandled: table-the-typedarray-constructors} for Element Type id:{type} ."
+  |  10:??? "Let id:{elementSize} be the Element Size value specified in link:{table-the-typedarray-constructors} for Element Type id:{type} ."
   |  11:if (< viewSize (+ getIndex elementSize)) throw RangeError else 0:{}
   |  12:let bufferIndex = (+ getIndex viewOffset)
   |  13:app __x7__ = (SetValueInBuffer buffer bufferIndex type numberValue false CONST_Unordered isLittleEndian)

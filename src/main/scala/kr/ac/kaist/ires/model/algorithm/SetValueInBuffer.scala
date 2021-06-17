@@ -18,7 +18,7 @@ object `AL::SetValueInBuffer` extends Algo {
   |  0:app __x0__ = (IsDetachedBuffer arrayBuffer)
   |  0:assert (= __x0__ false)
   |  3:let block = arrayBuffer.ArrayBufferData
-  |  4:??? "Let id:{elementSize} be the Element Size value specified in link:{unhandled: table-the-typedarray-constructors} for Element Type id:{type} ."
+  |  4:??? "Let id:{elementSize} be the Element Size value specified in link:{table-the-typedarray-constructors} for Element Type id:{type} ."
   |  5:if (= isLittleEndian absent) isLittleEndian = AGENT.LittleEndian else 2:{}
   |  6:app __x1__ = (NumericToRawBytes type value isLittleEndian)
   |  6:let rawBytes = __x1__

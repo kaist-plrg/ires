@@ -24,7 +24,7 @@ object `AL::GetSubstitution` extends Algo {
   |  6:assert (= (typeof replacement) String)
   |  7:let tailPos = (+ position matchLength)
   |  8:let m = captures.length
-  |  9:??? "Let id:{result} be the String value derived from id:{replacement} by copying code unit elements from id:{replacement} to id:{result} while performing replacements as specified in link:{unhandled: table-replacement-text-symbol-substitutions} . These code:{$} replacements are done left - to - right , and , once such a replacement is performed , the new replacement text is not subject to further replacements ."
+  |  9:??? "Let id:{result} be the String value derived from id:{replacement} by copying code unit elements from id:{replacement} to id:{result} while performing replacements as specified in link:{table-replacement-text-symbol-substitutions} . These code:{$} replacements are done left - to - right , and , once such a replacement is performed , the new replacement text is not subject to further replacements ."
   |  10:return result
   |}""".stripMargin)
   val code = scala.Array[String](

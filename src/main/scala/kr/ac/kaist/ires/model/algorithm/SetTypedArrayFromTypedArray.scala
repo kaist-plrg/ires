@@ -24,12 +24,12 @@ object `AL::SetTypedArrayFromTypedArray` extends Algo {
   |  5:app __x1__ = (IsDetachedBuffer srcBuffer)
   |  5:if (= __x1__ true) throw TypeError else 30:{}
   |  6:let targetName = target.TypedArrayName
-  |  7:??? "Let id:{targetType} be the Element Type value in link:{unhandled: table-the-typedarray-constructors} for id:{targetName} ."
-  |  8:??? "Let id:{targetElementSize} be the Element Size value specified in link:{unhandled: table-the-typedarray-constructors} for id:{targetName} ."
+  |  7:??? "Let id:{targetType} be the Element Type value in link:{table-the-typedarray-constructors} for id:{targetName} ."
+  |  8:??? "Let id:{targetElementSize} be the Element Size value specified in link:{table-the-typedarray-constructors} for id:{targetName} ."
   |  9:let targetByteOffset = target.ByteOffset
   |  10:let srcName = source.TypedArrayName
-  |  11:??? "Let id:{srcType} be the Element Type value in link:{unhandled: table-the-typedarray-constructors} for id:{srcName} ."
-  |  12:??? "Let id:{srcElementSize} be the Element Size value specified in link:{unhandled: table-the-typedarray-constructors} for id:{srcName} ."
+  |  11:??? "Let id:{srcType} be the Element Type value in link:{table-the-typedarray-constructors} for id:{srcName} ."
+  |  12:??? "Let id:{srcElementSize} be the Element Size value specified in link:{table-the-typedarray-constructors} for id:{srcName} ."
   |  13:let srcLength = source.ArrayLength
   |  14:let srcByteOffset = source.ByteOffset
   |  15:if (= targetOffset Infinity) throw RangeError else 30:{}

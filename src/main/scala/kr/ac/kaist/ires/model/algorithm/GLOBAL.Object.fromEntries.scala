@@ -19,8 +19,8 @@ object `AL::GLOBAL.Object.fromEntries` extends Algo {
   |  0:[? __x0__]
   |  1:app __x1__ = (OrdinaryObjectCreate INTRINSIC_Object_prototype)
   |  1:let obj = [! __x1__]
-  |  3:let stepsDefine = CreateDataPropertyOnObjectFunctions
-  |  4:??? "Let id:{lengthDefine} be the number of non - optional parameters of the function definition in CreateDataPropertyOnObjectFunctions ."
+  |  3:??? "Let id:{stepsDefine} be the algorithm steps defined in link:{sec-create-data-property-on-object-functions} ."
+  |  4:??? "Let id:{lengthDefine} be the number of non - optional parameters of the function definition in link:{sec-create-data-property-on-object-functions} ."
   |  5:app __x2__ = (CreateBuiltinFunction stepsDefine lengthDefine "" (new []))
   |  5:let adder = [! __x2__]
   |  6:app __x3__ = (AddEntriesFromIterable obj iterable adder)

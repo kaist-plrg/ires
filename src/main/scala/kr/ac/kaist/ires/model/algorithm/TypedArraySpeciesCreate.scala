@@ -15,7 +15,7 @@ object `AL::TypedArraySpeciesCreate` extends Algo {
     "sec-indexed-collections",
   )
   val rawBody = parseInst("""{
-  |  1:??? "Let id:{defaultConstructor} be the intrinsic object listed in column one of link:{unhandled: table-the-typedarray-constructors} for id:{exemplar} . [ [ TypedArrayName ] ] ."
+  |  1:??? "Let id:{defaultConstructor} be the intrinsic object listed in column one of link:{table-the-typedarray-constructors} for id:{exemplar} . [ [ TypedArrayName ] ] ."
   |  2:app __x0__ = (SpeciesConstructor exemplar defaultConstructor)
   |  2:let constructor = [? __x0__]
   |  3:app __x1__ = (TypedArrayCreate constructor argumentList)

@@ -16,14 +16,14 @@ object `AL::CreateResolvingFunctions` extends Algo {
   )
   val rawBody = parseInst("""{
   |  0:let alreadyResolved = (new Record("Value" -> false))
-  |  1:let stepsResolve = PromiseResolveFunctions
-  |  2:??? "Let id:{lengthResolve} be the number of non - optional parameters of the function definition in PromiseResolveFunctions ."
+  |  1:??? "Let id:{stepsResolve} be the algorithm steps defined in link:{sec-promise-resolve-functions} ."
+  |  2:??? "Let id:{lengthResolve} be the number of non - optional parameters of the function definition in link:{sec-promise-resolve-functions} ."
   |  3:app __x0__ = (CreateBuiltinFunction stepsResolve lengthResolve "" (new ["Promise", "AlreadyResolved"]))
   |  3:let resolve = [! __x0__]
   |  4:resolve.Promise = promise
   |  5:resolve.AlreadyResolved = alreadyResolved
-  |  6:let stepsReject = PromiseRejectFunctions
-  |  7:??? "Let id:{lengthReject} be the number of non - optional parameters of the function definition in PromiseRejectFunctions ."
+  |  6:??? "Let id:{stepsReject} be the algorithm steps defined in link:{sec-promise-reject-functions} ."
+  |  7:??? "Let id:{lengthReject} be the number of non - optional parameters of the function definition in link:{sec-promise-reject-functions} ."
   |  8:app __x1__ = (CreateBuiltinFunction stepsReject lengthReject "" (new ["Promise", "AlreadyResolved"]))
   |  8:let reject = [! __x1__]
   |  9:reject.Promise = promise

@@ -18,13 +18,13 @@ object `AL::IntegerIndexedObjectCreate` extends Algo {
   |  0:let internalSlotsList = (new ["Prototype", "Extensible", "ViewedArrayBuffer", "TypedArrayName", "ContentType", "ByteLength", "ByteOffset", "ArrayLength"])
   |  1:app __x0__ = (MakeBasicObject internalSlotsList)
   |  1:let A = [! __x0__]
-  |  2:A.GetOwnProperty = IntegerIndexedExoticObjectDOTGetOwnProperty
-  |  3:A.HasProperty = IntegerIndexedExoticObjectDOTHasProperty
-  |  4:A.DefineOwnProperty = IntegerIndexedExoticObjectDOTDefineOwnProperty
-  |  5:A.Get = IntegerIndexedExoticObjectDOTGet
-  |  6:A.Set = IntegerIndexedExoticObjectDOTSet
-  |  7:A.Delete = IntegerIndexedExoticObjectDOTDelete
-  |  8:A.OwnPropertyKeys = IntegerIndexedExoticObjectDOTOwnPropertyKeys
+  |  2:A.GetOwnProperty = ALGORITHM["IntegerIndexedExoticObject.GetOwnProperty"]
+  |  3:A.HasProperty = ALGORITHM["IntegerIndexedExoticObject.HasProperty"]
+  |  4:A.DefineOwnProperty = ALGORITHM["IntegerIndexedExoticObject.DefineOwnProperty"]
+  |  5:A.Get = ALGORITHM["IntegerIndexedExoticObject.Get"]
+  |  6:A.Set = ALGORITHM["IntegerIndexedExoticObject.Set"]
+  |  7:A.Delete = ALGORITHM["IntegerIndexedExoticObject.Delete"]
+  |  8:A.OwnPropertyKeys = ALGORITHM["IntegerIndexedExoticObject.OwnPropertyKeys"]
   |  9:A.Prototype = prototype
   |  10:return A
   |}""".stripMargin)

@@ -32,13 +32,13 @@ object `AL::AsyncGeneratorResumeNext` extends Algo {
   |      15:generator.AsyncGeneratorState = CONST_awaitingDASHreturn
   |      16:app __x1__ = (PromiseResolve INTRINSIC_Promise completion.Value)
   |      16:let promise = [? __x1__]
-  |      17:let stepsFulfilled = GLOBALDOTAsyncGeneratorResumeNextReturnProcessorFulfilledFunctions
-  |      18:??? "Let id:{lengthFulfilled} be the number of non - optional parameters of the function definition in GLOBALDOTAsyncGeneratorResumeNextReturnProcessorFulfilledFunctions ."
+  |      17:??? "Let id:{stepsFulfilled} be the algorithm steps defined in link:{async-generator-resume-next-return-processor-fulfilled} ."
+  |      18:??? "Let id:{lengthFulfilled} be the number of non - optional parameters of the function definition in link:{async-generator-resume-next-return-processor-fulfilled} ."
   |      19:app __x2__ = (CreateBuiltinFunction stepsFulfilled lengthFulfilled "" (new ["Generator"]))
   |      19:let onFulfilled = [! __x2__]
   |      20:onFulfilled.Generator = generator
-  |      21:let stepsRejected = GLOBALDOTAsyncGeneratorResumeNextReturnProcessorRejectedFunctions
-  |      22:??? "Let id:{lengthRejected} be the number of non - optional parameters of the function definition in GLOBALDOTAsyncGeneratorResumeNextReturnProcessorRejectedFunctions ."
+  |      21:??? "Let id:{stepsRejected} be the algorithm steps defined in link:{async-generator-resume-next-return-processor-rejected} ."
+  |      22:??? "Let id:{lengthRejected} be the number of non - optional parameters of the function definition in link:{async-generator-resume-next-return-processor-rejected} ."
   |      23:app __x3__ = (CreateBuiltinFunction stepsRejected lengthRejected "" (new ["Generator"]))
   |      23:let onRejected = [! __x3__]
   |      24:onRejected.Generator = generator

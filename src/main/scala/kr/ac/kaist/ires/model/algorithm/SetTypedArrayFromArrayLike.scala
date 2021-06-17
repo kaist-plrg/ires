@@ -21,8 +21,8 @@ object `AL::SetTypedArrayFromArrayLike` extends Algo {
   |  2:if (= __x0__ true) throw TypeError else 0:{}
   |  3:let targetLength = target.ArrayLength
   |  4:let targetName = target.TypedArrayName
-  |  5:??? "Let id:{targetElementSize} be the Element Size value specified in link:{unhandled: table-the-typedarray-constructors} for id:{targetName} ."
-  |  6:??? "Let id:{targetType} be the Element Type value in link:{unhandled: table-the-typedarray-constructors} for id:{targetName} ."
+  |  5:??? "Let id:{targetElementSize} be the Element Size value specified in link:{table-the-typedarray-constructors} for id:{targetName} ."
+  |  6:??? "Let id:{targetType} be the Element Type value in link:{table-the-typedarray-constructors} for id:{targetName} ."
   |  7:let targetByteOffset = target.ByteOffset
   |  8:app __x1__ = (ToObject source)
   |  8:let src = [? __x1__]

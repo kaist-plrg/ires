@@ -53,7 +53,7 @@ object `AL::ClassTail[0,3].ClassDefinitionEvaluation` extends Algo {
   |  }
   |  23:CONTEXT.LexicalEnvironment = classScope
   |  27:if (= constructor CONST_empty) {
-  |    25:let steps = DefaultConstructorFunctions
+  |    25:??? "Let id:{steps} be the algorithm steps defined in link:{sec-default-constructor-functions} ."
   |    26:app __x9__ = (CreateBuiltinFunction steps 0i className (new ["ConstructorKind", "SourceText"]) CONST_empty constructorParent)
   |    26:let F = [! __x9__]
   |  } else {

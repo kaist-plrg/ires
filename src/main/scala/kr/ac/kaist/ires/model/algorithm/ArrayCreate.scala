@@ -20,7 +20,7 @@ object `AL::ArrayCreate` extends Algo {
   |  2:app __x0__ = (MakeBasicObject (new ["Prototype", "Extensible"]))
   |  2:let A = [! __x0__]
   |  3:A.Prototype = proto
-  |  4:A.DefineOwnProperty = ArrayExoticObjectDOTDefineOwnProperty
+  |  4:A.DefineOwnProperty = ALGORITHM["ArrayExoticObject.DefineOwnProperty"]
   |  5:app __x1__ = (OrdinaryDefineOwnProperty A "length" (new PropertyDescriptor("Value" -> length, "Writable" -> true, "Enumerable" -> false, "Configurable" -> false)))
   |  5:[! __x1__]
   |  6:return A

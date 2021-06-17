@@ -1,6 +1,9 @@
 package kr.ac.kaist.ires
 
 package object ir {
+  // completion type
+  type CompletionType = CompletionType.Value
+
   // equality between doubles
   def doubleEquals(left: Double, right: Double): Boolean = {
     if (left.isNaN && right.isNaN) true

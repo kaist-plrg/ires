@@ -18,7 +18,7 @@ object `AL::OrdinaryFunctionCreate` extends Algo {
   |  1:let internalSlotsList = StrList
   |  2:app __x0__ = (OrdinaryObjectCreate functionPrototype internalSlotsList)
   |  2:let F = [! __x0__]
-  |  3:F.Call = ECMAScriptFunctionObjectDOTCall
+  |  3:F.Call = ALGORITHM["ECMAScriptFunctionObject.Call"]
   |  4:F.SourceText = sourceText
   |  5:F.FormalParameters = ParameterList
   |  6:F.ECMAScriptCode = Body

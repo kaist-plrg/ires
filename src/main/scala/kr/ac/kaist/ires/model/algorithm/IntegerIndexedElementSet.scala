@@ -26,7 +26,7 @@ object `AL::IntegerIndexedElementSet` extends Algo {
   |  3:if (= [! __x2__] true) {
   |    4:let offset = O.ByteOffset
   |    5:let arrayTypeName = O.TypedArrayName
-  |    6:??? "Let id:{elementSize} be the Element Size value specified in link:{unhandled: table-the-typedarray-constructors} for id:{arrayTypeName} ."
+  |    6:??? "Let id:{elementSize} be the Element Size value specified in link:{table-the-typedarray-constructors} for id:{arrayTypeName} ."
   |    7:let indexedPosition = (+ (* index elementSize) offset)
   |    8:let elementType = CONST_Int8
   |    9:app __x3__ = (SetValueInBuffer O.ViewedArrayBuffer indexedPosition elementType numValue true CONST_Unordered)

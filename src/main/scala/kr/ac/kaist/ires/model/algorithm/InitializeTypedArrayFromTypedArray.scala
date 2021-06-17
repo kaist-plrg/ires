@@ -20,13 +20,13 @@ object `AL::InitializeTypedArrayFromTypedArray` extends Algo {
   |  3:app __x0__ = (IsDetachedBuffer srcData)
   |  3:if (= __x0__ true) throw TypeError else 1:{}
   |  4:let constructorName = O.TypedArrayName
-  |  5:??? "Let id:{elementType} be the Element Type value in link:{unhandled: table-the-typedarray-constructors} for id:{constructorName} ."
+  |  5:??? "Let id:{elementType} be the Element Type value in link:{table-the-typedarray-constructors} for id:{constructorName} ."
   |  6:let elementLength = srcArray.ArrayLength
   |  7:let srcName = srcArray.TypedArrayName
-  |  8:??? "Let id:{srcType} be the Element Type value in link:{unhandled: table-the-typedarray-constructors} for id:{srcName} ."
-  |  9:??? "Let id:{srcElementSize} be the Element Size value specified in link:{unhandled: table-the-typedarray-constructors} for id:{srcName} ."
+  |  8:??? "Let id:{srcType} be the Element Type value in link:{table-the-typedarray-constructors} for id:{srcName} ."
+  |  9:??? "Let id:{srcElementSize} be the Element Size value specified in link:{table-the-typedarray-constructors} for id:{srcName} ."
   |  10:let srcByteOffset = srcArray.ByteOffset
-  |  11:??? "Let id:{elementSize} be the Element Size value specified in link:{unhandled: table-the-typedarray-constructors} for id:{constructorName} ."
+  |  11:??? "Let id:{elementSize} be the Element Size value specified in link:{table-the-typedarray-constructors} for id:{constructorName} ."
   |  12:let byteLength = (* elementSize elementLength)
   |  15:app __x1__ = (IsSharedArrayBuffer srcData)
   |  15:if (= __x1__ false) {

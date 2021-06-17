@@ -23,7 +23,7 @@ object `AL::UnaryExpression[3,0].Evaluation` extends Algo {
   |  } else 3:{}
   |  3:app __x2__ = (GetValue val)
   |  3:val = [? __x2__]
-  |  4:??? "Return a String according to link:{unhandled: table-typeof-operator-results} ."
+  |  4:??? "Return a String according to link:{table-typeof-operator-results} ."
   |}""".stripMargin)
   val code = scala.Array[String](
     """          1. Let _val_ be the result of evaluating |UnaryExpression|.""",

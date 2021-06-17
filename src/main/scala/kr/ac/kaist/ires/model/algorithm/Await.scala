@@ -18,13 +18,13 @@ object `AL::Await` extends Algo {
   |  0:let asyncContext = CONTEXT
   |  1:app __x0__ = (PromiseResolve INTRINSIC_Promise value)
   |  1:let promise = [? __x0__]
-  |  2:let stepsFulfilled = AwaitFulfilledFunctions
-  |  3:??? "Let id:{lengthFulfilled} be the number of non - optional parameters of the function definition in AwaitFulfilledFunctions ."
+  |  2:??? "Let id:{stepsFulfilled} be the algorithm steps defined in link:{await-fulfilled} ."
+  |  3:??? "Let id:{lengthFulfilled} be the number of non - optional parameters of the function definition in link:{await-fulfilled} ."
   |  4:app __x1__ = (CreateBuiltinFunction stepsFulfilled lengthFulfilled "" (new ["AsyncContext"]))
   |  4:let onFulfilled = [! __x1__]
   |  5:onFulfilled.AsyncContext = asyncContext
-  |  6:let stepsRejected = AwaitRejectedFunctions
-  |  7:??? "Let id:{lengthRejected} be the number of non - optional parameters of the function definition in AwaitRejectedFunctions ."
+  |  6:??? "Let id:{stepsRejected} be the algorithm steps defined in link:{await-rejected} ."
+  |  7:??? "Let id:{lengthRejected} be the number of non - optional parameters of the function definition in link:{await-rejected} ."
   |  8:app __x2__ = (CreateBuiltinFunction stepsRejected lengthRejected "" (new ["AsyncContext"]))
   |  8:let onRejected = [! __x2__]
   |  9:onRejected.AsyncContext = asyncContext

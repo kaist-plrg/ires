@@ -20,9 +20,9 @@ object `AL::ProxyCreate` extends Algo {
   |  2:let P = [! __x0__]
   |  4:app __x1__ = (IsCallable target)
   |  4:if (= __x1__ true) {
-  |    5:P.Call = ProxyObjectDOTCall
+  |    5:P.Call = ALGORITHM["ProxyObject.Call"]
   |    6:app __x2__ = (IsConstructor target)
-  |    6:if (= __x2__ true) P.Construct = ProxyObjectDOTConstruct else 3:{}
+  |    6:if (= __x2__ true) P.Construct = ALGORITHM["ProxyObject.Construct"] else 3:{}
   |  } else 3:{}
   |  8:P.ProxyTarget = target
   |  9:P.ProxyHandler = handler

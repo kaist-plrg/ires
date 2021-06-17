@@ -57,7 +57,7 @@ object `AL::RegExpBuiltinExec` extends Algo {
   |    30:app __x6__ = (Set R "lastIndex" e true)
   |    30:[? __x6__]
   |  } else 52:{}
-  |  31:??? "Let id:{n} be the number of elements in id:{r} ' s id:{captures} List . ( This is the same value as link:{unhandled: sec-notation} ' s id:{NcapturingParens} . )"
+  |  31:??? "Let id:{n} be the number of elements in id:{r} ' s id:{captures} List . ( This is the same value as link:{sec-notation} ' s id:{NcapturingParens} . )"
   |  32:assert (< n (- (** 2.0 32i) 1i))
   |  33:app __x7__ = (ArrayCreate (+ n 1i))
   |  33:let A = [! __x7__]

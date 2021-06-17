@@ -34,7 +34,7 @@ object `AL::GLOBAL.Atomics.compareExchange` extends Algo {
   |  10:app __x6__ = (IsDetachedBuffer buffer)
   |  10:if (= __x6__ true) throw TypeError else 22:{}
   |  12:let elementType = CONST_Int8
-  |  13:??? "Let id:{elementSize} be the Element Size value specified in link:{unhandled: table-the-typedarray-constructors} for Element Type id:{elementType} ."
+  |  13:??? "Let id:{elementSize} be the Element Size value specified in link:{table-the-typedarray-constructors} for Element Type id:{elementType} ."
   |  14:let isLittleEndian = AGENT.LittleEndian
   |  15:app __x7__ = (NumericToRawBytes elementType expected isLittleEndian)
   |  15:let expectedBytes = __x7__

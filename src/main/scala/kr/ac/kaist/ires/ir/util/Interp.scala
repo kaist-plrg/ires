@@ -69,6 +69,10 @@ private class Interp(
         case Bool(false) =>
         case v => error(s"not a boolean: ${v.beautified}")
       }
+      case IApp(id, ERef(RefId(Id(name))), args) if simpleFuncs contains name => {
+        val vs = args.map(arg => interp(arg).escaped(st))
+        st.context.locals += id -> simpleFuncs(name)(vs)
+      }
       case IApp(id, fexpr, args) => interp(fexpr) match {
         case Func(Algo(head, body)) => {
           val vs = args.map(interp)
@@ -486,36 +490,40 @@ private class Interp(
     map
   }
 
-  // // handle parameters
-  // def getEntryState(
-  //   call: Call,
-  //   params: List[Param],
-  //   args: List[Type]
-  // ): AbsState = {
-  //   var st = AbsState.Empty
-  //   import Param.Kind._
-  //   @tailrec
-  //   def aux(ps: List[Param], as: List[Type]): Unit = (ps, as) match {
-  //     case (Param(_, Normal) :: pl, Absent :: al) =>
-  //       st = AbsState.Bot
-  //     case (param :: pl, arg :: al) =>
-  //       st = st.define(param.name, arg.abs, param = true)
-  //       aux(pl, al)
-  //     case (Param(name, kind) :: tl, Nil) =>
-  //       if (kind == Normal) {
-  //         Stat.doCheck(alarm(s"remaining parameter: $name"))
-  //         st = AbsState.Bot
-  //       } else st = st.define(name, Absent.abs, param = true)
-  //       aux(tl, Nil)
-  //     case (Nil, Nil) =>
-  //     case (Nil, args) =>
-  //       Stat.doCheck(alarm(s"remaining arguments: ${args.mkString(", ")}"))
-  //     case _ =>
-  //       warning(s"consider variadic: (${params.mkString(", ")}) and (${args.mkString(", ")}) @ $call")
-  //   }
-  //   aux(params, args)
-  //   st
-  // }
+  // unary algorithms
+  type SimpleFunc = List[Value] => Value
+  def arityCheck(pair: (String, SimpleFunc)): (String, SimpleFunc) = {
+    val (name, f) = pair
+    name -> (args => optional(f(args)).getOrElse {
+      error(s"wrong arguments: $name(${args.map(_.beautified).mkString(", ")})")
+    })
+  }
+  lazy val simpleFuncs: Map[String, SimpleFunc] = Map(
+    arityCheck("abs" -> {
+      case List(Num(n)) => Num(n.abs)
+      case List(INum(n)) => INum(n.abs)
+      case List(BigINum(n)) => BigINum(n.abs)
+    }),
+    arityCheck("floor" -> {
+      case List(Num(n)) => INum(n.floor.toLong)
+      case List(INum(n)) => INum(n)
+      case List(BigINum(n)) => BigINum(n)
+    }),
+    arityCheck("fround" -> {
+      case List(Num(n)) => Num(n.toFloat.toDouble)
+      case List(INum(n)) => Num(n.toFloat.toDouble)
+    }),
+    arityCheck("ThrowCompletion" -> {
+      case List(value) => value.wrapCompletion(st, CompletionType.Throw)
+    }),
+    arityCheck("NormalCompletion" -> {
+      case List(value) => value.wrapCompletion(st)
+    }),
+    arityCheck("IsAbruptCompletion" -> {
+      case List(value) => Bool(value.isAbruptCompletion(st))
+    }),
+  // TODO IsDuplicate, IsArrayIndex, min, max
+  )
 }
 object Interp {
   def apply(

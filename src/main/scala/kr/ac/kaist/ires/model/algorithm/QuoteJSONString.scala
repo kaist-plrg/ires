@@ -21,8 +21,8 @@ object `AL::QuoteJSONString` extends Algo {
   |  1:let __x2__ = 0i
   |  1:while (< __x2__ __x1__.length) {
   |    let C = __x1__[__x2__]
-  |    2:??? "If id:{C} is listed in the “ Code Point ” column of link:{unhandled: table-json-single-character-escapes} , then in:{} out:{}"
-  |    4:??? "Else if id:{C} has a numeric value less than 0x0020 ( SPACE ) , or if id:{C} has the same numeric value as a link:{unhandled: leading-surrogate} or link:{unhandled: trailing-surrogate} , then in:{} out:{}"
+  |    2:??? "If id:{C} is listed in the “ Code Point ” column of link:{table-json-single-character-escapes} , then in:{} out:{}"
+  |    4:??? "Else if id:{C} has a numeric value less than 0x0020 ( SPACE ) , or if id:{C} has the same numeric value as a link:{leading-surrogate} or link:{trailing-surrogate} , then in:{} out:{}"
   |    7:??? "Else , in:{} out:{}"
   |    __x2__ = (+ __x2__ 1i)
   |  }

@@ -19,9 +19,9 @@ object `AL::StringCreate` extends Algo {
   |  0:let S = [! __x0__]
   |  1:S.Prototype = prototype
   |  2:S.StringData = value
-  |  3:S.GetOwnProperty = StringExoticObjectDOTGetOwnProperty
-  |  4:S.DefineOwnProperty = StringExoticObjectDOTDefineOwnProperty
-  |  5:S.OwnPropertyKeys = StringExoticObjectDOTOwnPropertyKeys
+  |  3:S.GetOwnProperty = ALGORITHM["StringExoticObject.GetOwnProperty"]
+  |  4:S.DefineOwnProperty = ALGORITHM["StringExoticObject.DefineOwnProperty"]
+  |  5:S.OwnPropertyKeys = ALGORITHM["StringExoticObject.OwnPropertyKeys"]
   |  6:let length = value.length
   |  7:app __x1__ = (DefinePropertyOrThrow S "length" (new PropertyDescriptor("Value" -> length, "Writable" -> false, "Enumerable" -> false, "Configurable" -> false)))
   |  7:[! __x1__]

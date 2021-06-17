@@ -18,8 +18,8 @@ object `AL::DateString` extends Algo {
   val rawBody = parseInst("""{
   |  0:assert (= (typeof tv) Number)
   |  1:assert (! (= tv NaN))
-  |  2:??? "Let id:{weekday} be the Name of the entry in link:{unhandled: sec-todatestring-day-names} with the Number WeekDay ( id:{tv} ) ."
-  |  3:??? "Let id:{month} be the Name of the entry in link:{unhandled: sec-todatestring-month-names} with the Number MonthFromTime ( id:{tv} ) ."
+  |  2:??? "Let id:{weekday} be the Name of the entry in link:{sec-todatestring-day-names} with the Number WeekDay ( id:{tv} ) ."
+  |  3:??? "Let id:{month} be the Name of the entry in link:{sec-todatestring-month-names} with the Number MonthFromTime ( id:{tv} ) ."
   |  4:??? "Let id:{day} be the String representation of DateFromTime ( id:{tv} ) , formatted as a two - digit decimal number , padded to the left with the code unit 0x0030 ( DIGIT ZERO ) if necessary ."
   |  5:app __x0__ = (YearFromTime tv)
   |  5:let yv = __x0__

@@ -50,8 +50,8 @@ object `AL::PerformPromiseAny` extends Algo {
   |    20:append undefined -> errors
   |    21:app __x9__ = (Call promiseResolve constructor (new [nextValue]))
   |    21:let nextPromise = [? __x9__]
-  |    22:??? "Let id:{stepsRejected} be the algorithm steps defined in link:{unhandled: sec-promise.any-reject-element-functions} ."
-  |    23:??? "Let id:{lengthRejected} be the number of non - optional parameters of the function definition in link:{unhandled: sec-promise.any-reject-element-functions} ."
+  |    22:??? "Let id:{stepsRejected} be the algorithm steps defined in link:{sec-promise.any-reject-element-functions} ."
+  |    23:??? "Let id:{lengthRejected} be the number of non - optional parameters of the function definition in link:{sec-promise.any-reject-element-functions} ."
   |    24:app __x10__ = (CreateBuiltinFunction stepsRejected lengthRejected "" (new ["AlreadyCalled", "Index", "Errors", "Capability", "RemainingElements"]))
   |    24:let onRejected = [! __x10__]
   |    25:onRejected.AlreadyCalled = false

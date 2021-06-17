@@ -20,7 +20,7 @@ object `AL::GLOBAL.JSON.parse` extends Algo {
   |  2:let scriptString = (+ (+ "(" jsonString) ");")
   |  3:app __x1__ = (StringToCodePoints scriptString)
   |  3:let script = [! __x1__]
-  |  5:??? "Let id:{completion} be the result of evaluating id:{script} . The extended PropertyDefinitionEvaluation semantics defined in link:{unhandled: sec-__proto__-property-names-in-object-initializers} must not be used during the evaluation ."
+  |  5:??? "Let id:{completion} be the result of evaluating id:{script} . The extended PropertyDefinitionEvaluation semantics defined in link:{sec-__proto__-property-names-in-object-initializers} must not be used during the evaluation ."
   |  6:let unfiltered = completion.Value
   |  13:app __x2__ = (IsCallable reviver)
   |  13:if (= __x2__ true) {
