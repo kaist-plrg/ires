@@ -18,8 +18,8 @@ object `AL::NewPromiseCapability` extends Algo {
   |  0:app __x0__ = (IsConstructor C)
   |  0:if (= __x0__ false) throw TypeError else 1:{}
   |  2:let promiseCapability = (new PromiseCapabilityRecord("Promise" -> undefined, "Resolve" -> undefined, "Reject" -> undefined))
-  |  3:let steps = GetCapabilitiesExecutorFunctions
-  |  4:??? "Let id:{length} be the number of non - optional parameters of the function definition in GetCapabilitiesExecutorFunctions ."
+  |  3:let steps = GLOBALDOTGetCapabilitiesExecutorFunctions
+  |  4:??? "Let id:{length} be the number of non - optional parameters of the function definition in GLOBALDOTGetCapabilitiesExecutorFunctions ."
   |  5:app __x1__ = (CreateBuiltinFunction steps length "" (new ["Capability"]))
   |  5:let executor = [! __x1__]
   |  6:executor.Capability = promiseCapability

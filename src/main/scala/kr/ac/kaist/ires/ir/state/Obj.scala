@@ -1,6 +1,5 @@
 package kr.ac.kaist.ires.ir
 
-import kr.ac.kaist.ires.BaseModel.tyMap
 import kr.ac.kaist.ires.util.Useful._
 import scala.collection.mutable.{ Map => MMap }
 
@@ -39,7 +38,11 @@ case class IRMap(
   }
 
   // getters
-  def apply(prop: Value): Value = props.get(prop).fold[Value](Absent)(_._1)
+  def apply(prop: Value): Value = (props.get(prop), prop) match {
+    case (Some((value, _)), _) => value
+    case (None, Str(str)) => ty.methods.get(str).map(Func).getOrElse(Absent)
+    case _ => Absent
+  }
 
   // setters
   def update(prop: Value, value: Value): this.type = {
@@ -68,12 +71,7 @@ object IRMap {
     for ((prop, value) <- pairs) irMap.update(prop, value)
     irMap
   }
-  def apply(ty: Ty): IRMap = {
-    val irMap = IRMap(ty, MMap(), 0L)
-    val pairs = tyMap.getOrElse(ty.name, Map())
-    for ((prop, value) <- pairs) irMap.update(prop, value)
-    irMap
-  }
+  def apply(ty: Ty): IRMap = IRMap(ty, MMap(), 0L)
 }
 
 // IR lists

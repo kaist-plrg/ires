@@ -1,5 +1,5 @@
 let realm = REALM
-let varNames = realm.GlobalEnv.EnvironmentRecord.VarNames
+let varNames = realm.GlobalEnv.VarNames
 let map = realm.GlobalObject.SubMap
 assert (contains varNames "assert")
 assert (contains varNames "Test262Error")

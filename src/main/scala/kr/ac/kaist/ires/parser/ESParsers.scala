@@ -4,7 +4,7 @@ import kr.ac.kaist.ires.ast._
 import kr.ac.kaist.ires.error._
 import kr.ac.kaist.ires.model.Script
 import kr.ac.kaist.ires.util.Useful._
-import kr.ac.kaist.ires.{ DEBUG, LINE_SEP }
+import kr.ac.kaist.ires.{ INTERACTIVE, LINE_SEP }
 import scala.collection.mutable
 import scala.util.matching.Regex
 import scala.util.parsing.combinator._
@@ -21,8 +21,8 @@ trait ESParsers extends LAParsers {
         val lines = source.replace("\r\n", "\n").split(Array('\n', '\r'))
         val revStr = rev.mkString
 
-        // Debugging for semicolon insertion
-        if (DEBUG && keepLog) {
+        // Interactive debugging for semicolon insertion
+        if (INTERACTIVE && keepLog) {
           lines.zipWithIndex.foreach {
             case (x, i) => println(f"$i%4d: $x")
           }

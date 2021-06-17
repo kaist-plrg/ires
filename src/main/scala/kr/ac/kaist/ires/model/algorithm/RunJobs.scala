@@ -12,7 +12,7 @@ object `AL::RunJobs` extends Algo {
   val rawBody = parseInst("""{
   |  app __x0__ = (InitializeHostDefinedRealm)
   |  [? __x0__]
-  |  app __x1__ = (EnqueueJob "ScriptJobs" ScriptEvaluationJob (new [SCRIPT, HOST_DEFINED]))
+  |  app __x1__ = (EnqueueJob "ScriptJobs" ScriptEvaluationJob (new [SCRIPT_BODY, HOST_DEFINED]))
   |  while true {
   |    if (= EXECUTION_STACK[(- EXECUTION_STACK.length 1i)] CONTEXT) {
   |      let __x2__ = (- EXECUTION_STACK.length 1i)

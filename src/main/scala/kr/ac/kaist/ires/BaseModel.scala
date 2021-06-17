@@ -73,24 +73,4 @@ object BaseModel {
     NamedAddr(JOB_QUEUE) -> IRList(),
     NamedAddr(SYMBOL_REGISTRY) -> IRList(),
   )
-
-  lazy val tyMap: Map[String, Map[Value, Value]] = {
-    import builtin.Type._
-    Map(
-      ("DeclarativeEnvironmentRecord" -> DeclarativeEnvironmentRecord),
-      ("ObjectEnvironmentRecord" -> ObjectEnvironmentRecord),
-      ("StringExoticObject" -> StringExoticObject),
-      ("ArgumentsExoticObject" -> ArgumentsExoticObject),
-      ("ECMAScriptFunctionObject" -> ECMAScriptFunctionObject),
-      ("OrdinaryObject" -> OrdinaryObject),
-      ("BuiltinFunctionObject" -> BuiltinFunctionObject),
-      ("ArrayExoticObject" -> ArrayExoticObject),
-      ("FunctionEnvironmentRecord" -> FunctionEnvironmentRecord),
-      ("ProxyObject" -> ProxyObject),
-      ("ImmutablePrototypeExoticObject" -> ImmutablePrototypeExoticObject),
-      ("GlobalEnvironmentRecord" -> GlobalEnvironmentRecord),
-      ("IntegerIndexedExoticObject" -> IntegerIndexedExoticObject),
-      ("BoundFunctionExoticObject" -> BoundFunctionExoticObject)
-    )
-  }
 }

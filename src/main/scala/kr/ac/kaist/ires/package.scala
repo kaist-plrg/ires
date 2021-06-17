@@ -39,6 +39,9 @@ package object ires {
   // Debugging mode
   var DEBUG: Boolean = false
 
+  // Interactive debugging mode
+  var INTERACTIVE: Boolean = false
+
   // Logging mode
   var LOG: Boolean = false
 

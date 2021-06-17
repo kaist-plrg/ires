@@ -90,7 +90,9 @@ object IRES {
     ("silent", BoolOption(c => c.silent = true),
       "final results are not displayed."),
     ("debug", BoolOption(c => DEBUG = true),
-      "turn on the debub option."),
+      "turn on the debug option."),
+    ("interactive", BoolOption(c => INTERACTIVE = true),
+      "turn on the interactive debug option."),
     ("log", BoolOption(c => LOG = true),
       "turn on the log option."),
     ("time", BoolOption(c => c.time = true),
@@ -141,5 +143,6 @@ case class IRESConfig(
   var args: List[String] = Nil,
   var silent: Boolean = false,
   var debug: Boolean = false,
+  var interactive: Boolean = false,
   var time: Boolean = false
 ) extends Config

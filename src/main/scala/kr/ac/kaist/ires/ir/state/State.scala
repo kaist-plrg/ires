@@ -49,7 +49,7 @@ case class State(
     this
   }
   def update(addr: Addr, key: Value, value: Value): this.type =
-    { heap.update(addr, key, value); this }
+    { heap.update(addr, key, value.escaped(this)); this }
 
   // delete a key from a map
   def delete(refV: RefValue): this.type = refV match {

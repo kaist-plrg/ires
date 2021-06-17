@@ -1,6 +1,6 @@
 let globalEnv = REALM.GlobalEnv
-let varNames = globalEnv.EnvironmentRecord.VarNames
-let map = globalEnv.EnvironmentRecord.DeclarativeRecord.SubMap
+let varNames = globalEnv.VarNames
+let map = globalEnv.DeclarativeRecord.SubMap
 let f = REALM.GlobalObject.SubMap.f
 
 assert (contains varNames "f")

@@ -13,13 +13,13 @@ import scala.collection.mutable.{ Map => MMap }
 trait ModelTrait {
   // initial state
   def initState(
-    program: Program,
-    script: Script,
+    inst: Inst,
+    body: ScriptBody,
     filename: String
   ): State = State(
-    context = Context(insts = program.insts),
+    context = Context(insts = List(inst)),
     ctxtStack = Nil,
-    globals = initGlobal(script, filename),
+    globals = initGlobal(body, filename),
     heap = initHeap
   )
 
@@ -34,7 +34,7 @@ trait ModelTrait {
   val REALM = "REALM"
   val RESULT = "RESULT"
   val RETURN = "RETURN"
-  val SCRIPT = "SCRIPT"
+  val SCRIPT_BODY = "SCRIPT_BODY"
   val HOST_DEFINED = "HOST_DEFINED"
   val SYMBOL_REGISTRY = "SYMBOL_REGISTRY"
   val TOP_LEVEL = "TOP_LEVEL"
@@ -47,11 +47,11 @@ trait ModelTrait {
 
   // initial global variables
   def initGlobal(
-    script: Script,
+    body: ScriptBody,
     filename: String
   ): MMap[Id, Value] = {
     val map = MMap[Id, Value](
-      Id(SCRIPT) -> ASTVal(script),
+      Id(SCRIPT_BODY) -> ASTVal(body),
       Id(FILENAME) -> Str(filename),
     )
     for (c <- consts) {

@@ -1,4 +1,4 @@
-let varNames = REALM.GlobalEnv.EnvironmentRecord.VarNames
+let varNames = REALM.GlobalEnv.VarNames
 let map = REALM.GlobalObject.SubMap
 let x = map.x
 let y = map.y

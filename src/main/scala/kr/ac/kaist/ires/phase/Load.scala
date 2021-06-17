@@ -23,13 +23,14 @@ case object Load extends PhaseObj[Script, LoadConfig, State] {
   def apply(
     script: Script,
     filename: String
-  ): State = Model.initState(
-    program = Parser.parseProgram(s"""{
-      app $RESULT = (RunJobs)
-    }"""),
-    script = script,
-    filename = filename
-  )
+  ): State = script match {
+    case Script0(Some(body), _, _) => Model.initState(
+      inst = Parser.parseInst(s"app $RESULT = (RunJobs)"),
+      body = body,
+      filename = filename,
+    )
+    case _ => State()
+  }
 
   def defaultConfig: LoadConfig = LoadConfig()
   val options: List[PhaseOption[LoadConfig]] = List()

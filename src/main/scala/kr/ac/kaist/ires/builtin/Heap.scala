@@ -98,7 +98,7 @@ object Heap {
       imap = IMap(
         "Extensible" -> Bool(true),
         "Prototype" -> NamedAddr("GLOBAL.Function.prototype"),
-        "Code" -> Func(`AL::HostPrint`),
+        "Code" -> Func(`AL::GLOBAL.HostPrint`),
       ),
       nmap = NMap(
         "length" -> DataProperty(Num(0.0), F, F, T),
@@ -109,7 +109,7 @@ object Heap {
       imap = IMap(
         "Extensible" -> Bool(true),
         "Prototype" -> NamedAddr("GLOBAL.Function.prototype"),
-        "Code" -> Func(`AL::Object`),
+        "Code" -> Func(`AL::GLOBAL.Object`),
         "Construct" -> Func(`AL::BuiltinFunctionObject.Construct`),
       ),
       nmap = NMap(
@@ -132,7 +132,7 @@ object Heap {
       imap = IMap(
         "Extensible" -> Bool(true),
         "Prototype" -> NamedAddr("GLOBAL.Function.prototype"),
-        "Code" -> Func(`AL::Function`),
+        "Code" -> Func(`AL::GLOBAL.Function`),
         "Construct" -> Func(`AL::BuiltinFunctionObject.Construct`),
       ),
       nmap = NMap(
@@ -145,7 +145,7 @@ object Heap {
       imap = IMap(
         "Extensible" -> Bool(true),
         "Prototype" -> NamedAddr("GLOBAL.Object.prototype"),
-        "Code" -> Func(`AL::Function.prototype`)
+        "Code" -> Func(`AL::GLOBAL.Function.prototype`)
       ),
       nmap = NMap(
         "length" -> DataProperty(Num(0.0), F, F, T),
@@ -161,7 +161,7 @@ object Heap {
       imap = IMap(
         "Extensible" -> Bool(true),
         "Prototype" -> NamedAddr("GLOBAL.Function.prototype"),
-        "Code" -> Func(`AL::Function.prototype[SYMBOL_hasInstance]`)
+        "Code" -> Func(`AL::GLOBAL.Function.prototype[SYMBOL_hasInstance]`)
       ),
       nmap = NMap(
         "length" -> DataProperty(Num(1.0), F, F, T),
@@ -184,7 +184,7 @@ object Heap {
       imap = IMap(
         "Extensible" -> Bool(true),
         "Prototype" -> NamedAddr("GLOBAL.Function.prototype"),
-        "Code" -> Func(`AL::Boolean`),
+        "Code" -> Func(`AL::GLOBAL.Boolean`),
         "Construct" -> Func(`AL::BuiltinFunctionObject.Construct`)
       ),
       nmap = NMap(
@@ -208,7 +208,7 @@ object Heap {
       imap = IMap(
         "Extensible" -> Bool(true),
         "Prototype" -> NamedAddr("GLOBAL.Function.prototype"),
-        "Code" -> Func(`AL::Symbol`),
+        "Code" -> Func(`AL::GLOBAL.Symbol`),
         "Construct" -> Func(`AL::BuiltinFunctionObject.Construct`)
       ),
       nmap = NMap(
@@ -247,7 +247,7 @@ object Heap {
       imap = IMap(
         "Extensible" -> Bool(true),
         "Prototype" -> NamedAddr("GLOBAL.Function.prototype"),
-        "Code" -> Func(`AL::Symbol.prototype[SYMBOL_toPrimitive]`)
+        "Code" -> Func(`AL::GLOBAL.Symbol.prototype[SYMBOL_toPrimitive]`)
       ),
       nmap = NMap(
         "length" -> DataProperty(Num(1.0), F, F, T),
@@ -259,7 +259,7 @@ object Heap {
       imap = IMap(
         "Extensible" -> Bool(true),
         "Prototype" -> NamedAddr("GLOBAL.Function.prototype"),
-        "Code" -> Func(`AL::getSymbol.prototype.description`)
+        "Code" -> Func(`AL::GLOBAL.getSymbol.prototype.description`)
       ),
       nmap = NMap(
         "name" -> DataProperty(Str("get description"), F, F, T),
@@ -271,7 +271,7 @@ object Heap {
       imap = IMap(
         "Extensible" -> Bool(true),
         "Prototype" -> NamedAddr("GLOBAL.Function.prototype"),
-        "Code" -> Func(`AL::Error`),
+        "Code" -> Func(`AL::GLOBAL.Error`),
         "Construct" -> Func(`AL::BuiltinFunctionObject.Construct`)
       ),
       nmap = NMap(
@@ -295,7 +295,7 @@ object Heap {
       imap = IMap(
         "Extensible" -> Bool(true),
         "Prototype" -> NamedAddr("GLOBAL.Function.prototype"),
-        "Code" -> Func(`AL::Number`),
+        "Code" -> Func(`AL::GLOBAL.Number`),
         "Construct" -> Func(`AL::BuiltinFunctionObject.Construct`)
       ),
       nmap = NMap(
@@ -328,7 +328,7 @@ object Heap {
       imap = IMap(
         "Extensible" -> Bool(true),
         "Prototype" -> NamedAddr("GLOBAL.Function.prototype"),
-        "Code" -> Func(`AL::BigInt`),
+        "Code" -> Func(`AL::GLOBAL.BigInt`),
         "Construct" -> Func(`AL::BuiltinFunctionObject.Construct`),
       ),
       nmap = NMap(
@@ -353,7 +353,7 @@ object Heap {
       imap = IMap(
         "Extensible" -> Bool(true),
         "Prototype" -> NamedAddr("GLOBAL.Function.prototype"),
-        "Code" -> Func(`AL::String`),
+        "Code" -> Func(`AL::GLOBAL.String`),
         "Construct" -> Func(`AL::BuiltinFunctionObject.Construct`),
       ),
       nmap = NMap(
@@ -387,7 +387,7 @@ object Heap {
       imap = IMap(
         "Extensible" -> Bool(true),
         "Prototype" -> NamedAddr("GLOBAL.Function.prototype"),
-        "Code" -> Func(`AL::Array`),
+        "Code" -> Func(`AL::GLOBAL.Array`),
         "Construct" -> Func(`AL::BuiltinFunctionObject.Construct`)
       ),
       nmap = NMap(
@@ -401,7 +401,7 @@ object Heap {
       imap = IMap(
         "Extensible" -> Bool(true),
         "Prototype" -> NamedAddr("GLOBAL.Function.prototype"),
-        "Code" -> Func(`AL::getArray[SYMBOL_species]`),
+        "Code" -> Func(`AL::GLOBAL.getArray[SYMBOL_species]`),
       ),
       nmap = NMap(
         "name" -> DataProperty(Str("get [Symbol.species]"), F, F, T),
@@ -455,7 +455,7 @@ object Heap {
       imap = IMap(
         "Extensible" -> Bool(true),
         "Prototype" -> NamedAddr("GLOBAL.Function.prototype"),
-        "Code" -> Func(`AL::Map`),
+        "Code" -> Func(`AL::GLOBAL.Map`),
         "Construct" -> Func(`AL::BuiltinFunctionObject.Construct`),
       ),
       nmap = NMap(
@@ -468,7 +468,7 @@ object Heap {
       imap = IMap(
         "Extensible" -> Bool(true),
         "Prototype" -> NamedAddr("GLOBAL.Function.prototype"),
-        "Code" -> Func(`AL::getMap[SYMBOL_species]`),
+        "Code" -> Func(`AL::GLOBAL.getMap[SYMBOL_species]`),
       ),
       nmap = NMap(
         "name" -> DataProperty(Str("get [Symbol.species]"), F, F, T),
@@ -493,7 +493,7 @@ object Heap {
       imap = IMap(
         "Extensible" -> Bool(true),
         "Prototype" -> NamedAddr("GLOBAL.Function.prototype"),
-        "Code" -> Func(`AL::getMap.prototype.size`),
+        "Code" -> Func(`AL::GLOBAL.getMap.prototype.size`),
       ),
       nmap = NMap(
         "name" -> DataProperty(Str("get size"), F, F, T),
@@ -515,7 +515,7 @@ object Heap {
       imap = IMap(
         "Extensible" -> Bool(true),
         "Prototype" -> NamedAddr("GLOBAL.Function.prototype"),
-        "Code" -> Func(`AL::Set`),
+        "Code" -> Func(`AL::GLOBAL.Set`),
         "Construct" -> Func(`AL::BuiltinFunctionObject.Construct`),
       ),
       nmap = NMap(
@@ -528,7 +528,7 @@ object Heap {
       imap = IMap(
         "Extensible" -> Bool(true),
         "Prototype" -> NamedAddr("GLOBAL.Function.prototype"),
-        "Code" -> Func(`AL::getSet[SYMBOL_species]`),
+        "Code" -> Func(`AL::GLOBAL.getSet[SYMBOL_species]`),
       ),
       nmap = NMap(
         "name" -> DataProperty(Str("get [Symbol.species]"), F, F, T),
@@ -554,7 +554,7 @@ object Heap {
       imap = IMap(
         "Extensible" -> Bool(true),
         "Prototype" -> NamedAddr("GLOBAL.Function.prototype"),
-        "Code" -> Func(`AL::getSet.prototype.size`),
+        "Code" -> Func(`AL::GLOBAL.getSet.prototype.size`),
       ),
       nmap = NMap(
         "name" -> DataProperty(Str("get size"), F, F, T),
@@ -576,7 +576,7 @@ object Heap {
       imap = IMap(
         "Extensible" -> Bool(true),
         "Prototype" -> NamedAddr("GLOBAL.Function.prototype"),
-        "Code" -> Func(`AL::WeakMap`),
+        "Code" -> Func(`AL::GLOBAL.WeakMap`),
         "Construct" -> Func(`AL::BuiltinFunctionObject.Construct`),
       ),
       nmap = NMap(
@@ -599,7 +599,7 @@ object Heap {
       imap = IMap(
         "Extensible" -> Bool(true),
         "Prototype" -> NamedAddr("GLOBAL.Function.prototype"),
-        "Code" -> Func(`AL::WeakSet`),
+        "Code" -> Func(`AL::GLOBAL.WeakSet`),
         "Construct" -> Func(`AL::BuiltinFunctionObject.Construct`),
       ),
       nmap = NMap(
@@ -645,7 +645,7 @@ object Heap {
       typeName = "BuiltinFunctionObject",
       imap = IMap(
         "Prototype" -> NamedAddr("GLOBAL.Function"),
-        "Code" -> Func(`AL::GeneratorFunction`),
+        "Code" -> Func(`AL::GLOBAL.GeneratorFunction`),
         "Construct" -> Func(`AL::BuiltinFunctionObject.Construct`),
         "Extensible" -> Bool(true),
         "ScriptOrModule" -> Null,
@@ -684,7 +684,7 @@ object Heap {
       typeName = "BuiltinFunctionObject",
       imap = IMap(
         "Prototype" -> NamedAddr("GLOBAL.Function"),
-        "Code" -> Func(`AL::AsyncGeneratorFunction`),
+        "Code" -> Func(`AL::GLOBAL.AsyncGeneratorFunction`),
         "Construct" -> Func(`AL::BuiltinFunctionObject.Construct`),
         "Extensible" -> Bool(true),
         "ScriptOrModule" -> Null,
@@ -724,7 +724,7 @@ object Heap {
       imap = IMap(
         "Extensible" -> Bool(true),
         "Prototype" -> NamedAddr("GLOBAL.Function.prototype"),
-        "Code" -> Func(`AL::Promise`),
+        "Code" -> Func(`AL::GLOBAL.Promise`),
         "Construct" -> Func(`AL::BuiltinFunctionObject.Construct`),
       ),
       nmap = NMap(
@@ -737,7 +737,7 @@ object Heap {
       imap = IMap(
         "Extensible" -> Bool(true),
         "Prototype" -> NamedAddr("GLOBAL.Function.prototype"),
-        "Code" -> Func(`AL::getPromise[SYMBOL_species]`),
+        "Code" -> Func(`AL::GLOBAL.getPromise[SYMBOL_species]`),
       ),
       nmap = NMap(
         "name" -> DataProperty(Str("get [Symbol.species]"), F, F, T),
@@ -759,7 +759,7 @@ object Heap {
       typeName = "BuiltinFunctionObject",
       imap = IMap(
         "Prototype" -> NamedAddr("GLOBAL.Function"),
-        "Code" -> Func(`AL::AsyncFunction`),
+        "Code" -> Func(`AL::GLOBAL.AsyncFunction`),
         "Construct" -> Func(`AL::BuiltinFunctionObject.Construct`),
         "Extensible" -> Bool(true),
         "ScriptOrModule" -> Null,
@@ -790,12 +790,12 @@ object Heap {
   } yield name -> struct).toMap
 
   private def errList: List[(String, Algo)] = List(
-    ("EvalError", `AL::EvalError`),
-    ("RangeError", `AL::RangeError`),
-    ("ReferenceError", `AL::ReferenceError`),
-    ("SyntaxError", `AL::SyntaxError`),
-    ("TypeError", `AL::TypeError`),
-    ("URIError", `AL::URIError`)
+    ("EvalError", `AL::GLOBAL.EvalError`),
+    ("RangeError", `AL::GLOBAL.RangeError`),
+    ("ReferenceError", `AL::GLOBAL.ReferenceError`),
+    ("SyntaxError", `AL::GLOBAL.SyntaxError`),
+    ("TypeError", `AL::GLOBAL.TypeError`),
+    ("URIError", `AL::GLOBAL.URIError`)
   )
 
   private def getErrMap(errName: String, errFunc: Func): Map[String, Struct] = Map(

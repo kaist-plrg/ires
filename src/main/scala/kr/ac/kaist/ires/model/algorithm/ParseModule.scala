@@ -16,7 +16,7 @@ object `AL::ParseModule` extends Algo {
     "sec-ecmascript-language-scripts-and-modules",
   )
   val rawBody = parseInst("""{
-  |  1:let body = SCRIPT
+  |  1:let body = sourceText
   |  3:access __x0__ = (body "ModuleRequests")
   |  3:let requestedModules = __x0__
   |  4:access __x1__ = (body "ImportEntries")

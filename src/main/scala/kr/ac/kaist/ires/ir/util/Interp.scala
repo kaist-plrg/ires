@@ -89,10 +89,10 @@ private class Interp(
         val base = interp(bexpr)
         val prop = interp(expr).escaped(st)
         val vOpt = (base, prop) match {
-          case (addr: Addr, p @ Str("Value")) if isCompletion(addr) => Some(st(addr, p))
+          case (addr: Addr, p @ Str("Value")) if addr.isCompletion(st) => Some(st(addr, p))
           case (ASTVal(Lexical(kind, str)), Str(name)) => Some((kind, name) match {
             case ("(IdentifierName \\ (ReservedWord))" | "IdentifierName", "StringValue") => Str(ESValueParser.parseIdentifier(str))
-            case ("NumericLiteral", "MV") => Num(ESValueParser.parseNumber(str))
+            case ("NumericLiteral", "MV" | "NumericValue") => Num(ESValueParser.parseNumber(str))
             case ("StringLiteral", "SV" | "StringValue") => Str(ESValueParser.parseString(str))
             case ("NoSubstitutionTemplate", "TV") => Str(ESValueParser.parseTVNoSubstitutionTemplate(str))
             case ("TemplateHead", "TV") => Str(ESValueParser.parseTVTemplateHead(str))
@@ -139,7 +139,7 @@ private class Interp(
       case IReturn(expr) => st.ctxtStack match {
         case Nil => error(s"no remaining calling contexts")
         case ctxt :: rest =>
-          ctxt.locals += st.context.retId -> interp(expr)
+          ctxt.locals += st.context.retId -> interp(expr).wrapCompletion(st)
           st.context = ctxt
           st.ctxtStack = rest
       }
@@ -224,15 +224,15 @@ private class Interp(
       case ASTVal(_) => "AST"
       case ASTMethod(_, _) => "ASTMethod"
     })
-    case EIsCompletion(expr) => Bool(isCompletion(interp(expr)))
+    case EIsCompletion(expr) => Bool(interp(expr).isCompletion(st))
     case EIsInstanceOf(base, name) => interp(base).escaped(st) match {
       case ASTVal(ast) => Bool(ast.name == name || ast.getKinds.contains(name))
       case Str(str) => Bool(str == name)
       case addr: Addr => st(addr) match {
-        case IRMap(Ty(tyname), _, _) => Bool(tyname == name)
+        case IRMap(ty, _, _) => Bool(ty < Ty(name))
         case _ => Bool(false)
       }
-      case v => error(s"invalid value for is-instance-of operator: ${v.beautified}")
+      case _ => Bool(false)
     }
     case EGetElems(base, name) => interp(base).escaped(st) match {
       case ASTVal(ast) => st.allocList(ast.getElems(name).map(ASTVal(_)))
@@ -480,15 +480,6 @@ private class Interp(
     }
     aux(params, args)
     map
-  }
-
-  // check completion record
-  def isCompletion(value: Value): Boolean = value match {
-    case addr: Addr => st(addr) match {
-      case IRMap(Ty("Completion"), _, _) => true
-      case _ => false
-    }
-    case _ => false
   }
 
   // // handle parameters

@@ -25,7 +25,14 @@ object `AL::ValidateAndApplyPropertyDescriptor` extends Algo {
   |      app __x2__ = (IsDataDescriptor Desc)
   |      __x0__ = (= __x2__ true)
   |    }
-  |    6:if __x0__ if (= O undefined) {} else {} else {
+  |    6:if __x0__ if (! (= O undefined)) {
+  |      let dp = (new DataProperty())
+  |      if (! (= absent Desc.Value)) dp.Value = Desc.Value else dp.Value = undefined
+  |      if (! (= absent Desc.Writable)) dp.Writable = Desc.Writable else dp.Writable = false
+  |      if (! (= absent Desc.Enumerable)) dp.Enumerable = Desc.Enumerable else dp.Enumerable = false
+  |      if (! (= absent Desc.Configurable)) dp.Configurable = Desc.Configurable else dp.Configurable = false
+  |      O.SubMap[P] = dp
+  |    } else {} else {
   |      7:app __x3__ = (IsAccessorDescriptor Desc)
   |      7:assert (= [! __x3__] true)
   |      8:if (= O undefined) {} else {}

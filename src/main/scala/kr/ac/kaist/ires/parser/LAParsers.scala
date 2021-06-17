@@ -1,7 +1,7 @@
 package kr.ac.kaist.ires.parser
 
 import kr.ac.kaist.ires.util.Useful._
-import kr.ac.kaist.ires.{ DEBUG, LINE_SEP }
+import kr.ac.kaist.ires.{ INTERACTIVE, LINE_SEP }
 import scala.collection.mutable
 import scala.language.reflectiveCalls
 import scala.util.parsing.input._
@@ -125,26 +125,31 @@ trait LAParsers extends Lexer {
 
   // logging
   var keepLog: Boolean = true
-  def log[T](p: LAParser[T])(name: String): LAParser[T] = if (!DEBUG) p else new LAParser(follow => Parser { rawIn =>
-    val in = rawIn.asInstanceOf[EPackratReader[Char]]
-    val stopMsg = s"trying $name with $follow at [${in.pos}] \n\n${in.pos.longString}\n"
-    if (keepLog) stop(stopMsg) match {
-      case "q" =>
-        keepLog = false
-        p(follow, in)
-      case "j" =>
-        keepLog = false
-        val r = p(follow, in)
-        println(name + " --> " + r)
-        keepLog = true
-        r
-      case _ =>
-        val r = p(follow, in)
-        println(name + " --> " + r)
-        r
-    }
-    else p(follow, in)
-  }, p.first)
+  def log[T](p: LAParser[T])(name: String): LAParser[T] = {
+    if (!INTERACTIVE) p else new LAParser(follow => Parser { rawIn =>
+      val in = rawIn.asInstanceOf[EPackratReader[Char]]
+      val stopMsg = (
+        s"trying $name with $follow at [${in.pos}] \n\n" +
+        s"${in.pos.longString}\n"
+      )
+      if (keepLog) stop(stopMsg) match {
+        case "q" =>
+          keepLog = false
+          p(follow, in)
+        case "j" =>
+          keepLog = false
+          val r = p(follow, in)
+          println(name + " --> " + r)
+          keepLog = true
+          r
+        case _ =>
+          val r = p(follow, in)
+          println(name + " --> " + r)
+          r
+      }
+      else p(follow, in)
+    }, p.first)
+  }
 
   // stop message
   protected def stop(msg: String): String = {
