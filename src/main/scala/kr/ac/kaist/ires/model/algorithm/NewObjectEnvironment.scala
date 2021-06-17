@@ -15,7 +15,7 @@ object `AL::NewObjectEnvironment` extends Algo {
     "sec-executable-code-and-execution-contexts",
   )
   val rawBody = parseInst("""{
-  |  0:let env = (new ObjectEnvironmentRecord("SubMap" -> (new SubMap()), "BindingObject" -> O))
+  |  0:let env = (new ObjectEnvironmentRecord("BindingObject" -> O))
   |  1:env.OuterEnv = E
   |  2:return env
   |}""".stripMargin)

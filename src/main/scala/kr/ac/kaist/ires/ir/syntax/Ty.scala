@@ -8,6 +8,11 @@ import kr.ac.kaist.ires.algorithm._
 case class Ty(name: String) extends IRNode {
   import Ty._
 
+  // check whether it has SubMap
+  def hasSubMap: Boolean = {
+    (name endsWith "Object") || (name endsWith "EnvironmentRecord")
+  }
+
   // get root of type
   def root: Ty = parent.fold(this)(_.root)
 

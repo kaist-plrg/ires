@@ -86,10 +86,13 @@ private class Interp(
         case v => error(s"not a function: ${fexpr.beautified} -> ${v.beautified}")
       }
       case IAccess(id, bexpr, expr, args) => {
-        val base = interp(bexpr)
+        var base = interp(bexpr)
         val prop = interp(expr).escaped(st)
+        prop match {
+          case Str("Type" | "Value" | "Target") =>
+          case _ => base = base.escaped(st)
+        }
         val vOpt = (base, prop) match {
-          case (addr: Addr, p @ Str("Value")) if addr.isCompletion(st) => Some(st(addr, p))
           case (ASTVal(Lexical(kind, str)), Str(name)) => Some((kind, name) match {
             case ("(IdentifierName \\ (ReservedWord))" | "IdentifierName", "StringValue") => Str(ESValueParser.parseIdentifier(str))
             case ("NumericLiteral", "MV" | "NumericValue") => Num(ESValueParser.parseNumber(str))
@@ -119,6 +122,7 @@ private class Interp(
               error(s"unexpected semantics: ${ast.name}.$name")
             })
           }
+          case (addr: Addr, _) => Some(st(addr, prop))
           case (Str(str), _) => Some(st(str, prop))
           case v => error(s"invalid access: ${inst.beautified}")
         }
@@ -355,7 +359,7 @@ private class Interp(
       var base = st(interp(ref))
       val p = interp(expr).escaped(st)
       p match {
-        case Str("Type" | "Value" | "Target") => st(interp(ref))
+        case Str("Type" | "Value" | "Target") =>
         case _ => base = base.escaped(st)
       }
       base match {

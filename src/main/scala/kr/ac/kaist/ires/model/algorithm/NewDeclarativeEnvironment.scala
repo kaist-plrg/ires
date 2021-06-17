@@ -15,7 +15,7 @@ object `AL::NewDeclarativeEnvironment` extends Algo {
     "sec-executable-code-and-execution-contexts",
   )
   val rawBody = parseInst("""{
-  |  0:let env = (new DeclarativeEnvironmentRecord("SubMap" -> (new SubMap())))
+  |  0:let env = (new DeclarativeEnvironmentRecord())
   |  1:env.OuterEnv = E
   |  2:return env
   |}""".stripMargin)

@@ -62,7 +62,7 @@ object `AL::InitializeEnvironment` extends Algo {
   |    }
   |    __x5__ = (+ __x5__ 1i)
   |  }
-  |  25:let moduleContext = (new ExecutionContext("SubMap" -> (new SubMap())))
+  |  25:let moduleContext = (new ExecutionContext())
   |  26:moduleContext.Function = null
   |  27:assert (! (= module.Realm undefined))
   |  28:moduleContext.Realm = module.Realm

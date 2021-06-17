@@ -17,7 +17,7 @@ object `AL::PrepareForOrdinaryCall` extends Algo {
   val rawBody = parseInst("""{
   |  0:assert (|| (= (typeof newTarget) Undefined) (= (typeof newTarget) Object))
   |  1:let callerContext = CONTEXT
-  |  2:let calleeContext = (new ExecutionContext("SubMap" -> (new SubMap())))
+  |  2:let calleeContext = (new ExecutionContext())
   |  3:calleeContext.Function = F
   |  4:let calleeRealm = F.Realm
   |  5:calleeContext.Realm = calleeRealm

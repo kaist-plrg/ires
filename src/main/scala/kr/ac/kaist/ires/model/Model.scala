@@ -1590,6 +1590,7 @@ object Model extends ModelTrait {
     "IsExtensible" -> `AL::IsExtensible`,
     "IsGenericDescriptor" -> `AL::IsGenericDescriptor`,
     "IsInTailPosition" -> `AL::IsInTailPosition`,
+    "IsInTailPosition" -> `AL::IsInTailPosition`,
     "IsIntegralNumber" -> `AL::IsIntegralNumber`,
     "IsLabelledFunction" -> `AL::IsLabelledFunction`,
     "IsNoTearConfiguration" -> `AL::IsNoTearConfiguration`,

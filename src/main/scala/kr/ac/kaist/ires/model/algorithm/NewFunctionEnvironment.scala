@@ -16,7 +16,7 @@ object `AL::NewFunctionEnvironment` extends Algo {
   )
   val rawBody = parseInst("""{
   |  1:assert (|| (= (typeof newTarget) Undefined) (= (typeof newTarget) Object))
-  |  2:let env = (new FunctionEnvironmentRecord("SubMap" -> (new SubMap())))
+  |  2:let env = (new FunctionEnvironmentRecord())
   |  3:env.FunctionObject = F
   |  5:if (= F.ThisMode CONST_lexical) env.ThisBindingStatus = CONST_lexical else env.ThisBindingStatus = CONST_uninitialized
   |  6:env.NewTarget = newTarget

@@ -52,7 +52,7 @@ object `AL::PerformEval` extends Algo {
   |  }
   |  32:if (= strictEval true) varEnv = lexEnv else 25:{}
   |  33:if (= runningContext null) CONTEXT = null else 25:{}
-  |  34:let evalContext = (new ExecutionContext("SubMap" -> (new SubMap())))
+  |  34:let evalContext = (new ExecutionContext())
   |  35:evalContext.Function = null
   |  36:evalContext.Realm = evalRealm
   |  37:evalContext.ScriptOrModule = runningContext.ScriptOrModule

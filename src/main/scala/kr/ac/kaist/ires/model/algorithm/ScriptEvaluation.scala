@@ -15,7 +15,7 @@ object `AL::ScriptEvaluation` extends Algo {
   )
   val rawBody = parseInst("""{
   |  0:let globalEnv = scriptRecord.Realm.GlobalEnv
-  |  1:let scriptContext = (new ExecutionContext("SubMap" -> (new SubMap())))
+  |  1:let scriptContext = (new ExecutionContext())
   |  2:scriptContext.Function = null
   |  3:scriptContext.Realm = scriptRecord.Realm
   |  4:scriptContext.ScriptOrModule = scriptRecord

@@ -16,7 +16,7 @@ object `AL::ToPropertyDescriptor` extends Algo {
   )
   val rawBody = parseInst("""{
   |  0:if (! (= (typeof Obj) Object)) throw TypeError else 2:{}
-  |  1:let desc = (new PropertyDescriptor("SubMap" -> (new SubMap())))
+  |  1:let desc = (new PropertyDescriptor())
   |  2:app __x0__ = (HasProperty Obj "enumerable")
   |  2:let hasEnumerable = [? __x0__]
   |  3:if (= hasEnumerable true) {

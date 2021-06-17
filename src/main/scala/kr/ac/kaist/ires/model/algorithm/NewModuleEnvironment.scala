@@ -15,7 +15,7 @@ object `AL::NewModuleEnvironment` extends Algo {
     "sec-executable-code-and-execution-contexts",
   )
   val rawBody = parseInst("""{
-  |  0:let env = (new ModuleEnvironmentRecord("SubMap" -> (new SubMap())))
+  |  0:let env = (new ModuleEnvironmentRecord())
   |  1:env.OuterEnv = E
   |  2:return env
   |}""".stripMargin)

@@ -14,7 +14,7 @@ object `AL::MakeBasicObject` extends Algo {
     "sec-abstract-operations",
   )
   val rawBody = parseInst("""{
-  |  1:let obj = (new OrdinaryObject("SubMap" -> (new SubMap())))
+  |  1:let obj = (new OrdinaryObject())
   |  1:let __x0__ = internalSlotsList
   |  1:let __x1__ = 0i
   |  1:while (< __x1__ __x0__.length) {

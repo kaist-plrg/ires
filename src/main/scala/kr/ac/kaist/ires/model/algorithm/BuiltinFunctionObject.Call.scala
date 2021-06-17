@@ -16,14 +16,14 @@ object `AL::BuiltinFunctionObject.Call` extends Algo {
   val rawBody = parseInst("""{
   |  0:let callerContext = CONTEXT
   |  1:if (= callerContext null) CONTEXT = null else 7:{}
-  |  2:let calleeContext = (new ExecutionContext("SubMap" -> (new SubMap())))
+  |  2:let calleeContext = (new ExecutionContext())
   |  3:calleeContext.Function = F
   |  4:let calleeRealm = F.Realm
   |  5:calleeContext.Realm = calleeRealm
   |  6:calleeContext.ScriptOrModule = null
   |  8:append calleeContext -> EXECUTION_STACK
   |  8:CONTEXT = EXECUTION_STACK[(- EXECUTION_STACK.length 1i)]
-  |  9:??? "Let id:{result} be the Completion Record that is the result of evaluating id:{F} in a manner that conforms to the specification of id:{F} . id:{thisArgument} is the value:{this} value , id:{argumentsList} provides the named parameters , and the NewTarget value is value:{undefined} ."
+  |  9:app result = (F.Code thisArgument argumentsList undefined)
   |  10:if (= EXECUTION_STACK[(- EXECUTION_STACK.length 1i)] calleeContext) {
   |    let __x0__ = (- EXECUTION_STACK.length 1i)
   |    (pop EXECUTION_STACK __x0__)

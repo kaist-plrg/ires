@@ -71,6 +71,10 @@ case class Heap(
   ): Addr = {
     val irMap = IRMap(ty)
     for ((k, v) <- m) irMap.update(k, v)
+    if (ty.hasSubMap) {
+      val subMap = IRMap(Ty("SubMap"))
+      irMap.update(Str("SubMap"), alloc(subMap))
+    }
     alloc(irMap)
   }
 

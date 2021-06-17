@@ -15,9 +15,9 @@ object `AL::NewGlobalEnvironment` extends Algo {
     "sec-executable-code-and-execution-contexts",
   )
   val rawBody = parseInst("""{
-  |  0:let objRec = (new ObjectEnvironmentRecord("SubMap" -> (new SubMap()), "BindingObject" -> G))
-  |  1:let dclRec = (new DeclarativeEnvironmentRecord("SubMap" -> (new SubMap())))
-  |  2:let env = (new GlobalEnvironmentRecord("SubMap" -> (new SubMap())))
+  |  0:let objRec = (new ObjectEnvironmentRecord("BindingObject" -> G))
+  |  1:let dclRec = (new DeclarativeEnvironmentRecord())
+  |  2:let env = (new GlobalEnvironmentRecord())
   |  3:env.ObjectRecord = objRec
   |  4:env.GlobalThisValue = thisValue
   |  5:env.DeclarativeRecord = dclRec

@@ -15,7 +15,7 @@ object `AL::InitializeHostDefinedRealm` extends Algo {
   val rawBody = parseInst("""{
   |  0:app __x0__ = (CreateRealm)
   |  0:let realm = __x0__
-  |  1:let newContext = (new ExecutionContext("SubMap" -> (new SubMap())))
+  |  1:let newContext = (new ExecutionContext())
   |  2:newContext.Function = null
   |  3:newContext.Realm = realm
   |  4:newContext.ScriptOrModule = null

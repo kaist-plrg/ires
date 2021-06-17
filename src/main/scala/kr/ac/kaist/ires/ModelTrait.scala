@@ -31,6 +31,7 @@ trait ModelTrait {
   val GLOBAL = "GLOBAL"
   val INTRINSICS = "INTRINSICS"
   val JOB_QUEUE = "JOB_QUEUE"
+  val PRIMITIVE = "PRIMITIVE"
   val REALM = "REALM"
   val RESULT = "RESULT"
   val RETURN = "RETURN"
@@ -58,7 +59,7 @@ trait ModelTrait {
       map += Id(CONST_PREFIX + c) -> NamedAddr(CONST_PREFIX + c)
     }
     for (i <- intrinsics) {
-      map += Id(INTRINSIC_PREFIX + i) -> NamedAddr(i.replaceAll("_", "."))
+      map += Id(INTRINSIC_PREFIX + i) -> intrinsicToAddr(i)
     }
     for (s <- symbols) {
       map += Id(SYMBOL_PREFIX + s) -> NamedAddr(s"$GLOBAL.Symbol.$s")
@@ -84,6 +85,7 @@ trait ModelTrait {
     for ((addr, obj) <- BaseModel.heap) {
       map += addr -> obj
     }
+    addBuiltin(map)
     Heap(map)
   }
 
@@ -132,78 +134,79 @@ trait ModelTrait {
     Script0(bodyOpt, params, span)
   }
 
-  // def getPropStr(value: Value): String = value match {
-  //   case Str(str) => s".$str"
-  //   case _ => s"[${value.beautified}]"
-  // }
+  def addBuiltin(map: MMap[Addr, Obj]): Unit = for {
+    (_, algo) <- algos
+    head <- algo.head match {
+      case head: BuiltinHead => Some(head)
+      case _ => None
+    }
+    (base, prop, propV, propName) <- head.ref match {
+      case RefId(Id(name)) if name.head.isLower =>
+        Some(GLOBAL, name, Str(name), name)
+      case RefProp(ref, EStr(prop)) =>
+        Some(GLOBAL + "." + ref.beautified, prop, Str(prop), prop)
+      case RefProp(ref, ERef(RefId(Id(name)))) if name startsWith SYMBOL_PREFIX =>
+        val symbolName = name.substring(SYMBOL_PREFIX.length)
+        Some(GLOBAL + "." + ref.beautified, name, NamedAddr(name), s"[Symbol.$symbolName]")
+      case _ => None
+    }
+    baseAddr = NamedAddr(s"$base.SubMap")
+    irMap <- map.get(baseAddr) match {
+      case Some(m: IRMap) => Some(m)
+      case _ => None
+    }
+    name <- propV match {
+      case Str(name) => Some(s"$base.$prop")
+      case NamedAddr(name) => Some(s"$base[$name]")
+      case _ => None
+    }
+    addr = NamedAddr(s"$name")
+    descAddr = NamedAddr(s"DESC:$name")
+  } {
+    irMap.update(propV, descAddr)
+    map += descAddr -> IRMap("PropertyDescriptor")(List(
+      Str("Value") -> addr,
+      Str("Writable") -> Bool(true),
+      Str("Enumerable") -> Bool(false),
+      Str("Configurable") -> Bool(true),
+    ))
+    map.get(addr) match {
+      case Some(irMap: IRMap) => {
+        irMap.update(Str("Extensible"), Bool(true))
+        irMap.update(Str("ScriptOrModule"), Null)
+        irMap.update(Str("Realm"), NamedAddr("REALM"))
+      }
+      case _ => map += addr -> IRMap("BuiltinFunctionObject")(List(
+        Str("Code") -> Func(algo),
+        Str("Prototype") -> NamedAddr("GLOBAL.Function.prototype"),
+        Str("Extensible") -> Bool(true),
+        Str("ScriptOrModule") -> Null,
+        Str("Realm") -> NamedAddr("REALM"),
+        Str("SubMap") -> NamedAddr(s"$name.SubMap"),
+      ))
+    }
+    map += NamedAddr(s"$name.SubMap") -> IRMap("SubMap")(List(
+      Str("name") -> NamedAddr(s"DESC:$name.name"),
+      Str("length") -> NamedAddr(s"DESC:$name.length"),
+    ))
+    map += NamedAddr(s"DESC:$name.name") -> IRMap("PropertyDescriptor")(List(
+      Str("Value") -> Str(propName),
+      Str("Writable") -> Bool(false),
+      Str("Enumerable") -> Bool(false),
+      Str("Configurable") -> Bool(true),
+    ))
+    map += NamedAddr(s"DESC:$name.length") -> IRMap("PropertyDescriptor")(List(
+      Str("Value") -> Num(head.origParams.length),
+      Str("Writable") -> Bool(false),
+      Str("Enumerable") -> Bool(false),
+      Str("Configurable") -> Bool(true),
+    ))
+  }
 
-  // def addBuiltin(
-  //   map: Map[Addr, Obj],
-  //   builtinMethods: List[(String, Int, Func)]
-  // ): Map[Addr, Obj] = ???
-  // builtinMethods.foldLeft(map) {
-  //   case (m, (givenName, length, func)) =>
-  //     val base = removedExt(givenName)
-  //     val prop = getExt(givenName)
-  //     val (propV, propName) = if (prop.startsWith("SYMBOL_")) {
-  //       val p = prop.substring("SYMBOL_".length)
-  //       (NamedAddr(s"GLOBAL.Symbol.$p"), s"[Symbol.$p]")
-  //     } else (Str(prop), prop)
-  //     val name = base + getPropStr(propV)
-  //     val addr = NamedAddr(name)
-  //     val baseAddr =
-  //       if (base == "GLOBAL") NamedAddr("GLOBAL")
-  //       else NamedAddr(s"$base.SubMap")
-  //     val descAddr = NamedAddr(s"DESC:$name")
-  //     (m.get(baseAddr) match {
-  //       case Some(IRMap(ty, map, size)) => m ++ List(
-  //         baseAddr -> IRMap(ty, map + (propV -> (descAddr, size)), size + 1),
-  //         descAddr -> m.getOrElse(descAddr, IRUMap(Ty("PropertyDescriptor"), Map(
-  //           Str("Value") -> addr,
-  //           Str("Writable") -> Bool(true),
-  //           Str("Enumerable") -> Bool(false),
-  //           Str("Configurable") -> Bool(true)
-  //         )))
-  //       )
-  //       case _ => m
-  //     }) + (m.get(addr) match {
-  //       case Some(IRMap(ty, map, size)) =>
-  //         addr -> IRMap(ty, map ++ Map(
-  //           Str("Extensible") -> (Bool(true), size),
-  //           Str("ScriptOrModule") -> (Null, size + 1),
-  //           Str("Realm") -> (NamedAddr("REALM"), size + 2)
-  //         ), size + 3)
-  //       case _ =>
-  //         addr -> IRUMap(Ty("BuiltinFunctionObject"), BuiltinFunctionObject.map - Str("Construct") ++ Map(
-  //           Str("Code") -> func,
-  //           Str("Prototype") -> NamedAddr("GLOBAL.Function.prototype"),
-  //           Str("Extensible") -> Bool(true),
-  //           Str("ScriptOrModule") -> Null,
-  //           Str("Realm") -> NamedAddr("REALM"),
-  //           Str("SubMap") -> NamedAddr(s"$name.SubMap")
-  //         ))
-  //     }) ++ List(
-  //       NamedAddr(s"$name.SubMap") -> (m.getOrElse(NamedAddr(s"$name.SubMap"), IRUMap(Ty("SubMap"), Map())) match {
-  //         case IRMap(ty, map, size) => IRMap(ty, map ++ List(
-  //           Str("name") -> map.getOrElse(Str("name"), (NamedAddr(s"DESC:$name.name"), size)),
-  //           Str("length") -> map.getOrElse(Str("length"), (NamedAddr(s"DESC:$name.length"), size + 1))
-  //         ), size + 2)
-  //         case obj => error(s"not a map: $obj")
-  //       }),
-  //       NamedAddr(s"DESC:$name.name") -> m.getOrElse(NamedAddr(s"DESC:$name.name"), IRUMap(Ty("PropertyDescriptor"), Map(
-  //         Str("Value") -> Str(propName),
-  //         Str("Writable") -> Bool(false),
-  //         Str("Enumerable") -> Bool(false),
-  //         Str("Configurable") -> Bool(true)
-  //       ))),
-  //       NamedAddr(s"DESC:$name.length") -> m.getOrElse(NamedAddr(s"DESC:$name.length"), IRUMap(Ty("PropertyDescriptor"), Map(
-  //         Str("Value") -> Num(length),
-  //         Str("Writable") -> Bool(false),
-  //         Str("Enumerable") -> Bool(false),
-  //         Str("Configurable") -> Bool(true)
-  //       )))
-  //     )
-  // }
+  private def getPropStr(value: Value): String = value match {
+    case Str(str) => s".$str"
+    case _ => s"[${value.beautified}]"
+  }
 
   private val notSupportedSyntaxPrefixList = List("RegularExpression")
   def checkSupported(ast: AST): AST = {
@@ -213,4 +216,11 @@ trait ModelTrait {
     }))
     ast
   }
+
+  private val rawIntrinsicNames = Set("ThrowTypeError")
+  def intrinsicToAddr(name: String): Addr = NamedAddr((
+    GLOBAL + "." +
+    (if (rawIntrinsicNames contains name) INTRINSIC_PREFIX else "") +
+    name.replaceAll("_", ".")
+  ))
 }

@@ -153,10 +153,10 @@ object Heap {
         "constructor" -> DataProperty(NamedAddr("GLOBAL.Function"), T, F, T),
         "caller" -> AccessorProperty(NamedAddr("GLOBAL.INTRINSIC_ThrowTypeError"), NamedAddr("GLOBAL.INTRINSIC_ThrowTypeError"), F, T),
         "arguments" -> AccessorProperty(NamedAddr("GLOBAL.INTRINSIC_ThrowTypeError"), NamedAddr("GLOBAL.INTRINSIC_ThrowTypeError"), F, T),
-        ("@hasInstance") -> DataProperty(NamedAddr("GLOBAL.Function.prototype[Symbol_hasInstance]"), F, F, F),
+        ("@hasInstance") -> DataProperty(NamedAddr("GLOBAL.Function.prototype[SYMBOL_hasInstance]"), F, F, F),
       )
     ),
-    "GLOBAL.Function.prototype[Symbol_hasInstance]" -> Struct(
+    "GLOBAL.Function.prototype[SYMBOL_hasInstance]" -> Struct(
       typeName = "BuiltinFunctionObject",
       imap = IMap(
         "Extensible" -> Bool(true),
@@ -239,10 +239,10 @@ object Heap {
         "constructor" -> DataProperty(NamedAddr("GLOBAL.Symbol"), T, F, T),
         "description" -> AccessorProperty(NamedAddr("GLOBAL.Symbol.prototype.description"), U, F, T),
         "@toStringTag" -> DataProperty(Str("Symbol"), F, F, T),
-        "@toPrimitive" -> DataProperty(NamedAddr("GLOBAL.Symbol.prototype[Symbol_toPrimitive]"), F, F, T),
+        "@toPrimitive" -> DataProperty(NamedAddr("GLOBAL.Symbol.prototype[SYMBOL_toPrimitive]"), F, F, T),
       )
     ),
-    "GLOBAL.Symbol.prototype[Symbol_toPrimitive]" -> Struct(
+    "GLOBAL.Symbol.prototype[SYMBOL_toPrimitive]" -> Struct(
       typeName = "BuiltinFunctionObject",
       imap = IMap(
         "Extensible" -> Bool(true),
@@ -418,10 +418,10 @@ object Heap {
         "length" -> DataProperty(Num(0.0), T, F, F),
         "constructor" -> DataProperty(NamedAddr("GLOBAL.Array"), T, F, T),
         "@iterator" -> DataProperty(NamedAddr("GLOBAL.Array.prototype.values"), T, F, T),
-        "@unscopables" -> DataProperty(NamedAddr("GLOBAL.Array.prototype[Symbol_unscopables]"), F, F, T),
+        "@unscopables" -> DataProperty(NamedAddr("GLOBAL.Array.prototype[SYMBOL_unscopables]"), F, F, T),
       )
     ),
-    "GLOBAL.Array.prototype[Symbol_unscopables]" -> Struct(
+    "GLOBAL.Array.prototype[SYMBOL_unscopables]" -> Struct(
       typeName = "OrdinaryObject",
       imap = IMap(
         "Extensible" -> Bool(true),

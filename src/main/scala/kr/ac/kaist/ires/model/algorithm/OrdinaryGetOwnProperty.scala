@@ -18,7 +18,7 @@ object `AL::OrdinaryGetOwnProperty` extends Algo {
   |  0:app __x0__ = (IsPropertyKey P)
   |  0:assert (= __x0__ true)
   |  1:if (= O.SubMap[P] absent) return undefined else 0:{}
-  |  2:let D = (new PropertyDescriptor("SubMap" -> (new SubMap())))
+  |  2:let D = (new PropertyDescriptor())
   |  3:let X = O.SubMap[P]
   |  7:app __x1__ = (IsDataDescriptor X)
   |  7:if __x1__ {

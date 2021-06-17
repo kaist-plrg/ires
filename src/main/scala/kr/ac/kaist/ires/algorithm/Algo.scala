@@ -14,15 +14,18 @@ trait Algo {
 
   // get body with post processing
   def getBody: Inst = head match {
+    case (head: SyntaxDirectedHead) if !head.rhsNames.contains(head.lhsName) =>
+      val prefix = Parser.parseInsts(s"let ${head.lhsName} = this")
+      prepend(prefix, rawBody)
     case (head: MethodHead) if head.isLetThisStep(code.head.trim) =>
       popFront(rawBody)
     case (builtin: BuiltinHead) =>
       import Param.Kind._
       val prefix = builtin.origParams.zipWithIndex.map {
         case (Param(name, Variadic), i) =>
-          Parser.parseInst(s"let ${name} = $ARGS_LIST")
+          Parser.parseInst(s"let $name = $ARGS_LIST")
         case (Param(name, _), i) =>
-          Parser.parseInst(s"app ${name} = (GetArgument $ARGS_LIST ${i}i)")
+          Parser.parseInst(s"app $name = (GetArgument $ARGS_LIST ${i}i)")
       }
       prepend(prefix, rawBody)
     // handle abstract relational comparison

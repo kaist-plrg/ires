@@ -14,7 +14,7 @@ object `AL::CreateIntrinsics` extends Algo {
     "sec-executable-code-and-execution-contexts",
   )
   val rawBody = parseInst("""{
-  |  0:let intrinsics = (new Record("SubMap" -> (new SubMap())))
+  |  0:let intrinsics = (new Record())
   |  1:realmRec.Intrinsics = intrinsics
   |  2:realmRec.Intrinsics = INTRINSICS
   |  2:intrinsics = INTRINSICS

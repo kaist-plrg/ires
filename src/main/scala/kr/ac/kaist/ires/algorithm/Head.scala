@@ -16,11 +16,8 @@ trait Head {
   // parameters
   val params: List[Param]
 
-  // name for print
-  def printName: String = name
-
   // conversion to string
-  override def toString: String = s"${printName} (${params.mkString(", ")}):"
+  override def toString: String = s"$name (${params.mkString(", ")}):"
 
   // arity
   lazy val arity: (InfNum, InfNum) = {
@@ -101,12 +98,11 @@ case class SyntaxDirectedHead(
   withParams: List[Param]
 ) extends Head {
   // name with index and method name
-  val name: String = s"$lhsName$idx$methodName$subIdx"
-  override val printName = s"$lhsName[$idx,$subIdx].$methodName"
+  val name = s"$lhsName[$idx,$subIdx].$methodName"
 
   // parameter type names and optional information
   val (types, optional) = {
-    val names = rhs.getNTs.map(_.name)
+    val names = rhsNames
     val duplicated = names.filter(p => names.count(_ == p) > 1).toSet
     var counter = Map[String, Int]()
     var optional = Set[String]()
@@ -122,6 +118,9 @@ case class SyntaxDirectedHead(
     })
     (types, optional)
   }
+
+  // get rhs names
+  def rhsNames: List[String] = rhs.getNTs.map(_.name)
 
   // parameters
   val params: List[Param] = types.map {
