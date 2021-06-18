@@ -151,8 +151,8 @@ object Heap {
         "length" -> DataProperty(Num(0.0), F, F, T),
         "name" -> DataProperty(Str(""), F, F, T),
         "constructor" -> DataProperty(NamedAddr("GLOBAL.Function"), T, F, T),
-        "caller" -> AccessorProperty(NamedAddr("GLOBAL.INTRINSIC_ThrowTypeError"), NamedAddr("GLOBAL.INTRINSIC_ThrowTypeError"), F, T),
-        "arguments" -> AccessorProperty(NamedAddr("GLOBAL.INTRINSIC_ThrowTypeError"), NamedAddr("GLOBAL.INTRINSIC_ThrowTypeError"), F, T),
+        "caller" -> AccessorProperty(NamedAddr("GLOBAL.ThrowTypeError"), NamedAddr("GLOBAL.ThrowTypeError"), F, T),
+        "arguments" -> AccessorProperty(NamedAddr("GLOBAL.ThrowTypeError"), NamedAddr("GLOBAL.ThrowTypeError"), F, T),
         ("@hasInstance") -> DataProperty(NamedAddr("GLOBAL.Function.prototype[SYMBOL_hasInstance]"), F, F, F),
       )
     ),
@@ -168,7 +168,7 @@ object Heap {
         "name" -> DataProperty(Str("[Symbol.hasInstance]"), F, F, T)
       )
     ),
-    "GLOBAL.INTRINSIC_ThrowTypeError" -> Struct(
+    "GLOBAL.ThrowTypeError" -> Struct(
       typeName = "BuiltinFunctionObject",
       imap = IMap(
         "Extensible" -> Bool(false),
@@ -372,11 +372,11 @@ object Heap {
         "constructor" -> DataProperty(NamedAddr("GLOBAL.String"), T, F, T)
       )
     ),
-    "GLOBAL.INTRINSIC_StringIteratorPrototype" -> Struct(
+    "GLOBAL.StringIteratorPrototype" -> Struct(
       typeName = "OrdinaryObject",
       imap = IMap(
         "Extensible" -> Bool(true),
-        "Prototype" -> NamedAddr("GLOBAL.INTRINSIC_IteratorPrototype")
+        "Prototype" -> NamedAddr("GLOBAL.IteratorPrototype")
       ),
       nmap = NMap(
         "@toStringTag" -> DataProperty(Str("String Iterator"), F, F, T),
@@ -440,11 +440,11 @@ object Heap {
         "values" -> DataProperty(Bool(true), T, T, T)
       )
     ),
-    "GLOBAL.INTRINSIC_ArrayIteratorPrototype" -> Struct(
+    "GLOBAL.ArrayIteratorPrototype" -> Struct(
       typeName = "OrdinaryObject",
       imap = IMap(
         "Extensible" -> Bool(true),
-        "Prototype" -> NamedAddr("GLOBAL.INTRINSIC_IteratorPrototype")
+        "Prototype" -> NamedAddr("GLOBAL.IteratorPrototype")
       ),
       nmap = NMap(
         "@toStringTag" -> DataProperty(Str("Array Iterator"), F, F, T),
@@ -500,11 +500,11 @@ object Heap {
         "length" -> DataProperty(Num(0.0), F, F, T)
       )
     ),
-    "GLOBAL.INTRINSIC_MapIteratorPrototype" -> Struct(
+    "GLOBAL.MapIteratorPrototype" -> Struct(
       typeName = "OrdinaryObject",
       imap = IMap(
         "Extensible" -> Bool(true),
-        "Prototype" -> NamedAddr("GLOBAL.INTRINSIC_IteratorPrototype")
+        "Prototype" -> NamedAddr("GLOBAL.IteratorPrototype")
       ),
       nmap = NMap(
         "@toStringTag" -> DataProperty(Str("Map Iterator"), F, F, T),
@@ -561,11 +561,11 @@ object Heap {
         "length" -> DataProperty(Num(0.0), F, F, T)
       )
     ),
-    "GLOBAL.INTRINSIC_SetIteratorPrototype" -> Struct(
+    "GLOBAL.SetIteratorPrototype" -> Struct(
       typeName = "OrdinaryObject",
       imap = IMap(
         "Extensible" -> Bool(true),
-        "Prototype" -> NamedAddr("GLOBAL.INTRINSIC_IteratorPrototype")
+        "Prototype" -> NamedAddr("GLOBAL.IteratorPrototype")
       ),
       nmap = NMap(
         "@toStringTag" -> DataProperty(Str("Set Iterator"), F, F, T),
@@ -617,7 +617,7 @@ object Heap {
         "@toStringTag" -> DataProperty(Str("WeakSet"), F, F, T),
       )
     ),
-    "GLOBAL.INTRINSIC_IteratorPrototype" -> Struct(
+    "GLOBAL.IteratorPrototype" -> Struct(
       typeName = "OrdinaryObject",
       imap = IMap(
         "Extensible" -> Bool(true),
@@ -625,7 +625,7 @@ object Heap {
       ),
       nmap = NMap()
     ),
-    "GLOBAL.INTRINSIC_AsyncIteratorPrototype" -> Struct(
+    "GLOBAL.AsyncIteratorPrototype" -> Struct(
       typeName = "OrdinaryObject",
       imap = IMap(
         "Extensible" -> Bool(true),
@@ -633,15 +633,15 @@ object Heap {
       ),
       nmap = NMap()
     ),
-    "GLOBAL.INTRINSIC_AsyncFromSyncIteratorPrototype" -> Struct(
+    "GLOBAL.AsyncFromSyncIteratorPrototype" -> Struct(
       typeName = "OrdinaryObject",
       imap = IMap(
         "Extensible" -> Bool(true),
-        "Prototype" -> NamedAddr("GLOBAL.INTRINSIC_AsyncIteratorPrototype")
+        "Prototype" -> NamedAddr("GLOBAL.AsyncIteratorPrototype")
       ),
       nmap = NMap()
     ),
-    "GLOBAL.INTRINSIC_GeneratorFunction" -> Struct(
+    "GLOBAL.GeneratorFunction" -> Struct(
       typeName = "BuiltinFunctionObject",
       imap = IMap(
         "Prototype" -> NamedAddr("GLOBAL.Function"),
@@ -654,33 +654,33 @@ object Heap {
       nmap = NMap(
         "name" -> DataProperty(Str("GeneratorFunction"), F, F, T),
         "length" -> DataProperty(Num(1.0), F, F, T),
-        "prototype" -> DataProperty(NamedAddr("GLOBAL.INTRINSIC_Generator"), F, F, F)
+        "prototype" -> DataProperty(NamedAddr("GLOBAL.Generator"), F, F, F)
       )
     ),
-    "GLOBAL.INTRINSIC_Generator" -> Struct(
+    "GLOBAL.Generator" -> Struct(
       typeName = "OrdinaryObject",
       imap = IMap(
         "Extensible" -> Bool(true),
         "Prototype" -> NamedAddr("GLOBAL.Function.prototype")
       ),
       nmap = NMap(
-        "constructor" -> DataProperty(NamedAddr("GLOBAL.INTRINSIC_GeneratorFunction"), F, F, T),
-        "prototype" -> DataProperty(NamedAddr("GLOBAL.INTRINSIC_GeneratorPrototype"), F, F, T),
+        "constructor" -> DataProperty(NamedAddr("GLOBAL.GeneratorFunction"), F, F, T),
+        "prototype" -> DataProperty(NamedAddr("GLOBAL.GeneratorPrototype"), F, F, T),
         "@toStringTag" -> DataProperty(Str("GeneratorFunction"), F, F, T),
       )
     ),
-    "GLOBAL.INTRINSIC_GeneratorPrototype" -> Struct(
+    "GLOBAL.GeneratorPrototype" -> Struct(
       typeName = "OrdinaryObject",
       imap = IMap(
         "Extensible" -> Bool(true),
-        "Prototype" -> NamedAddr("GLOBAL.INTRINSIC_IteratorPrototype")
+        "Prototype" -> NamedAddr("GLOBAL.IteratorPrototype")
       ),
       nmap = NMap(
-        "constructor" -> DataProperty(NamedAddr("GLOBAL.INTRINSIC_Generator"), F, F, T),
+        "constructor" -> DataProperty(NamedAddr("GLOBAL.Generator"), F, F, T),
         "@toStringTag" -> DataProperty(Str("Generator"), F, F, T),
       )
     ),
-    "GLOBAL.INTRINSIC_AsyncGeneratorFunction" -> Struct(
+    "GLOBAL.AsyncGeneratorFunction" -> Struct(
       typeName = "BuiltinFunctionObject",
       imap = IMap(
         "Prototype" -> NamedAddr("GLOBAL.Function"),
@@ -693,29 +693,29 @@ object Heap {
       nmap = NMap(
         "name" -> DataProperty(Str("AsyncGeneratorFunction"), F, F, T),
         "length" -> DataProperty(Num(1.0), F, F, T),
-        "prototype" -> DataProperty(NamedAddr("GLOBAL.INTRINSIC_AsyncGenerator"), F, F, F)
+        "prototype" -> DataProperty(NamedAddr("GLOBAL.AsyncGenerator"), F, F, F)
       )
     ),
-    "GLOBAL.INTRINSIC_AsyncGenerator" -> Struct(
+    "GLOBAL.AsyncGenerator" -> Struct(
       typeName = "OrdinaryObject",
       imap = IMap(
         "Extensible" -> Bool(true),
         "Prototype" -> NamedAddr("GLOBAL.Function.prototype")
       ),
       nmap = NMap(
-        "constructor" -> DataProperty(NamedAddr("GLOBAL.INTRINSIC_AsyncGeneratorFunction"), F, F, T),
-        "prototype" -> DataProperty(NamedAddr("GLOBAL.INTRINSIC_AsyncGeneratorPrototype"), F, F, T),
+        "constructor" -> DataProperty(NamedAddr("GLOBAL.AsyncGeneratorFunction"), F, F, T),
+        "prototype" -> DataProperty(NamedAddr("GLOBAL.AsyncGeneratorPrototype"), F, F, T),
         "@toStringTag" -> DataProperty(Str("AsyncGeneratorFunction"), F, F, T),
       )
     ),
-    "GLOBAL.INTRINSIC_AsyncGeneratorPrototype" -> Struct(
+    "GLOBAL.AsyncGeneratorPrototype" -> Struct(
       typeName = "OrdinaryObject",
       imap = IMap(
         "Extensible" -> Bool(true),
-        "Prototype" -> NamedAddr("GLOBAL.INTRINSIC_AsyncIteratorPrototype")
+        "Prototype" -> NamedAddr("GLOBAL.AsyncIteratorPrototype")
       ),
       nmap = NMap(
-        "constructor" -> DataProperty(NamedAddr("GLOBAL.INTRINSIC_AsyncGenerator"), F, F, T),
+        "constructor" -> DataProperty(NamedAddr("GLOBAL.AsyncGenerator"), F, F, T),
         "@toStringTag" -> DataProperty(Str("AsyncGenerator"), F, F, T),
       )
     ),
@@ -755,7 +755,7 @@ object Heap {
         "@toStringTag" -> DataProperty(Str("Promise"), F, F, T),
       )
     ),
-    "GLOBAL.INTRINSIC_AsyncFunction" -> Struct(
+    "GLOBAL.AsyncFunction" -> Struct(
       typeName = "BuiltinFunctionObject",
       imap = IMap(
         "Prototype" -> NamedAddr("GLOBAL.Function"),
@@ -768,17 +768,17 @@ object Heap {
       nmap = NMap(
         "name" -> DataProperty(Str("AsyncFunction"), F, F, T),
         "length" -> DataProperty(Num(1.0), F, F, T),
-        "prototype" -> DataProperty(NamedAddr("GLOBAL.INTRINSIC_AsyncFunctionPrototype"), F, F, F)
+        "prototype" -> DataProperty(NamedAddr("GLOBAL.AsyncFunctionPrototype"), F, F, F)
       )
     ),
-    "GLOBAL.INTRINSIC_AsyncFunctionPrototype" -> Struct(
+    "GLOBAL.AsyncFunctionPrototype" -> Struct(
       typeName = "OrdinaryObject",
       imap = IMap(
         "Extensible" -> Bool(true),
         "Prototype" -> NamedAddr("GLOBAL.Function.prototype")
       ),
       nmap = NMap(
-        "constructor" -> DataProperty(NamedAddr("GLOBAL.INTRINSIC_AsyncFunction"), F, F, T),
+        "constructor" -> DataProperty(NamedAddr("GLOBAL.AsyncFunction"), F, F, T),
         "@toStringTag" -> DataProperty(Str("AsyncFunction"), F, F, T),
       )
     )

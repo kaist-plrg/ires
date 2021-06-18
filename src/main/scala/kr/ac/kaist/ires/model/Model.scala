@@ -1652,7 +1652,6 @@ object Model extends ModelTrait {
     "LabelledStatement[0,0].TopLevelVarScopedDeclarations" -> `AL::LabelledStatement[0,0].TopLevelVarScopedDeclarations`,
     "LabelledStatement[0,0].VarDeclaredNames" -> `AL::LabelledStatement[0,0].VarDeclaredNames`,
     "LabelledStatement[0,0].VarScopedDeclarations" -> `AL::LabelledStatement[0,0].VarScopedDeclarations`,
-    "Lambda" -> `AL::Lambda`,
     "LeaveCriticalSection" -> `AL::LeaveCriticalSection`,
     "LeftHandSideExpression[1,0].IsDestructuring" -> `AL::LeftHandSideExpression[1,0].IsDestructuring`,
     "LeftHandSideExpression[1,0].IsFunctionDefinition" -> `AL::LeftHandSideExpression[1,0].IsFunctionDefinition`,

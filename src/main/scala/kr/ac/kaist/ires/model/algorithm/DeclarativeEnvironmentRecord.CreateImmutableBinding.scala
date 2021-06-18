@@ -16,7 +16,7 @@ object `AL::DeclarativeEnvironmentRecord.CreateImmutableBinding` extends Algo {
     "sec-executable-code-and-execution-contexts",
   )
   val rawBody = parseInst("""{
-  |  1:envRec.SubMap[N] = absent
+  |  1:envRec.SubMap[N] = (new ImmutableBinding("initialized" -> false, "strict" -> S))
   |  2:return CONST_empty
   |}""".stripMargin)
   val code = scala.Array[String](

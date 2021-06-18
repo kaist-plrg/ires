@@ -41,7 +41,7 @@ trait Walker {
     tWalk: T => T
   ): List[T] = list.map(tWalk)
 
-  // maps
+  // mutable maps
   def walkMap[K, V](
     map: MMap[K, V],
     kWalk: K => K,
@@ -90,6 +90,7 @@ trait Walker {
     case ESymbol(desc) => ESymbol(walk(desc))
     case EPop(list, idx) => EPop(walk(list), walk(idx))
     case ERef(ref) => ERef(walk(ref))
+    case EClo(name, params, body) => EClo(walk(name), walkList[Id](params, walk), walk(body))
     case ECont(params, body) => ECont(walkList[Id](params, walk), walk(body))
     case EUOp(uop, expr) => EUOp(walk(uop), walk(expr))
     case EBOp(bop, left, right) => EBOp(walk(bop), walk(left), walk(right))
@@ -171,6 +172,7 @@ trait Walker {
     case ast: ASTVal => walk(ast)
     case ASTMethod(func, locals) => ASTMethod(walk(func), walkMap[Id, Value](locals, walk, walk))
     case func: Func => walk(func)
+    case clo: Clo => walk(clo)
     case cont: Cont => walk(cont)
     case Num(_) | INum(_) | BigINum(_) | Str(_) | Bool(_) | Undef | Null | Absent => value
   }
@@ -185,6 +187,12 @@ trait Walker {
 
   // algorithm
   def walk(algo: Algo): Algo = algo
+
+  // closure
+  def walk(clo: Clo): Clo = clo match {
+    case Clo(name, locals, body) =>
+      Clo(walk(name), walkMap[Id, Value](locals, walk, walk), walk(body))
+  }
 
   // continuation
   def walk(cont: Cont): Cont = cont match {

@@ -18,7 +18,7 @@ object `AL::BoundFunctionCreate` extends Algo {
   |  0:assert (= (typeof targetFunction) Object)
   |  1:app __x0__ = (targetFunction.GetPrototypeOf targetFunction)
   |  1:let proto = [? __x0__]
-  |  2:let internalSlotsList = StrList
+  |  2:let internalSlotsList = (new ["BoundTargetFunction", "BoundThis", "BoundArguments", "Prototype", "Extensible"])
   |  3:app __x1__ = (MakeBasicObject internalSlotsList)
   |  3:let obj = [! __x1__]
   |  4:obj.Prototype = proto

@@ -25,6 +25,7 @@ trait ModelTrait {
 
   // special names
   val AGENT = "AGENT"
+  val ALGORITHM = "ALGORITHM"
   val CONTEXT = "CONTEXT"
   val EXECUTION_STACK = "EXECUTION_STACK"
   val FILENAME = "FILENAME"
@@ -203,6 +204,9 @@ trait ModelTrait {
     ))
   }
 
+  def intrinsicToAddr(name: String): Addr =
+    NamedAddr(GLOBAL + "." + name.replaceAll("_", "."))
+
   private def getPropStr(value: Value): String = value match {
     case Str(str) => s".$str"
     case _ => s"[${value.beautified}]"
@@ -216,11 +220,4 @@ trait ModelTrait {
     }))
     ast
   }
-
-  private val rawIntrinsicNames = Set("ThrowTypeError")
-  def intrinsicToAddr(name: String): Addr = NamedAddr((
-    GLOBAL + "." +
-    (if (rawIntrinsicNames contains name) INTRINSIC_PREFIX else "") +
-    name.replaceAll("_", ".")
-  ))
 }

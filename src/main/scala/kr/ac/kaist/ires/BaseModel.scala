@@ -8,6 +8,7 @@ import scala.collection.mutable.{ Map => MMap }
 
 object BaseModel {
   lazy val globals: Map[String, Value] = Map(
+    ALGORITHM -> NamedAddr(ALGORITHM),
     CONTEXT -> Null,
     EXECUTION_STACK -> NamedAddr(EXECUTION_STACK),
     GLOBAL -> NamedAddr(GLOBAL),
@@ -29,12 +30,13 @@ object BaseModel {
   )
 
   lazy val heap: Map[Addr, Obj] = builtin.Heap.map ++ Map(
-    NamedAddr(INTRINSICS) -> IRMap("Intrinsics")(
+    NamedAddr(ALGORITHM) -> IRMap(ALGORITHM)(Nil),
+    NamedAddr(INTRINSICS) -> IRMap(INTRINSICS)(
       for (i <- intrinsics) yield Str(INTRINSIC_PREFIX + i) -> intrinsicToAddr(i)
     ),
     NamedAddr(EXECUTION_STACK) -> IRList(),
     NamedAddr(JOB_QUEUE) -> IRList(),
-    NamedAddr(PRIMITIVE) -> IRMap("Record")(List(
+    NamedAddr(PRIMITIVE) -> IRMap(PRIMITIVE)(List(
       Str("Number") -> NamedAddr(PRIMITIVE + ".Number"),
       Str("BigInt") -> NamedAddr(PRIMITIVE + ".BigInt"),
     )),

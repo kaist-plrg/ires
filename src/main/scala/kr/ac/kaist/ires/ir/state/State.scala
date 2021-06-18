@@ -71,6 +71,8 @@ case class State(
   def allocMap(ty: Ty, map: Map[Value, Value] = Map()): Addr = heap.allocMap(ty, map)
   def allocList(list: List[Value]): Addr = heap.allocList(list)
   def allocSymbol(desc: Value): Addr = heap.allocSymbol(desc)
+  def setType(addr: Addr, ty: Ty): this.type =
+    { heap.setType(addr, ty); this }
 
   // get string for a given address
   def getString(value: Value): String = value match {

@@ -15,7 +15,7 @@ object `AL::OrdinaryFunctionCreate` extends Algo {
   )
   val rawBody = parseInst("""{
   |  0:assert (= (typeof functionPrototype) Object)
-  |  1:let internalSlotsList = StrList
+  |  1:let internalSlotsList = (new ["Environment", "FormalParameters", "ECMAScriptCode", "ConstructorKind", "Realm", "ScriptOrModule", "ThisMode", "Strict", "HomeObject", "SourceText", "IsClassConstructor"])
   |  2:app __x0__ = (OrdinaryObjectCreate functionPrototype internalSlotsList)
   |  2:let F = [! __x0__]
   |  3:F.Call = ALGORITHM["ECMAScriptFunctionObject.Call"]

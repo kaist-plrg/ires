@@ -1,6 +1,7 @@
 package kr.ac.kaist.ires.ir
 
 import kr.ac.kaist.ires.util.Useful._
+import kr.ac.kaist.ires.model.Model
 import scala.collection.mutable.{ Map => MMap }
 
 // IR Objects
@@ -28,7 +29,7 @@ case class IRSymbol(desc: Value) extends Obj {
 
 // IR maps
 case class IRMap(
-  ty: Ty,
+  var ty: Ty,
   props: MMap[Value, (Value, Long)],
   var size: Long
 ) extends Obj {
@@ -38,10 +39,13 @@ case class IRMap(
   }
 
   // getters
-  def apply(prop: Value): Value = (props.get(prop), prop) match {
-    case (Some((value, _)), _) => value
-    case (None, Str(str)) => ty.methods.get(str).map(Func).getOrElse(Absent)
-    case _ => Absent
+  def apply(prop: Value): Value = (props.get(prop), ty, prop) match {
+    case (Some((value, _)), _, _) =>
+      value
+    case (None, Ty(Model.ALGORITHM), Str(str)) =>
+      Model.algos.get(str).map(Func).getOrElse(Absent)
+    case _ =>
+      Absent
   }
 
   // setters
@@ -71,7 +75,7 @@ object IRMap {
     for ((prop, value) <- pairs) irMap.update(prop, value)
     irMap
   }
-  def apply(ty: Ty): IRMap = IRMap(ty, MMap(), 0L)
+  def apply(ty: Ty): IRMap = IRMap(ty, ty.methods, 0L)
 }
 
 // IR lists

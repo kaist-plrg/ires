@@ -18,7 +18,7 @@ object `AL::GetThisEnvironment` extends Algo {
   |  1:while true {
   |    2:app __x0__ = (env.HasThisBinding env)
   |    2:let exists = __x0__
-  |    3:if (= exists true) return env else 0:{}
+  |    3:if (= exists true) return env else 2:{}
   |    4:let outer = env.OuterEnv
   |    5:assert (! (= outer null))
   |    6:env = outer

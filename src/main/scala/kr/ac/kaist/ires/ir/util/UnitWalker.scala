@@ -42,7 +42,7 @@ trait UnitWalker {
     tWalk: T => Unit
   ): Unit = list.foreach(tWalk)
 
-  // maps
+  // mutable maps
   def walkMap[K, V](
     map: MMap[K, V],
     kWalk: K => Unit,
@@ -104,6 +104,10 @@ trait UnitWalker {
       walk(list); walk(idx)
     case ERef(ref) =>
       walk(ref)
+    case EClo(name, params, body) =>
+      walk(name)
+      walkList[Id](params, walk);
+      walk(body)
     case ECont(params, body) =>
       walkList[Id](params, walk);
       walk(body)
@@ -204,6 +208,7 @@ trait UnitWalker {
     case ASTMethod(func, locals) =>
       walk(func); walkMap[Id, Value](locals, walk, walk)
     case func: Func => walk(func)
+    case clo: Clo => walk(clo)
     case cont: Cont => walk(cont)
     case Num(_) | INum(_) | BigINum(_) | Str(_) | Bool(_) | Undef | Null | Absent =>
   }
@@ -218,6 +223,14 @@ trait UnitWalker {
 
   // algorithm
   def walk(algo: Algo): Unit = {}
+
+  // closure
+  def walk(clo: Clo): Unit = clo match {
+    case Clo(name, locals, body) =>
+      walk(name)
+      walkMap[Id, Value](locals, walk, walk)
+      walk(body)
+  }
 
   // continuation
   def walk(cont: Cont): Unit = cont match {

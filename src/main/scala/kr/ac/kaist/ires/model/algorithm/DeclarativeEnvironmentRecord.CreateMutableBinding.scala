@@ -16,7 +16,8 @@ object `AL::DeclarativeEnvironmentRecord.CreateMutableBinding` extends Algo {
     "sec-executable-code-and-execution-contexts",
   )
   val rawBody = parseInst("""{
-  |  1:??? "Create a mutable binding in id:{envRec} for id:{N} and record that it is uninitialized . If id:{D} is value:{true} , record that the newly created binding may be deleted by a subsequent DeleteBinding call ."
+  |  1:envRec.SubMap[N] = (new MutableBinding("initialized" -> false))
+  |  1:if (= D true) envRec.SubMap[N].maybeDeleted = true else {}
   |  2:return CONST_empty
   |}""".stripMargin)
   val code = scala.Array[String](

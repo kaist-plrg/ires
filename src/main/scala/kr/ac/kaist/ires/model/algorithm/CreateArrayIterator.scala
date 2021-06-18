@@ -17,7 +17,7 @@ object `AL::CreateArrayIterator` extends Algo {
   val rawBody = parseInst("""{
   |  0:assert (= (typeof array) Object)
   |  1:assert (|| (|| (= kind CONST_keyPLUSvalue) (= kind CONST_key)) (= kind CONST_value))
-  |  2:let closure = Lambda
+  |  2:??? "Let id:{closure} be a new Abstract Closure with no parameters that captures id:{kind} and id:{array} and performs the following steps when called : in:{} out:{}"
   |  20:app __x0__ = (CreateIteratorFromClosure closure "%ArrayIteratorPrototype%" INTRINSIC_ArrayIteratorPrototype)
   |  20:return [! __x0__]
   |}""".stripMargin)

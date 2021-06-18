@@ -126,6 +126,10 @@ class Beautifier(
       case ESymbol(desc) => app >> "(new '" >> desc >> ")"
       case EPop(list, idx) => app >> "(pop " >> list >> " " >> idx >> ")"
       case ERef(ref) => app >> ref
+      case EClo(name, params, body) =>
+        implicit val d = DetailInstApp
+        implicit val l = ListApp[Id]("(", ", ", ")")
+        app >> name >> params >> " => " >> body
       case ECont(params, body) =>
         implicit val d = DetailInstApp
         implicit val l = ListApp[Id]("(", ", ", ")")
@@ -260,6 +264,7 @@ class Beautifier(
     case ast: ASTVal => ASTValApp(app, ast)
     case method: ASTMethod => ASTMethodApp(app, method)
     case func: Func => FuncApp(app, func)
+    case clo: Clo => CloApp(app, clo)
     case cont: Cont => ContApp(app, cont)
     case Num(double) => app >> double.toString
     case INum(long) => app >> long.toString >> "i"
@@ -292,11 +297,18 @@ class Beautifier(
     app >> "λ(" >> name >> ")"
   }
 
+  // closures
+  implicit lazy val CloApp: App[Clo] = (app, clo) => {
+    implicit val l = ListApp[(Id, Value)]("(", ", ", ")")
+    val Clo(name, locals, body) = clo
+    app >> name >> locals.toList >> " => " >> body
+  }
+
   // continuations
   implicit lazy val ContApp: App[Cont] = (app, cont) => {
     implicit val l = ListApp[Id]("(", ", ", ")")
     val Cont(params, body, context, ctxtStack) = cont
-    app >> "`" >> context.name >> "`" >> params >> " [=>] " >> body
+    app >> context.name >> params >> " [=>] " >> body
   }
 
   // reference values

@@ -29,10 +29,10 @@ object `AL::RegExpInitialize` extends Algo {
   |  9:if (= u true) {
   |    7:app __x2__ = (StringToCodePoints P)
   |    7:let patternText = [! __x2__]
-  |    8:let patternCharacters = StrList
+  |    8:??? "Let id:{patternCharacters} be a List whose elements are the code points of id:{patternText} ."
   |  } else {
   |    10:??? "Let id:{patternText} be the result of interpreting each of id:{P} ' s 16 - bit elements as a Unicode BMP code point . UTF - 16 decoding is not applied to the elements ."
-  |    11:let patternCharacters = StrList
+  |    11:??? "Let id:{patternCharacters} be a List whose elements are the code unit elements of id:{P} ."
   |  }
   |  12:app __x3__ = (ParsePattern patternText u)
   |  12:let parseResult = __x3__

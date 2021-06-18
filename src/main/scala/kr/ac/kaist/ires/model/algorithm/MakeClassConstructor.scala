@@ -14,6 +14,7 @@ object `AL::MakeClassConstructor` extends Algo {
     "sec-ordinary-and-exotic-objects-behaviours",
   )
   val rawBody = parseInst("""{
+  |  0:assert (is-instance-of F ECMAScriptFunctionObject)
   |  1:assert (= F.IsClassConstructor false)
   |  2:F.IsClassConstructor = true
   |  3:return undefined

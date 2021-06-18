@@ -19,6 +19,7 @@ object `AL::GetSuperConstructor` extends Algo {
   |  0:let envRec = __x0__
   |  1:assert (is-instance-of envRec FunctionEnvironmentRecord)
   |  2:let activeFunction = envRec.FunctionObject
+  |  3:assert (is-instance-of activeFunction ECMAScriptFunctionObject)
   |  4:app __x1__ = (activeFunction.GetPrototypeOf activeFunction)
   |  4:let superConstructor = [! __x1__]
   |  5:return superConstructor

@@ -1,8 +1,9 @@
 package kr.ac.kaist.ires.ir
 
-import scala.annotation.tailrec
-import kr.ac.kaist.ires.builtin.TyModel
 import kr.ac.kaist.ires.algorithm._
+import kr.ac.kaist.ires.builtin.TyModel
+import scala.annotation.tailrec
+import scala.collection.mutable.{ Map => MMap }
 
 // IR Types
 case class Ty(name: String) extends IRNode {
@@ -42,7 +43,13 @@ case class Ty(name: String) extends IRNode {
   }
 
   // get methods
-  def methods: MethodMap = methodMap.getOrElse(name, Map())
+  def methods: MMap[Value, (Value, Long)] = {
+    val map = MMap[Value, (Value, Long)]()
+    for ((name, algo) <- methodMap.getOrElse(name, Map())) {
+      map += Str(name) -> (Func(algo), 0L)
+    }
+    map
+  }
 }
 object Ty {
   // method map

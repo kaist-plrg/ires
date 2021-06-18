@@ -69,7 +69,7 @@ case class Heap(
     ty: Ty,
     m: Map[Value, Value] = Map()
   ): Addr = {
-    val irMap = IRMap(ty)
+    val irMap = IRMap(ty, ty.methods, 0L)
     for ((k, v) <- m) irMap.update(k, v)
     if (ty.hasSubMap) {
       val subMap = IRMap(Ty("SubMap"))
@@ -90,5 +90,12 @@ case class Heap(
     map += newAddr -> obj
     size += 1
     newAddr
+  }
+
+  // set type of objects
+  def setType(addr: Addr, ty: Ty): this.type = this(addr) match {
+    case (irMap: IRMap) =>
+      irMap.ty = ty; this
+    case _ => error(s"invalid type update: ${addr.beautified}")
   }
 }

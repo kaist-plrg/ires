@@ -16,6 +16,8 @@ private class Interp(
   filename: String = "unknown",
   timeLimit: Option[Long] = Some(TIMEOUT)
 ) {
+  import Interp._
+
   // set start time of interpreter
   val startTime: Long = System.currentTimeMillis
 
@@ -71,13 +73,18 @@ private class Interp(
       }
       case IApp(id, ERef(RefId(Id(name))), args) if simpleFuncs contains name => {
         val vs = args.map(arg => interp(arg).escaped(st))
-        st.context.locals += id -> simpleFuncs(name)(vs)
+        st.context.locals += id -> simpleFuncs(name)(st, vs)
       }
       case IApp(id, fexpr, args) => interp(fexpr) match {
         case Func(Algo(head, body)) => {
           val vs = args.map(interp)
           val locals = getLocals(head.params, vs)
           val context = Context(id, head.name, List(body), locals)
+          st.ctxtStack ::= st.context
+          st.context = context
+        }
+        case Clo(name, locals, body) => {
+          val context = Context(id, name, List(body), locals)
           st.ctxtStack ::= st.context
           st.context = context
         }
@@ -147,7 +154,15 @@ private class Interp(
       case IReturn(expr) => st.ctxtStack match {
         case Nil => error(s"no remaining calling contexts")
         case ctxt :: rest =>
-          ctxt.locals += st.context.retId -> interp(expr).wrapCompletion(st)
+          val value = interp(expr)
+
+          // proper type handle
+          (value, setTypeMap.get(st.context.name)) match {
+            case (addr: Addr, Some(ty)) => st.setType(addr, ty)
+            case _ =>
+          }
+
+          ctxt.locals += st.context.retId -> value.wrapCompletion(st)
           st.context = ctxt
           st.ctxtStack = rest
       }
@@ -200,6 +215,7 @@ private class Interp(
       case v => error(s"not an address: ${v.beautified}")
     }
     case ERef(ref) => st(interp(ref))
+    case EClo(name, params, body) => Clo(name, MMap.from(params.map(x => x -> st(x))), body)
     case ECont(params, body) => Cont(params, body, st.context.copied, st.ctxtStack)
     case EUOp(uop, expr) => {
       val x = interp(expr).escaped(st)
@@ -228,6 +244,7 @@ private class Interp(
       case Null => "Null"
       case Absent => "Absent"
       case Func(_) => "Function"
+      case Clo(_, _, _) => "Closure"
       case Cont(_, _, _, _) => "Continuation"
       case ASTVal(_) => "AST"
       case ASTMethod(_, _) => "ASTMethod"
@@ -473,57 +490,25 @@ private class Interp(
     @tailrec
     def aux(ps: List[Param], as: List[Value]): Unit = (ps, as) match {
       case (Nil, Nil) =>
-      case (Param(name, kind) :: pl, Nil) =>
-        import Param.Kind._
-        kind match {
-          case Normal => error(s"remaining parameter: $name")
-          case _ => map += Id(name) -> Absent
+      case (Param(name, kind) :: pl, Nil) => kind match {
+        case Param.Kind.Normal => error(s"remaining parameter: $name")
+        case _ => {
+          map += Id(name) -> Absent
+          aux(pl, Nil)
         }
-      case (Nil, args) =>
+      }
+      case (Nil, args) => {
         val argsStr = args.map(_.beautified).mkString("[", ", ", "]")
         error(s"remaining arguments: $argsStr")
-      case (param :: pl, arg :: al) =>
+      }
+      case (param :: pl, arg :: al) => {
         map += Id(param.name) -> arg
         aux(pl, al)
+      }
     }
     aux(params, args)
     map
   }
-
-  // unary algorithms
-  type SimpleFunc = List[Value] => Value
-  def arityCheck(pair: (String, SimpleFunc)): (String, SimpleFunc) = {
-    val (name, f) = pair
-    name -> (args => optional(f(args)).getOrElse {
-      error(s"wrong arguments: $name(${args.map(_.beautified).mkString(", ")})")
-    })
-  }
-  lazy val simpleFuncs: Map[String, SimpleFunc] = Map(
-    arityCheck("abs" -> {
-      case List(Num(n)) => Num(n.abs)
-      case List(INum(n)) => INum(n.abs)
-      case List(BigINum(n)) => BigINum(n.abs)
-    }),
-    arityCheck("floor" -> {
-      case List(Num(n)) => INum(n.floor.toLong)
-      case List(INum(n)) => INum(n)
-      case List(BigINum(n)) => BigINum(n)
-    }),
-    arityCheck("fround" -> {
-      case List(Num(n)) => Num(n.toFloat.toDouble)
-      case List(INum(n)) => Num(n.toFloat.toDouble)
-    }),
-    arityCheck("ThrowCompletion" -> {
-      case List(value) => value.wrapCompletion(st, CompletionType.Throw)
-    }),
-    arityCheck("NormalCompletion" -> {
-      case List(value) => value.wrapCompletion(st)
-    }),
-    arityCheck("IsAbruptCompletion" -> {
-      case List(value) => Bool(value.isAbruptCompletion(st))
-    }),
-  // TODO IsDuplicate, IsArrayIndex, min, max
-  )
 }
 object Interp {
   def apply(
@@ -534,4 +519,50 @@ object Interp {
     new Interp(st, filename, timeLimit)
     st
   }
+
+  // type update algorithms
+  val setTypeMap: Map[String, Ty] = Map(
+    "OrdinaryFunctionCreate" -> Ty("ECMAScriptFunctionObject"),
+  )
+
+  // simple functions
+  type SimpleFunc = (State, List[Value]) => Value
+  def arityCheck(pair: (String, SimpleFunc)): (String, SimpleFunc) = {
+    val (name, f) = pair
+    name -> ((st, args) => optional(f(st, args)).getOrElse {
+      error(s"wrong arguments: $name(${args.map(_.beautified).mkString(", ")})")
+    })
+  }
+  val simpleFuncs: Map[String, SimpleFunc] = Map(
+    // TODO IsDuplicate, IsArrayIndex, min, max
+    arityCheck("IsDuplicate" -> {
+      case (st, List(addr: Addr)) => st(addr) match {
+        case IRList(vs) => Bool(vs.toSet.size != vs.length)
+        case _ => error(s"non-list @ IsDuplicate: ${addr.beautified}")
+      }
+    }),
+    arityCheck("abs" -> {
+      case (st, List(Num(n))) => Num(n.abs)
+      case (st, List(INum(n))) => INum(n.abs)
+      case (st, List(BigINum(n))) => BigINum(n.abs)
+    }),
+    arityCheck("floor" -> {
+      case (st, List(Num(n))) => INum(n.floor.toLong)
+      case (st, List(INum(n))) => INum(n)
+      case (st, List(BigINum(n))) => BigINum(n)
+    }),
+    arityCheck("fround" -> {
+      case (st, List(Num(n))) => Num(n.toFloat.toDouble)
+      case (st, List(INum(n))) => Num(n.toFloat.toDouble)
+    }),
+    arityCheck("ThrowCompletion" -> {
+      case (st, List(value)) => value.wrapCompletion(st, CompletionType.Throw)
+    }),
+    arityCheck("NormalCompletion" -> {
+      case (st, List(value)) => value.wrapCompletion(st)
+    }),
+    arityCheck("IsAbruptCompletion" -> {
+      case (st, List(value)) => Bool(value.isAbruptCompletion(st))
+    }),
+  )
 }

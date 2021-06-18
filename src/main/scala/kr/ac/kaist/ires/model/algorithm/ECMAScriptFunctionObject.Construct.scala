@@ -14,6 +14,7 @@ object `AL::ECMAScriptFunctionObject.Construct` extends Algo {
     "sec-ordinary-and-exotic-objects-behaviours",
   )
   val rawBody = parseInst("""{
+  |  0:assert (is-instance-of F ECMAScriptFunctionObject)
   |  1:assert (= (typeof newTarget) Object)
   |  2:let callerContext = CONTEXT
   |  3:let kind = F.ConstructorKind

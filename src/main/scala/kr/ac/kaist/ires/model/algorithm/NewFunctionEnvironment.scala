@@ -15,6 +15,7 @@ object `AL::NewFunctionEnvironment` extends Algo {
     "sec-executable-code-and-execution-contexts",
   )
   val rawBody = parseInst("""{
+  |  0:assert (is-instance-of F ECMAScriptFunctionObject)
   |  1:assert (|| (= (typeof newTarget) Undefined) (= (typeof newTarget) Object))
   |  2:let env = (new FunctionEnvironmentRecord())
   |  3:env.FunctionObject = F

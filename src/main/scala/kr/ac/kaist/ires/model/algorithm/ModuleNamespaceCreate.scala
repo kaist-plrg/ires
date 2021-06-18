@@ -16,7 +16,7 @@ object `AL::ModuleNamespaceCreate` extends Algo {
   )
   val rawBody = parseInst("""{
   |  1:assert (= module.Namespace undefined)
-  |  3:let internalSlotsList = StrList
+  |  3:let internalSlotsList = (new ["Module", "Exports", "Prototype"])
   |  4:app __x0__ = (MakeBasicObject internalSlotsList)
   |  4:let M = [! __x0__]
   |  6:M.Prototype = null

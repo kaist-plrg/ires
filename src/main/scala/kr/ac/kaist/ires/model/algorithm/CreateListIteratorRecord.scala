@@ -14,7 +14,7 @@ object `AL::CreateListIteratorRecord` extends Algo {
     "sec-abstract-operations",
   )
   val rawBody = parseInst("""{
-  |  0:let closure = Lambda
+  |  0:??? "Let id:{closure} be a new Abstract Closure with no parameters that captures id:{list} and performs the following steps when called : in:{} out:{}"
   |  4:app __x0__ = (CreateIteratorFromClosure closure CONST_empty INTRINSIC_IteratorPrototype)
   |  4:let iterator = [! __x0__]
   |  5:return (new Record("Iterator" -> iterator, "NextMethod" -> INTRINSIC_GeneratorFunction_prototype_prototype_next, "Done" -> false))

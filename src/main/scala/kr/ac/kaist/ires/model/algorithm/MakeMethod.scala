@@ -14,6 +14,7 @@ object `AL::MakeMethod` extends Algo {
     "sec-ordinary-and-exotic-objects-behaviours",
   )
   val rawBody = parseInst("""{
+  |  0:assert (is-instance-of F ECMAScriptFunctionObject)
   |  1:assert (= (typeof homeObject) Object)
   |  2:F.HomeObject = homeObject
   |  3:return undefined

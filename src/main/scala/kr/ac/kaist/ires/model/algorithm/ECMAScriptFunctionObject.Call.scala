@@ -14,6 +14,7 @@ object `AL::ECMAScriptFunctionObject.Call` extends Algo {
     "sec-ordinary-and-exotic-objects-behaviours",
   )
   val rawBody = parseInst("""{
+  |  0:assert (is-instance-of F ECMAScriptFunctionObject)
   |  1:let callerContext = CONTEXT
   |  2:app __x0__ = (PrepareForOrdinaryCall F undefined)
   |  2:let calleeContext = __x0__

@@ -14,17 +14,21 @@ object `AL::MakeConstructor` extends Algo {
     "sec-ordinary-and-exotic-objects-behaviours",
   )
   val rawBody = parseInst("""{
-  |  1:??? "If id:{F} is an ECMAScript function object , then in:{} out:{}"
+  |  1:if (is-instance-of F ECMAScriptFunctionObject) {
+  |    2:app __x0__ = (IsConstructor F)
+  |    2:assert (= __x0__ false)
+  |    4:F.Construct = ALGORITHM["ECMAScriptFunctionObject.Construct"]
+  |  } else 3:{}
   |  5:F.ConstructorKind = CONST_base
   |  6:if (= writablePrototype absent) writablePrototype = true else 3:{}
   |  7:if (= prototype absent) {
-  |    8:app __x0__ = (OrdinaryObjectCreate INTRINSIC_Object_prototype)
-  |    8:prototype = [! __x0__]
-  |    9:app __x1__ = (DefinePropertyOrThrow prototype "constructor" (new PropertyDescriptor("Value" -> F, "Writable" -> writablePrototype, "Enumerable" -> false, "Configurable" -> true)))
-  |    9:[! __x1__]
+  |    8:app __x1__ = (OrdinaryObjectCreate INTRINSIC_Object_prototype)
+  |    8:prototype = [! __x1__]
+  |    9:app __x2__ = (DefinePropertyOrThrow prototype "constructor" (new PropertyDescriptor("Value" -> F, "Writable" -> writablePrototype, "Enumerable" -> false, "Configurable" -> true)))
+  |    9:[! __x2__]
   |  } else 3:{}
-  |  10:app __x2__ = (DefinePropertyOrThrow F "prototype" (new PropertyDescriptor("Value" -> prototype, "Writable" -> writablePrototype, "Enumerable" -> false, "Configurable" -> false)))
-  |  10:[! __x2__]
+  |  10:app __x3__ = (DefinePropertyOrThrow F "prototype" (new PropertyDescriptor("Value" -> prototype, "Writable" -> writablePrototype, "Enumerable" -> false, "Configurable" -> false)))
+  |  10:[! __x3__]
   |  11:return undefined
   |}""".stripMargin)
   val code = scala.Array[String](
